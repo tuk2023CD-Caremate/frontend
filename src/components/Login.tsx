@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
 body {
   font-family: "Pretendard Variable";
   }
-
 `;
 const LoginWrapper = styled.div`
 margin-left: auto;
@@ -20,6 +19,8 @@ width: 450px;
 height: 618px;
 padding: 40px;
 box-sizing: border-box;
+border-radius: 10px;
+border: 1px solid var(--Gray-03, #BDBDBD);
 `;
 
 const LoginH2 = styled.h2`
@@ -114,9 +115,8 @@ left: 50%;
 transform: translate(-50%, 100%);
 `;
 
-
 export default function Login() {
-  return (
+  return(
     <>
       <GlobalStyle />
       <LoginWrapper>

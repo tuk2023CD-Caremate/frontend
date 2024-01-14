@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
+  margin-top: -8px;
   padding: 0;
   box-sizing: border-box;
 }
@@ -22,6 +23,7 @@ border-bottom: 1px solid #E8E8E8;
 display: flex;
 align-items: center;
 justify-content: center;
+margin-bottom: 20px;
 `;
 
 const HeaderH2 = styled.h2`
