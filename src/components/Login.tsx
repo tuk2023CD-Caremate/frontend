@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
-import google_login from 'D:/Project/frontend/src/assets/images/google_login.png'
-import kakao_login from 'D:/Project/frontend/src/assets/images/kakao_login.png'
+import google_login from '../assets/images/google_login.png'
+import kakao_login from '../assets/images/kakao_login.png'
 const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
 }
 body {
   font-family: "Pretendard Variable";
+  background-color: #fff;
   }
 `
 const LoginWrapper = styled.div`
