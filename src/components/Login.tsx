@@ -16,6 +16,7 @@ body {
 const LoginWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
+  margin-top: 40px;
   width: 450px;
   height: 580px;
   padding: 40px;

@@ -1,30 +1,31 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
 * {
+  font-family: "Pretendard";
   margin: 0;
-  margin-top: -10px;
   padding: 0;
   box-sizing: border-box;
 }
 body {
-    font-family: 'Pretendard Variable', sans-serif;
+
     background-color: #fff;
   }
 `
 const HeaderContainer = styled.div`
   background-color: #fff;
   width: 100vw;
-  height: 70px; //반응형으로 수정할 경우 함께 고쳐야 함, 모니터에 따라 달라짐
-  display: flex;
-  align-items: center;
-  padding: 0 15%;
+  height: 10vh; //반응형으로 수정할 경우 함께 고쳐야 함, 모니터에 따라 달라짐
+  padding: 0 5%;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  position: sticky;
+  top:0;
+
 `
 
 const HeaderLogo = styled.a`
@@ -33,7 +34,8 @@ const HeaderLogo = styled.a`
   font-style: normal;
   font-weight: 600;
   line-height: 70px;
-  margin-right: 10%;
+  left: 15%;
+  position: absolute;
   &:hover,
   &:active {
     color: #650fa9;
@@ -49,13 +51,14 @@ const HeaderInput = styled.input`
   border-radius: 5px;
   flex-shrink: 0;
   font-weight: 600;
-  margin-right: 15%;
 `
 
 const HeaderMember = styled.div`
   width: 100px;
   display: flex;
   align-items: center;
+  right: 15%;
+  position: absolute;
 `
 
 const HeaderLogin = styled.a`
@@ -69,7 +72,7 @@ const HeaderLogin = styled.a`
   }
 `
 
-const HeaderSignup = styled.a`
+const HeaderSignup = styled.button`
   width: 80px;
   height: 40px;
   border-radius: 3px;
@@ -91,8 +94,10 @@ export default function Header() {
         <HeaderLogo href="/home">StudyMate</HeaderLogo>
         <HeaderInput type="text" placeholder="검색 내용을 입력하세요" />
         <HeaderMember>
-          <HeaderLogin href="/login">로그인</HeaderLogin>
-          <HeaderSignup href="/api/signup">회원가입</HeaderSignup>
+          <HeaderLogin href="/api/login">로그인</HeaderLogin>
+          <Link to="/api/signup">
+          <HeaderSignup> 회원가입</HeaderSignup>
+          </Link>
         </HeaderMember>
       </HeaderContainer>
     </>

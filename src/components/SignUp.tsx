@@ -6,12 +6,12 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
   border: none;
-  font-family: "Pretendard Variable";
+  justify-content: center;
+  align-items: center;
 }
 `;
 
 const SignUpWrapper = styled.div`
-margin-left: 120%;
 width: 450px;
 height: 670px;
 padding: 40px;
@@ -19,7 +19,7 @@ box-sizing: border-box;
 border-radius: 10px;
 border: 0.5px solid var(--Gray-03, #BDBDBD);
 display: flex;
-flex-direction: column;
+justify-content: center;
 align-items: center;
 `;
 
