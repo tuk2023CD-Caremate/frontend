@@ -22,22 +22,24 @@ const FrameContainer = styled.nav`
   height: 50px;
   border-bottom: 1px solid #e8e8e8;  
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   position: sticky;
+  top: 0;
 `
 
 const TextGroup = styled.div`
 display: flex;
 align-items: center;
-
-
+justify-content: center;
 `
 const NavbarClick = styled.a`
 color: #000;
 font-size: 14px;
 font-weight: normal;
 white-space: nowrap;
+margin-left: 10%;
+margin-right: 10%;
 &:hover,
   &:active {
     font-weight: bold;

@@ -14,13 +14,14 @@ body {
 `
 const HeaderContainer = styled.div`
   background-color: #fff;
-  width:100%;
+  width:100vw;
   height: 60px;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  padding: 5px 0;
+ 
 `
 
 const HeaderLogo = styled.a`
@@ -42,13 +43,13 @@ const HeaderInput = styled.input`
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   flex-shrink: 0;
-  font-weight: 600;
+  font-weight: normal;
 `
 
 const HeaderMember = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 15%;
+  margin-right: 20%;
 `
 
 const HeaderLogin = styled.a`

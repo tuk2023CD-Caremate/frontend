@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import image  from '../assets/images/bubble.png';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -8,59 +9,65 @@ const GlobalStyle = createGlobalStyle`
   padding: 0;
 }
 body {
-
     background-color: #fff;
   }
+ 
 `
 
 const PostContainer = styled.nav`
-background-color: #bdbdbd;
+background-color: #ffffff;
 display: flex;
 margin-left: 15%;
 margin-right: 15%;
 `
 
 const SideNavbar = styled.div`
-background-color: #944949;
+background-color: #ffffff;
   height: 190px;
   width: 200px;
   margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 `
 
 
-const SideClick = styled.a`
+const SideClick = styled.button`  //버튼클릭시 파란색 border 지우기 
 color: #000;
 font-weight: normal;
-display: flex;
-justify-items: baseline;
+margin-left: 10px;
 padding: 5%;
-
+border-bottom: 1px solid #e8e8e8;
+text-align: start;
 &:hover,
   &:active {
     font-weight: bold;
     color: #650fa9;
-     background-color: rgba(220, 196, 239, 0.15); /* #dcc4ef의 60% 투명한 버전 */
-     border-radius: 10px;
-     
+    background-color: rgba(220, 196, 239, 0.4); /* #dcc4ef의 60% 투명한 버전 */
+    border-radius: 5px;
   }
 `
 
+
 const Section = styled.div`
+margin-left: 5%;
+margin-top: 5%;
 `
 
 const SectionHeader = styled.div`
-width: 600px;
+width: 700px;
+height: 35px;
 display: flex;
 align-items: center;
-justify-content: space-between;
-margin-top: 10%;
-
+padding-bottom: 5%;
+border-bottom: 1px solid #e8e8e8;
 `
 
 const Input = styled.input`
   text-indent: 20px;
-  width: 250px;
-  height: 35px;
+  width: 400px;
+  height: 40px;
   background-color: white;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
@@ -69,7 +76,7 @@ const Input = styled.input`
 
 const WriteButton = styled.button`
   width: 70px;
-  height: 30px;
+  height: 40px;
   border-radius: 3px;
   border: 0.5px solid #bdbdbd;
   background: #fff;
@@ -79,29 +86,64 @@ const WriteButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 30%;
 `
 
 
 const PostGroup = styled.ul`
+display: flex;
+flex-direction: column;
 `
-const PostInfo = styled.div`
+
+const PostInfo = styled.a`
+color: #000;
+padding: 15px;
+border-bottom: 1px solid #e8e8e8;
+&:hover,
+  &:active {
+    color: #000;
+  }
 `
+
 const PostTitle = styled.h3`
+font-size: 18px;
+font-weight: bold;
 `
+
 const PostBody = styled.p`
+font-size: 15px;
+font-weight: normal;
+margin-top: 5px;
 `
+
 const PostInfoFooter = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 10px;
+font-size: 12px;
+font-weight: lighter;
 `
+
 const PostInfoDetail = styled.div`
+display: flex;
 `
+
 const InfoDetail = styled.span`
+margin-right: 5%;
 `
 const PostData = styled.div`
+display: flex;
+margin-right: 10%;
 `
-const CommentImg = styled.img`
+const CommentImg = styled.div`
+background: url(${image});
+width: 10px;
+height: 10px;
 `
 const Comment = styled.span`
 `
+
 
 export default function MainPost() {
     return (
@@ -109,10 +151,10 @@ export default function MainPost() {
         <GlobalStyle/>
         <PostContainer>
             <SideNavbar>
-              <SideClick href="/api/login">최근 게시글</SideClick>
-              <SideClick href="/api/login">인기 게시글</SideClick>
-              <SideClick href="/api/login">내가 쓴 게시글</SideClick>
-              <SideClick href="/api/login">분야 별 게시글</SideClick>
+              <SideClick as="a" href="/">최근 게시글</SideClick>
+              <SideClick as="a" href="/">인기 게시글</SideClick>
+              <SideClick as="a" href="/">내가 쓴 게시글</SideClick>
+              <SideClick>분야 별 게시글</SideClick>
             </SideNavbar>
             <Section>
                 <SectionHeader>
@@ -120,7 +162,7 @@ export default function MainPost() {
                     <WriteButton> 글쓰기</WriteButton>
                 </SectionHeader>
                 <PostGroup>
-                    <PostInfo>
+                    <PostInfo href="/">
                         <PostTitle>제목</PostTitle>
                         <PostBody>상세 게시글 내용</PostBody>
                         <PostInfoFooter>
@@ -130,7 +172,67 @@ export default function MainPost() {
                                 <InfoDetail>23:00</InfoDetail>
                             </PostInfoDetail>
                             <PostData>
-                                <CommentImg></CommentImg>
+                                <CommentImg/>
+                                <Comment>3</Comment>
+                            </PostData>
+                        </PostInfoFooter>
+                    </PostInfo>
+                    <PostInfo href="/">
+                        <PostTitle>제목</PostTitle>
+                        <PostBody>상세 게시글 내용</PostBody>
+                        <PostInfoFooter>
+                            <PostInfoDetail>
+                                <InfoDetail>heesu52@naver.com</InfoDetail>
+                                <InfoDetail>12/25</InfoDetail>
+                                <InfoDetail>23:00</InfoDetail>
+                            </PostInfoDetail>
+                            <PostData>
+                                <CommentImg/>
+                                <Comment>3</Comment>
+                            </PostData>
+                        </PostInfoFooter>
+                    </PostInfo>
+                    <PostInfo href="/">
+                        <PostTitle>제목</PostTitle>
+                        <PostBody>상세 게시글 내용</PostBody>
+                        <PostInfoFooter>
+                            <PostInfoDetail>
+                                <InfoDetail>heesu52@naver.com</InfoDetail>
+                                <InfoDetail>12/25</InfoDetail>
+                                <InfoDetail>23:00</InfoDetail>
+                            </PostInfoDetail>
+                            <PostData>
+                                <CommentImg/>
+                                <Comment>3</Comment>
+                            </PostData>
+                        </PostInfoFooter>
+                    </PostInfo>
+                    <PostInfo href="/">
+                        <PostTitle>제목</PostTitle>
+                        <PostBody>상세 게시글 내용</PostBody>
+                        <PostInfoFooter>
+                            <PostInfoDetail>
+                                <InfoDetail>heesu52@naver.com</InfoDetail>
+                                <InfoDetail>12/25</InfoDetail>
+                                <InfoDetail>23:00</InfoDetail>
+                            </PostInfoDetail>
+                            <PostData>
+                                <CommentImg/>
+                                <Comment>3</Comment>
+                            </PostData>
+                        </PostInfoFooter>
+                    </PostInfo>
+                    <PostInfo href="/">
+                        <PostTitle>제목</PostTitle>
+                        <PostBody>상세 게시글 내용</PostBody>
+                        <PostInfoFooter>
+                            <PostInfoDetail>
+                                <InfoDetail>heesu52@naver.com</InfoDetail>
+                                <InfoDetail>12/25</InfoDetail>
+                                <InfoDetail>23:00</InfoDetail>
+                            </PostInfoDetail>
+                            <PostData>
+                                <CommentImg/>
                                 <Comment>3</Comment>
                             </PostData>
                         </PostInfoFooter>
