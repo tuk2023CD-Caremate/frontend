@@ -7,35 +7,27 @@ const GlobalStyle = createGlobalStyle`
   font-family: "Pretendard";
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 body {
-
     background-color: #fff;
   }
 `
 const HeaderContainer = styled.div`
   background-color: #fff;
-  width: 100vw;
-  height: 10vh; //반응형으로 수정할 경우 함께 고쳐야 함, 모니터에 따라 달라짐
-  padding: 0 5%;
+  width:100%;
+  height: 60px;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: sticky;
-  top:0;
-
+  justify-content: space-between;
+  
 `
 
 const HeaderLogo = styled.a`
   color: #650fa9;
   font-size: 27px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 70px;
-  left: 15%;
-  position: absolute;
+  font-weight: bold;
+  margin-left: 15%;
   &:hover,
   &:active {
     color: #650fa9;
@@ -54,26 +46,25 @@ const HeaderInput = styled.input`
 `
 
 const HeaderMember = styled.div`
-  width: 100px;
   display: flex;
   align-items: center;
-  right: 15%;
-  position: absolute;
+  margin-right: 15%;
 `
 
 const HeaderLogin = styled.a`
   color: #000;
-  margin-right: 15%;
   flex-shrink: 0;
   font-size: 14px;
+  margin-right: 10%;
   &:hover,
   &:active {
     color: #650fa9;
+    font-weight: bold;
   }
 `
 
 const HeaderSignup = styled.button`
-  width: 80px;
+  width: 70px;
   height: 40px;
   border-radius: 3px;
   border: 0.5px solid #bdbdbd;
@@ -84,6 +75,7 @@ const HeaderSignup = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+
 `
 
 export default function Header() {

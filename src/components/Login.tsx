@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import google_login from '../assets/images/google_login.png'
 import kakao_login from '../assets/images/kakao_login.png'
+
 const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
@@ -137,15 +138,20 @@ export default function Login() {
       window.alert('이메일 또는 비밀번호를 확인해주세요.')
       return
     }
+    
+    const serverToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkbmd1cjYyMDhAbmF2ZXIuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTcwNTU1NzM3Mn0.KXuVgaCW_hE8pGwS2MDzXnhdbgCBtsv8-pW9yVyg7ZGT5gLDa5rnR7rsS2ChZiOFpjdAtvbRoDGzcZKK63HIpA'
 
     try {
       const response = await fetch('http://localhost:8080/api/login', { //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type' : 'application/json',
+          'Authorization' : `Bearer ${serverToken}`,
+
         },
         body: JSON.stringify({
-          email: email,
+          email: "dngur6208@naver.com",
+          password:"aaass23"
         }),
       })
 

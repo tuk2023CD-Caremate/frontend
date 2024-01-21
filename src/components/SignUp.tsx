@@ -124,48 +124,83 @@ export default function Login() {
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
+  const [password, setPassword] = useState("");
   const [password2, setPassowrd2] = useState("");
 
-  const onNameHandler = (e: { currentTarget: { value: React.SetStateAction<string>; }; })=> {
-    setName(e.currentTarget.value);
+  const onNameHandler = (e: { target: { value: React.SetStateAction<string>; }; })=> {
+    setName(e.target.value);
   }
 
-  const onEmailHandler = (e: { currentTarget: { value: React.SetStateAction<string>; }; })=> {
-    setEmail(e.currentTarget.value);
+  const onEmailHandler = (e: { target: { value: React.SetStateAction<string>; }; })=> {
+    setEmail(e.target.value);
   }
-  const onNickNameHandler = (e: { currentTarget: { value: React.SetStateAction<string>; }; })=> {
-    setNickname(e.currentTarget.value);
-  }
-
-  const onPassword1Handler = (e: { currentTarget: { value: React.SetStateAction<string>; }; })=>{
-    setPassword1(e.currentTarget.value);
-  }
-  const onPassword2Handler = (e: { currentTarget: { value: React.SetStateAction<string>; }; })=>{
-    setPassowrd2(e.currentTarget.value);
+  const onNickNameHandler = (e: { target: { value: React.SetStateAction<string>; }; })=> {
+    setNickname(e.target.value);
   }
 
-  const onLoginHandler = (e: { preventDefault: () => void; })=>{
+  const onPassword1Handler = (e: { target: { value: React.SetStateAction<string>; }; })=>{
+    setPassword(e.target.value);
+  }
+  const onPassword2Handler = (e: { target: { value: React.SetStateAction<string>; }; })=>{
+    setPassowrd2(e.target.value);
+  }
+
+  const onSignupHandler = async (e: { preventDefault: () => void; })=>{
     e.preventDefault();
-    console.log("name: "+name, "email: "+ email, "nickname: "+ nickname, "password: "+ password1 );
+    console.log("name: "+name, "email: "+ email, "nickname: "+ nickname, "password: "+ password );
+    alert("회원가입이 완료되었습니다!")
 
 
-    if(email === '' || password1 === ''||name===''|| nickname===''||password2===''){
-     window.alert("회원가입에 실패하셨습니다. 입력정보를 다시 확인해주세요.");
+    if(email === '' || password === ''||name===''|| nickname===''||password2===''){
+     alert("회원가입에 실패하셨습니다. 입력정보를 다시 확인해주세요.");
      return;
     }
+
+
+    try {
+      const response = await fetch('http://localhost:8080/api/signup', { //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: "dngur6208@naver.com",
+          password:"aaass23"
+        }),
+      })
+
+      console.log('서버 응답', response)
+
+      if (!response.ok) {
+        throw new Error('서버 응답이 실패했습니다.')
+      }
+
+      const data = await response.json()
+      const receivedTocken = data.token;
+      console.log('서버 응답 데이터:', data);
+
+      localStorage.setItem('accessToken', receivedTocken);
+
+      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
+    } catch (error) {
+      console.error('회원가입 오류:', error);
+      alert('회원가입에 실패했습니다.');
+    }
   }
+  
  
   return (
     <>
       <GlobalStyle />
       <SignUpWrapper>
-        <form onSubmit={onLoginHandler}>
+        <form onSubmit={onSignupHandler}>
           <SignUpH2>SignUp to StudyMate</SignUpH2>
           <SignUpInput type="text" placeholder="이름" value={name} onChange={onNameHandler} />
           <SignUpInput type="text" placeholder="닉네임"value={nickname} onChange={onNickNameHandler} />
           <SignUpInput type="email" placeholder="이메일" value={email} onChange={onEmailHandler} />
-          <SignUpInput type="password" placeholder="비밀번호" value={password1} onChange={onPassword1Handler} />
+          <SignUpInput type="password" placeholder="비밀번호" value={password} onChange={onPassword1Handler} />
           <SignUpInput type="password" placeholder="비밀번호 확인" value={password2} onChange={onPassword2Handler}/>
           <RoleBtn>
               <RoleButton1 type="button">멘토</RoleButton1>
@@ -179,7 +214,7 @@ export default function Login() {
           <label>
           <AgreeCheck type="checkbox"/> 위치정보서비스 이용동의 (선택)</label>
           </Checkbox>
-          <SignUpSubmit>가입하기</SignUpSubmit>
+          <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>
           </form>
       </SignUpWrapper>
     </>
