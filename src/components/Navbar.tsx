@@ -11,45 +11,40 @@ const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 body {
-
     background-color: #fff;
   }
 `
 const FrameContainer = styled.nav`
   background-color: #fff;
-  width: 100vw;
-  height: 40px;
+  width:100%;
+  height: 50px;
   border-bottom: 1px solid #e8e8e8;  
   display: flex;
   justify-content: center;
   align-items: center;
   position: sticky;
-  top: 10vh;
 `
 
 const TextGroup = styled.div`
 display: flex;
-justify-content: center;
 align-items: center;
+
 
 `
 const NavbarClick = styled.a`
 color: #000;
 font-size: 14px;
-font-weight: 500;
+font-weight: normal;
 white-space: nowrap;
-margin: 15%;
-padding: 5px;
-
 &:hover,
   &:active {
     font-weight: bold;
     color: #650fa9;
      background-color: rgba(220, 196, 239, 0.3); /* #dcc4ef의 60% 투명한 버전 */
      border-radius: 3px;
+
   }
 `
 

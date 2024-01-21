@@ -6,7 +6,6 @@ const GlobalStyle = createGlobalStyle`
   font-family: "Pretendard";
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 body {
 
@@ -16,17 +15,18 @@ body {
 
 const PostContainer = styled.nav`
 background-color: #bdbdbd;
-  width: 100vw;
-  height: 100vh; 
-
+display: flex;
+margin-left: 15%;
+margin-right: 15%;
 `
 
 const SideNavbar = styled.div`
 background-color: #944949;
   height: 190px;
   width: 200px;
-
+  margin-top: 10%;
 `
+
 
 const SideClick = styled.a`
 color: #000;
@@ -52,18 +52,19 @@ const SectionHeader = styled.div`
 width: 600px;
 display: flex;
 align-items: center;
-right: 15%;
+justify-content: space-between;
+margin-top: 10%;
+
 `
 
 const Input = styled.input`
   text-indent: 20px;
-  width: 200px;
+  width: 250px;
   height: 35px;
   background-color: white;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-weight: normal;
-  margin-right: 50%;
 `
 
 const WriteButton = styled.button`
@@ -108,10 +109,10 @@ export default function MainPost() {
         <GlobalStyle/>
         <PostContainer>
             <SideNavbar>
-                <SideClick href="/api/login">최근 게시글</SideClick>
-                <SideClick href="/api/login">인기 게시글</SideClick>
-                <SideClick href="/api/login">내가 쓴 게시글</SideClick>
-                <SideClick href="/api/login">분야 별 게시글</SideClick>
+              <SideClick href="/api/login">최근 게시글</SideClick>
+              <SideClick href="/api/login">인기 게시글</SideClick>
+              <SideClick href="/api/login">내가 쓴 게시글</SideClick>
+              <SideClick href="/api/login">분야 별 게시글</SideClick>
             </SideNavbar>
             <Section>
                 <SectionHeader>
