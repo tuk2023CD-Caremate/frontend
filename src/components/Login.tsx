@@ -132,40 +132,40 @@ export default function Login() {
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    console.log('email: ' + email, 'password: ' + password)
-
+  
     if (email === '' || password === '') {
       window.alert('이메일 또는 비밀번호를 확인해주세요.')
       return
     }
     
-    const serverToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkbmd1cjYyMDhAbmF2ZXIuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTcwNTU1NzM3Mn0.KXuVgaCW_hE8pGwS2MDzXnhdbgCBtsv8-pW9yVyg7ZGT5gLDa5rnR7rsS2ChZiOFpjdAtvbRoDGzcZKK63HIpA'
 
     try {
       const response = await fetch('http://localhost:8080/api/login', { //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json',
-          'Authorization' : `Bearer ${serverToken}`,
-
         },
+        credentials: 'include',
         body: JSON.stringify({
-          email: "dngur6208@naver.com",
-          password:"aaass23"
-        }),
+          email: email,
+          password: password,
+        })
       })
-
-      console.log('서버 응답', response)
 
       if (!response.ok) {
         throw new Error('서버 응답이 실패했습니다.')
       }
 
+      console.log("email: "+ email, "/ password: "+ password);
+      
       const data = await response.json()
-      console.log('서버 응답 데이터:', data)
+      const responsedTocken = data.token;
 
-      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
-    } catch (error) {
+      console.log('서버 응답 데이터:', data)
+      localStorage.setItem('accessToken', responsedTocken);
+    } 
+    // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
+    catch (error) {
       console.error('로그인 오류:', error)
       window.alert('로그인에 실패했습니다.')
     }
@@ -177,7 +177,12 @@ export default function Login() {
       <LoginWrapper>
         <form onSubmit={onLoginHandler}>
           <LoginH2>Login to StudyMate</LoginH2>
-          <LoginInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
+          <LoginInput 
+            type="text"
+            placeholder="이메일"
+            value={email}
+            onChange={onEmailHandler}
+            />
           <LoginInput
             type="password"
             placeholder="비밀번호"
