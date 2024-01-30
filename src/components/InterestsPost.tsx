@@ -48,7 +48,7 @@ text-align: start;
     border-radius: 5px;
   }
 `
-const SideBestClick = styled.button` 
+const SideinterestsClick = styled.button` 
 color: #650fa9;
 font-weight: bold;
 margin-left: 10px;
@@ -75,6 +75,7 @@ height: 35px;
 display: flex;
 align-items: center;
 padding-bottom: 5%;
+padding-top: 5%;
 border-bottom: 1px solid #e8e8e8;
 `
 
@@ -167,8 +168,30 @@ font-weight: bold;
 `
 const Like = styled.img`
 margin-right: 15px;
-width: 11Px;
+width: 11px;
 height: 11px;
+`
+const InterestsGroup = styled.div`
+border-bottom: 1px solid #bdbdbd;
+display: flex;
+`
+
+const OptionButton = styled.button`
+color: #bdbdbd;
+  width: 70px;
+  height: 45px;
+  background: #fff;
+  font-weight: bold;
+  font-size: 1 rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover,
+  &:active {
+ 
+    color: #868e96;
+
+  }
 `
 
 
@@ -186,17 +209,25 @@ export default function MainPost() {
       }
     }
 
+    //리팩토핑할 때 ul&li&a로 변경
     return (
         <>
         <GlobalStyle/>
-        <PostContainer>
+        <PostContainer>  
             <SideNavbar>
               <SideClick as="a" href="/post">최근 게시글</SideClick>
-              <SideBestClick as="a" href="/bestpost">인기 게시글</SideBestClick>
+              <SideClick as="a" href="/bestpost">인기 게시글</SideClick>
               <SideClick as="a" href="/mypost">내가 쓴 게시글</SideClick>
-              <SideClick as="a" href="/interestspost">분야 별 게시글</SideClick>
+              <SideinterestsClick as="a" href="/interestspost">분야 별 게시글</SideinterestsClick>
             </SideNavbar>
             <Section>
+                <InterestsGroup>
+                    <OptionButton as="a" href="/interestspost/math">수학</OptionButton>
+                    <OptionButton as="a" href="/interestspost/korean">국어</OptionButton>
+                    <OptionButton as="a" href="/interestspost/english">영어</OptionButton>
+                    <OptionButton as="a" href="/interestspost/science">과학</OptionButton>
+                    <OptionButton as="a" href="/interestspost/programming">코딩</OptionButton>
+                </InterestsGroup>
                 <SectionHeader>
                     <Input type="text" placeholder="검색 내용을 입력하세요" />
                     <WriteButton as="a" href='/writing' > 글쓰기</WriteButton>
@@ -219,9 +250,9 @@ export default function MainPost() {
                         </PostInfoFooter>
                     </PostInfo>
                 </PostGroup>
-            </Section>
-        </PostContainer>
+            </Section> 
+        </PostContainer> 
       </>
     )
-  }
+  } 
    

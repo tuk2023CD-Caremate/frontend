@@ -1,16 +1,16 @@
 import React from 'react';
 import Header from '../components/Header.tsx';
 import Navbar from '../components/Navbar.tsx';
-import BestPost from '../components/BestPost.tsx';
+import InterestsPost from '../components/InterestsPost.tsx';
 
-function BestPostPage() {
+function InterestsPostPage() {
   return (
     <div>
       <Header/>
       <Navbar/>
-      <BestPost/>
+      <InterestsPost/>
     </div>
   );
 }
 
-export default BestPostPage 
+export default InterestsPostPage 
