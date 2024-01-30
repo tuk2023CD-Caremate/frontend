@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import bubbleimg  from '../assets/images/bubble.png';
 
-
 const GlobalStyle = createGlobalStyle`
 * {
   font-family: "Pretendard";
@@ -49,8 +48,7 @@ text-align: start;
     border-radius: 5px;
   }
 `
-
-const SideMainClick = styled.button`  //버튼클릭시 파란색 border 지우기 
+const SideBestClick = styled.button` 
 color: #650fa9;
 font-weight: bold;
 margin-left: 10px;
@@ -65,7 +63,6 @@ text-align: start;
     border-radius: 5px;
   }
 `
-
 
 const Section = styled.div`
 margin-left: 5%;
@@ -158,6 +155,7 @@ margin-right: 5%;
 const PostData = styled.div`
 display: flex;
 align-items: center;
+
 `
 const CommentImg = styled.img`
 margin-right: 5px;
@@ -175,25 +173,26 @@ height: 11px;
 
 
 export default function MainPost() {
-  const [like, setLike] = useState("src/assets/images/unlikeicon.png")
-  const [isClicked, setIsClicked] = useState(false);
-
-  const HandleClick = () => {
-    if(isClicked){
-      setLike("src/assets/images/unlikeicon.png");
-      setIsClicked(false);
-    }else{
-      setLike("src/assets/images/likeicon.png");
-      setIsClicked(true);
+    const [like, setLike] = useState("src/assets/images/unlikeicon.png")
+    const [isClicked, setIsClicked] = useState(false);
+  
+    const HandleClick = () => {
+      if(isClicked){
+        setLike("src/assets/images/unlikeicon.png");
+        setIsClicked(false);
+      }else{
+        setLike("src/assets/images/likeicon.png");
+        setIsClicked(true);
+      }
     }
-  }
+
     return (
         <>
         <GlobalStyle/>
         <PostContainer>
             <SideNavbar>
-              <SideMainClick as="a" href="/post">최근 게시글</SideMainClick>
-              <SideClick as="a" href="/bestpost">인기 게시글</SideClick>
+              <SideClick as="a" href="/post">최근 게시글</SideClick>
+              <SideBestClick as="a" href="/bestpost">인기 게시글</SideBestClick>
               <SideClick as="a" href="/">내가 쓴 게시글</SideClick>
               <SideClick as="a" href="/">분야 별 게시글</SideClick>
             </SideNavbar>
@@ -203,22 +202,6 @@ export default function MainPost() {
                     <WriteButton as="a" href='/writing' > 글쓰기</WriteButton>
                 </SectionHeader>
                 <PostGroup>
-                <PostInfo href="/">
-                        <PostTitle>제목</PostTitle>
-                        <PostBody>상세 게시글 내용</PostBody>
-                        <PostInfoFooter>
-                            <PostInfoDetail>
-                                <InfoDetail>heesu52@naver.com</InfoDetail>
-                                <InfoDetail>12/25</InfoDetail>
-                                <InfoDetail>23:00</InfoDetail>
-                            </PostInfoDetail>
-                            <PostData>
-                              <Like src={like} onClick={HandleClick}/>
-                              <CommentImg src={bubbleimg}/>
-                              <Comment>3</Comment>
-                            </PostData>
-                        </PostInfoFooter>
-                    </PostInfo>
                     <PostInfo href="/">
                         <PostTitle>제목</PostTitle>
                         <PostBody>상세 게시글 내용</PostBody>
@@ -229,57 +212,9 @@ export default function MainPost() {
                                 <InfoDetail>23:00</InfoDetail>
                             </PostInfoDetail>
                             <PostData>
-                              <Like src={like} onClick={HandleClick}/>  
-                              <CommentImg src={bubbleimg}/>
-                              <Comment>3</Comment>
-                            </PostData>
-                        </PostInfoFooter>
-                    </PostInfo>
-                    <PostInfo href="/">
-                        <PostTitle>제목</PostTitle>
-                        <PostBody>상세 게시글 내용</PostBody>
-                        <PostInfoFooter>
-                            <PostInfoDetail>
-                                <InfoDetail>heesu52@naver.com</InfoDetail>
-                                <InfoDetail>12/25</InfoDetail>
-                                <InfoDetail>23:00</InfoDetail>
-                            </PostInfoDetail>
-                            <PostData>
-                              <Like src={like} onClick={HandleClick}/>
-                              <CommentImg src={bubbleimg}/>
-                              <Comment>3</Comment>
-                            </PostData>
-                        </PostInfoFooter>
-                    </PostInfo>
-                    <PostInfo href="/">
-                        <PostTitle>제목</PostTitle>
-                        <PostBody>상세 게시글 내용</PostBody>
-                        <PostInfoFooter>
-                            <PostInfoDetail>
-                                <InfoDetail>heesu52@naver.com</InfoDetail>
-                                <InfoDetail>12/25</InfoDetail>
-                                <InfoDetail>23:00</InfoDetail>
-                            </PostInfoDetail>
-                            <PostData>
-                              <Like src={like} onClick={HandleClick}/>
-                              <CommentImg src={bubbleimg}/>
-                              <Comment>3</Comment>
-                            </PostData>
-                        </PostInfoFooter>
-                    </PostInfo>
-                    <PostInfo href="/">
-                        <PostTitle>제목</PostTitle>
-                        <PostBody>상세 게시글 내용</PostBody>
-                        <PostInfoFooter>
-                            <PostInfoDetail>
-                                <InfoDetail>heesu52@naver.com</InfoDetail>
-                                <InfoDetail>12/25</InfoDetail>
-                                <InfoDetail>23:00</InfoDetail>
-                            </PostInfoDetail>
-                            <PostData>
-                              <Like src={like} onClick={HandleClick}/>
-                              <CommentImg src={bubbleimg}/>
-                              <Comment>3</Comment>
+                                <Like src={like} onClick={HandleClick}/>
+                                <CommentImg src={bubbleimg}/>
+                                <Comment>3</Comment>
                             </PostData>
                         </PostInfoFooter>
                     </PostInfo>
