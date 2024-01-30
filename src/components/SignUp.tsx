@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 
-
 const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
@@ -68,19 +67,10 @@ const InterestsSelect = styled.select`
   border-radius: 10px;
 `
 
-const PartOption = [
-  {value: "MENTOR", name: "멘토"},
-  {value: "MENTEE", name: "멘티"}
-]
+const Option = styled.option`
+  text-align: center;
+`
 
-const InterestsOption = [
-  {value: "MATH", name: "수학"},
-  {value: "KOREAN", name: "국어"},
-  {value: "ENGLISH", name: "영어"},
-  {value: "SCIENCE", name: "과학"},
-  {value: "PROGRAMMING", name: "코딩"}
-
-]
 
 const Checkbox = styled.div`
   margin-top: 20px;
@@ -103,7 +93,6 @@ const AgreeCheck = styled.input`
   }
 `
 
-const label = styled.label``
 
 const SignUpSubmit = styled.button`
   width: 300px;
@@ -125,9 +114,9 @@ export default function Login() {
   const [password2, setPassowrd2] = useState('')
   const [interests, SetInterests] = useState('')
   const [part, SetPart] = useState('')
-  const [check] = useState('')
 
-  const onNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => { // 리팩토링할 때 함수 한번에 합치는걸로 수정
+  const onNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    // 리팩토링할 때 함수 한번에 합치는걸로 수정
     setName(e.target.value)
   }
 
@@ -151,7 +140,6 @@ export default function Login() {
   const onPartHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetPart(e.target.value)
   }
-  
 
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -163,8 +151,8 @@ export default function Login() {
       nickname === '' ||
       password2 === '' ||
       part === '' ||
-      interests === '' ||
-      check ===''
+      interests === '' 
+  
     ) {
       alert('회원가입에 실패하셨습니다. 입력정보를 다시 확인해주세요.')
       return
@@ -191,14 +179,20 @@ export default function Login() {
         throw new Error('서버 응답이 실패했습니다.')
       }
 
-      console.log("name: "+ name, "/ email: "+ email, "/ password: "+ password, "/ nickname: "+ nickname, "/ part: "+ part, "/ interest: "+ interests);
+      console.log(
+        'name: ' + name,
+        '/ email: ' + email,
+        '/ password: ' + password,
+        '/ nickname: ' + nickname,
+        '/ part: ' + part,
+        '/ interest: ' + interests,
+      )
       console.log('서버 응답 상태: ', response.status)
 
       const data = await response.json()
       console.log('서버 응답 데이터:', data)
-    } 
-     // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
-    catch (error) {
+    } catch (error) {
+      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
       console.error('회원가입 오류:', error)
       alert('회원가입에 실패했습니다.')
     }
@@ -231,30 +225,30 @@ export default function Login() {
             onChange={onPassword2Handler}
           />
           <SelectBox>
-            <RoleSelect onChange={onPartHandler} value={part}>
-              {PartOption.map((item) => {
-                 return <option value={item.value} key={item.value}>
-                  {item.name}
-                </option>;
-              })}
+            <RoleSelect value={part} onChange={onPartHandler}>
+              <Option>MENTOR</Option>
+              <Option>멘티</Option>
             </RoleSelect>
             <InterestsSelect value={interests} onChange={onInterestHandler}>
-            {InterestsOption.map((item) => {
-                 return <option value={item.value} key={item.value}>
-                  {item.name}
-                </option>;
-              })}
+              <Option>MATH</Option>
+              <Option>국어</Option>
+              <Option>영어</Option>
+              <Option>과학</Option>
+              <Option>코딩</Option>
             </InterestsSelect>
           </SelectBox>
           <Checkbox>
             <label>
-              <AgreeCheck type="checkbox" value={check} onChange={onPartHandler}/> 이용약관 동의 (필수)
+              <AgreeCheck type="checkbox"/> 이용약관 동의
+              (필수)
             </label>
             <label>
-              <AgreeCheck type="checkbox" value={check} onChange={onPartHandler}/> 개인정보 수집 및 이용동의 (필수)
+              <AgreeCheck type="checkbox"/> 개인정보 수집 및
+              이용동의 (필수)
             </label>
             <label>
-              <AgreeCheck type="checkbox" value={check} onChange={onPartHandler}/> 위치정보서비스 이용동의 (선택)
+              <AgreeCheck type="checkbox"/> 위치정보서비스
+              이용동의 (선택)
             </label>
           </Checkbox>
           <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>
