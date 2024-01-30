@@ -4,7 +4,6 @@ import styled, { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
 * {
-  font-family: "Pretendard";
   margin: 0;
   padding: 0;
 }
@@ -87,8 +86,8 @@ export default function Header() {
         <HeaderLogo href="/home">StudyMate</HeaderLogo>
         <HeaderInput type="text" placeholder="검색 내용을 입력하세요" />
         <HeaderMember>
-          <HeaderLogin href="/api/login">로그인</HeaderLogin>
-          <Link to="/api/signup">
+          <HeaderLogin href="login">로그인</HeaderLogin>
+          <Link to="/signIn">
           <HeaderSignup> 회원가입</HeaderSignup>
           </Link>
         </HeaderMember>

@@ -1,11 +1,6 @@
 import React from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 
-import offlineimage from '../assets/images/offline.png'
-import mypageimage from '../assets/images/mypage.png'
-import studyingimage from '../assets/images/studying.png'
-import postimage from '../assets/images/post.png'
-import onlineimage from '../assets/images/online.png'
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -59,11 +54,11 @@ export default function Navbar() {
       <GlobalStyle/>
       <FrameContainer>
           <TextGroup>
-            <NavbarClick href="/api/login">오프라인 매칭</NavbarClick>
-            <NavbarClick href="/api/login">온라인 매칭</NavbarClick>
-            <NavbarClick href="/api/login">게시판</NavbarClick>
-            <NavbarClick href="/api/login">스터디 기록</NavbarClick>
-            <NavbarClick href="/api/login">마이페이지</NavbarClick>
+            <NavbarClick href="/offline">오프라인 매칭</NavbarClick>
+            <NavbarClick href="/online">온라인 매칭</NavbarClick>
+            <NavbarClick href="/post">게시판</NavbarClick>
+            <NavbarClick href="/study">스터디 기록</NavbarClick>
+            <NavbarClick href="/mypage">마이페이지</NavbarClick>
         </TextGroup>
       </FrameContainer>
     </>
