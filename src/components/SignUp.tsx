@@ -15,6 +15,9 @@ const SignUpWrapper = styled.div`
   width: 450px;
   height: 630px;
 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
   box-sizing: border-box;
   border-radius: 10px;
   border: 0.5px solid var(--Gray-03, #bdbdbd);
@@ -71,7 +74,6 @@ const Option = styled.option`
   text-align: center;
 `
 
-
 const Checkbox = styled.div`
   margin-top: 20px;
   display: flex;
@@ -92,7 +94,6 @@ const AgreeCheck = styled.input`
     border: 1px #650fa9 solid;
   }
 `
-
 
 const SignUpSubmit = styled.button`
   width: 300px;
@@ -151,8 +152,7 @@ export default function Login() {
       nickname === '' ||
       password2 === '' ||
       part === '' ||
-      interests === '' 
-  
+      interests === ''
     ) {
       alert('회원가입에 실패하셨습니다. 입력정보를 다시 확인해주세요.')
       return
@@ -239,16 +239,13 @@ export default function Login() {
           </SelectBox>
           <Checkbox>
             <label>
-              <AgreeCheck type="checkbox"/> 이용약관 동의
-              (필수)
+              <AgreeCheck type="checkbox" /> 이용약관 동의 (필수)
             </label>
             <label>
-              <AgreeCheck type="checkbox"/> 개인정보 수집 및
-              이용동의 (필수)
+              <AgreeCheck type="checkbox" /> 개인정보 수집 및 이용동의 (필수)
             </label>
             <label>
-              <AgreeCheck type="checkbox"/> 위치정보서비스
-              이용동의 (선택)
+              <AgreeCheck type="checkbox" /> 위치정보서비스 이용동의 (선택)
             </label>
           </Checkbox>
           <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>

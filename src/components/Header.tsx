@@ -14,13 +14,12 @@ body {
 `
 const HeaderContainer = styled.div`
   background-color: #fff;
-  width:100%;
+  width: 100%;
   height: 60px;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
 `
 
 const HeaderLogo = styled.a`
@@ -75,7 +74,6 @@ const HeaderSignup = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
 `
 
 export default function Header() {
@@ -88,7 +86,7 @@ export default function Header() {
         <HeaderMember>
           <HeaderLogin href="/api/login">로그인</HeaderLogin>
           <Link to="/api/signup">
-          <HeaderSignup> 회원가입</HeaderSignup>
+            <HeaderSignup> 회원가입</HeaderSignup>
           </Link>
         </HeaderMember>
       </HeaderContainer>

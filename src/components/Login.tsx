@@ -8,15 +8,14 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
   border: none;
+  justify-content: center;
+  align-items: center;
 }
-body {
-  font-family: "Pretendard Variable";
-  background-color: #fff;
-  }
 `
 const LoginWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
+
   margin-top: 40px;
   width: 450px;
   height: 580px;
@@ -132,40 +131,39 @@ export default function Login() {
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-  
+
     if (email === '' || password === '') {
       window.alert('이메일 또는 비밀번호를 확인해주세요.')
       return
     }
-    
 
     try {
-      const response = await fetch('http://localhost:8080/api/login', { //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
+      const response = await fetch('http://localhost:8080/api/login', {
+        //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
         method: 'POST',
         headers: {
-          'Content-Type' : 'application/json',
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify({
           email: email,
           password: password,
-        })
+        }),
       })
 
       if (!response.ok) {
         throw new Error('서버 응답이 실패했습니다.')
       }
 
-      console.log("email: "+ email, "/ password: "+ password);
-      
+      console.log('email: ' + email, '/ password: ' + password)
+
       const data = await response.json()
-      const responsedTocken = data.token;
+      const responsedTocken = data.token
 
       console.log('서버 응답 데이터:', data)
-      localStorage.setItem('accessToken', responsedTocken);
-    } 
-    // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
-    catch (error) {
+      localStorage.setItem('accessToken', responsedTocken)
+    } catch (error) {
+      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
       console.error('로그인 오류:', error)
       window.alert('로그인에 실패했습니다.')
     }
@@ -177,12 +175,7 @@ export default function Login() {
       <LoginWrapper>
         <form onSubmit={onLoginHandler}>
           <LoginH2>Login to StudyMate</LoginH2>
-          <LoginInput 
-            type="text"
-            placeholder="이메일"
-            value={email}
-            onChange={onEmailHandler}
-            />
+          <LoginInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
           <LoginInput
             type="password"
             placeholder="비밀번호"

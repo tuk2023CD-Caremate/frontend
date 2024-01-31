@@ -1,15 +1,13 @@
-import React from 'react';
-import Login from '../components/Login.tsx';
-import Header from '../components/Header.tsx';
-
+import Login from '../components/Login.tsx'
+import Header from '../components/Header.tsx'
 
 function LoginPage() {
   return (
     <div>
-      <Header/>
-      <Login/>
+      <Header />
+      <Login />
     </div>
-  );
+  )
 }
 
-export default LoginPage 
+export default LoginPage

@@ -1,14 +1,13 @@
-import React from 'react';
-import SignUp from '../components/SignUp.tsx';
-
-
+import Header from '../components/Header.tsx'
+import SignUp from '../components/SignUp.tsx'
 
 function LoginPage() {
   return (
     <div>
-      <SignUp/>
+      <Header />
+      <SignUp />
     </div>
-  );
+  )
 }
 
-export default LoginPage 
+export default LoginPage
