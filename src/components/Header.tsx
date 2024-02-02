@@ -81,11 +81,11 @@ export default function Header() {
     <>
       <GlobalStyle />
       <HeaderContainer>
-        <HeaderLogo href="/home">StudyMate</HeaderLogo>
+        <HeaderLogo href="/">StudyMate</HeaderLogo>
         <HeaderInput type="text" placeholder="검색 내용을 입력하세요" />
         <HeaderMember>
-          <HeaderLogin href="/api/login">로그인</HeaderLogin>
-          <Link to="/api/signup">
+          <HeaderLogin href="/login">로그인</HeaderLogin>
+          <Link to="/signup">
             <HeaderSignup> 회원가입</HeaderSignup>
           </Link>
         </HeaderMember>
