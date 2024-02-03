@@ -70,9 +70,7 @@ const InterestsSelect = styled.select`
   border-radius: 10px;
 `
 
-const Option = styled.option`
-  text-align: center;
-`
+
 
 const Checkbox = styled.div`
   margin-top: 20px;
@@ -107,14 +105,27 @@ const SignUpSubmit = styled.button`
   margin-top: 20px;
 `
 
+const partList =[
+  { value: "MENTOR", name: "멘토"},
+  { value: "MENTEE", name: "멘티"},
+];
+
+const interestsList =[
+  { value: "KOREAN", name: "국어"},
+  { value: "MATH", name: "수학"},
+  { value: "ENGLISH", name: "영어"},
+  { value: "SCIENCE", name: "과학"},
+  { value: "PROGRAMMING", name: "코딩"},
+];
+
 export default function Login() {
   const [name, setName] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassowrd2] = useState('')
-  const [interests, SetInterests] = useState('')
-  const [part, SetPart] = useState('')
+  const [interests, SetInterests] = useState("관심분야")
+  const [part, SetPart] = useState("파트");
 
   const onNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     // 리팩토링할 때 함수 한번에 합치는걸로 수정
@@ -227,15 +238,19 @@ export default function Login() {
           />
           <SelectBox>
             <RoleSelect value={part} onChange={onPartHandler}>
-              <Option>MENTOR</Option>
-              <Option>멘티</Option>
+              {partList.map((item) => (
+                <option value={item.value} key={item.name}>
+                  {item.name}
+                </option>
+              ))}
+              
             </RoleSelect>
             <InterestsSelect value={interests} onChange={onInterestHandler}>
-              <Option>MATH</Option>
-              <Option>국어</Option>
-              <Option>영어</Option>
-              <Option>과학</Option>
-              <Option>코딩</Option>
+            {interestsList.map((item) => (
+                <option value={item.value} key={item.name}>
+                  {item.name}
+                </option>
+              ))}
             </InterestsSelect>
           </SelectBox>
           <Checkbox>
