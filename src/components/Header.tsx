@@ -85,7 +85,7 @@ export default function Header() {
         <HeaderInput type="text" placeholder="검색 내용을 입력하세요" />
         <HeaderMember>
           <HeaderLogin href="/login">로그인</HeaderLogin>
-          <Link to="/signup">
+          <Link to="/signin">
             <HeaderSignup> 회원가입</HeaderSignup>
           </Link>
         </HeaderMember>

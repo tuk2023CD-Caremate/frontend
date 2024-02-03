@@ -195,7 +195,7 @@ export default function MainPost() {
               <SideMainClick as="a" href="/post">최근 게시글</SideMainClick>
               <SideClick as="a" href="/bestpost">인기 게시글</SideClick>
               <SideClick as="a" href="/mypost">내가 쓴 게시글</SideClick>
-              <SideClick as="a" href="/interestpost">분야 별 게시글</SideClick>
+              <SideClick as="a" href="/interestspost">분야 별 게시글</SideClick>
             </SideNavbar>
             <Section>
                 <SectionHeader>
