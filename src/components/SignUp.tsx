@@ -189,8 +189,9 @@ export default function Login() {
       )
       console.log('서버 응답 상태: ', response.status)
 
-      const data = await response.json()
+      const data = await response.text()
       console.log('서버 응답 데이터:', data)
+      alert('회원가입에 성공했습니다.')
     } catch (error) {
       // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
       console.error('회원가입 오류:', error)
