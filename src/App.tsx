@@ -4,6 +4,7 @@ import SignUpPage from "./pages/SignUpPage";
 import MainPostPage  from "./pages/MainPostPage";
 import QuestionPostPage  from "./pages/QuestionPostPage";
 import StudyPage  from "./pages/StudyPostPage";
+import WritingPostPage from "./pages/WritingPostPage";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/post" element={<MainPostPage />} />
         <Route path="/questions" element={<QuestionPostPage />} />
         <Route path="/study" element={<StudyPage />} />
+        <Route path="/writing" element={< WritingPostPage/>} />
       </Routes>
     </Router>
   )
