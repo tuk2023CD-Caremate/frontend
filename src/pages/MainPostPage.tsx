@@ -3,7 +3,6 @@ import Header from '../components/Header.tsx';
 import Navbar from '../components/Navbar.tsx';
 import MainPost from '../components/MainPost.tsx';
 import SideNavbar  from '../components/SideNavbar.tsx';
-import styled from 'styled-components';
 
 function PostPage() {
   return (
