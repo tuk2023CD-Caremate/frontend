@@ -4,9 +4,12 @@ import SignUpPage from './pages/SignUpPage'
 import MainPostPage from './pages/MainPostPage'
 // import QuestionPostPage from './pages/QuestionPostPage'
 import StudyPage from './pages/StudyPostPage'
-import MyPage from './pages/MyPage'
+import MyPage from './pages/Mypage/MyPage'
 import OfflinePage from './pages/OfflinePage'
 import OnlinePage from './pages/OnlinePage'
+import NotificationPage from './pages/Mypage/NotificationPage'
+import MyPostPage from './pages/Mypage/MyPostPage'
+import MatingListPage from './pages/Mypage/MatingListPage'
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         {/* <Route path="/questions" element={<QuestionPostPage />} /> */}
         <Route path="/study" element={<StudyPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/notification" element={<NotificationPage />} />
+        <Route path="/mypage/mypost" element={<MyPostPage />} />
+        <Route path="/mypage/matchinglist" element={<MatingListPage />} />
       </Routes>
     </Router>
   )
