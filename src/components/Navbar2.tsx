@@ -43,6 +43,8 @@ const Mypage = styled(Link)`
 export default function Navbar2() {
   const location = useLocation()
 
+  const isMypage = location.pathname.includes('/mypage')
+
   return (
     <Container>
       <Offline
@@ -84,9 +86,9 @@ export default function Navbar2() {
       <Mypage
         to="/mypage"
         style={{
-          backgroundColor: location.pathname === '/mypage' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/mypage' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/mypage' ? 'bold' : 'inherit',
+          backgroundColor: isMypage ? '#E8DCF2' : 'inherit',
+          color: isMypage ? '#650FA9' : 'inherit',
+          fontWeight: isMypage ? 'bold' : 'inherit',
         }}>
         마이 페이지
       </Mypage>
