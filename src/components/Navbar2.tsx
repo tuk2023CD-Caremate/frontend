@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -34,18 +34,62 @@ const StudyList = styled(Link)`
 `
 const Mypage = styled(Link)`
   font-size: 22px;
+  padding: 20px 40px 20px 40px;
+  border-radius: 15px;
   text-decoration: none;
   color: inherit;
 `
 
 export default function Navbar2() {
+  const location = useLocation()
+
   return (
     <Container>
-      <Offline to="/offline">오프라인 매칭</Offline>
-      <Online to="/online">온라인 매칭</Online>
-      <Post to="/post">게시판</Post>
-      <StudyList to="/study">스터디 기록</StudyList>
-      <Mypage to="/post">마이 페이지</Mypage>
+      <Offline
+        to="/offline"
+        style={{
+          backgroundColor: location.pathname === '/offline' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/offline' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/offline' ? 'bold' : 'inherit',
+        }}>
+        오프라인 매칭
+      </Offline>
+      <Online
+        to="/online"
+        style={{
+          backgroundColor: location.pathname === '/online' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/online' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/online' ? 'bold' : 'inherit',
+        }}>
+        온라인 매칭
+      </Online>
+      <Post
+        to="/post"
+        style={{
+          backgroundColor: location.pathname === '/post' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/post' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/post' ? 'bold' : 'inherit',
+        }}>
+        게시판
+      </Post>
+      <StudyList
+        to="/study"
+        style={{
+          backgroundColor: location.pathname === '/study' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/study' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/study' ? 'bold' : 'inherit',
+        }}>
+        스터디 기록
+      </StudyList>
+      <Mypage
+        to="/mypage"
+        style={{
+          backgroundColor: location.pathname === '/mypage' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/mypage' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/mypage' ? 'bold' : 'inherit',
+        }}>
+        마이 페이지
+      </Mypage>
     </Container>
   )
 }
