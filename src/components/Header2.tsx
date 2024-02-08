@@ -10,7 +10,6 @@ const Container = styled.div`
   height: 109px;
   padding-left: 143px;
   padding-right: 143px;
-  border: 2px solid;
 `
 
 const Logo = styled.img`
