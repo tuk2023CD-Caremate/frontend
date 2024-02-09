@@ -6,10 +6,10 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 255px);
+  width: calc(100% - 280px);
   height: 109px;
-  padding-left: 143px;
-  padding-right: 143px;
+  padding-left: 140px;
+  padding-right: 140px;
 `
 
 const Logo = styled.img`
