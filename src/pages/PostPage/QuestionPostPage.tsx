@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
 import PostBar from '../../components/sidebar/Postbar.tsx';
@@ -201,7 +202,9 @@ function QuestionPostPage() {
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
                 <SelectBox></SelectBox>
+                <Link to="/post/write">
                 <WriteButton>글쓰기</WriteButton>
+                </Link>
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>

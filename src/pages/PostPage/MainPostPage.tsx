@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
 import PostBar from '../../components/sidebar/Postbar';
@@ -26,7 +28,7 @@ const Upper = styled.div`
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding-bottom: 10px;
 `
 const Btn = styled.button`
 width: 124px;
@@ -49,7 +51,7 @@ const SearchWrapper = styled.div`
 height: 80px;
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 10px 10px 0;
   justify-content: space-between;
   margin-bottom: 10px;
 `
@@ -154,6 +156,15 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
+{/*
+const selectList =[
+  { value: "LIKE", name: "좋아요 순"},
+  { value: "LATEST", name: "수학"},
+  { value: "ENGLISH", name: "영어"},
+  { value: "SCIENCE", name: "과학"},
+  { value: "PROGRAMMING", name: "코딩"},
+];
+*/}
 
 function MainPostPage() {
   const posts = [
@@ -182,6 +193,11 @@ function MainPostPage() {
       writer: '정환코딩',
     },
   ]
+  {/*
+  const [selectlist, SetSelectlist] = useState("")
+  const OnInterestsHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    SetSelectlist(e.target.value)
+  */}
   return (
       <div>
         <Header2/>
@@ -200,8 +216,16 @@ function MainPostPage() {
                 <SearchWrapper>
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
-                <SelectBox></SelectBox>
+                <SelectBox>{/*value={selectlist} onChange={OnInterestsHandler}>
+                {selectList.map((item) => (
+                    <option value={item.value} key={item.name}>
+                    {item.name}
+                    </option>
+                ))} */}
+                </SelectBox>
+                <Link to="/post/write">
                 <WriteButton>글쓰기</WriteButton>
+                </Link>
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
@@ -221,13 +245,9 @@ function MainPostPage() {
                    </FooterWrapper>
                      </MainPost>
                   ))}
-                 
-                  
-             
             </FreePostWrapper>
         </Container>
       </div>
     );
   }
-
-export default MainPostPage 
+export default MainPostPage

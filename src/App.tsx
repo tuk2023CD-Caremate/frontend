@@ -1,19 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import MainPostPage from './pages/MainPostPage'
-// import QuestionPostPage from './pages/QuestionPostPage'
-import StudyPage from './pages/StudyPostPage'
+import MainPostPage from './pages/PostPage/MainPostPage'
+import StudyPage from './pages/PostPage/StudyPostPage'
 import ProfilePage from './pages/Mypage/ProfilePage'
 import OfflinePage from './pages/OfflinePage'
 import OnlinePage from './pages/OnlinePage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
-import QuestionPostPage  from "./pages/QuestionPostPage";
-import StudyPage  from "./pages/StudyPostPage";
-import WritingPostPage from "./pages/WritingPostPage";
-import MainPostPage  from "./pages/MainPostPage";
+import QuestionPostPage  from "./pages/PostPage/QuestionPostPage";
+import WritingPostPage from "./pages/PostPage/WritingPostPage";
 
 function App() {
   return (
@@ -24,11 +21,12 @@ function App() {
 
         <Route path="/offline" element={<OfflinePage />} />
         <Route path="/online" element={<OnlinePage />} />
-        <Route path="/post" element={<MainPostPage />} />
-        {/* <Route path="/questions" element={<QuestionPostPage />} /> */}
-        <Route path="/study" element={<StudyPage />} />
 
-        <Route path="/writing" element={< WritingPostPage/>} />
+        <Route path="/post" element={<MainPostPage />} />
+        <Route path="/post/questions" element={<QuestionPostPage />} />
+        <Route path="/post/study" element={<StudyPage />} />
+        <Route path="/post/write" element={< WritingPostPage/>} />
+
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
