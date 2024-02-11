@@ -3,6 +3,15 @@ import MypageBar from '../../components/sidebar/Mypagebar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+interface ProfileData {
+  part: string
+  nickname: string
+  email: string
+  interests: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -102,6 +111,28 @@ const InterestsDetail = styled.div`
 `
 
 function ProfilePage() {
+  const [profileData, setProfileData] = useState<ProfileData>({
+    part: '',
+    nickname: '',
+    email: '',
+    interests: '',
+  })
+
+  const getProfile = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get('http://localhost:8080/api/user', {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+
+      setProfileData(response.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getProfile()
+  }, [])
+
   return (
     <div>
       <Header2 />
@@ -112,19 +143,19 @@ function ProfilePage() {
           <Upper>
             <NameWrapper>
               <Profile src={ProfileImg} />
-              <Role>멘토</Role>
-              <Nickname>장희수</Nickname>
+              <Role>{profileData.part}</Role>
+              <Nickname>{profileData.nickname}</Nickname>
             </NameWrapper>
             <Modify>수정하기</Modify>
           </Upper>
           <Lower>
             <EmailWrapper>
               <Email>이메일</Email>
-              <EmailDetail>heesu52@tukorea.ac.kr</EmailDetail>
+              <EmailDetail>{profileData.email}</EmailDetail>
             </EmailWrapper>
             <InterestsWrapper>
               <Interests>관심분야</Interests>
-              <InterestsDetail>프로그래밍</InterestsDetail>
+              <InterestsDetail>{profileData.interests}</InterestsDetail>
             </InterestsWrapper>
           </Lower>
         </ProfileWrapper>
