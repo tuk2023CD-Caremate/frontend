@@ -166,22 +166,6 @@ function StudyPostPage() {
       dateCreated: '12/25',
       writer: '정환코딩',
     },
-    {
-      title: '수학공부 스터디 같이 해요!',
-      context: '꼭 같은 학년의 수학공부를 하지 않아도 괜찮아요',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
-    {
-      title: '수학공부 스터디 같이 해요!',
-      context: '꼭 같은 학년의 수학공부를 하지 않아도 괜찮아요',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
   ]
   return (
       <div>
@@ -199,7 +183,7 @@ function StudyPostPage() {
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
                 <SelectBox></SelectBox>
-                <Link to="/post/write">
+                <Link to="/posts/write">
                 <WriteButton> 글쓰기</WriteButton>
                 </Link>
                 </SideWrapper>

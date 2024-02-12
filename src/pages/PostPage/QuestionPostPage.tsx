@@ -166,22 +166,6 @@ function QuestionPostPage() {
       dateCreated: '12/25',
       writer: '정환코딩',
     },
-    {
-      title: '영어 문장 해석해주실 분',
-      context: 'I like you가 무슨 뜻인가요',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
-    {
-      title: '미적분 30분 풀어주실 분',
-      context: '넘넘 어려워용 전 못풀겠어요',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
   ]
   return (
       <div>
@@ -202,7 +186,7 @@ function QuestionPostPage() {
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
                 <SelectBox></SelectBox>
-                <Link to="/post/write">
+                <Link to="/posts/write">
                 <WriteButton>글쓰기</WriteButton>
                 </Link>
                 </SideWrapper>
