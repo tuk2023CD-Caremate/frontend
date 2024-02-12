@@ -1,54 +1,44 @@
 import React, { useState } from 'react'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-const GlobalStyle = createGlobalStyle`
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  justify-content: center;
+const Container = styled.div`
+  display: flex;
   align-items: center;
-}
+  justify-content: center;
 `
 
 const SignUpWrapper = styled.div`
-  width: 450px;
-  height: 630px;
-
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 40px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border: 0.5px solid var(--Gray-03, #bdbdbd);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  width: 700px;
+  height: 800px;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid var(--Gray-03, #bdbdbd);
 `
 
 const SignUpH2 = styled.h2`
-  width: 100%;
+  width: 500px;
+  height: 40px;
   color: #650fa9;
-  font-size: 30px;
-  font-weight: 600;
+  font-size: 46px;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 100px;
 `
 
 const SignUpInput = styled.input`
   text-indent: 20px;
-  width: 300px;
-  height: 43px;
-  padding: 0 10px;
+  width: 600px;
+  height: 60px;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: #f8f8f8;
   border-radius: 10px;
-  border: 1px #bdbdbd solid;
-  margin-bottom: 20px;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 10px;
+  font-size: 20px;
 `
 
 const SelectBox = styled.div`
@@ -57,26 +47,29 @@ const SelectBox = styled.div`
 `
 
 const RoleSelect = styled.select`
-  width: 100px;
-  height: 30px;
-  margin-right: 15%;
+  width: 150px;
+  height: 40px;
   border: 1px #bdbdbd solid;
   border-radius: 10px;
+  font-size: 18px;
+  text-align: center;
+  margin: 10px;
 `
 const InterestsSelect = styled.select`
-  width: 100px;
-  height: 30px;
+  width: 200px;
+  height: 40px;
   border: 1px #bdbdbd solid;
   border-radius: 10px;
+  font-size: 18px;
+  text-align: center;
+  margin: 10px;
 `
 
-
-
 const Checkbox = styled.div`
-  margin-top: 20px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
-  font-size: 12px;
+  font-size: 18px;
 `
 
 const AgreeCheck = styled.input`
@@ -94,38 +87,44 @@ const AgreeCheck = styled.input`
 `
 
 const SignUpSubmit = styled.button`
-  width: 300px;
-  height: 45px;
+  width: 600px;
+  height: 70px;
   border-radius: 10px;
   border: 1px solid var(--Gray-03, #bdbdbd);
   background: var(--bdbdbd, #650fa9);
   color: var(--White, #fff);
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px;
+  &:active {
+    background: #490e76;
+  }
 `
 
-const partList =[
-  { value: "MENTOR", name: "멘토"},
-  { value: "MENTEE", name: "멘티"},
-];
+const partList = [
+  { value: 'MENTOR', name: 'MENTOR' },
+  { value: 'MENTEE', name: 'MENTEE' },
+]
 
-const interestsList =[
-  { value: "KOREAN", name: "국어"},
-  { value: "MATH", name: "수학"},
-  { value: "ENGLISH", name: "영어"},
-  { value: "SCIENCE", name: "과학"},
-  { value: "PROGRAMMING", name: "코딩"},
-];
+const interestsList = [
+  { value: 'KOREAN', name: '국어' },
+  { value: 'MATH', name: '수학' },
+  { value: 'ENGLISH', name: '영어' },
+  { value: 'SCIENCE', name: '과학' },
+  { value: 'PROGRAMMING', name: 'PROGRAMMING' },
+]
 
-export default function Login() {
+export default function SignUp() {
   const [name, setName] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassowrd2] = useState('')
-  const [interests, SetInterests] = useState("관심분야")
-  const [part, SetPart] = useState("파트");
+  const [interests, SetInterests] = useState('')
+  const [part, SetPart] = useState('')
+
+  const navigate = useNavigate()
 
   const onNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     // 리팩토링할 때 함수 한번에 합치는걸로 수정
@@ -165,57 +164,33 @@ export default function Login() {
       part === '' ||
       interests === ''
     ) {
-      alert('회원가입에 실패하셨습니다. 입력정보를 다시 확인해주세요.')
+      alert(' 입력정보를 다시 확인해주세요.')
       return
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/signIn', {
-        //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          name: name,
-          nickname: nickname,
-          part: part,
-          interests: interests,
-        }),
+      const response = await axios.post('http://localhost:8080/api/signIn', {
+        email: email,
+        password: password,
+        name: name,
+        nickname: nickname,
+        part: part,
+        interests: interests,
       })
-      if (!response.ok) {
-        throw new Error('서버 응답이 실패했습니다.')
-      }
 
-      console.log(
-        'name: ' + name,
-        '/ email: ' + email,
-        '/ password: ' + password,
-        '/ nickname: ' + nickname,
-        '/ part: ' + part,
-        '/ interest: ' + interests,
-      )
-      console.log('서버 응답 상태: ', response.status)
-
-      const data = await response.text()
-      console.log('서버 응답 데이터:', data)
-      alert('회원가입에 성공했습니다.')
+      console.log(response.status)
+      alert('회원가입에 성공하였습니다.')
+      navigate('/login')
     } catch (error) {
-      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
-      console.error('회원가입 오류:', error)
       alert('회원가입에 실패했습니다.')
     }
   }
 
   return (
-    <>
-      <GlobalStyle />
-      <SignUpWrapper>
-        <form onSubmit={onSignupHandler}>
-          <SignUpH2>SignUp to StudyMate</SignUpH2>
+    <Container>
+      <form onSubmit={onSignupHandler}>
+        <SignUpWrapper>
+          <SignUpH2>Sign up to StudyMate</SignUpH2>
           <SignUpInput type="text" placeholder="이름" value={name} onChange={onNameHandler} />
           <SignUpInput
             type="text"
@@ -243,10 +218,9 @@ export default function Login() {
                   {item.name}
                 </option>
               ))}
-              
             </RoleSelect>
             <InterestsSelect value={interests} onChange={onInterestHandler}>
-            {interestsList.map((item) => (
+              {interestsList.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
                 </option>
@@ -265,8 +239,8 @@ export default function Login() {
             </label>
           </Checkbox>
           <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>
-        </form>
-      </SignUpWrapper>
-    </>
+        </SignUpWrapper>
+      </form>
+    </Container>
   )
 }

@@ -1,65 +1,61 @@
 import React, { useState } from 'react'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
 import google_login from '../assets/images/google_login.png'
 import kakao_login from '../assets/images/kakao_login.png'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-const GlobalStyle = createGlobalStyle`
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  justify-content: center;
+const Container = styled.div`
+  display: flex;
   align-items: center;
-}
+  justify-content: center;
 `
 const LoginWrapper = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-
-  margin-top: 40px;
-  width: 450px;
-  height: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 700px;
+  height: 800px;
   padding: 40px;
-  box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid var(--Gray-03, #bdbdbd);
 `
 
 const LoginH2 = styled.h2`
-  width: 100%;
+  width: 500px;
   height: 40px;
   color: #650fa9;
-  font-size: 35px;
-  font-weight: 600;
+  font-size: 46px;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 100px;
 `
 
 const LoginInput = styled.input`
   text-indent: 20px;
-  width: 100%;
-  height: 48px;
-  padding: 0 10px;
+  width: 600px;
+  height: 70px;
   box-sizing: border-box;
   background-color: #f8f8f8;
-  border-radius: 5px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  border-radius: 10px;
+  margin: 10px;
+  font-size: 20px;
 `
 
 const LoginButton = styled.button`
-  width: 100%;
-  height: 55px;
+  width: 600px;
+  height: 70px;
   border-radius: 10px;
   border: 1px solid var(--Gray-03, #bdbdbd);
   background: var(--bdbdbd, #650fa9);
   color: var(--White, #fff);
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px;
+  &:active {
+    background: #490e76;
+  }
 `
 
 const FindMore = styled.p`
@@ -70,56 +66,44 @@ const FindMore = styled.p`
 `
 
 const FindIt = styled.a`
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: normal;
   padding-left: 14px;
   padding-right: 14px;
   color: #bdbdbd;
+  text-decoration: none;
   &:hover,
   &:active {
     color: #650fa9;
   }
 `
 
-const LoginH4 = styled.h4`
+const LoginH4 = styled.div`
+  margin-top: 60px;
+  margin-bottom: 20px;
   height: 20px;
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
+  font-size: 24px;
+  font-weight: bold;
   color: #bdbdbd;
-  margin-top: 40px;
 `
 
-const SubmitBtn = styled.div`
-  text-align: center;
-  height: 75px;
-`
-
-const KakaoSubmit = styled.input`
-  background-image: url(${kakao_login});
-  background-size: cover;
+const KakaoSubmit = styled.img`
   border-radius: 5px;
-  width: 175px;
-  height: 45px;
-  margin-top: 15px;
-  display: inline-block;
+  width: 280px;
+  margin: 10px;
 `
-const GoogleSubmit = styled.input`
-  background-image: url(${google_login});
-  background-size: cover;
-  width: 175px;
-  height: 40px;
-  position: absolute;
-  margin-top: 35px;
-  left: 50%;
-  transform: translate(-50%, 100%);
+const GoogleSubmit = styled.img`
+  border-radius: 5px;
+  width: 280px;
+  margin: 10px;
 `
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
 
   const onEmailHandler = (e: { currentTarget: { value: React.SetStateAction<string> } }) => {
     setEmail(e.currentTarget.value)
@@ -133,47 +117,30 @@ export default function Login() {
     e.preventDefault()
 
     if (email === '' || password === '') {
-      window.alert('이메일 또는 비밀번호를 확인해주세요.')
+      alert('이메일 또는 비밀번호를 확인해주세요.')
       return
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        //포트번호 잘못 작성함 5173은 내 포트, 아마 8000이거나 8080
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+      const response = await axios.post('http://localhost:8080/api/login', {
+        email: email,
+        password: password,
       })
 
-      if (!response.ok) {
-        throw new Error('서버 응답이 실패했습니다.')
-      }
+      const responsedToken = response.data.token
 
-      console.log('email: ' + email, '/ password: ' + password)
-
-      const data = await response.json()
-      const responsedTocken = data.token
-
-      console.log('서버 응답 데이터:', data)
-      localStorage.setItem('accessToken', responsedTocken)
+      localStorage.setItem('accessToken', responsedToken)
+      alert('로그인에 성공하였습니다.')
+      navigate('/mypage')
     } catch (error) {
-      // 로그인 성공 후, 다른 동작을 수행하거나 페이지를 이동할 수 있음
-      console.error('로그인 오류:', error)
-      window.alert('로그인에 실패했습니다.')
+      alert('로그인에 실패했습니다.')
     }
   }
 
   return (
-    <>
-      <GlobalStyle />
-      <LoginWrapper>
-        <form onSubmit={onLoginHandler}>
+    <Container>
+      <form onSubmit={onLoginHandler}>
+        <LoginWrapper>
           <LoginH2>Login to StudyMate</LoginH2>
           <LoginInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
           <LoginInput
@@ -189,12 +156,10 @@ export default function Login() {
             <FindIt href="/api/signup">회원가입</FindIt>
           </FindMore>
           <LoginH4>간편로그인</LoginH4>
-          <SubmitBtn>
-            <KakaoSubmit type="submit" value="" />
-            <GoogleSubmit type="submit" value="" />
-          </SubmitBtn>
-        </form>
-      </LoginWrapper>
-    </>
+          <KakaoSubmit src={kakao_login} />
+          <GoogleSubmit src={google_login} />
+        </LoginWrapper>
+      </form>
+    </Container>
   )
 }
