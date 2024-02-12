@@ -107,7 +107,13 @@ const partList = [
   { value: 'MENTEE', name: 'MENTEE' },
 ]
 
-const interestsList = [{ value: 'PROGRAMMING', name: 'PROGRAMMING' }]
+const interestsList = [
+  { value: 'KOREAN', name: '국어' },
+  { value: 'MATH', name: '수학' },
+  { value: 'ENGLISH', name: '영어' },
+  { value: 'SCIENCE', name: '과학' },
+  { value: 'PROGRAMMING', name: 'PROGRAMMING' },
+]
 
 export default function SignUp() {
   const [name, setName] = useState('')
