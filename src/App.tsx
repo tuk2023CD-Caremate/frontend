@@ -11,7 +11,7 @@ import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
 import QuestionPostPage  from "./pages/PostPage/QuestionPostPage";
 import WritingPostPage from "./pages/PostPage/WritingPostPage";
-{/*import PostPage from "./pages/PostPage/PostPage"; */}
+import PostPage from "./pages/PostPage/PostPage"; 
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
         <Route path="/posts/questions" element={<QuestionPostPage />} />
         <Route path="/posts/study" element={<StudyPage />} />
         <Route path="/posts/write" element={< WritingPostPage/>} />
-        {/*<Route path="/post/:id" element={< PostPage/>} />*/}
+        <Route path="/posts/:id" element={< PostPage/>} />
 
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />

@@ -51,29 +51,29 @@ export default function PostBar() {
   return (
     <Container>
       <Post
-        to="/post"
+        to="/posts"
         style={{
-          backgroundColor: location.pathname === '/post' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/post' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/post' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname === '/posts' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/posts' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/posts' ? 'bold' : 'inherit',
         }}>
         자유 게시판
       </Post>
       <Questions
-        to="/post/questions"
+        to="/posts/questions"
         style={{
-          backgroundColor: location.pathname === '/post/questions' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/post/questions' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/post/questions' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname === '/posts/questions' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/posts/questions' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/posts/questions' ? 'bold' : 'inherit',
         }}>
         질문 게시판
       </Questions>
       <Study
-        to="/post/study"
+        to="/posts/study"
         style={{
-          backgroundColor: location.pathname === '/post/study' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/post/study' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/post/study' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname === '/posts/study' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/posts/study' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/posts/study' ? 'bold' : 'inherit',
         }}>
         스터디 게시판
       </Study>

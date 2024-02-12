@@ -95,7 +95,7 @@ const WriteButton = styled.button`
   cursor: pointer;
 `
 
-const MainPost = styled.div`
+const MainPost = styled(Link)`
   display: flex;
   height: 200px;
   padding: 20px 0px 0px 20px;
@@ -103,6 +103,8 @@ const MainPost = styled.div`
   border: 1px solid #d8d8d8;
   flex-direction: column;
   justify-content: center;
+  text-decoration: none;
+  color:black;
 `
 
 const Title = styled.div`
@@ -193,7 +195,7 @@ function QuestionPostPage() {
                 </SearchWrapper>
               </Upper>
                   {posts.map((post, index)=>(
-                     <MainPost key={index}>
+                     <MainPost key={index}to='/posts/${id}' >
                      <Title>{post.title}</Title>
                      <Context>{post.context}</Context>
                    <FooterWrapper>
