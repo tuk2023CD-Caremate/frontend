@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 const Container = styled.div`
@@ -74,7 +76,7 @@ display: flex;
 flex-direction:column;
 margin-top: 20px;
 `
-const InputTitle = styled.input`
+const PostTitle = styled.input`
 height: 105px;
 font-size: 64px;
 font-weight: bold;
@@ -82,7 +84,7 @@ text-indent: 20px;
 background-color: #fff;
 border: 1px solid #D8D8D8;
 `
-const TextareaBody = styled.textarea`
+const PostContent = styled.textarea`
 font-size: 28px;
 height: 500px;
 border: 1px solid #D8D8D8;
@@ -117,54 +119,93 @@ const interestsList =[
   
 
 export default function WritingPostPage() {
-    const [interests, SetInterests] = useState("")
-    const [clicked, SetClicked] = useState<string>('FREE');
+  const [title, SetTitle] = useState("")
+  const [content, SetContent] = useState("")
+  const [interests, SetInterests] = useState("")
+  const [category, SetCategory] = useState<string>('FREE');
 
+  const navigate = useNavigate()
 
-    const OnInterestsHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const OnTitleHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    SetTitle(e.target.value)
+  }
+  const OnContentHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    SetContent(e.target.value)
+  }
+  const OnIntereststHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetInterests(e.target.value)
   }
 
 
+  const PostUpload = async (e: { preventDefault: () => void })  => {
+    e.preventDefault()
+    if (
+      category === '' ||
+      interests === '' ||
+      title === '' ||
+      content === '' 
+    ) {
+      alert(' 입력정보를 다시 확인해주세요.')
+      return
+    }
+
+    try{
+      const response = await axios.post('http://localhost:8080/api/posts', {
+        category: category,
+        interests: interests,
+        title: title,
+        content: content,
+        recruitmentsStatus : false //스터디 모집여부에 대해 true,false -> 글작성할 때는 무조건 모집완료가 아니므로 false로 지정해놨는데 맞을까..
+      })
+      navigate('/posts')
+    }
+    catch(error){
+      alert('error')
+    }
+  }
+
+
+  const BacktoPost = () => {
+    navigate('/posts');
+  }
 
   return (
     <div>
       <Container>
         <AllWrapper>
           <Upper>
-        <ButtonWrapper>
-          <SelectBtn className={`btn ${clicked==='FREE' ? 'category':''}`}
-          onClick={()=>SetClicked('FREE')}>
-            자유게시판
-          </SelectBtn>
-          <SelectBtn className={`btn ${clicked==='QUESTIONS' ? 'category':''}`}
-          onClick={()=>SetClicked('QUESTIONS')}>
-            자유게시판
-          </SelectBtn>
-          <SelectBtn className={`btn ${clicked==='STUDY' ? 'category':''}`}
-          onClick={()=>SetClicked('STUDY')}>
-            자유게시판
-          </SelectBtn>
-        </ButtonWrapper>
-        <SerchWrapper>
-          <InterestsSelect value={interests} onChange={OnInterestsHandler}>
-            {interestsList.map((item) => (
-            <option value={item.value} key={item.name}>
-              {item.name}
-              </option>
-              ))}
-          </InterestsSelect>
-          <Input type="text" placeholder="관심분야를 더 자세하게 적어주세요"/>
-        </SerchWrapper>
-        </Upper>
-        <PostWrapper>
-          <InputTitle type="text" placeholder="제목"/>
-          <TextareaBody placeholder='게시글 내용을 입력하세요'/>
-          <FooterWrapper>
-            <PostBtn>삭제</PostBtn>
-            <PostBtn className="post">등록</PostBtn>
-          </FooterWrapper>
-        </PostWrapper>
+            <ButtonWrapper>
+              <SelectBtn className={`btn ${category==='FREE' ? 'category':''}`}
+              onClick={()=>SetCategory('FREE')} value={category}>
+                자유게시판
+              </SelectBtn>
+              <SelectBtn className={`btn ${category==='QUESTIONS' ? 'category':''}`}
+              onClick={()=>SetCategory('QUESTIONS')} value={category}>
+                질문게시판
+              </SelectBtn>
+              <SelectBtn className={`btn ${category==='STUDY' ? 'category':''}`}
+              onClick={()=>SetCategory('STUDY')} value={category}>
+                스터디게시판
+              </SelectBtn>
+            </ButtonWrapper>
+            <SerchWrapper>
+              <InterestsSelect value={interests} onChange={OnIntereststHandler}>
+                {interestsList.map((item) => (
+                <option value={item.value} key={item.name}>
+                  {item.name}
+                  </option>
+                  ))}
+              </InterestsSelect>
+            </SerchWrapper>
+          </Upper>
+            <PostWrapper>
+            <PostTitle type="text" placeholder="제목" value={title} onChange={OnTitleHandler}/>
+            <PostContent placeholder='게시글 내용을 입력하세요' value={content} onChange={OnContentHandler}/>
+            <FooterWrapper>
+              <PostBtn onClick={BacktoPost}>삭제</PostBtn>
+              <PostBtn className="post" onClick={PostUpload}>등록</PostBtn>
+            </FooterWrapper>
+          </PostWrapper>
       </AllWrapper>
     </Container>
   </div>
