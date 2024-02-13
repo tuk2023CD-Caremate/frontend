@@ -55,7 +55,7 @@ export default function Navbar2() {
   const location = useLocation()
 
   const isMypage = location.pathname.includes('/mypage')
-  const isPost = location.pathname.includes('/post')
+  const isPost = location.pathname.includes('/posts')
 
   return (
     <Container>
@@ -78,11 +78,11 @@ export default function Navbar2() {
         온라인 매칭
       </Online>
       <Post
-        to="/post"
+        to="/posts"
         style={{
-          backgroundColor: isPost  ? '#E8DCF2' : 'inherit',
+          backgroundColor: isPost ? '#E8DCF2' : 'inherit',
           color: isPost ? '#650FA9' : 'inherit',
-          fontWeight: isPost  ? 'bold' : 'inherit',
+          fontWeight: isPost ? 'bold' : 'inherit',
         }}>
         게시판
       </Post>
