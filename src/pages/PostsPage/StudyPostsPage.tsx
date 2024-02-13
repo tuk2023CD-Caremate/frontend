@@ -1,18 +1,26 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { useState } from 'react';
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
-import PostBar from '../../components/sidebar/Postbar.tsx';
+import PostsBar from '../../components/sidebar/Postsbar';
 import commentImg from '../../assets/images/comment2.png';
 import likeimg from '../../assets/images/likeicon.png';
 import DividerImg from '../../assets/images/divider1.png';
 
-
+interface postsData {
+  title: string,
+  context: string,
+  likeCount: number,
+  commentCount: number,
+  dateCreated: string,
+  writer: string,
+}
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
 `
-const QuestionPostWrapper = styled.div`
+const StudyPostsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +51,6 @@ color: #BDBDBD;
     font-weight: bold;
     color: #650fa9;
     background-color: rgba(220, 196, 239, 0.4); /* #dcc4ef의 60% 투명한 버전 */
-    border-radius: 10px;
   }
 `
 const SearchWrapper = styled.div`
@@ -61,30 +68,23 @@ const Input = styled.input`
   text-indent: 30px;
   width: 760px;
   height:65px;
-  background-color: white;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 24px;
 `
 const SelectBox = styled.select`
-  color: black;
   width: 120px;
   height: 50px;
   border-radius: 5px;
   border: 0.5px solid #bdbdbd;
-  background: #fff;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 20px;
   margin-right:20px;
-  &:hover,
-  &:active {
-    color: black;
-    border-radius: 5px;
-  }
+  cursor: pointer;
+  text-align: center;
 `
 
 const WriteButton = styled.button`
-  color: black;
   width: 120px;
   height: 50px;
   border-radius: 5px;
@@ -95,7 +95,7 @@ const WriteButton = styled.button`
   cursor: pointer;
 `
 
-const MainPost = styled(Link)`
+const StudyPosts = styled(Link)`
   display: flex;
   height: 200px;
   padding: 20px 0px 0px 20px;
@@ -104,7 +104,7 @@ const MainPost = styled(Link)`
   flex-direction: column;
   justify-content: center;
   text-decoration: none;
-  color:black;
+  color: black;
 `
 
 const Title = styled.div`
@@ -144,8 +144,7 @@ const CommentCount = styled.div`
   font-weight: bolder;
 `
 const Divider = styled.img`
-margin-left: 20px;
-  margin-right: 20px;
+margin: 0 20px 0 20px;
   width: 2px;
   height: 20px;
 `
@@ -157,63 +156,72 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
+const Sortlist =[
+  { value: "LIKE", name: "좋아요 순"},
+  { value: "LATEST", name: "최신 순"},
+];
 
-function QuestionPostPage() {
-  const posts = [
-    {
-      title: '자바 환경설정 어떻게 하나요',
-      context: '환경설정에서 막혔어요ㅜㅜ',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
-  ]
+function StudyPostPage() {
+  const [sortlist, SetsortList] = useState("")
+
+  const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    SetsortList(e.target.value)
+  }
+
+  const [postsData, setPostsData] = useState<postsData>({
+    title: '오프라인 스터디 하실 분~',
+    context: '리액트로 한 3~4명 정도 스터디 할 생각입니다!',
+    likeCount:48,
+    commentCount: 3,
+    dateCreated: '12/25',
+    writer: '정환코딩',
+})
   return (
       <div>
         <Header2/>
         <Navbar2/>
         <Container>
-          <PostBar/>
-            <QuestionPostWrapper>
+          <PostsBar/>
+            <StudyPostsWrapper>
               <Upper>
                 <BtnWrapper>
-                <Btn >국어</Btn>
-                <Btn >수학</Btn>
-                <Btn >영어</Btn>
-                <Btn >과학</Btn>
-                <Btn >코딩</Btn>
+                <Btn >모집중</Btn>
+                <Btn >모집완료</Btn>
                 </BtnWrapper>
                 <SearchWrapper>
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
-                <SelectBox></SelectBox>
+                <SelectBox value={sortlist} onChange={OnListtHandler}>
+                {Sortlist.map((item) => (
+                <option value={item.value} key={item.name}>
+                  {item.name}
+                  </option>
+                  ))}
+                  </SelectBox>
                 <Link to="/posts/write">
-                <WriteButton>글쓰기</WriteButton>
+                <WriteButton> 글쓰기</WriteButton>
                 </Link>
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-                  {posts.map((post, index)=>(
-                     <MainPost key={index}to='/posts/${id}' >
-                     <Title>{post.title}</Title>
-                     <Context>{post.context}</Context>
-                   <FooterWrapper>
-                     <LikeImg src={likeimg}/>
-                     <Likecount>{post.likeCount}</Likecount>
-                     <CommentImg src={commentImg} />
-                     <CommentCount>{post.commentCount}</CommentCount>
-                     <Divider src={DividerImg} />
-                     <DateCreated>{post.dateCreated}</DateCreated>
-                     <Divider src={DividerImg} />
-                     <Writer>{post.writer}</Writer>
-                   </FooterWrapper>
-                     </MainPost>
-                  ))}
-            </QuestionPostWrapper>
+                     <StudyPosts to='/posts/${id}'>
+                     <Title>{postsData.title}</Title>
+                     <Context>{postsData.context}</Context>
+                     <FooterWrapper>
+                      <LikeImg src={likeimg}/>
+                      <Likecount>{postsData.likeCount}</Likecount>
+                      <CommentImg src={commentImg} />
+                      <CommentCount>{postsData.commentCount}</CommentCount>
+                      <Divider src={DividerImg} />
+                      <DateCreated>{postsData.dateCreated}</DateCreated>
+                      <Divider src={DividerImg} />
+                      <Writer>{postsData.writer}</Writer>
+                    </FooterWrapper>
+                     </StudyPosts>
+            </StudyPostsWrapper>
         </Container>
       </div>
     );
   }
 
-export default QuestionPostPage 
+export default StudyPostPage 

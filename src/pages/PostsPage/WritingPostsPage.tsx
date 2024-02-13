@@ -36,17 +36,12 @@ background-color: #fff;
 border: none;
 border-bottom: 1px solid #e8e8e8;
 &:hover,
-  &:active {
+  &:active,
+  &.category {
     font-weight: bold;
     color: #650fa9;
     border-bottom: 2px solid #BDBDBD;
   }
-
-&.category{
-    font-weight: bold;
-    color: #650fa9;
-    border-bottom: 2px solid #BDBDBD;
-}
 `
 const SerchWrapper = styled.div`
 display: flex;
@@ -62,26 +57,16 @@ margin-right: 80px;
 font-size: 28px;
 border-radius: 5px;
 `
-const Input = styled.input`
-width: 710px;
-height: 70px;
-background-color: #fff;
-border: 1px solid #bdbdbd;
-border-radius: 5px;
-text-indent: 20px;
-font-size: 24px;
-`
 const PostWrapper = styled.div`
 display: flex;
 flex-direction:column;
-margin-top: 20px;
+margin-top: 10px;
 `
 const PostTitle = styled.input`
 height: 105px;
 font-size: 64px;
 font-weight: bold;
 text-indent: 20px;
-background-color: #fff;
 border: 1px solid #D8D8D8;
 `
 const PostContent = styled.textarea`
@@ -98,10 +83,9 @@ const PostBtn = styled.button`
 font-size: 28px;
 width: 150px;
 height: 60px;
-margin-right: 20px;
+margin-left: 20px;
 border-radius: 10px;
 border: 1px solid #bdbdbd;
-background-color: #fff;
 &.post{
     color:#fff;
     background-color: #650fa9;
@@ -114,8 +98,6 @@ const interestsList =[
     { value: "SCIENCE", name: "과학"},
     { value: "PROGRAMMING", name: "코딩"},
   ];
-  
-
   
 
 export default function WritingPostPage() {
@@ -202,7 +184,7 @@ export default function WritingPostPage() {
             <PostTitle type="text" placeholder="제목" value={title} onChange={OnTitleHandler}/>
             <PostContent placeholder='게시글 내용을 입력하세요' value={content} onChange={OnContentHandler}/>
             <FooterWrapper>
-              <PostBtn onClick={BacktoPost}>삭제</PostBtn>
+              <PostBtn onClick={BacktoPost}>취소</PostBtn>
               <PostBtn className="post" onClick={PostUpload}>등록</PostBtn>
             </FooterWrapper>
           </PostWrapper>
