@@ -26,6 +26,8 @@ const Online = styled(Link)`
 const Post = styled(Link)`
   font-size: 22px;
   text-decoration: none;
+  padding: 20px 40px 20px 40px;
+  border-radius: 15px;
   color: inherit;
 `
 const StudyList = styled(Link)`
@@ -45,6 +47,7 @@ export default function Navbar2() {
   const location = useLocation()
 
   const isMypage = location.pathname.includes('/mypage')
+  const isPost = location.pathname.includes('/post')
 
   return (
     <Container>
@@ -69,9 +72,9 @@ export default function Navbar2() {
       <Post
         to="/post"
         style={{
-          backgroundColor: location.pathname === '/post' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/post' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/post' ? 'bold' : 'inherit',
+          backgroundColor: isPost  ? '#E8DCF2' : 'inherit',
+          color: isPost ? '#650FA9' : 'inherit',
+          fontWeight: isPost  ? 'bold' : 'inherit',
         }}>
         게시판
       </Post>
