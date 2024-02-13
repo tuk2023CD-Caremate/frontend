@@ -1,10 +1,24 @@
 import React from 'react'
+import styled from 'styled-components'
+import Header2 from '../components/Header2'
+import Navbar2 from '../components/Navbar2'
+import SelectUserModal from '../components/SelectUserModal'
+
+const Container = styled.div`
+  display: flex;
+  height: calc(100vh - 220px);
+  align-items: center;
+  justify-content: center;
+`
 
 function OnlinePage() {
   return (
     <div>
-      <h1>테스트 페이지임</h1>
-      <p>서버 첫 실행하면 오는 곳</p>
+      <Header2 />
+      <Navbar2 />
+      <Container>
+        <SelectUserModal />
+      </Container>
     </div>
   )
 }
