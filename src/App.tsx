@@ -9,9 +9,10 @@ import OnlinePage from './pages/OnlinePage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
-import QuestionPostsPage  from "./pages/PostsPage/QuestionPostsPage";
-import WritingPostsPage from "./pages/PostsPage/WritingPostsPage";
-import DetailPostsPage from "./pages/PostsPage/DetailPostsPage"; 
+import QuestionPostsPage from './pages/PostsPage/QuestionPostsPage'
+import WritingPostsPage from './pages/PostsPage/WritingPostsPage'
+import DetailPostsPage from './pages/PostsPage/DetailPostsPage'
+import ChatPage from './pages/ChatPage'
 
 function App() {
   return (
@@ -23,17 +24,18 @@ function App() {
         <Route path="/offline" element={<OfflinePage />} />
         <Route path="/online" element={<OnlinePage />} />
 
+        <Route path="/chat" element={<ChatPage />} />
+
         <Route path="/posts" element={<MainPostsPage />} />
         <Route path="/posts/questions" element={<QuestionPostsPage />} />
         <Route path="/posts/study" element={<StudyPostsPage />} />
-        <Route path="/posts/write" element={< WritingPostsPage/>} />
-        <Route path="/posts/:id" element={< DetailPostsPage/>} />
+        <Route path="/posts/write" element={<WritingPostsPage />} />
+        <Route path="/posts/:id" element={<DetailPostsPage />} />
 
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
         <Route path="/mypage/matchinglist" element={<MatingListPage />} />
-
       </Routes>
     </Router>
   )
