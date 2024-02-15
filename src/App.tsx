@@ -12,6 +12,7 @@ import MatingListPage from './pages/Mypage/MatingListPage'
 import QuestionPostsPage  from "./pages/PostsPage/QuestionPostsPage";
 import WritingPostsPage from "./pages/PostsPage/WritingPostsPage";
 import DetailPostsPage from "./pages/PostsPage/DetailPostsPage"; 
+import StudyPage from "./pages/StudyPage"; 
 
 function App() {
   return (
@@ -29,10 +30,16 @@ function App() {
         <Route path="/posts/write" element={< WritingPostsPage/>} />
         <Route path="/posts/:id" element={< DetailPostsPage/>} />
 
+        <Route path="/study" element={<StudyPage />} />
+
+
+
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
         <Route path="/mypage/matchinglist" element={<MatingListPage />} />
+
+
 
       </Routes>
     </Router>
