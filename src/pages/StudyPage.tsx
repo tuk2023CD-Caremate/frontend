@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useState } from 'react';
 import Header2 from '../components/Header2.tsx';
 import Navbar2 from '../components/Navbar2.tsx';
 import calender from '../assets/images/calender.png';
@@ -31,7 +30,6 @@ const LeftWrapper = styled.div`
 const TimeRecodingWrapper = styled.div`
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
 width: 400px;
 height: 160px;
@@ -51,7 +49,6 @@ display: flex;
 width: 600px;
 height: 500px;
 margin-top: 20px;;
-border:1px solid black;
 `
 const RightWrapper = styled.div`
 display: flex;
@@ -95,7 +92,7 @@ border-right: 1px solid #BDBDBD;
 const StudyList = styled.div`
 display: flex;
 align-items: center;
-width: 750px;
+width: 800px;
 height: 110px;
 border-bottom: 1px solid #BDBDBD;
 `
@@ -109,14 +106,16 @@ const StudyName = styled.div`
 display: flex;
 align-items: center;
  font-size: 36px;
+ font-weight: bold;
  padding: 5px;
 `
 const StudyingTime = styled.div`
 display: flex;
 align-items: center;
-margin-left: auto;
+margin-left: auto; //타이머 부분 우측정렬
 margin-right: 20px;
  font-size: 36px;
+ font-weight: bold;
  color: #BDBDBD;
  padding: 5px;
 `
