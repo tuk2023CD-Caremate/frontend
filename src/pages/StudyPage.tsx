@@ -96,10 +96,25 @@ width: 800px;
 height: 110px;
 border-bottom: 1px solid #BDBDBD;
 `
+
+const IconWrapper = styled.div`
+width: 80px;
+height: 80px;
+padding: 15px;
+`
+
 const StatusIcon = styled.img`
 width: 80px;
 height: 80px;
-margin: 20px;
+`
+
+
+const ListInfoWrapper = styled.div`
+display: flex;
+justify-content: space-between;
+width: 650px;
+height: 80px;
+padding: 15px;
 `
 
 const StudyName = styled.div`
@@ -112,7 +127,6 @@ align-items: center;
 const StudyingTime = styled.div`
 display: flex;
 align-items: center;
-margin-left: auto; //타이머 부분 우측정렬
 margin-right: 20px;
  font-size: 36px;
  font-weight: bold;
@@ -150,9 +164,13 @@ function StudyPage() {
                         <StudyListWrapper>
                             {studylist.map((study)=> (
                             <StudyList key={study.id}>
-                                <StatusIcon src={playIcon}/>
-                                <StudyName>{study.name}</StudyName>
-                                <StudyingTime>{study.time}</StudyingTime>
+                                <IconWrapper>
+                                    <StatusIcon src={playIcon}/>
+                                </IconWrapper>
+                                <ListInfoWrapper>
+                                    <StudyName>{study.name}</StudyName>
+                                    <StudyingTime>{study.time}</StudyingTime>
+                                </ListInfoWrapper>
                             </StudyList>
                             ))}
                         </StudyListWrapper>
