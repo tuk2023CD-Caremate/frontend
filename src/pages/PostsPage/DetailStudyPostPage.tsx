@@ -216,6 +216,10 @@ text-indent: 20px;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
+  
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 
 const Send = styled.div`
