@@ -25,6 +25,8 @@ const StudyPostsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(100% - 400px);
+  min-height: 780px;
+  border-left: 1px solid #d8d8d8;
  `
 
 const Upper = styled.div`
@@ -156,26 +158,71 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Sortlist =[
+const Listoption =[
   { value: "LIKE", name: "좋아요 순"},
   { value: "LATEST", name: "최신 순"},
 ];
 
-function StudyPostPage() {
-  const [sortlist, SetsortList] = useState("")
 
+function StudyPostPage() {
+  const [listoption, SetListoption] = useState("")
+
+  const [postsData, SetpostData] = useState<postsData[]>([
+    {
+      title: '모각코 하실 분',
+      context: '사당에서 만날 생각이고 3~4멷 정도면 좋을거 같네요!',
+      likeCount:3,
+      commentCount: 3,
+      dateCreated: '2024/02/16',
+      writer: '정환코딩',
+    },
+
+    {
+      title: '좀 이따 온라인 스터디 할 사람',
+      context: '수학만 들어오삼',
+      likeCount:7,
+      commentCount: 5,
+      dateCreated: '2022/10/11',
+      writer: '틀니개',
+    },
+
+    {
+      title: '11시에 스터디 하실 분?',
+      context: '한 두시간 정도만 할 예정',
+      likeCount:11,
+      commentCount: 1,
+      dateCreated: '2023/04/08',
+      writer: '장히수',
+    },
+
+    {
+      title: '같이 밤 세울 사람',
+      context: '내일 시험기간이라서 같이 하실 분 구해여',
+      likeCount:32,
+      commentCount: 3,
+      dateCreated: '2021/06/22',
+      writer: '나야나',
+    },
+  ])
+    
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetsortList(e.target.value)
+    SetListoption(e.target.value)
   }
 
-  const [postsData, setPostsData] = useState<postsData>({
-    title: '오프라인 스터디 하실 분~',
-    context: '리액트로 한 3~4명 정도 스터디 할 생각입니다!',
-    likeCount:48,
-    commentCount: 3,
-    dateCreated: '12/25',
-    writer: '정환코딩',
-})
+  const OnSortpostData = () =>{
+
+    const sortList = postsData.slice(0).sort((a, b) => {
+       
+      if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
+        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
+      }
+      else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount;
+    }
+    return 0;
+  });
+  SetpostData(sortList);
+  }
   return (
       <div>
         <Header2/>
@@ -191,8 +238,8 @@ function StudyPostPage() {
                 <SearchWrapper>
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
-                <SelectBox value={sortlist} onChange={OnListtHandler}>
-                {Sortlist.map((item) => (
+                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                {Listoption.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
                   </option>
@@ -204,20 +251,22 @@ function StudyPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-                     <StudyPosts to='/posts/${id}'>
-                     <Title>{postsData.title}</Title>
-                     <Context>{postsData.context}</Context>
-                     <FooterWrapper>
-                      <LikeImg src={likeimg}/>
-                      <Likecount>{postsData.likeCount}</Likecount>
-                      <CommentImg src={commentImg} />
-                      <CommentCount>{postsData.commentCount}</CommentCount>
-                      <Divider src={DividerImg} />
-                      <DateCreated>{postsData.dateCreated}</DateCreated>
-                      <Divider src={DividerImg} />
-                      <Writer>{postsData.writer}</Writer>
-                    </FooterWrapper>
-                     </StudyPosts>
+              {postsData.map((post, index)=>(
+              <StudyPosts  key={index} to='/posts/${id}'>
+                <Title>{post.title}</Title>
+                <Context>{post.context}</Context>
+                <FooterWrapper>
+                  <LikeImg src={likeimg}/>
+                  <Likecount>{post.likeCount}</Likecount>
+                  <CommentImg src={commentImg} />
+                  <CommentCount>{post.commentCount}</CommentCount>
+                  <Divider src={DividerImg} />
+                  <DateCreated>{post.dateCreated}</DateCreated>
+                  <Divider src={DividerImg} />
+                  <Writer>{post.writer}</Writer>
+                </FooterWrapper>
+              </StudyPosts>
+              ))}
             </StudyPostsWrapper>
         </Container>
       </div>

@@ -26,6 +26,8 @@ const QuestionPostsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(100% - 400px);
+  min-height: 780px;
+  border-left: 1px solid #d8d8d8;
  `
 
 const Upper = styled.div`
@@ -157,27 +159,71 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Sortlist =[
+const Listoption =[
   { value: "LIKE", name: "좋아요 순"},
   { value: "LATEST", name: "최신 순"},
 ];
 
+
 function QuestionPostPage() {
+  const [listoption, SetListoption] = useState("")
 
-  const [sortlist, SetsortList] = useState("")
+  const [postsData, SetpostData] = useState<postsData[]>([
+    {
+      title: 'java 환경설정 어떻게 하나요?',
+      context: '한시간 째 하고 있는데 잘 안되네요ㅠㅠ',
+      likeCount:1,
+      commentCount: 3,
+      dateCreated: '2023/05/02',
+      writer: '정환코딩',
+    },
 
+    {
+      title: '영어 해석 도와줄 사람?',
+      context: 'I like you 해석 해줘!!',
+      likeCount:125,
+      commentCount: 5,
+      dateCreated: '2023/11/11',
+      writer: '틀니개',
+    },
+
+    {
+      title: '수1 이차방정식 문제 질문합니다',
+      context: '왜 b가 2인가요?',
+      likeCount:32,
+      commentCount: 1,
+      dateCreated: '2024/09/22',
+      writer: '장히수',
+    },
+
+    {
+      title: '이거 코드 에러뜨는데',
+      context: '왜 에러뜨는지 모르겟어,,,',
+      likeCount:4,
+      commentCount: 3,
+      dateCreated: '2022/01/03',
+      writer: '나야나',
+    },
+  ])
+    
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetsortList(e.target.value)
+    SetListoption(e.target.value)
   }
 
-  const [postsData, setPostsData] = useState<postsData>({
-      title: '맥북사고싶다',
-      context: '맥북가지고싶다',
-      likeCount:48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-  })
+  const OnSortpostData = () =>{
+
+    const sortList = postsData.slice(0).sort((a, b) => {
+       
+      if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
+        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
+      }
+      else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount;
+    }
+    return 0;
+  });
+  SetpostData(sortList);
+  }
   return (
       <div>
         <Header2/>
@@ -196,8 +242,8 @@ function QuestionPostPage() {
                 <SearchWrapper>
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
-                <SelectBox value={sortlist} onChange={OnListtHandler}>
-                {Sortlist.map((item) => (
+                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                {Listoption.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
                   </option>
@@ -209,21 +255,23 @@ function QuestionPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-                     <QuestionPosts to='/posts/${id}' >
-                     <Title>{postsData.title}</Title>
-                     <Context>{postsData.context}</Context>
-                     <FooterWrapper>
-                      <LikeImg src={likeimg}/>
-                      <Likecount>{postsData.likeCount}</Likecount>
-                      <CommentImg src={commentImg} />
-                      <CommentCount>{postsData.commentCount}</CommentCount>
-                      <Divider src={DividerImg} />
-                      <DateCreated>{postsData.dateCreated}</DateCreated>
-                      <Divider src={DividerImg} />
-                      <Writer>{postsData.writer}</Writer>
-                    </FooterWrapper>
-                     </QuestionPosts>
-            </QuestionPostsWrapper>
+              {postsData.map((post, index)=>(
+              <QuestionPosts key={index} to='/posts/${id}' >
+                <Title>{post.title}</Title>
+                <Context>{post.context}</Context>
+                <FooterWrapper>
+                  <LikeImg src={likeimg}/>
+                  <Likecount>{post.likeCount}</Likecount>
+                  <CommentImg src={commentImg} />
+                  <CommentCount>{post.commentCount}</CommentCount>
+                  <Divider src={DividerImg} />
+                  <DateCreated>{post.dateCreated}</DateCreated>
+                  <Divider src={DividerImg} />
+                  <Writer>{post.writer}</Writer>
+                </FooterWrapper>
+              </QuestionPosts>
+            ))}
+          </QuestionPostsWrapper>
         </Container>
       </div>
     );
