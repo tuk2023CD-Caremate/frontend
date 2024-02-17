@@ -256,7 +256,7 @@ function QuestionPostPage() {
                 </SearchWrapper>
               </Upper>
               {postsData.map((post, index)=>(
-              <QuestionPosts key={index} to='/posts/${id}' >
+              <QuestionPosts key={index} to='/posts/questions/${id}' >
                 <Title>{post.title}</Title>
                 <Context>{post.context}</Context>
                 <FooterWrapper>

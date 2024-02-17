@@ -15,6 +15,7 @@ const PostWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(100% - 400px);
+  border-left: 1px solid #d8d8d8;
 `
 
 const PageTitle = styled.div`
@@ -187,22 +188,6 @@ const CommentProfile = styled.img`
 const CommentNickname = styled.div`
   font-size: 24px;
 `
-
-const CommentDetailWrapper = styled.div`
-display: flex;
-align-items: center;
-`
-const Recomment = styled.div`
-  font-size: 18px;
-  color: #bdbdbd;
-  margin-right: 20px;
-  cursor: pointer;
-`
-const CommentLike = styled.div`
-  font-size: 18px;
-  color: #bdbdbd;
-  cursor: pointer;
-`
 const Comment = styled.div`
   width: calc(100% - 100px);
   padding-left: 10px;
@@ -250,11 +235,11 @@ const Send = styled.div`
 function PostPage() {
   const posts = [
     {
-      title: '맥북사고싶다',
-      context: '맥북가지고싶다',
-      likeCount: 48,
+      title: 'java 환경설정 어떻게 하나요?',
+      context: '한시간 째 하고 있는데 잘 안되네요ㅠㅠ',
+      likeCount:1,
       commentCount: 3,
-      dateCreated: '12/25',
+      dateCreated: '2023/05/02',
       writer: '정환코딩',
     },
   ]
@@ -265,7 +250,7 @@ function PostPage() {
       <Container>
         <PostsBar />
         <PostWrapper>
-          <PageTitle>자유게시판</PageTitle>
+          <PageTitle>질문게시판</PageTitle>
           {posts.map((post, index) => (
             <MainPostWrapper key={index}>
               <Upper>
@@ -302,10 +287,6 @@ function PostPage() {
               <CommentProfile src={ProfileImg} />
               <CommentNickname>장희수</CommentNickname>
             </CommentUserWrapper>
-            <CommentDetailWrapper>
-              <Recomment>대댓글</Recomment>
-              <CommentLike>좋아요</CommentLike>
-            </CommentDetailWrapper>
             </CommentUpper>
             <Comment>틀니개씨 반가워요 스프링 장인이라고 들었어요</Comment>
             <CommentTime>20분전</CommentTime>

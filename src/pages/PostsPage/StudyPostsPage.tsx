@@ -252,7 +252,7 @@ function StudyPostPage() {
                 </SearchWrapper>
               </Upper>
               {postsData.map((post, index)=>(
-              <StudyPosts  key={index} to='/posts/${id}'>
+              <StudyPosts  key={index} to='/posts/study/${id}'>
                 <Title>{post.title}</Title>
                 <Context>{post.context}</Context>
                 <FooterWrapper>
