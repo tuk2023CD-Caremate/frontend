@@ -32,7 +32,6 @@ const PageTitle = styled.div`
 const MyPost = styled.div`
   display: flex;
   padding: 20px 0px 0px 20px;
-
   width: calc(100% - 100px);
   height: 255px;
   border: 1px solid #d8d8d8;

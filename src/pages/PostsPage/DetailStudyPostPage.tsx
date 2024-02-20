@@ -15,6 +15,7 @@ const PostWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(100% - 400px);
+  border-left: 1px solid #d8d8d8;
 `
 
 const PageTitle = styled.div`
@@ -187,22 +188,6 @@ const CommentProfile = styled.img`
 const CommentNickname = styled.div`
   font-size: 24px;
 `
-
-const CommentDetailWrapper = styled.div`
-display: flex;
-align-items: center;
-`
-const Recomment = styled.div`
-  font-size: 18px;
-  color: #bdbdbd;
-  margin-right: 20px;
-  cursor: pointer;
-`
-const CommentLike = styled.div`
-  font-size: 18px;
-  color: #bdbdbd;
-  cursor: pointer;
-`
 const Comment = styled.div`
   width: calc(100% - 100px);
   padding-left: 10px;
@@ -231,6 +216,10 @@ text-indent: 20px;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
+  
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 
 const Send = styled.div`
@@ -250,13 +239,13 @@ const Send = styled.div`
 function PostPage() {
   const posts = [
     {
-      title: '맥북사고싶다',
-      context: '맥북가지고싶다',
-      likeCount: 48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
+        title: '모각코 하실 분',
+        context: '사당에서 만날 생각이고 3~4멷 정도면 좋을거 같네요!',
+        likeCount:3,
+        commentCount: 3,
+        dateCreated: '2024/02/16',
+        writer: '정환코딩',
+      },
   ]
   return (
     <div>
@@ -265,7 +254,7 @@ function PostPage() {
       <Container>
         <PostsBar />
         <PostWrapper>
-          <PageTitle>자유게시판</PageTitle>
+          <PageTitle>스터디게시판</PageTitle>
           {posts.map((post, index) => (
             <MainPostWrapper key={index}>
               <Upper>
@@ -302,10 +291,6 @@ function PostPage() {
               <CommentProfile src={ProfileImg} />
               <CommentNickname>장희수</CommentNickname>
             </CommentUserWrapper>
-            <CommentDetailWrapper>
-              <Recomment>대댓글</Recomment>
-              <CommentLike>좋아요</CommentLike>
-            </CommentDetailWrapper>
             </CommentUpper>
             <Comment>틀니개씨 반가워요 스프링 장인이라고 들었어요</Comment>
             <CommentTime>20분전</CommentTime>

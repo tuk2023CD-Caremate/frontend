@@ -27,6 +27,8 @@ const FreePostsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(100% - 400px);
+  min-height: 780px;
+  border-left: 1px solid #d8d8d8;
  `
 
 const Upper = styled.div`
@@ -157,27 +159,72 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Sortlist =[
+const Listoption =[
   { value: "LIKE", name: "좋아요 순"},
   { value: "LATEST", name: "최신 순"},
 ];
 
 
 function MainPostPage() {
-  const [sortlist, SetsortList] = useState("")
+  const [listoption, SetListoption] = useState("")
 
-  const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetsortList(e.target.value)
-  }
-
-  const [postsData, setPostsData] = useState<postsData>({
+  const [postsData, SetpostData] = useState<postsData[]>([
+    {
       title: '맥북사고싶다',
       context: '맥북가지고싶다',
       likeCount:48,
       commentCount: 3,
-      dateCreated: '12/25',
+      dateCreated: '2022/03/25',
       writer: '정환코딩',
-  })
+    },
+
+    {
+      title: '나 내일 코테 봐',
+      context: '개떨령',
+      likeCount:8,
+      commentCount: 5,
+      dateCreated: '2023/01/03',
+      writer: '틀니개',
+    },
+
+    {
+      title: '밤낮 바꼈다',
+      context: '큰일이다',
+      likeCount:1,
+      commentCount: 1,
+      dateCreated: '2023/12/13',
+      writer: '장히수',
+    },
+
+    {
+      title: '세뱃돈주세요',
+      context: '세뱃돈',
+      likeCount:0,
+      commentCount: 3,
+      dateCreated: '2024/02/10',
+      writer: '나야나',
+    },
+  ])
+    
+  const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    SetListoption(e.target.value)
+  }
+
+  const OnSortpostData = () =>{
+
+    const sortList = postsData.slice(0).sort((a, b) => {
+       
+      if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
+        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
+      }
+      else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount;
+    }
+    return 0;
+  });
+  SetpostData(sortList);
+  }
+
   return (
       <div>
         <Header2/>
@@ -196,8 +243,8 @@ function MainPostPage() {
                 <SearchWrapper>
                 <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
                 <SideWrapper>
-                <SelectBox value={sortlist} onChange={OnListtHandler}>
-                {Sortlist.map((item) => (
+                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                {Listoption.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
                   </option>
@@ -209,20 +256,22 @@ function MainPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-                  <MainPosts to='/posts/${id}'>
-                     <Title>{postsData.title}</Title>
-                     <Context>{postsData.context}</Context>
+              {postsData.map((post, index)=>(
+                  <MainPosts key={index} to='/posts/${id}'>
+                     <Title>{post.title}</Title>
+                     <Context>{post.context}</Context>
                      <FooterWrapper>
                       <LikeImg src={likeimg}/>
-                      <Likecount>{postsData.likeCount}</Likecount>
+                      <Likecount>{post.likeCount}</Likecount>
                       <CommentImg src={commentImg} />
-                      <CommentCount>{postsData.commentCount}</CommentCount>
+                      <CommentCount>{post.commentCount}</CommentCount>
                       <Divider src={DividerImg} />
-                      <DateCreated>{postsData.dateCreated}</DateCreated>
+                      <DateCreated>{post.dateCreated}</DateCreated>
                       <Divider src={DividerImg} />
-                      <Writer>{postsData.writer}</Writer>
+                      <Writer>{post.writer}</Writer>
                     </FooterWrapper>
                    </MainPosts>
+                  ))}
             </FreePostsWrapper>
         </Container>
       </div>
