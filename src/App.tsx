@@ -14,6 +14,7 @@ import WritingPostsPage from "./pages/PostsPage/WritingPostsPage";
 import DetailMainPostsPage from "./pages/PostsPage/DetailMainPostsPage";
 import DetailStudyPostsPage from "./pages/PostsPage/DetailStudyPostPage";  
 import DetailQuestionsPostsPage from "./pages/PostsPage/DetailQuestionPostsPage";  
+import StudyPage from "./pages/StudyPage"; 
 
 
 function App() {
@@ -34,10 +35,16 @@ function App() {
         <Route path="/posts/study/:id" element={< DetailStudyPostsPage/>} />
         <Route path="/posts/questions/:id" element={< DetailQuestionsPostsPage/>} />
 
+        <Route path="/study" element={<StudyPage />} />
+
+
+
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
         <Route path="/mypage/matchinglist" element={<MatingListPage />} />
+
+
 
       </Routes>
     </Router>
