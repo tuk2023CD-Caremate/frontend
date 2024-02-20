@@ -57,6 +57,20 @@ margin-right: 80px;
 font-size: 28px;
 border-radius: 5px;
 `
+const Input = styled.input`
+width: 700px;
+height: 65px;
+text-indent: 20px;
+margin-right: 80px;
+font-size: 24px;
+font-weight: bold;
+border-radius: 5px;
+
+&::placeholder {
+    color: #bdbdbd;
+  }
+`
+
 const PostWrapper = styled.div`
 display: flex;
 flex-direction:column;
@@ -178,6 +192,7 @@ export default function WritingPostPage() {
                   </option>
                   ))}
               </InterestsSelect>
+              <Input type='text' placeholder='자세한 관심분야를 태그로 작성해주세요!'></Input>
             </SerchWrapper>
           </Upper>
             <PostWrapper>
