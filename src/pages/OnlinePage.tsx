@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Header2 from '../components/Header2'
 import Navbar2 from '../components/Navbar2'
 import SelectUserModal from '../components/SelectUserModal'
+import StartMatching from '../components/ConfirmMatching'
 
 const Container = styled.div`
   display: flex;
@@ -105,10 +106,10 @@ function OnlinePage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <StartWrap>
+        {/* <StartWrap>
           <Title>온라인 매칭을 시작해볼게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
-            <option value="">관심분야을 선택하세요</option>
+            <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -117,8 +118,9 @@ function OnlinePage() {
           </SelectInterest>
           <InputTitle placeholder="제목을 적어주세요"></InputTitle>
           <StartMatchingBtn>온라인 매칭 시작하기</StartMatchingBtn>
-        </StartWrap>
+        </StartWrap> */}
         {/* <SelectUserModal /> */}
+        <StartMatching />
       </Container>
     </div>
   )
