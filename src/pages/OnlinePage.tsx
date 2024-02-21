@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Header2 from '../components/Header2'
 import Navbar2 from '../components/Navbar2'
 import SelectUserModal from '../components/SelectUserModal'
-import StartMatching from '../components/ConfirmMatching'
+import ConfirmMatching from '../components/ConfirmMatching'
 
 const Container = styled.div`
   display: flex;
@@ -120,7 +120,7 @@ function OnlinePage() {
           <StartMatchingBtn>온라인 매칭 시작하기</StartMatchingBtn>
         </StartWrap> */}
         {/* <SelectUserModal /> */}
-        <StartMatching />
+        <ConfirmMatching />
       </Container>
     </div>
   )
