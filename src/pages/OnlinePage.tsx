@@ -42,7 +42,7 @@ const InputTitle = styled.input`
   margin: 20px;
   border: solid 1px black;
   width: 600px;
-  height: 50px;
+  height: 70px;
   border-radius: 10px;
   padding: 10px;
   font-size: 28px;
