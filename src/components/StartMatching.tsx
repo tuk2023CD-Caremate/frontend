@@ -95,7 +95,7 @@ const FindAgain = styled.div`
   margin-top: 70px;
 `
 
-function StartMatchingModal() {
+function StartMatching() {
   const mentors = [
     { id: 1, role: '멘토', nickname: '김선재님', interests: '프로그래밍' },
     { id: 2, role: '멘토', nickname: '정우혁님', interests: '프로그래밍' },
@@ -126,4 +126,4 @@ function StartMatchingModal() {
   )
 }
 
-export default StartMatchingModal
+export default StartMatching
