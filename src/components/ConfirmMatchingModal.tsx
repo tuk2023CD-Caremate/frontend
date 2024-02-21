@@ -91,7 +91,7 @@ const RefuseBtn = styled.button`
   margin: 10px;
 `
 
-function ConfirmMatching() {
+function ConfirmMatchingModal() {
   return (
     <div>
       <Container>
@@ -119,4 +119,4 @@ function ConfirmMatching() {
   )
 }
 
-export default ConfirmMatching
+export default ConfirmMatchingModal
