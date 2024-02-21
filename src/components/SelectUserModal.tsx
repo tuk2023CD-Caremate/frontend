@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import UserImg from '../assets/images/profile.png'
-import AccordionBtnImg from '../assets/images/accordionBtn.png'
+
 import {
   Accordion,
   AccordionItem,
@@ -25,16 +25,6 @@ const Title = styled.div`
   font-size: 34px;
   font-weight: bold;
   margin-bottom: 70px;
-`
-
-const SelectWrap = styled.div`
-  display: flex;
-  border-top: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-  width: 750px;
-  height: 75px;
-  align-items: center;
-  justify-content: space-between;
 `
 
 const Box = styled.div`

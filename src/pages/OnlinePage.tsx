@@ -18,7 +18,7 @@ const StartWrap = styled.div`
   justify-content: center;
   flex-direction: column;
   height: 100%;
-  width: 1286px;
+  width: 70%;
   border-left: 1px solid #d8d8d8;
   border-right: 1px solid #d8d8d8;
 `
@@ -105,7 +105,7 @@ function OnlinePage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        {/* <StartWrap>
+        <StartWrap>
           <Title>온라인 매칭을 시작해볼게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야을 선택하세요</option>
@@ -117,8 +117,8 @@ function OnlinePage() {
           </SelectInterest>
           <InputTitle placeholder="제목을 적어주세요"></InputTitle>
           <StartMatchingBtn>온라인 매칭 시작하기</StartMatchingBtn>
-        </StartWrap> */}
-        <SelectUserModal />
+        </StartWrap>
+        {/* <SelectUserModal /> */}
       </Container>
     </div>
   )
