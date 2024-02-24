@@ -1,5 +1,5 @@
 import Header2 from '../../components/Header2.tsx'
-import MypageBar from '../../components/sidebar/Mypagebar.tsx'
+import MypageBar from '../../components/sidebar/MypageBar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
@@ -121,7 +121,7 @@ function ProfilePage() {
   const getProfile = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get('http://localhost:8080/api/user', {
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/user', {
         headers: { Authorization: `Bearer ${access}` },
       })
 
