@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -253,6 +253,7 @@ const Send = styled.div`
 
 function DetailStudyPostPage() {
   const {id} = useParams();
+  const navigate = useNavigate();
   const [postsData, SetpostData] = useState<postsData>({
     id: 0,
     title: '',
@@ -282,6 +283,16 @@ function DetailStudyPostPage() {
     getPost()
   }, [])
 
+  const deletePost = async() =>{
+    if(window.confirm('게시글을 삭제할까요?')){
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+      navigate('/posts/study')
+    } 
+  }
 
   return (
     <div>
@@ -302,7 +313,7 @@ function DetailStudyPostPage() {
                 </UserWrapper>
                 <ButtonWrapper>
                   <Modify>수정</Modify>
-                  <Delete>삭제</Delete>
+                  <Delete onClick={deletePost}>삭제</Delete>
                 </ButtonWrapper>
               </Upper>
               <Lower>
