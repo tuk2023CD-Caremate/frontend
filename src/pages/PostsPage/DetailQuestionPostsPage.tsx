@@ -1,10 +1,25 @@
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+
+interface postsData {
+  id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -236,17 +251,37 @@ const Send = styled.div`
   cursor: pointer;
 `
 
-function PostPage() {
-  const posts = [
-    {
-      title: 'java 환경설정 어떻게 하나요?',
-      context: '한시간 째 하고 있는데 잘 안되네요ㅠㅠ',
-      likeCount:1,
-      commentCount: 3,
-      dateCreated: '2023/05/02',
-      writer: '정환코딩',
-    },
-  ]
+function DetailQuestionPostPage() {
+  const {id} = useParams();
+  const [postsData, SetpostData] = useState<postsData>({
+    id: 0,
+    title: '',
+    content: '',
+    nickname: '',
+    createdAt: Date.toString(),
+    likeCount: 0,
+    commentCount: 0,
+    interests: '',
+    category: '',
+  })
+
+  const getPost = async () => {
+  
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+      console.log(response)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
   return (
     <div>
       <Header2 />
@@ -255,14 +290,13 @@ function PostPage() {
         <PostsBar />
         <PostWrapper>
           <PageTitle>질문게시판</PageTitle>
-          {posts.map((post, index) => (
-            <MainPostWrapper key={index}>
+            <MainPostWrapper>
               <Upper>
                 <UserWrapper>
                   <Profile src={ProfileImg} />
                   <NameWrapper>
-                    <Nickname>장희수</Nickname>
-                    <Time>20분전</Time>
+                    <Nickname>{postsData.nickname}</Nickname>
+                    <Time>{postsData.createdAt}</Time>
                   </NameWrapper>
                 </UserWrapper>
                 <ButtonWrapper>
@@ -271,20 +305,20 @@ function PostPage() {
                 </ButtonWrapper>
               </Upper>
               <Lower>
-                <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
+                <Title>{postsData.title}</Title>
+                <Context>{postsData.content}</Context>
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
                 <LikeImg src={likeimg} />
-                <Likecount>{post.likeCount}</Likecount>
+                <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
-                <CommentCount>{post.commentCount}</CommentCount>
+                <CommentCount>{postsData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
                 <LikeBtn>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
-          ))}
+
           <CommentWrapper>
             <CommentUpper>
             <CommentUserWrapper>
@@ -304,4 +338,4 @@ function PostPage() {
     </div>
   )
 }
-export default PostPage
+export default DetailQuestionPostPage

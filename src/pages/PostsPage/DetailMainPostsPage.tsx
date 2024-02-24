@@ -1,10 +1,25 @@
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+
+interface postsData {
+  id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -210,13 +225,13 @@ const InputWrapper = styled.div`
 `
 
 const Input = styled.input`
-text-indent: 20px;
+  text-indent: 20px;
   background-color: #f8f8f8;
   color: #d8d8d8;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
-  
+
   &::placeholder {
     color: #bdbdbd;
   }
@@ -236,17 +251,36 @@ const Send = styled.div`
   cursor: pointer;
 `
 
-function PostPage() {
-  const posts = [
-    {
-      title: '맥북사고싶다',
-      context: '맥북가지고싶다',
-      likeCount: 48,
-      commentCount: 3,
-      dateCreated: '12/25',
-      writer: '정환코딩',
-    },
-  ]
+function DetailMainPostPage() {
+  const {id} = useParams();
+  const [postsData, SetpostData] = useState<postsData>({
+    id: 0,
+    title: '',
+    content: '',
+    nickname: '',
+    createdAt: Date.toString(),
+    likeCount: 0,
+    commentCount: 0,
+    interests: '',
+    category: '',
+  })
+
+  const getPost = async () => {
+
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+      console.log(response)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
   return (
     <div>
       <Header2 />
@@ -255,48 +289,46 @@ function PostPage() {
         <PostsBar />
         <PostWrapper>
           <PageTitle>자유게시판</PageTitle>
-          {posts.map((post, index) => (
-            <MainPostWrapper key={index}>
-              <Upper>
-                <UserWrapper>
-                  <Profile src={ProfileImg} />
-                  <NameWrapper>
-                    <Nickname>장희수</Nickname>
-                    <Time>20분전</Time>
-                  </NameWrapper>
-                </UserWrapper>
-                <ButtonWrapper>
-                  <Modify>수정</Modify>
-                  <Delete>삭제</Delete>
-                </ButtonWrapper>
-              </Upper>
-              <Lower>
-                <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
-              </Lower>
-              <FooterWrapper>
-                <DetailFooterWrapper>
+          <MainPostWrapper>
+            <Upper>
+              <UserWrapper>
+                <Profile src={ProfileImg} />
+                <NameWrapper>
+                  <Nickname>{postsData.nickname}</Nickname>
+                  <Time>{postsData.createdAt}</Time>
+                </NameWrapper>
+              </UserWrapper>
+              <ButtonWrapper>
+                <Modify>수정</Modify>
+                <Delete>삭제</Delete>
+              </ButtonWrapper>
+            </Upper>
+            <Lower>
+              <Title>{postsData.title}</Title>
+              <Context>{postsData.content}</Context>
+            </Lower>
+            <FooterWrapper>
+              <DetailFooterWrapper>
                 <LikeImg src={likeimg} />
-                <Likecount>{post.likeCount}</Likecount>
+                <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
-                <CommentCount>{post.commentCount}</CommentCount>
-                </DetailFooterWrapper>
-                <LikeBtn>좋아요</LikeBtn>
-              </FooterWrapper>
-            </MainPostWrapper>
-          ))}
+                <CommentCount>{postsData.commentCount}</CommentCount>
+              </DetailFooterWrapper>
+              <LikeBtn>좋아요</LikeBtn>
+            </FooterWrapper>
+          </MainPostWrapper>
           <CommentWrapper>
             <CommentUpper>
-            <CommentUserWrapper>
-              <CommentProfile src={ProfileImg} />
-              <CommentNickname>장희수</CommentNickname>
-            </CommentUserWrapper>
+              <CommentUserWrapper>
+                <CommentProfile src={ProfileImg} />
+                <CommentNickname>장희수</CommentNickname>
+              </CommentUserWrapper>
             </CommentUpper>
             <Comment>틀니개씨 반가워요 스프링 장인이라고 들었어요</Comment>
             <CommentTime>20분전</CommentTime>
           </CommentWrapper>
           <InputWrapper>
-            <Input type='text' placeholder='댓글을 입력하세요'></Input>
+            <Input type="text" placeholder="댓글을 입력하세요"></Input>
             <Send>작성</Send>
           </InputWrapper>
         </PostWrapper>
@@ -304,4 +336,4 @@ function PostPage() {
     </div>
   )
 }
-export default PostPage
+export default DetailMainPostPage
