@@ -8,6 +8,7 @@ import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+//import PostComment from '../../components/PostComment.tsx'
 
 interface postsData {
   id: number
@@ -19,6 +20,13 @@ interface postsData {
   commentCount: number
   interests: string
   category: string
+}
+
+interface CommentData{
+  id: number
+  nickname: string
+  content: string
+  post_id: number
 }
 
 const Container = styled.div`
@@ -203,6 +211,16 @@ const CommentProfile = styled.img`
 const CommentNickname = styled.div`
   font-size: 24px;
 `
+
+const CommentDelete = styled.div`
+display: flex;
+align-items:center;
+font-size: 18px;
+font-weight:bold;
+color: #bdbdbd;
+cursor: pointer;
+`
+
 const Comment = styled.div`
   width: calc(100% - 100px);
   padding-left: 10px;
@@ -210,24 +228,18 @@ const Comment = styled.div`
   margin-bottom: 5px;
   font-size: 24px;
 `
-const CommentTime = styled.div`
-  padding-left: 10px;
-  margin-left: 10px;
-  font-size: 18px;
-  color: #bdbdbd;
-`
 const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 80px);
+  width: calc(100% - 100px);
   height: 70px;
   border: 1px solid #d8d8d8;
+  margin-bottom: 30px;
 `
 
 const Input = styled.input`
   text-indent: 20px;
   background-color: #f8f8f8;
-  color: #d8d8d8;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
@@ -254,6 +266,9 @@ const Send = styled.div`
 function DetailMainPostPage() {
   const {id} = useParams();
   const navigate = useNavigate();
+
+ 
+
   const [postsData, SetpostData] = useState<postsData>({
     id: 0,
     title: '',
@@ -266,15 +281,14 @@ function DetailMainPostPage() {
     category: '',
   })
 
+//게시글 조회
   const getPost = async () => {
-
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
-      console.log(response)
     } catch (error) {}
   }
 
@@ -282,7 +296,7 @@ function DetailMainPostPage() {
     getPost()
   }, [])
 
-
+//게시글 삭제
   const deletePost = async() =>{
     if(window.confirm('게시글을 삭제할까요?')){
       const access = localStorage.getItem('accessToken')
@@ -293,7 +307,63 @@ function DetailMainPostPage() {
       navigate('/posts')
     } 
   }
+  
+  const updatePost = async() =>{
+    navigate('/posts/update')
+    
+  }
+  
+  //댓글CRUD
+  const [content, SetContent]=useState('')
+  const post_id = postsData.id;
+  const [CommentData, SetComentData]=useState<CommentData[]>([
+    {
+      id: 0,
+      nickname: '',
+      content: '',
+      post_id: 0,
+    }
+  ])
+  
+//댓글 조회
+  const getComment = async() => {
+    const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+     SetComentData(response.data)
+  }
 
+  useEffect(() => {
+    getComment()
+  }, [])
+
+//댓글생성
+  const createComment = async() =>{
+    const comment = {
+      content: content,
+    }
+  
+    if(content != ''){
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetComentData([response.data, ...CommentData])
+    }SetContent('')
+  }
+
+//댓글 삭제
+  const deleteCommet = async() =>{
+    if(window.confirm('댓글을 삭제할까요?')){
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetComentData(response.data)
+    } 
+  }
+  
   return (
     <div>
       <Header2 />
@@ -312,7 +382,7 @@ function DetailMainPostPage() {
                 </NameWrapper>
               </UserWrapper>
               <ButtonWrapper>
-                <Modify>수정</Modify>
+                <Modify onClick={updatePost}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
               </ButtonWrapper>
             </Upper>
@@ -330,19 +400,21 @@ function DetailMainPostPage() {
               <LikeBtn>좋아요</LikeBtn>
             </FooterWrapper>
           </MainPostWrapper>
-          <CommentWrapper>
+          {CommentData.map((comments) => (
+          <CommentWrapper key={comments.id}>
             <CommentUpper>
               <CommentUserWrapper>
                 <CommentProfile src={ProfileImg} />
-                <CommentNickname>장희수</CommentNickname>
+                <CommentNickname>{comments.nickname}</CommentNickname>
               </CommentUserWrapper>
+              <CommentDelete onClick={deleteCommet}>삭제</CommentDelete>
             </CommentUpper>
-            <Comment>틀니개씨 반가워요 스프링 장인이라고 들었어요</Comment>
-            <CommentTime>20분전</CommentTime>
+            <Comment>{comments.content}</Comment>
           </CommentWrapper>
+            ))}
           <InputWrapper>
-            <Input type="text" placeholder="댓글을 입력하세요"></Input>
-            <Send>작성</Send>
+            <Input type="text" placeholder="댓글을 입력하세요" value={content}  onChange={(e) => SetContent(e.target.value)}></Input>
+            <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>
       </Container>
