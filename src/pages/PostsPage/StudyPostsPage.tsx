@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
 import PostsBar from '../../components/sidebar/Postsbar';
@@ -9,12 +10,15 @@ import likeimg from '../../assets/images/likeicon.png';
 import DividerImg from '../../assets/images/divider1.png';
 
 interface postsData {
-  title: string,
-  context: string,
-  likeCount: number,
-  commentCount: number,
-  dateCreated: string,
-  writer: string,
+  id: number
+  title: string
+  content: string
+  likeCount: number
+  commentCount: number
+  nickname: string
+  createdAt: string
+  interests: string
+  category: 'STUDY'
 }
 const Container = styled.div`
   display: flex;
@@ -161,47 +165,23 @@ const Writer = styled.div`
 const Listoption =[
   { value: "LIKE", name: "좋아요 순"},
   { value: "LATEST", name: "최신 순"},
+  { value: 'COMMENT', name: '댓글 순' },
 ];
 
 
 function StudyPostPage() {
   const [listoption, SetListoption] = useState("")
-
   const [postsData, SetpostData] = useState<postsData[]>([
     {
-      title: '모각코 하실 분',
-      context: '사당에서 만날 생각이고 3~4멷 정도면 좋을거 같네요!',
-      likeCount:3,
-      commentCount: 3,
-      dateCreated: '2024/02/16',
-      writer: '정환코딩',
-    },
-
-    {
-      title: '좀 이따 온라인 스터디 할 사람',
-      context: '수학만 들어오삼',
-      likeCount:7,
-      commentCount: 5,
-      dateCreated: '2022/10/11',
-      writer: '틀니개',
-    },
-
-    {
-      title: '11시에 스터디 하실 분?',
-      context: '한 두시간 정도만 할 예정',
-      likeCount:11,
-      commentCount: 1,
-      dateCreated: '2023/04/08',
-      writer: '장히수',
-    },
-
-    {
-      title: '같이 밤 세울 사람',
-      context: '내일 시험기간이라서 같이 하실 분 구해여',
-      likeCount:32,
-      commentCount: 3,
-      dateCreated: '2021/06/22',
-      writer: '나야나',
+      id:0,
+      title: '',
+      content: '',
+      likeCount: 0,
+      commentCount: 0,
+      nickname: '',
+      createdAt: Date.toString(),
+      interests: '',
+      category: 'STUDY',
     },
   ])
     
@@ -209,19 +189,38 @@ function StudyPostPage() {
     SetListoption(e.target.value)
   }
 
-  const OnSortpostData = () =>{
+  const getPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
+  }
 
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
+  const OnSortpostData = () =>{
     const sortList = postsData.slice(0).sort((a, b) => {
        
       if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
-        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(); 
       }
       else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount;
     }
+    else if (listoption === 'COMMENT') {
+      return b.commentCount - a.commentCount
+    }
     return 0;
   });
   SetpostData(sortList);
+
+
   }
   return (
       <div>
@@ -251,19 +250,21 @@ function StudyPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-              {postsData.map((post, index)=>(
-              <StudyPosts  key={index} to='/posts/study/${id}'>
+              {postsData
+              .filter(post => post.category === 'STUDY')
+              .map((post)=>(
+              <StudyPosts  key={post.id} to={`/posts/study/${post.id}`}>
                 <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
+                <Context>{post.content}</Context>
                 <FooterWrapper>
                   <LikeImg src={likeimg}/>
                   <Likecount>{post.likeCount}</Likecount>
                   <CommentImg src={commentImg} />
                   <CommentCount>{post.commentCount}</CommentCount>
                   <Divider src={DividerImg} />
-                  <DateCreated>{post.dateCreated}</DateCreated>
+                  <DateCreated>{post.createdAt}</DateCreated>
                   <Divider src={DividerImg} />
-                  <Writer>{post.writer}</Writer>
+                  <Writer>{post.nickname}</Writer>
                 </FooterWrapper>
               </StudyPosts>
               ))}

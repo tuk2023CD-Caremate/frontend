@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
 import PostsBar from '../../components/sidebar/Postsbar.tsx';
@@ -9,14 +10,16 @@ import likeimg from '../../assets/images/likeicon.png';
 import DividerImg from '../../assets/images/divider1.png';
 
 interface postsData {
-  title: string,
-  context: string,
-  likeCount: number,
-  commentCount: number,
-  dateCreated: string,
-  writer: string,
+  id: number
+  title: string
+  content: string
+  likeCount: number
+  commentCount: number
+  nickname: string
+  createdAt: string
+  interests: string
+  category: 'QUESTION'
 }
-
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
@@ -159,71 +162,62 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption =[
-  { value: "LIKE", name: "좋아요 순"},
-  { value: "LATEST", name: "최신 순"},
-];
-
+const Listoption = [
+  { value: 'LIKE', name: '좋아요 순' },
+  { value: 'LATEST', name: '최신 순' },
+  { value: 'COMMENT', name: '댓글 순' },
+]
 
 function QuestionPostPage() {
-  const [listoption, SetListoption] = useState("")
-
+  const [listoption, SetListoption] = useState('')
   const [postsData, SetpostData] = useState<postsData[]>([
     {
-      title: 'java 환경설정 어떻게 하나요?',
-      context: '한시간 째 하고 있는데 잘 안되네요ㅠㅠ',
-      likeCount:1,
-      commentCount: 3,
-      dateCreated: '2023/05/02',
-      writer: '정환코딩',
-    },
-
-    {
-      title: '영어 해석 도와줄 사람?',
-      context: 'I like you 해석 해줘!!',
-      likeCount:125,
-      commentCount: 5,
-      dateCreated: '2023/11/11',
-      writer: '틀니개',
-    },
-
-    {
-      title: '수1 이차방정식 문제 질문합니다',
-      context: '왜 b가 2인가요?',
-      likeCount:32,
-      commentCount: 1,
-      dateCreated: '2024/09/22',
-      writer: '장히수',
-    },
-
-    {
-      title: '이거 코드 에러뜨는데',
-      context: '왜 에러뜨는지 모르겟어,,,',
-      likeCount:4,
-      commentCount: 3,
-      dateCreated: '2022/01/03',
-      writer: '나야나',
+      id:0,
+      title: '',
+      content: '',
+      likeCount: 0,
+      commentCount: 0,
+      nickname: '',
+      createdAt: Date.toString(),
+      interests: '',
+      category: 'QUESTION',
     },
   ])
-    
+
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetListoption(e.target.value)
   }
 
-  const OnSortpostData = () =>{
 
-    const sortList = postsData.slice(0).sort((a, b) => {
-       
-      if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
-        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
-      }
-      else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
-        return b.likeCount - a.likeCount;
-    }
-    return 0;
-  });
-  SetpostData(sortList);
+  const getPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
   }
+  
+  const OnSortpostData = () => {
+    const sortList = postsData.slice(0).sort((a, b) => {
+      if (listoption === 'LATEST') {
+        //최신 순 option을 선택했을 경우
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+      } else if (listoption === 'LIKE') {
+        //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount
+      } else if (listoption === 'COMMENT') {
+        return b.commentCount - a.commentCount
+      }
+      return 0
+    })
+    SetpostData(sortList)
+  }
+  useEffect(() => {
+    getPost()
+  }, [])
+
   return (
       <div>
         <Header2/>
@@ -255,19 +249,21 @@ function QuestionPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-              {postsData.map((post, index)=>(
-              <QuestionPosts key={index} to='/posts/questions/${id}' >
+              {postsData
+              .filter(post => post.category === 'QUESTION')
+              .map((post)=>(
+              <QuestionPosts key={post.id} to={`/posts/questions/${post.id}`} >
                 <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
+                <Context>{post.content}</Context>
                 <FooterWrapper>
                   <LikeImg src={likeimg}/>
                   <Likecount>{post.likeCount}</Likecount>
                   <CommentImg src={commentImg} />
                   <CommentCount>{post.commentCount}</CommentCount>
                   <Divider src={DividerImg} />
-                  <DateCreated>{post.dateCreated}</DateCreated>
+                  <DateCreated>{post.createdAt}</DateCreated>
                   <Divider src={DividerImg} />
-                  <Writer>{post.writer}</Writer>
+                  <Writer>{post.nickname}</Writer>
                 </FooterWrapper>
               </QuestionPosts>
             ))}
