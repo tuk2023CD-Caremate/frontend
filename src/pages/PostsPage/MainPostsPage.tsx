@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -65,7 +65,7 @@ const SearchWrapper = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
- justify-content: space-between;
+  justify-content: space-between;
   padding: 10px 10px 10px 0;
   margin-bottom: 10px;
 `
@@ -76,6 +76,7 @@ const Search = styled.div`
   display: flex;
   align-items: center;
 `
+
 const Input = styled.input`
   text-indent: 30px;
   width: 760px;
@@ -189,7 +190,7 @@ const Listoption = [
 ]
 
 function MainPostPage() {
-  
+
   const [listoption, SetListoption] = useState('')
   const [postsData, SetpostData] = useState<postsData[]>([])
 
@@ -197,12 +198,11 @@ function MainPostPage() {
     SetListoption(e.target.value)
   }
 
-
-  //게시글 전체 조회
+//게시글 전체조회
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts`, {
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -212,7 +212,6 @@ function MainPostPage() {
   useEffect(() => {
     getPost()
   }, [])
-
 
   //게시글 정렬
   const OnSortpostData = () => {
@@ -231,24 +230,23 @@ function MainPostPage() {
     SetpostData(sortList)
   }
  
-  //게시글 검색
-  const [searchkeyword, SetSearchKeyword]= useState("")
+    //게시글 검색
+    const [searchkeyword, SetSearchKeyword]= useState("")
 
-
-  const searchpost = async ()=> {
-    if(searchkeyword !==''){
-      try {
-        const access = localStorage.getItem('accessToken')
-        const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
-          params: {keyword : searchkeyword},
-          headers: { Authorization: `Bearer ${access}` },
-        })
-        SetpostData(response.data)
-      } catch (error) {}
-    } else if(searchkeyword ==''){
-      alert("검색어를 입력해주세요")
-      getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
-    }}
+    const searchpost = async ()=> {
+      if(searchkeyword !==''){
+        try {
+          const access = localStorage.getItem('accessToken')
+          const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
+            params: {keyword : searchkeyword},
+            headers: { Authorization: `Bearer ${access}` },
+          })
+          SetpostData(response.data)
+        } catch (error) {}
+      } else if(searchkeyword ==''){
+        alert("검색어를 입력해주세요")
+        getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+      }}
 
   return (
     <div>

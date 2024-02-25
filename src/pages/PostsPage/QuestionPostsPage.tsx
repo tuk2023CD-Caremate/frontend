@@ -1,13 +1,13 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx';
-import Navbar2 from '../../components/Navbar2.tsx';
-import PostsBar from '../../components/sidebar/Postsbar.tsx';
-import commentImg from '../../assets/images/comment2.png';
-import likeimg from '../../assets/images/likeicon.png';
-import DividerImg from '../../assets/images/divider1.png';
+import Header2 from '../../components/Header2.tsx'
+import Navbar2 from '../../components/Navbar2.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
+import commentImg from '../../assets/images/comment2.png'
+import likeimg from '../../assets/images/likeicon.png'
+import DividerImg from '../../assets/images/divider1.png'
 
 interface postsData {
   id: number
@@ -19,6 +19,7 @@ interface postsData {
   createdAt: string
   interests: string
   category: 'QUESTION'
+  recruitmentStatus: boolean
 }
 const Container = styled.div`
   display: flex;
@@ -31,7 +32,7 @@ const QuestionPostsWrapper = styled.div`
   width: calc(100% - 400px);
   min-height: 780px;
   border-left: 1px solid #d8d8d8;
- `
+`
 
 const Upper = styled.div`
   display: flex;
@@ -44,15 +45,15 @@ const BtnWrapper = styled.div`
   padding-bottom: 10px;
 `
 const Btn = styled.button`
-width: 124px;
-height: 48px;
-border-radius: 10px;
-border: none;
-font-size: 24px;
-margin-right:36px;
-background-color: #E8E8E8;
-color: #BDBDBD;
-&:hover,
+  width: 124px;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  font-size: 24px;
+  margin-right: 36px;
+  background-color: #e8e8e8;
+  color: #bdbdbd;
+  &:hover,
   &:active {
     font-weight: bold;
     color: #650fa9;
@@ -60,7 +61,7 @@ color: #BDBDBD;
   }
 `
 const SearchWrapper = styled.div`
-height: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   padding: 10px 10px 10px 0;
@@ -68,16 +69,36 @@ height: 80px;
   margin-bottom: 10px;
 `
 const SideWrapper = styled.div`
- display: flex;
+  display: flex;
 `
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const Input = styled.input`
   text-indent: 30px;
   width: 760px;
-  height:65px;
+  height: 65px;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 24px;
+  margin-right: 30px;
 `
+
+const SerarchBtn = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  border: 0.5px solid #bdbdbd;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
+  cursor: pointer;
+`
+
 const SelectBox = styled.select`
   width: 120px;
   height: 50px;
@@ -85,7 +106,7 @@ const SelectBox = styled.select`
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 20px;
-  margin-right:20px;
+  margin-right: 20px;
   cursor: pointer;
   text-align: center;
 `
@@ -150,7 +171,7 @@ const CommentCount = styled.div`
   font-weight: bolder;
 `
 const Divider = styled.img`
-margin: 0 20px 0 20px;
+  margin: 0 20px 0 20px;
   width: 2px;
   height: 20px;
 `
@@ -169,26 +190,17 @@ const Listoption = [
 ]
 
 function QuestionPostPage() {
+
   const [listoption, SetListoption] = useState('')
-  const [postsData, SetpostData] = useState<postsData[]>([
-    {
-      id:0,
-      title: '',
-      content: '',
-      likeCount: 0,
-      commentCount: 0,
-      nickname: '',
-      createdAt: Date.toString(),
-      interests: '',
-      category: 'QUESTION',
-    },
-  ])
+  const [postsData, SetpostData] = useState<postsData[]>([])
+
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetListoption(e.target.value)
   }
 
 
+  //게시글 전체조회
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
@@ -198,7 +210,13 @@ function QuestionPostPage() {
       SetpostData(response.data)
     } catch (error) {}
   }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
   
+   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
       if (listoption === 'LATEST') {
@@ -214,49 +232,67 @@ function QuestionPostPage() {
     })
     SetpostData(sortList)
   }
-  useEffect(() => {
-    getPost()
-  }, [])
+
+     //게시글 검색
+     const [searchkeyword, SetSearchKeyword]= useState("")
+
+     const searchpost = async ()=> {
+       if(searchkeyword !==''){
+         try {
+           const access = localStorage.getItem('accessToken')
+           const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
+             params: {keyword : searchkeyword},
+             headers: { Authorization: `Bearer ${access}` },
+           })
+           SetpostData(response.data)
+         } catch (error) {}
+       } else if(searchkeyword ==''){
+         alert("검색어를 입력해주세요")
+         getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+       }}
 
   return (
-      <div>
-        <Header2/>
-        <Navbar2/>
-        <Container>
-          <PostsBar/>
-            <QuestionPostsWrapper>
-              <Upper>
-                <BtnWrapper>
-                <Btn >국어</Btn>
-                <Btn >수학</Btn>
-                <Btn >영어</Btn>
-                <Btn >과학</Btn>
-                <Btn >코딩</Btn>
-                </BtnWrapper>
-                <SearchWrapper>
-                <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
-                <SideWrapper>
+    <div>
+      <Header2 />
+      <Navbar2 />
+      <Container>
+        <PostsBar />
+        <QuestionPostsWrapper>
+          <Upper>
+            <BtnWrapper>
+              <Btn>국어</Btn>
+              <Btn>수학</Btn>
+              <Btn>영어</Btn>
+              <Btn>과학</Btn>
+              <Btn>코딩</Btn>
+            </BtnWrapper>
+            <SearchWrapper>
+              <Search>
+              <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>
+              <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
+              </Search>
+              <SideWrapper>
                 <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                {Listoption.map((item) => (
-                <option value={item.value} key={item.name}>
-                  {item.name}
-                  </option>
+                  {Listoption.map((item) => (
+                    <option value={item.value} key={item.name}>
+                      {item.name}
+                    </option>
                   ))}
-                  </SelectBox>
+                </SelectBox>
                 <Link to="/posts/write">
-                <WriteButton>글쓰기</WriteButton>
+                  <WriteButton>글쓰기</WriteButton>
                 </Link>
-                </SideWrapper>
-                </SearchWrapper>
-              </Upper>
-              {postsData
-              .filter(post => post.category === 'QUESTION')
-              .map((post)=>(
-              <QuestionPosts key={post.id} to={`/posts/questions/${post.id}`} >
+              </SideWrapper>
+            </SearchWrapper>
+          </Upper>
+          {postsData
+            .filter((post) => post.category === 'QUESTION')
+            .map((post) => (
+              <QuestionPosts key={post.id} to={`/posts/questions/${post.id}`}>
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>
                 <FooterWrapper>
-                  <LikeImg src={likeimg}/>
+                  <LikeImg src={likeimg} />
                   <Likecount>{post.likeCount}</Likecount>
                   <CommentImg src={commentImg} />
                   <CommentCount>{post.commentCount}</CommentCount>
@@ -267,10 +303,10 @@ function QuestionPostPage() {
                 </FooterWrapper>
               </QuestionPosts>
             ))}
-          </QuestionPostsWrapper>
-        </Container>
-      </div>
-    );
-  }
+        </QuestionPostsWrapper>
+      </Container>
+    </div>
+  )
+}
 
-export default QuestionPostPage 
+export default QuestionPostPage
