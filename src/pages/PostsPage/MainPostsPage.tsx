@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Link, useParams } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -19,6 +19,7 @@ interface postsData {
   createdAt: string
   interests: string
   category: 'FREE'
+  recruitmentStatus: boolean
 }
 
 const Container = styled.div`
@@ -64,12 +65,16 @@ const SearchWrapper = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+ justify-content: space-between;
   padding: 10px 10px 10px 0;
   margin-bottom: 10px;
 `
 const SideWrapper = styled.div`
   display: flex;
+`
+const Search = styled.div`
+  display: flex;
+  align-items: center;
 `
 const Input = styled.input`
   text-indent: 30px;
@@ -78,7 +83,22 @@ const Input = styled.input`
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 24px;
+  margin-right: 30px;
 `
+
+const SerarchBtn = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  border: 0.5px solid #bdbdbd;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
+  cursor: pointer;
+`
+
 const SelectBox = styled.select`
   width: 120px;
   height: 50px;
@@ -169,30 +189,20 @@ const Listoption = [
 ]
 
 function MainPostPage() {
+  
   const [listoption, SetListoption] = useState('')
-  const [postsData, SetpostData] = useState<postsData[]>([
-    {
-      id:0,
-      title: '',
-      content: '',
-      likeCount: 0,
-      commentCount: 0,
-      nickname: '',
-      createdAt: Date.toString(),
-      interests: '',
-      category: 'FREE',
-    },
-  ])
+  const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetListoption(e.target.value)
   }
 
 
+  //게시글 전체 조회
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -203,6 +213,8 @@ function MainPostPage() {
     getPost()
   }, [])
 
+
+  //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
       if (listoption === 'LATEST') {
@@ -219,6 +231,24 @@ function MainPostPage() {
     SetpostData(sortList)
   }
  
+  //게시글 검색
+  const [searchkeyword, SetSearchKeyword]= useState("")
+
+
+  const searchpost = async ()=> {
+    if(searchkeyword !==''){
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
+          params: {keyword : searchkeyword},
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        SetpostData(response.data)
+      } catch (error) {}
+    } else if(searchkeyword ==''){
+      alert("검색어를 입력해주세요")
+      getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+    }}
 
   return (
     <div>
@@ -236,7 +266,10 @@ function MainPostPage() {
               <Btn>코딩</Btn>
             </BtnWrapper>
             <SearchWrapper>
-              <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
+              <Search>
+              <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>
+              <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
+              </Search>
               <SideWrapper>
                 <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
                   {Listoption.map((item) => (
