@@ -10,7 +10,7 @@ import likeimg from '../../assets/images/likeicon.png';
 import DividerImg from '../../assets/images/divider1.png';
 
 interface postsData {
-  id: number
+  post_id: number
   title: string
   content: string
   likeCount: number
@@ -201,22 +201,7 @@ function StudyPostPage() {
   }
 
 
-  //게시글 전체조회
-  const getPost = async () => {
-    try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-      SetpostData(response.data)
-    } catch (error) {}
-  }
-
-  useEffect(() => {
-    getPost()
-  }, [])
-
-//게시글 정렬
+  //게시글 정렬
   const OnSortpostData = () =>{
     const sortList = postsData.slice(0).sort((a, b) => {
        
@@ -233,6 +218,24 @@ function StudyPostPage() {
   });
   SetpostData(sortList);
   }
+
+
+  //게시글 전체조회
+  const getPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
 
 
      //게시글 검색
@@ -288,7 +291,7 @@ function StudyPostPage() {
               {postsData
               .filter(post => post.category === 'STUDY')
               .map((post)=>(
-              <StudyPosts  key={post.id} to={`/posts/study/${post.id}`}>
+              <StudyPosts  key={post.post_id} to={`/posts/study/${post.post_id}`}>
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>
                 <FooterWrapper>

@@ -22,7 +22,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signIn" element={<SignUpPage />} />
 
         <Route path="/offline" element={<OfflinePage />} />
         <Route path="/online" element={<OnlinePage />} />
@@ -34,9 +34,9 @@ function App() {
         <Route path="/posts/study" element={<StudyPostsPage />} />
 
         <Route path="/posts/write" element={< WritingPostsPage/>} />
-        <Route path="/posts/:id" element={< DetailMainPostsPage/>} />
-        <Route path="/posts/study/:id" element={< DetailStudyPostsPage/>} />
-        <Route path="/posts/questions/:id" element={< DetailQuestionsPostsPage/>} />
+        <Route path="/posts/:post_id" element={< DetailMainPostsPage/>} />
+        <Route path="/posts/study/:post_id" element={< DetailStudyPostsPage/>} />
+        <Route path="/posts/questions/:post_id" element={< DetailQuestionsPostsPage/>} />
 
         <Route path="/study" element={<StudyPage />} />
 

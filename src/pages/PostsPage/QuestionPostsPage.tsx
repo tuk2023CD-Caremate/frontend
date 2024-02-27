@@ -10,7 +10,7 @@ import likeimg from '../../assets/images/likeicon.png'
 import DividerImg from '../../assets/images/divider1.png'
 
 interface postsData {
-  id: number
+  post_id: number
   title: string
   content: string
   likeCount: number
@@ -251,6 +251,7 @@ function QuestionPostPage() {
          getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
        }}
 
+
   return (
     <div>
       <Header2 />
@@ -288,7 +289,7 @@ function QuestionPostPage() {
           {postsData
             .filter((post) => post.category === 'QUESTION')
             .map((post) => (
-              <QuestionPosts key={post.id} to={`/posts/questions/${post.id}`}>
+              <QuestionPosts key={post.post_id} to={`/posts/questions/${post.post_id}`}>
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>
                 <FooterWrapper>

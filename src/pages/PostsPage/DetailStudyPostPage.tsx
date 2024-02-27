@@ -10,7 +10,7 @@ import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
 
 interface postsData {
-  id: number
+  post_id: number
   title: string
   content: string
   nickname: string
@@ -22,10 +22,11 @@ interface postsData {
 }
 
 interface CommentData{
-  id: number
+  post_id: number
   nickname: string
   content: string
-  post_id: number
+  comment_id: number
+  createdAt: string
 }
 
 const Container = styled.div`
@@ -211,19 +212,35 @@ const CommentNickname = styled.div`
   font-size: 24px;
 `
 
+const CommentTime = styled.div`
+  font-size: 18px;
+  color: #bdbdbd;
+`
+
 const CommentDelete = styled.div`
-display: flex;
-align-items:center;
-font-size: 18px;
-font-weight:bold;
-color: #bdbdbd;
-cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #bdbdbd;
+  cursor: pointer;
+  padding: 5px;
+`
+
+const CommentUpdate = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #bdbdbd;
+  cursor: pointer;
+  padding: 5px;
 `
 
 const Comment = styled.div`
   width: calc(100% - 100px);
-  padding-left: 10px;
-  margin-left: 10px;
+  padding-left: 20px;
+  margin-left: 45px;
   margin-bottom: 5px;
   font-size: 24px;
 `
@@ -263,10 +280,12 @@ const Send = styled.div`
 `
 
 function DetailStudyPostPage() {
-  const {id} = useParams();
+  const { post_id } = useParams()
   const navigate = useNavigate();
+
+  //게시판 글 DATA
   const [postsData, SetpostData] = useState<postsData>({
-    id: 0,
+    post_id: 0,
     title: '',
     content: '',
     nickname: '',
@@ -277,12 +296,11 @@ function DetailStudyPostPage() {
     category: '',
   })
 
-
+//게시글 단건조회
   const getPost = async () => {
-  
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -294,10 +312,11 @@ function DetailStudyPostPage() {
     getPost()
   }, [])
 
+  //게시글 삭제
   const deletePost = async() =>{
     if(window.confirm('게시글을 삭제할까요?')){
       const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${id}`, {
+      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -310,30 +329,28 @@ function DetailStudyPostPage() {
     
   }
   
+
   //댓글CRUD
   const [content, SetContent]=useState('')
-  const post_id = postsData.id;
-  const [CommentData, SetComentData]=useState<CommentData[]>([
-    {
-      id: 0,
-      nickname: '',
-      content: '',
-      post_id: 0,
-    }
-  ])
+  const [commentData, SetCommentData] = useState<CommentData[]>([])
   
+
 //댓글 조회
   const getComment = async() => {
+    try {
     const access = localStorage.getItem('accessToken')
       const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-     SetComentData(response.data)
+      SetCommentData(response.data)
+    } catch (error) {}
   }
 
   useEffect(() => {
     getComment()
-  }, [])
+  }, [commentData]) //변수가 달라질 때마다 getComment
+
+
 
 //댓글생성
   const createComment = async() =>{
@@ -342,24 +359,36 @@ function DetailStudyPostPage() {
     }
   
     if(content != ''){
+      try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetComentData([response.data, ...CommentData])
-    }SetContent('')
+      SetCommentData([...commentData, response.data])
+    } catch (error) {}
+    SetContent('')
   }
+}
+
+useEffect(() => {
+  createComment()
+}, [])
+
 
 //댓글 삭제
-  const deleteCommet = async() =>{
-    if(window.confirm('댓글을 삭제할까요?')){
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
-      })
-      SetComentData(response.data)
-    } 
+const deleteCommet = async (comment_id: number) => {
+    if(window.confirm('댓글을 삭제할까요?')) {
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
+          data: { post_id: post_id, comment_id: comment_id },
+          headers: { Authorization: `Bearer ${access}` },
+        })
+      SetCommentData(response.data)
+     } catch (error) {}
+    }
   }
+
 
   return (
     <div>
@@ -379,9 +408,9 @@ function DetailStudyPostPage() {
                   </NameWrapper>
                 </UserWrapper>
                 <ButtonWrapper>
-                  <Modify>수정</Modify>
-                  <Delete onClick={deletePost}>삭제</Delete>
-                </ButtonWrapper>
+                <Modify onClick={updatePost}>수정</Modify>
+                <Delete onClick={deletePost}>삭제</Delete>
+              </ButtonWrapper>
               </Upper>
               <Lower>
                 <Title>{postsData.title}</Title>
@@ -397,20 +426,33 @@ function DetailStudyPostPage() {
                 <LikeBtn>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
-            {CommentData.map((comments) => (
-          <CommentWrapper key={comments.id}>
+            {Array.isArray(commentData) &&
+            commentData.map((comments) => (
+          <CommentWrapper key={comments.comment_id}>
             <CommentUpper>
               <CommentUserWrapper>
                 <CommentProfile src={ProfileImg} />
-                <CommentNickname>{comments.nickname}</CommentNickname>
+                <NameWrapper>
+                    <CommentNickname>{comments.nickname}</CommentNickname>
+                    <CommentTime>{comments.createdAt}</CommentTime>
+                </NameWrapper>
               </CommentUserWrapper>
-              <CommentDelete onClick={deleteCommet}>삭제</CommentDelete>
+              <ButtonWrapper>
+                  <CommentDelete onClick={() => deleteCommet(comments.comment_id)}>
+                    삭제
+                  </CommentDelete>
+                  <CommentUpdate>수정</CommentUpdate>
+                </ButtonWrapper>
             </CommentUpper>
             <Comment>{comments.content}</Comment>
           </CommentWrapper>
-            ))}
+          ))}
           <InputWrapper>
-            <Input type="text" placeholder="댓글을 입력하세요" value={content}  onChange={(e) => SetContent(e.target.value)}></Input>
+            <Input
+            type="text"
+            placeholder="댓글을 입력하세요"
+            value={content} 
+            onChange={(e) => SetContent(e.target.value)}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>

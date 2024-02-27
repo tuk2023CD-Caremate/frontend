@@ -10,7 +10,7 @@ import likeimg from '../../assets/images/likeicon.png'
 import DividerImg from '../../assets/images/divider1.png'
 
 interface postsData {
-  id: number
+  post_id: number
   title: string
   content: string
   likeCount: number
@@ -198,6 +198,37 @@ function MainPostPage() {
     SetListoption(e.target.value)
   }
 
+   //게시글 정렬
+   const OnSortpostData = () => {
+    const sortList = postsData.slice(0).sort((a, b) => {
+      if (listoption === 'LATEST') {
+        //최신 순 option을 선택했을 경우
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+      } else if (listoption === 'LIKE') {
+        //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount
+      } else if (listoption === 'COMMENT') {
+        return b.commentCount - a.commentCount
+      }
+      return 0
+    })
+    SetpostData(sortList)
+  }
+
+
+  const OnProgrammingFilter = () => {
+    const filteredPosts = postsData.filter(post => post.interests === '코딩');
+    SetpostData(filteredPosts);
+    getPost(); // 전체 데이터 다시 불러오기
+  };
+
+  const OnEnglishFilter = () => {
+    const filteredPosts = postsData.filter(post => post.interests === '영어');
+    SetpostData(filteredPosts);
+    getPost(); // 전체 데이터 다시 불러오기
+  };
+
+
 //게시글 전체조회
   const getPost = async () => {
     try {
@@ -213,22 +244,6 @@ function MainPostPage() {
     getPost()
   }, [])
 
-  //게시글 정렬
-  const OnSortpostData = () => {
-    const sortList = postsData.slice(0).sort((a, b) => {
-      if (listoption === 'LATEST') {
-        //최신 순 option을 선택했을 경우
-        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-      } else if (listoption === 'LIKE') {
-        //좋아요 순 option을 선택했을 경우
-        return b.likeCount - a.likeCount
-      } else if (listoption === 'COMMENT') {
-        return b.commentCount - a.commentCount
-      }
-      return 0
-    })
-    SetpostData(sortList)
-  }
  
     //게시글 검색
     const [searchkeyword, SetSearchKeyword]= useState("")
@@ -248,6 +263,9 @@ function MainPostPage() {
         getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
       }}
 
+
+      
+
   return (
     <div>
       <Header2 />
@@ -259,9 +277,9 @@ function MainPostPage() {
             <BtnWrapper>
               <Btn>국어</Btn>
               <Btn>수학</Btn>
-              <Btn>영어</Btn>
+              <Btn onClick={OnEnglishFilter}>영어</Btn>
               <Btn>과학</Btn>
-              <Btn>코딩</Btn>
+              <Btn onClick={OnProgrammingFilter}>코딩</Btn>
             </BtnWrapper>
             <SearchWrapper>
               <Search>
@@ -285,7 +303,7 @@ function MainPostPage() {
           {postsData
           .filter(post => post.category === 'FREE')
           .map((post) => (
-            <MainPosts key={post.id} to={`/posts/${post.id}`}>
+            <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
               <Title>{post.title}</Title>
               <Context>{post.content}</Context>
               <FooterWrapper>

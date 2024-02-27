@@ -121,6 +121,8 @@ export default function WritingPostPage() {
 
   const navigate = useNavigate()
 
+
+
   const CreatePost = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
