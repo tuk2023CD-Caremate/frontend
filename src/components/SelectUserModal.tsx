@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import UserImg from '../assets/images/profile.png'
+import HeartImg from '../assets/images/likeicon.png'
 
 import {
   Accordion,
@@ -9,10 +10,27 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
+import { useApiUrlStore } from '../store/store'
+import axios from 'axios'
+
+interface UserList {
+  id: number
+  name: string
+  nickname: string
+  part: string
+  email: string
+  interests: string
+  blogUrl: string
+  publicRelations: string
+  job: string
+  heart: number
+  starAverage: number
+  solved: number
+  matchingCount: number
+}
 
 const Container = styled.div`
   width: 900px;
-  height: 600px;
   border-radius: 15px;
   display: flex;
   justify-content: center;
@@ -24,12 +42,16 @@ const Container = styled.div`
 const Title = styled.div`
   font-size: 34px;
   font-weight: bold;
-  margin-bottom: 70px;
+  margin: 30px;
+`
+const List = styled.div`
+  max-height: 400px;
+  overflow-y: auto; /* 세로 스크롤 추가 */
 `
 
 const Box = styled.div`
   display: flex;
-  width: 850px;
+  width: 825px;
   font-size: 30px;
   align-items: center;
 `
@@ -52,6 +74,28 @@ const UserInterests = styled.div`
   color: #650fa9;
   margin-left: 20px;
 `
+
+const UserDetail = styled.div`
+  margin: 5px;
+  margin-left: 25px;
+`
+
+const Blog = styled.div`
+  font-size: 30px;
+`
+const PublicRelations = styled.div`
+  font-size: 30px;
+`
+const HeartIMG = styled.img`
+  width: 30px;
+  margin-right: 5px;
+`
+const Heart = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+`
+
 const FindAgain = styled.div`
   display: flex;
   align-items: center;
@@ -63,62 +107,70 @@ const FindAgain = styled.div`
   border-radius: 10px;
   font-size: 20px;
   font-weight: bold;
-  margin: 10px;
-  margin-top: 70px;
+  margin: 30px;
 `
 
 function SelectUserModal() {
-  const mentors = [
-    { id: 1, role: '멘토', nickname: '김선재님', interests: '프로그래밍' },
-    { id: 2, role: '멘토', nickname: '정우혁님', interests: '프로그래밍' },
-    { id: 3, role: '멘티', nickname: '최지혜님', interests: '프로그래밍' },
-  ]
+  const { apiUrl } = useApiUrlStore()
+
+  const [userList, setUserList] = useState<UserList[]>([])
+
+  const getUserList = async () => {
+    const access = localStorage.getItem('accessToken')
+    if (access) {
+      try {
+        const response = await axios.get(`${apiUrl}/matching/5`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setUserList(response.data.memberList)
+        console.log('Success ', response.data)
+      } catch (error) {
+        console.error('Error ', error)
+      }
+    } else {
+      console.error('Access token not found.')
+    }
+  }
+
+  useEffect(() => {
+    getUserList()
+  }, [])
 
   return (
     <div>
       <Container>
         <Title>멘토를 선택해주세요</Title>
-        <Accordion allowMultiple>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Box>
-                  {' '}
-                  <UserImage src={UserImg} />
-                  <UserRole>멘토</UserRole>
-                  <UserNickname>정우혁</UserNickname>
-                  <UserInterests>프로그래밍</UserInterests>
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </AccordionPanel>
-          </AccordionItem>
+        <List>
+          <Accordion allowMultiple>
+            {userList.map((user) => (
+              <AccordionItem key={user.id}>
+                <h2>
+                  <AccordionButton>
+                    <Box>
+                      {' '}
+                      <UserImage src={UserImg} />
+                      <UserRole>{user.part}</UserRole>
+                      <UserNickname>{user.nickname}</UserNickname>
+                      <UserInterests>{user.interests}</UserInterests>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <UserDetail>
+                    <Blog>Blog : {user.blogUrl}</Blog>
+                    <PublicRelations>경력사항 : {user.publicRelations}</PublicRelations>
+                    <Heart>
+                      <HeartIMG src={HeartImg} />
+                      {user.heart}
+                    </Heart>
+                  </UserDetail>
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </List>
 
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Box>
-                  {' '}
-                  <UserImage src={UserImg} />
-                  <UserRole>멘토</UserRole>
-                  <UserNickname>김선재</UserNickname>
-                  <UserInterests>프로그래밍</UserInterests>
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
         <FindAgain>다시 찾기</FindAgain>
       </Container>
     </div>
