@@ -10,24 +10,24 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore, useUserListStore } from '../store/store'
 import axios from 'axios'
 
-interface UserList {
-  id: number
-  name: string
-  nickname: string
-  part: string
-  email: string
-  interests: string
-  blogUrl: string
-  publicRelations: string
-  job: string
-  heart: number
-  starAverage: number
-  solved: number
-  matchingCount: number
-}
+// interface UserList {
+//   id: number
+//   name: string
+//   nickname: string
+//   part: string
+//   email: string
+//   interests: string
+//   blogUrl: string
+//   publicRelations: string
+//   job: string
+//   heart: number
+//   starAverage: number
+//   solved: number
+//   matchingCount: number
+// }
 
 const Container = styled.div`
   width: 900px;
@@ -112,8 +112,8 @@ const FindAgain = styled.div`
 
 function SelectUserModal() {
   const { apiUrl } = useApiUrlStore()
-
-  const [userList, setUserList] = useState<UserList[]>([])
+  const { userList, setUserList } = useUserListStore()
+  // const [userList, setUserList] = useState<UserList[]>([])
 
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
