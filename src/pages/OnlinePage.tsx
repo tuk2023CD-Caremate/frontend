@@ -6,6 +6,8 @@ import SelectUserModal from '../components/SelectUserModal'
 import ConfirmMatchingModal from '../components/ConfirmMatchingModal'
 import FindLoadingModal from '../components/FindLoadingModal'
 import MatchingLoadingModal from '../components/MatchingLoadingModal'
+import axios from 'axios'
+import { useApiUrlStore } from '../store/store'
 
 const Container = styled.div`
   display: flex;
@@ -68,7 +70,7 @@ const InputContent = styled.input`
     font-style: italic; /* placeholder 텍스트 스타일 설정 */
   }
 `
-const StartMatchingBtn = styled.div`
+const StartMatchingBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,7 +89,11 @@ interface Option {
 }
 
 function OnlinePage() {
+  const { apiUrl } = useApiUrlStore()
+
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined)
+  const [title, setTitle] = useState<string>('')
+  const [content, setContent] = useState<string>('')
 
   const [options, setOptions] = useState<Option[]>([
     {
@@ -111,12 +117,44 @@ function OnlinePage() {
     setSelectedOption(event.target.value)
   }
 
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value)
+  }
+
+  const handleContentChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setContent(event.target.value)
+  }
+
+  const handleSubmit = async () => {
+    const access = localStorage.getItem('accessToken')
+    if (access) {
+      try {
+        const response = await axios.post(
+          `${apiUrl}/question`,
+          {
+            title: title,
+            content: content,
+            interests: selectedOption,
+          },
+          {
+            headers: { Authorization: `Bearer ${access}` },
+          },
+        )
+        console.log('Question created:', response.data)
+      } catch (error) {
+        console.error('Error creating question:', error)
+      }
+    } else {
+      console.error('Access token not found.')
+    }
+  }
+
   return (
     <div>
       <Header2 />
       <Navbar2 />
       <Container>
-        <StartWrap>
+        {/* <StartWrap>
           <Title>온라인 매칭을 시작해볼게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
@@ -128,9 +166,9 @@ function OnlinePage() {
           </SelectInterest>
           <InputTitle placeholder="제목을 적어주세요"></InputTitle>
           <InputContent placeholder="내용을 적어주세요"></InputContent>
-          <StartMatchingBtn>온라인 매칭 시작하기</StartMatchingBtn>
-        </StartWrap>
-        {/* <SelectUserModal /> */}
+          <StartMatchingBtn onClick={handleSubmit}>온라인 매칭 시작하기</StartMatchingBtn>
+        </StartWrap> */}
+        <SelectUserModal />
         {/* <ConfirmMatchingModal /> */}
         {/* <FindLoadingModal /> */}
         {/* <MatchingLoadingModal /> */}
