@@ -16,6 +16,7 @@ import { create } from 'zustand'
 //   },
 // }));
 
+/* api */
 interface ApiUrlState {
   apiUrl: string
   setApiUrl: (url: string) => void
@@ -26,6 +27,7 @@ export const useApiUrlStore = create<ApiUrlState>((set) => ({
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
 
+/* 유저 리스트 */
 interface UserListState {
   userList: UserList[]
   setUserList: (userList: UserList[]) => void
