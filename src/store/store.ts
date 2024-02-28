@@ -1,4 +1,4 @@
-import create from 'zustand'
+import { create } from 'zustand'
 
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
@@ -15,3 +15,13 @@ import create from 'zustand'
 //     set((state) => ({ ...state, selectContent: select }));
 //   },
 // }));
+
+interface ApiUrlState {
+  apiUrl: string
+  setApiUrl: (url: string) => void
+}
+export const useApiUrlStore = create<ApiUrlState>((set) => ({
+  apiUrl: 'http://studymate-tuk.kro.kr:8080/api',
+  // apiUrl: 'http://localhost:8080/api',
+  setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
+}))
