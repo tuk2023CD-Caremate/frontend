@@ -5,17 +5,18 @@ import MainPostsPage from './pages/PostsPage/MainPostsPage'
 import StudyPostsPage from './pages/PostsPage/StudyPostsPage'
 import ProfilePage from './pages/Mypage/ProfilePage'
 import OfflinePage from './pages/OfflinePage'
-import OnlinePage from './pages/OnlinePage'
+import StartPage from './pages/OnlinePage/StartPage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
 import ChatPage from './pages/ChatPage'
-import QuestionPostsPage  from "./pages/PostsPage/QuestionPostsPage";
-import WritingPostsPage from "./pages/PostsPage/WritingPostsPage";
-import DetailMainPostsPage from "./pages/PostsPage/DetailMainPostsPage";
-import DetailStudyPostsPage from "./pages/PostsPage/DetailStudyPostPage";  
-import DetailQuestionsPostsPage from "./pages/PostsPage/DetailQuestionPostsPage";  
-import StudyPage from "./pages/StudyPage"; 
+import QuestionPostsPage from './pages/PostsPage/QuestionPostsPage'
+import WritingPostsPage from './pages/PostsPage/WritingPostsPage'
+import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
+import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
+import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
+import StudyPage from './pages/StudyPage'
+import SelectUser from './pages/OnlinePage/SelectUserPage'
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
 
         <Route path="/offline" element={<OfflinePage />} />
-        <Route path="/online" element={<OnlinePage />} />
+
+        <Route path="/online" element={<StartPage />} />
+        <Route path="/online/select" element={<SelectUser />} />
 
         <Route path="/chat" element={<ChatPage />} />
 
@@ -33,10 +36,10 @@ function App() {
         <Route path="/posts/questions" element={<QuestionPostsPage />} />
         <Route path="/posts/study" element={<StudyPostsPage />} />
 
-        <Route path="/posts/write" element={< WritingPostsPage/>} />
-        <Route path="/posts/:id" element={< DetailMainPostsPage/>} />
-        <Route path="/posts/study/:id" element={< DetailStudyPostsPage/>} />
-        <Route path="/posts/questions/:id" element={< DetailQuestionsPostsPage/>} />
+        <Route path="/posts/write" element={<WritingPostsPage />} />
+        <Route path="/posts/:id" element={<DetailMainPostsPage />} />
+        <Route path="/posts/study/:id" element={<DetailStudyPostsPage />} />
+        <Route path="/posts/questions/:id" element={<DetailQuestionsPostsPage />} />
 
         <Route path="/study" element={<StudyPage />} />
 

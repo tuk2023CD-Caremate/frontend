@@ -13,22 +13,6 @@ import {
 import { useApiUrlStore, useUserListStore } from '../store/store'
 import axios from 'axios'
 
-// interface UserList {
-//   id: number
-//   name: string
-//   nickname: string
-//   part: string
-//   email: string
-//   interests: string
-//   blogUrl: string
-//   publicRelations: string
-//   job: string
-//   heart: number
-//   starAverage: number
-//   solved: number
-//   matchingCount: number
-// }
-
 const Container = styled.div`
   width: 900px;
   border-radius: 15px;
@@ -110,16 +94,20 @@ const FindAgain = styled.div`
   margin: 30px;
 `
 
-function SelectUserModal() {
+function SelectUserModal(id: any) {
   const { apiUrl } = useApiUrlStore()
   const { userList, setUserList } = useUserListStore()
-  // const [userList, setUserList] = useState<UserList[]>([])
+
+  const encodedValue = JSON.stringify(id)
+  const decodedValue = decodeURIComponent(encodedValue)
+  const parsedObject = JSON.parse(decodedValue)
+  const question_id = parsedObject.id
 
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
     if (access) {
       try {
-        const response = await axios.get(`${apiUrl}/matching/5`, {
+        const response = await axios.get(`${apiUrl}/matching/${question_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
         setUserList(response.data.memberList)

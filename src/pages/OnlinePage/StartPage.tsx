@@ -1,13 +1,14 @@
 import React, { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
-import Header2 from '../components/Header2'
-import Navbar2 from '../components/Navbar2'
-import SelectUserModal from '../components/SelectUserModal'
-import ConfirmMatchingModal from '../components/ConfirmMatchingModal'
-import FindLoadingModal from '../components/FindLoadingModal'
-import MatchingLoadingModal from '../components/MatchingLoadingModal'
+import Header2 from '../../components/Header2'
+import Navbar2 from '../../components/Navbar2'
+import SelectUserModal from '../../components/SelectUserModal'
+import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
+import FindLoadingModal from '../../components/FindLoadingModal'
+import MatchingLoadingModal from '../../components/MatchingLoadingModal'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore } from '../../store/store'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -88,13 +89,14 @@ interface Option {
   label: string
 }
 
-function OnlinePage() {
+function StartPage() {
   const { apiUrl } = useApiUrlStore()
+
+  const navigate = useNavigate()
 
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
-
   const [options, setOptions] = useState<Option[]>([
     {
       label: 'PROGRAMMING',
@@ -140,7 +142,8 @@ function OnlinePage() {
             headers: { Authorization: `Bearer ${access}` },
           },
         )
-        console.log('Question created:', response.data)
+        alert('Question created')
+        navigate('/online/select', { state: response.data.id })
       } catch (error) {
         console.error('Error creating question:', error)
       }
@@ -154,7 +157,7 @@ function OnlinePage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        {/* <StartWrap>
+        <StartWrap>
           <Title>온라인 매칭을 시작해볼게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
@@ -167,8 +170,8 @@ function OnlinePage() {
           <InputTitle placeholder="제목을 적어주세요"></InputTitle>
           <InputContent placeholder="내용을 적어주세요"></InputContent>
           <StartMatchingBtn onClick={handleSubmit}>온라인 매칭 시작하기</StartMatchingBtn>
-        </StartWrap> */}
-        <SelectUserModal />
+        </StartWrap>
+        {/* <SelectUserModal /> */}
         {/* <ConfirmMatchingModal /> */}
         {/* <FindLoadingModal /> */}
         {/* <MatchingLoadingModal /> */}
@@ -177,4 +180,4 @@ function OnlinePage() {
   )
 }
 
-export default OnlinePage
+export default StartPage
