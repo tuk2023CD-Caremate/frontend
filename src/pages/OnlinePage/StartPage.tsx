@@ -105,7 +105,7 @@ function StartPage() {
       label: 'MATH',
     },
     {
-      label: 'ENGLIISH',
+      label: 'ENGLISH',
     },
     {
       label: 'ComputerSience',
