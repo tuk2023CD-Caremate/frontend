@@ -29,7 +29,7 @@ const StartWrap = styled.div`
 const Title = styled.div`
   font-size: 48px;
   font-weight: bold;
-  margin: 120px;
+  margin: 80px;
 `
 
 const SelectInterest = styled.select`
@@ -54,6 +54,20 @@ const InputTitle = styled.input`
     font-style: italic; /* placeholder 텍스트 스타일 설정 */
   }
 `
+
+const InputContent = styled.input`
+  margin: 10px;
+  border: solid 1px black;
+  width: 600px;
+  height: 200px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 28px;
+  ::placeholder {
+    color: BDBDBD; /* placeholder 텍스트 색상 설정 */
+    font-style: italic; /* placeholder 텍스트 스타일 설정 */
+  }
+`
 const StartMatchingBtn = styled.div`
   display: flex;
   justify-content: center;
@@ -70,7 +84,6 @@ const StartMatchingBtn = styled.div`
 
 interface Option {
   label: string
-  value: string
 }
 
 function OnlinePage() {
@@ -78,24 +91,19 @@ function OnlinePage() {
 
   const [options, setOptions] = useState<Option[]>([
     {
-      label: '프로그래밍',
-      value: 'interest1',
+      label: 'PROGRAMMING',
     },
     {
-      label: '수학',
-      value: 'interest2',
+      label: 'MATH',
     },
     {
-      label: '디자인',
-      value: 'interest3',
+      label: 'ENGLIISH',
     },
     {
       label: 'ComputerSience',
-      value: 'interest4',
     },
     {
       label: 'Algorithm',
-      value: 'interest5',
     },
   ])
 
@@ -113,12 +121,13 @@ function OnlinePage() {
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option key={option.label} value={option.label}>
                 {option.label}
               </option>
             ))}
           </SelectInterest>
           <InputTitle placeholder="제목을 적어주세요"></InputTitle>
+          <InputContent placeholder="내용을 적어주세요"></InputContent>
           <StartMatchingBtn>온라인 매칭 시작하기</StartMatchingBtn>
         </StartWrap>
         {/* <SelectUserModal /> */}
