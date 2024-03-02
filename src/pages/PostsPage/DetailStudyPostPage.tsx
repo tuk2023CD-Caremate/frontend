@@ -227,6 +227,25 @@ const CommentDelete = styled.div`
   padding: 5px;
 `
 
+const Editinput = styled.input`
+  width: calc(100% - 140px);
+  padding-left: 20px;
+  margin-left: 45px;
+  margin-bottom: 5px;
+  font-size: 24px;
+  border: 1px solid;
+`
+const EditBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 40px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  cursor: pointer;
+`
+
 const CommentUpdate = styled.div`
   display: flex;
   align-items: center;
@@ -283,6 +302,7 @@ function DetailStudyPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate();
 
+
   //게시판 글 DATA
   const [postsData, SetpostData] = useState<postsData>({
     post_id: 0,
@@ -304,7 +324,6 @@ function DetailStudyPostPage() {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
-      console.log(response)
     } catch (error) {}
   }
 
@@ -331,8 +350,9 @@ function DetailStudyPostPage() {
   
 
   //댓글CRUD
-  const [content, SetContent]=useState('')
-  const [commentData, SetCommentData] = useState<CommentData[]>([])
+  const [content, SetContent] = useState('')
+  const [editcontent, setEditContent] = useState('')
+  const [commentData, setCommentData] = useState<CommentData[]>([])
   
 
 //댓글 조회
@@ -342,7 +362,7 @@ function DetailStudyPostPage() {
       const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetCommentData(response.data)
+      setCommentData(response.data)
     } catch (error) {}
   }
 
@@ -364,7 +384,7 @@ function DetailStudyPostPage() {
       const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetCommentData([...commentData, response.data])
+      setCommentData([...commentData, response.data])
     } catch (error) {}
     SetContent('')
   }
@@ -376,17 +396,48 @@ useEffect(() => {
 
 
 //댓글 삭제
-const deleteCommet = async (comment_id: number) => {
+const deleteCommet = async (post_id: number, comment_id: number) => {
     if(window.confirm('댓글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
-          data: { post_id: post_id, comment_id: comment_id },
+         
           headers: { Authorization: `Bearer ${access}` },
         })
-      SetCommentData(response.data)
+        setCommentData(response.data)
      } catch (error) {}
     }
+  }
+
+  //댓글수정
+  const [isediting, setIsEditing] = useState(0) //수정할 comment_id 초기화
+
+  const handleEdit = (comment_id:number) => {
+    setIsEditing(comment_id) //comment_id와 일치하는 댓글만 버튼 변경
+    setEditContent('')
+  }
+
+  const updateComment = async (post_id: number, comment_id: number) => {
+    const editcomment = {
+      content: editcontent,
+    }
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.put(
+        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, editcomment,
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      const updatedComments = commentData.map(comment => {
+        if(comment.comment_id === comment_id) {
+          return response.data;
+        } 
+        return comment;
+      });
+      setCommentData(updatedComments);
+    } catch (error) {}
+    setIsEditing(0) //comment_id 초기화
   }
 
 
@@ -438,15 +489,35 @@ const deleteCommet = async (comment_id: number) => {
                 </NameWrapper>
               </CommentUserWrapper>
               <ButtonWrapper>
-                  <CommentDelete onClick={() => deleteCommet(comments.comment_id)}>
-                    삭제
-                  </CommentDelete>
-                  <CommentUpdate>수정</CommentUpdate>
-                </ButtonWrapper>
-            </CommentUpper>
-            <Comment>{comments.content}</Comment>
-          </CommentWrapper>
-          ))}
+                    <CommentDelete
+                      onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
+                      삭제
+                    </CommentDelete>
+                    {isediting === comments.comment_id ?  (
+                      <EditBtn onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
+                        완료
+                      </EditBtn>
+                    ) : (
+                      <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
+                    )}
+                  </ButtonWrapper>
+                </CommentUpper>
+                {isediting === comments.comment_id ? (
+                  <div>
+                    <Editinput
+                      type="text"
+                      value={editcontent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      placeholder={comments.content}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <Comment>{comments.content}</Comment>
+                  </div>
+                )}
+              </CommentWrapper>
+            ))}
           <InputWrapper>
             <Input
             type="text"
