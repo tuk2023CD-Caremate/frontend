@@ -334,19 +334,23 @@ function DetailStudyPostPage() {
   //게시글 삭제
   const deletePost = async() =>{
     if(window.confirm('게시글을 삭제할까요?')){
+      try{
       const access = localStorage.getItem('accessToken')
       const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
+    } catch(error){}
       navigate('/posts/study')
     } 
   }
 
-  const updatePost = async() =>{
-    navigate('/posts/update')
-    
-  }
+     //게시글 수정
+     const handlePostEdit =() =>{
+      if (window.confirm('게시글을 수정할까요?')) {
+        navigate('/posts/update/'+post_id)
+      }
+    }
   
 
   //댓글CRUD
@@ -459,7 +463,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
                   </NameWrapper>
                 </UserWrapper>
                 <ButtonWrapper>
-                <Modify onClick={updatePost}>수정</Modify>
+                <Modify onClick={handlePostEdit}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
               </ButtonWrapper>
               </Upper>

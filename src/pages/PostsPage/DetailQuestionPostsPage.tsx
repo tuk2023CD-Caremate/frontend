@@ -346,10 +346,12 @@ function DetailQuestionPostPage() {
     } 
   }
 
-  const updatePost = async() =>{
-    navigate('/posts/update')
-    
-  }
+    //게시글 수정
+    const handlePostEdit =() =>{
+      if (window.confirm('게시글을 수정할까요?')) {
+        navigate('/posts/update/'+post_id)
+      }
+    }
   
 
   //댓글CRUD
@@ -443,6 +445,7 @@ function DetailQuestionPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
   
+
   return (
     <div>
       <Header2 />
@@ -461,7 +464,7 @@ function DetailQuestionPostPage() {
                   </NameWrapper>
                 </UserWrapper>
                 <ButtonWrapper>
-                  <Modify>수정</Modify>
+                  <Modify onClick={handlePostEdit}>수정</Modify>
                   <Delete onClick={deletePost}>삭제</Delete>
                 </ButtonWrapper>
               </Upper>

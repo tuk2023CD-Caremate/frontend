@@ -345,20 +345,14 @@ function DetailMainPostPage() {
       navigate('/posts')
     }
   }
-
-  //게시글 수정
-  const updatePost = async () => {
+  
+    //게시글 수정
+  const handlePostEdit =() =>{
     if (window.confirm('게시글을 수정할까요?')) {
-      try {
-        const access = localStorage.getItem('accessToken')
-        const response = await axios.put(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
-          headers: { Authorization: `Bearer ${access}` },
-        })
-        SetpostData(response.data)
-      } catch (error) {}
-      navigate('/posts/update')
+      navigate('/posts/update/'+post_id)
     }
   }
+
 
   //댓글CRUD
   const [content, SetContent] = useState('')
@@ -457,9 +451,7 @@ function DetailMainPostPage() {
     } catch (error) {}
     setIsEditing(0) //comment_id 초기화
   }
-
-
-
+  
 
   return (
     <div>
@@ -479,7 +471,7 @@ function DetailMainPostPage() {
                 </NameWrapper>
               </UserWrapper>
               <ButtonWrapper>
-                <Modify onClick={updatePost}>수정</Modify>
+                <Modify onClick={handlePostEdit}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
               </ButtonWrapper>
             </Upper>
