@@ -5,6 +5,7 @@ import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useApiUrlStore } from '../../store/store.ts'
 
 interface ProfileData {
   part: string
@@ -111,6 +112,8 @@ const InterestsDetail = styled.div`
 `
 
 function ProfilePage() {
+  const { apiUrl } = useApiUrlStore()
+
   const [profileData, setProfileData] = useState<ProfileData>({
     part: '',
     nickname: '',
@@ -121,7 +124,7 @@ function ProfilePage() {
   const getProfile = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/user', {
+      const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
 

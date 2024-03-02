@@ -4,6 +4,7 @@ import google_login from '../assets/images/google_login.png'
 import kakao_login from '../assets/images/kakao_login.png'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useApiUrlStore } from '../store/store'
 
 const Container = styled.div`
   display: flex;
@@ -100,6 +101,8 @@ const GoogleSubmit = styled.img`
 `
 
 export default function Login() {
+  const { apiUrl } = useApiUrlStore()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -122,7 +125,8 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/login', {
+
+      const response = await axios.post(`${apiUrl}/login`, {
         email: email,
         password: password,
       })

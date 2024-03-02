@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useApiUrlStore } from '../store/store'
 
 const Container = styled.div`
   display: flex;
@@ -116,6 +117,8 @@ const interestsList = [
 ]
 
 export default function SignUp() {
+  const { apiUrl } = useApiUrlStore()
+
   const [name, setName] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
@@ -169,7 +172,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/signIn', {
+      const response = await axios.post(`${apiUrl}/signIn`, {
         email: email,
         password: password,
         name: name,
