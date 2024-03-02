@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
 import PostsBar from '../../components/sidebar/Postsbar';
@@ -9,13 +10,18 @@ import likeimg from '../../assets/images/likeicon.png';
 import DividerImg from '../../assets/images/divider1.png';
 
 interface postsData {
-  title: string,
-  context: string,
-  likeCount: number,
-  commentCount: number,
-  dateCreated: string,
-  writer: string,
+  post_id: number
+  title: string
+  content: string
+  likeCount: number
+  commentCount: number
+  nickname: string
+  createdAt: string
+  interests: string
+  category: 'STUDY'
+  recruitmentStatus: boolean
 }
+
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
@@ -66,6 +72,12 @@ height: 80px;
 const SideWrapper = styled.div`
  display: flex;
 `
+
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const Input = styled.input`
   text-indent: 30px;
   width: 760px;
@@ -73,6 +85,20 @@ const Input = styled.input`
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 24px;
+  margin-right: 30px;
+`
+
+const SerarchBtn = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  border: 0.5px solid #bdbdbd;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
+  cursor: pointer;
 `
 const SelectBox = styled.select`
   width: 120px;
@@ -161,68 +187,76 @@ const Writer = styled.div`
 const Listoption =[
   { value: "LIKE", name: "좋아요 순"},
   { value: "LATEST", name: "최신 순"},
+  { value: 'COMMENT', name: '댓글 순' },
 ];
 
 
 function StudyPostPage() {
+
   const [listoption, SetListoption] = useState("")
-
-  const [postsData, SetpostData] = useState<postsData[]>([
-    {
-      title: '모각코 하실 분',
-      context: '사당에서 만날 생각이고 3~4멷 정도면 좋을거 같네요!',
-      likeCount:3,
-      commentCount: 3,
-      dateCreated: '2024/02/16',
-      writer: '정환코딩',
-    },
-
-    {
-      title: '좀 이따 온라인 스터디 할 사람',
-      context: '수학만 들어오삼',
-      likeCount:7,
-      commentCount: 5,
-      dateCreated: '2022/10/11',
-      writer: '틀니개',
-    },
-
-    {
-      title: '11시에 스터디 하실 분?',
-      context: '한 두시간 정도만 할 예정',
-      likeCount:11,
-      commentCount: 1,
-      dateCreated: '2023/04/08',
-      writer: '장히수',
-    },
-
-    {
-      title: '같이 밤 세울 사람',
-      context: '내일 시험기간이라서 같이 하실 분 구해여',
-      likeCount:32,
-      commentCount: 3,
-      dateCreated: '2021/06/22',
-      writer: '나야나',
-    },
-  ])
+  const [postsData, SetpostData] = useState<postsData[]>([])
     
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetListoption(e.target.value)
   }
 
-  const OnSortpostData = () =>{
 
+  //게시글 정렬
+  const OnSortpostData = () =>{
     const sortList = postsData.slice(0).sort((a, b) => {
        
       if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
-        return new Date(b.dateCreated).valueOf() - new Date(a.dateCreated).valueOf(); 
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(); 
       }
       else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount;
+    }
+    else if (listoption === 'COMMENT') {
+      return b.commentCount - a.commentCount
     }
     return 0;
   });
   SetpostData(sortList);
   }
+
+
+  //게시글 전체조회
+  const getPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
+
+
+     //게시글 검색
+     const [searchkeyword, SetSearchKeyword]= useState("")
+
+     const searchpost = async ()=> {
+       if(searchkeyword !==''){
+         try {
+           const access = localStorage.getItem('accessToken')
+           const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
+             params: {keyword : searchkeyword},
+             headers: { Authorization: `Bearer ${access}` },
+           })
+           SetpostData(response.data)
+         } catch (error) {}
+       } else if(searchkeyword ==''){
+         alert("검색어를 입력해주세요")
+         getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+       }}
+
+
   return (
       <div>
         <Header2/>
@@ -236,7 +270,10 @@ function StudyPostPage() {
                 <Btn >모집완료</Btn>
                 </BtnWrapper>
                 <SearchWrapper>
-                <Input type="text" placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)" />
+                <Search>
+                <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>
+                <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
+                </Search>
                 <SideWrapper>
                 <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
                 {Listoption.map((item) => (
@@ -251,19 +288,21 @@ function StudyPostPage() {
                 </SideWrapper>
                 </SearchWrapper>
               </Upper>
-              {postsData.map((post, index)=>(
-              <StudyPosts  key={index} to='/posts/study/${id}'>
+              {postsData
+              .filter(post => post.category === 'STUDY')
+              .map((post)=>(
+              <StudyPosts  key={post.post_id} to={`/posts/study/${post.post_id}`}>
                 <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
+                <Context>{post.content}</Context>
                 <FooterWrapper>
                   <LikeImg src={likeimg}/>
                   <Likecount>{post.likeCount}</Likecount>
                   <CommentImg src={commentImg} />
                   <CommentCount>{post.commentCount}</CommentCount>
                   <Divider src={DividerImg} />
-                  <DateCreated>{post.dateCreated}</DateCreated>
+                  <DateCreated>{post.createdAt}</DateCreated>
                   <Divider src={DividerImg} />
-                  <Writer>{post.writer}</Writer>
+                  <Writer>{post.nickname}</Writer>
                 </FooterWrapper>
               </StudyPosts>
               ))}

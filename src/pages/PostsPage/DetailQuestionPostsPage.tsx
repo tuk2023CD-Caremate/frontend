@@ -1,10 +1,33 @@
 import styled from 'styled-components'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+
+interface postsData {
+  post_id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+}
+
+interface CommentData{
+  post_id: number
+  nickname: string
+  content: string
+  comment_id: number
+  createdAt: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -188,23 +211,63 @@ const CommentProfile = styled.img`
 const CommentNickname = styled.div`
   font-size: 24px;
 `
+
+const CommentTime = styled.div`
+  font-size: 18px;
+color: #bdbdbd;
+`
+
+const CommentDelete = styled.div`
+display: flex;
+align-items:center;
+font-size: 18px;
+font-weight:bold;
+color: #bdbdbd;
+cursor: pointer;
+padding: 5px;
+`
+
+const Editinput = styled.input`
+  width: calc(100% - 140px);
+  padding-left: 20px;
+  margin-left: 45px;
+  margin-bottom: 5px;
+  font-size: 24px;
+  border: 1px solid;
+`
+const EditBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 40px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  cursor: pointer;
+`
+
+const CommentUpdate = styled.div`
+display: flex;
+align-items:center;
+font-size: 18px;
+font-weight:bold;
+color: #bdbdbd;
+cursor: pointer;
+padding: 5px;
+`
+
 const Comment = styled.div`
   width: calc(100% - 100px);
-  padding-left: 10px;
-  margin-left: 10px;
+  padding-left: 20px;
+  margin-left: 45px;
   margin-bottom: 5px;
   font-size: 24px;
 `
-const CommentTime = styled.div`
-  padding-left: 10px;
-  margin-left: 10px;
-  font-size: 18px;
-  color: #bdbdbd;
-`
+
 const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 80px);
+  width: calc(100% - 100px);
   height: 70px;
   border: 1px solid #d8d8d8;
 `
@@ -212,7 +275,6 @@ const InputWrapper = styled.div`
 const Input = styled.input`
 text-indent: 20px;
   background-color: #f8f8f8;
-  color: #d8d8d8;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
@@ -236,17 +298,154 @@ const Send = styled.div`
   cursor: pointer;
 `
 
-function PostPage() {
-  const posts = [
-    {
-      title: 'java 환경설정 어떻게 하나요?',
-      context: '한시간 째 하고 있는데 잘 안되네요ㅠㅠ',
-      likeCount:1,
-      commentCount: 3,
-      dateCreated: '2023/05/02',
-      writer: '정환코딩',
-    },
-  ]
+function DetailQuestionPostPage() {
+  const {post_id} = useParams();
+  const navigate = useNavigate();
+
+
+  //게시판 글 data
+  const [postsData, SetpostData] = useState<postsData>({
+    post_id: 0,
+    title: '',
+    content: '',
+    nickname: '',
+    createdAt: Date.toString(),
+    likeCount: 0,
+    commentCount: 0,
+    interests: '',
+    category: '',
+  })
+
+  //게시글 단건조회
+  const getPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
+  //게시글 삭제
+  const deletePost = async() =>{
+    if(window.confirm('게시글을 삭제할까요?')){
+      try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+      })
+      SetpostData(response.data)
+    } catch (error) {}
+    navigate('/posts/questions')
+    } 
+  }
+
+    //게시글 수정
+    const handlePostEdit =() =>{
+      if (window.confirm('게시글을 수정할까요?')) {
+        navigate('/posts/update/'+post_id)
+      }
+    }
+  
+
+  //댓글CRUD
+  const [content, SetContent]=useState('')
+  const [editcontent, setEditContent] = useState('')
+  const [commentData, setCommentData] = useState<CommentData[]>([])
+  
+
+//댓글 조회
+  const getComment = async() => {
+    try {
+    const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentData(response.data)
+    } catch (error) {}
+  }
+
+  
+  useEffect(() => {
+    getComment()
+  }, [commentData]) //변수가 달라질 때마다 getComment
+
+
+
+//댓글생성
+  const createComment = async() =>{
+    const comment = {
+      content: content,
+    }
+  
+    if(content != ''){
+      try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentData([...commentData, response.data])
+    } catch (error) {}
+    }SetContent('')
+  }
+
+  useEffect(() => {
+    createComment()
+  }, [])
+
+
+//댓글 삭제
+  const deleteCommet = async(post_id: number, comment_id: number) =>{
+    if(window.confirm('댓글을 삭제할까요?')){
+      try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
+      headers: { Authorization: `Bearer ${access}` },
+    })
+    setCommentData(response.data)
+    } catch (error) {}
+    } 
+  }
+
+  
+  //댓글수정
+  const [isediting, setIsEditing] = useState(0) //수정할 comment_id 초기화
+
+  const handleEdit = (comment_id:number) => {
+    setIsEditing(comment_id) //comment_id와 일치하는 댓글만 버튼 변경
+    setEditContent('')
+  }
+
+  const updateComment = async (post_id: number, comment_id: number) => {
+    const editcomment = {
+      content: editcontent,
+    }
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.put(
+        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, editcomment,
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      const updatedComments = commentData.map(comment => {
+        if(comment.comment_id === comment_id) {
+          return response.data;
+        } 
+        return comment;
+      });
+      setCommentData(updatedComments);
+    } catch (error) {}
+    setIsEditing(0) //comment_id 초기화
+  }
+  
+
   return (
     <div>
       <Header2 />
@@ -255,53 +454,82 @@ function PostPage() {
         <PostsBar />
         <PostWrapper>
           <PageTitle>질문게시판</PageTitle>
-          {posts.map((post, index) => (
-            <MainPostWrapper key={index}>
+            <MainPostWrapper>
               <Upper>
                 <UserWrapper>
                   <Profile src={ProfileImg} />
                   <NameWrapper>
-                    <Nickname>장희수</Nickname>
-                    <Time>20분전</Time>
+                    <Nickname>{postsData.nickname}</Nickname>
+                    <Time>{postsData.createdAt}</Time>
                   </NameWrapper>
                 </UserWrapper>
                 <ButtonWrapper>
-                  <Modify>수정</Modify>
-                  <Delete>삭제</Delete>
+                  <Modify onClick={handlePostEdit}>수정</Modify>
+                  <Delete onClick={deletePost}>삭제</Delete>
                 </ButtonWrapper>
               </Upper>
               <Lower>
-                <Title>{post.title}</Title>
-                <Context>{post.context}</Context>
+                <Title>{postsData.title}</Title>
+                <Context>{postsData.content}</Context>
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
                 <LikeImg src={likeimg} />
-                <Likecount>{post.likeCount}</Likecount>
+                <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
-                <CommentCount>{post.commentCount}</CommentCount>
+                <CommentCount>{postsData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
                 <LikeBtn>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
-          ))}
-          <CommentWrapper>
-            <CommentUpper>
-            <CommentUserWrapper>
-              <CommentProfile src={ProfileImg} />
-              <CommentNickname>장희수</CommentNickname>
-            </CommentUserWrapper>
-            </CommentUpper>
-            <Comment>틀니개씨 반가워요 스프링 장인이라고 들었어요</Comment>
-            <CommentTime>20분전</CommentTime>
-          </CommentWrapper>
+            {Array.isArray(commentData) && 
+            commentData.map((comments) => (
+            <CommentWrapper key={comments.comment_id}>
+              <CommentUpper>
+                <CommentUserWrapper>
+                  <CommentProfile src={ProfileImg} />
+                  <NameWrapper>
+                    <CommentNickname>{comments.nickname}</CommentNickname>
+                    <CommentTime>{comments.createdAt}</CommentTime>
+                  </NameWrapper>
+                </CommentUserWrapper>
+                <ButtonWrapper>
+                    <CommentDelete
+                      onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
+                      삭제
+                    </CommentDelete>
+                    {isediting === comments.comment_id ?  (
+                      <EditBtn onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
+                        완료
+                      </EditBtn>
+                    ) : (
+                      <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
+                    )}
+                  </ButtonWrapper>
+                </CommentUpper>
+                {isediting === comments.comment_id ? (
+                  <div>
+                    <Editinput
+                      type="text"
+                      value={editcontent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      placeholder={comments.content}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <Comment>{comments.content}</Comment>
+                  </div>
+                )}
+              </CommentWrapper>
+            ))}
           <InputWrapper>
-            <Input type='text' placeholder='댓글을 입력하세요'></Input>
-            <Send>작성</Send>
+            <Input type="text" placeholder="댓글을 입력하세요" value={content}  onChange={(e) => SetContent(e.target.value)}></Input>
+            <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>
       </Container>
     </div>
   )
 }
-export default PostPage
+export default DetailQuestionPostPage

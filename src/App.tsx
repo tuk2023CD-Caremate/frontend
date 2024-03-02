@@ -17,13 +17,15 @@ import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
 import SelectUser from './pages/OnlinePage/SelectUserPage'
+import UpdatePostsPage from "./pages/PostsPage/UpdatePostsPage";
+import StudyPage from "./pages/StudyPage"; 
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signIn" element={<SignUpPage />} />
 
         <Route path="/offline" element={<OfflinePage />} />
 
@@ -36,10 +38,11 @@ function App() {
         <Route path="/posts/questions" element={<QuestionPostsPage />} />
         <Route path="/posts/study" element={<StudyPostsPage />} />
 
-        <Route path="/posts/write" element={<WritingPostsPage />} />
-        <Route path="/posts/:id" element={<DetailMainPostsPage />} />
-        <Route path="/posts/study/:id" element={<DetailStudyPostsPage />} />
-        <Route path="/posts/questions/:id" element={<DetailQuestionsPostsPage />} />
+        <Route path="/posts/write" element={< WritingPostsPage/>} />
+        <Route path="/posts/update/:post_id" element={< UpdatePostsPage/>} />
+        <Route path="/posts/:post_id" element={< DetailMainPostsPage/>} />
+        <Route path="/posts/study/:post_id" element={< DetailStudyPostsPage/>} />
+        <Route path="/posts/questions/:post_id" element={< DetailQuestionsPostsPage/>} />
 
         <Route path="/study" element={<StudyPage />} />
 
