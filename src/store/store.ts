@@ -16,6 +16,7 @@ import { create } from 'zustand'
 //   },
 // }));
 
+/* api */
 interface ApiUrlState {
   apiUrl: string
   setApiUrl: (url: string) => void
@@ -24,4 +25,31 @@ export const useApiUrlStore = create<ApiUrlState>((set) => ({
   apiUrl: 'http://studymate-tuk.kro.kr:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
+}))
+
+/* 유저 리스트 */
+interface UserListState {
+  userList: UserList[]
+  setUserList: (userList: UserList[]) => void
+}
+
+interface UserList {
+  id: number
+  name: string
+  nickname: string
+  part: string
+  email: string
+  interests: string
+  blogUrl: string
+  publicRelations: string
+  job: string
+  heart: number
+  starAverage: number
+  solved: number
+  matchingCount: number
+}
+
+export const useUserListStore = create<UserListState>((set) => ({
+  userList: [],
+  setUserList: (userList) => set({ userList }),
 }))
