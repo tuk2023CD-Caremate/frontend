@@ -132,12 +132,6 @@ const StudyingTime = styled.div`
   font-weight: bold;
   color: #bdbdbd;
 `
-const ModalContainer = styled.div`
- display: flex;
- justify-content: center;
- align-items: center;
- border: 1px solid blue;
-`;
 
 function StudyPage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -187,11 +181,8 @@ function StudyPage() {
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>
-        <ModalContainer>
-            {modalOpen && <StudyPostingModal CloseModal={CloseModal} />}
-        </ModalContainer>
       </Container>
-      
+        {modalOpen && (<StudyPostingModal CloseModal={CloseModal} />)}
     </div>
   )
 }
