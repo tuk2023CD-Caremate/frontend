@@ -122,7 +122,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/login', {
+      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/login', {
         email: email,
         password: password,
       })
