@@ -125,6 +125,7 @@ export default function Login() {
     }
 
     try {
+
       const response = await axios.post(`${apiUrl}/login`, {
         email: email,
         password: password,

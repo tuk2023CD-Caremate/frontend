@@ -12,6 +12,7 @@ import MatingListPage from './pages/Mypage/MatingListPage'
 import ChatPage from './pages/ChatPage'
 import QuestionPostsPage  from "./pages/PostsPage/QuestionPostsPage";
 import WritingPostsPage from "./pages/PostsPage/WritingPostsPage";
+import UpdatePostsPage from "./pages/PostsPage/UpdatePostsPage";
 import DetailMainPostsPage from "./pages/PostsPage/DetailMainPostsPage";
 import DetailStudyPostsPage from "./pages/PostsPage/DetailStudyPostPage";  
 import DetailQuestionsPostsPage from "./pages/PostsPage/DetailQuestionPostsPage";  
@@ -22,7 +23,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signIn" element={<SignUpPage />} />
 
         <Route path="/offline" element={<OfflinePage />} />
         <Route path="/online" element={<OnlinePage />} />
@@ -34,9 +35,10 @@ function App() {
         <Route path="/posts/study" element={<StudyPostsPage />} />
 
         <Route path="/posts/write" element={< WritingPostsPage/>} />
-        <Route path="/posts/:id" element={< DetailMainPostsPage/>} />
-        <Route path="/posts/study/:id" element={< DetailStudyPostsPage/>} />
-        <Route path="/posts/questions/:id" element={< DetailQuestionsPostsPage/>} />
+        <Route path="/posts/update/:post_id" element={< UpdatePostsPage/>} />
+        <Route path="/posts/:post_id" element={< DetailMainPostsPage/>} />
+        <Route path="/posts/study/:post_id" element={< DetailStudyPostsPage/>} />
+        <Route path="/posts/questions/:post_id" element={< DetailQuestionsPostsPage/>} />
 
         <Route path="/study" element={<StudyPage />} />
 
