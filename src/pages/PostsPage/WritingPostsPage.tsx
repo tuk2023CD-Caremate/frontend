@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
 
 const Container = styled.div`
 display: flex;
@@ -115,26 +114,25 @@ const interestsList =[
   
 
 export default function WritingPostPage() {
-  const [title, SetTitle] = useState("")
-  const [content, SetContent] = useState("")
-  const [interests, SetInterests] = useState("")
-  const [category, SetCategory] = useState<string>('FREE');
+  const [title, SetTitle] = useState('')
+  const [content, SetContent] = useState('')
+  const [interests, SetInterests] = useState('')
+  const [category, SetCategory] = useState('')
 
   const navigate = useNavigate()
 
-  const OnTitleHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetTitle(e.target.value)
-  }
-  const OnContentHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetContent(e.target.value)
-  }
-  const OnIntereststHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetInterests(e.target.value)
-  }
 
 
-  const PostUpload = async (e: { preventDefault: () => void })  => {
-    e.preventDefault()
+  const CreatePost = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const postData= {
+      title: title,
+      content: content,
+      category: category,
+      interests: interests,
+      recruitmentStatus : true
+    };
     if (
       category === '' ||
       interests === '' ||
@@ -146,12 +144,9 @@ export default function WritingPostPage() {
     }
 
     try{
-      const response = await axios.post('http://localhost:8080/api/posts', {
-        category: category,
-        interests: interests,
-        title: title,
-        content: content,
-        recruitmentsStatus : false //스터디 모집여부에 대해 true,false -> 글작성할 때는 무조건 모집완료가 아니므로 false로 지정해놨는데 맞을까..
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/posts', postData, {
+        headers: { Authorization: `Bearer ${access}` },
       })
       navigate('/posts')
     }
@@ -159,7 +154,6 @@ export default function WritingPostPage() {
       alert('error')
     }
   }
-
 
   const BacktoPost = () => {
     navigate('/posts');
@@ -172,20 +166,20 @@ export default function WritingPostPage() {
           <Upper>
             <ButtonWrapper>
               <SelectBtn className={`btn ${category==='FREE' ? 'category':''}`}
-              onClick={()=>SetCategory('FREE')} value={category}>
+              onClick={()=>{SetCategory('FREE');}} value={category}>
                 자유게시판
               </SelectBtn>
-              <SelectBtn className={`btn ${category==='QUESTIONS' ? 'category':''}`}
-              onClick={()=>SetCategory('QUESTIONS')} value={category}>
+              <SelectBtn className={`btn ${category==='QUESTION' ? 'category':''}`}
+              onClick={()=>{SetCategory('QUESTION');}} value={category}>
                 질문게시판
               </SelectBtn>
               <SelectBtn className={`btn ${category==='STUDY' ? 'category':''}`}
-              onClick={()=>SetCategory('STUDY')} value={category}>
+              onClick={()=>{SetCategory('STUDY');}} value={category}>
                 스터디게시판
               </SelectBtn>
             </ButtonWrapper>
             <SerchWrapper>
-              <InterestsSelect value={interests} onChange={OnIntereststHandler}>
+              <InterestsSelect value={interests} onChange={(e) => SetInterests(e.target.value)}>
                 {interestsList.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
@@ -196,11 +190,11 @@ export default function WritingPostPage() {
             </SerchWrapper>
           </Upper>
             <PostWrapper>
-            <PostTitle type="text" placeholder="제목" value={title} onChange={OnTitleHandler}/>
-            <PostContent placeholder='게시글 내용을 입력하세요' value={content} onChange={OnContentHandler}/>
+            <PostTitle type="text" placeholder="제목" value={title} onChange={(e) => SetTitle(e.target.value)}/>
+            <PostContent placeholder='게시글 내용을 입력하세요' value={content} onChange={(e) => SetContent(e.target.value)}/>
             <FooterWrapper>
               <PostBtn onClick={BacktoPost}>취소</PostBtn>
-              <PostBtn className="post" onClick={PostUpload}>등록</PostBtn>
+              <PostBtn className="post" onClick={CreatePost}>등록</PostBtn>
             </FooterWrapper>
           </PostWrapper>
       </AllWrapper>

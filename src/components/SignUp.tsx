@@ -169,7 +169,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/signIn', {
+      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/signIn', {
         email: email,
         password: password,
         name: name,
