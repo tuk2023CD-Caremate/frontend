@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 type Prop = {
-  PostingCloseModal?: () => void
+  AddCloseModal?: () => void
 }
 
 const Container = styled.div`
@@ -15,6 +15,7 @@ const Container = styled.div`
   justify-content: center;
   background-color: rgba(255,255,255,0.15);
   backdrop-filter: blur(5px);
+
 `
 
 const Modal = styled.div`
@@ -62,16 +63,16 @@ height: 40px;
   cursor: pointer;
 `
 
-function StudyingPostingModal({ PostingCloseModal }: Prop) {
+function AddStudyModal({ AddCloseModal }: Prop) {
   return (
     <div>
       <Container>
           <Modal>
-              <Title>오늘 스터디를 기록해보세요 </Title>
+              <Title>추가할 스터디의 이름을 작성해주세요! </Title>
               <Textarea/>
               <BtnWrapper>
-                <Btn onClick={PostingCloseModal}>완료</Btn>
-                <Btn onClick={PostingCloseModal}>취소</Btn>
+                <Btn onClick={AddCloseModal}>완료</Btn>
+                <Btn onClick={AddCloseModal}>취소</Btn>
               </BtnWrapper>
           </Modal>
       </Container>
@@ -79,4 +80,4 @@ function StudyingPostingModal({ PostingCloseModal }: Prop) {
   )
 }
 
-export default StudyingPostingModal
+export default AddStudyModal
