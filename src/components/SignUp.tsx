@@ -155,6 +155,9 @@ export default function SignUp() {
   const onPartHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetPart(e.target.value)
   }
+  const onPhoneNumber = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setPhonenumber(e.target.value)
+  }
 
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -166,7 +169,8 @@ export default function SignUp() {
       nickname === '' ||
       password2 === '' ||
       part === '' ||
-      interests === ''
+      interests === '' ||
+      phonenumber ===''
     ) {
       alert(' 입력정보를 다시 확인해주세요.')
       return
@@ -219,6 +223,7 @@ export default function SignUp() {
             type="number"
             placeholder="전화번호"
             value={phonenumber}
+            onChange={onPhoneNumber}
           />
           <SelectBox>
             <RoleSelect value={part} onChange={onPartHandler}>
