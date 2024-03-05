@@ -18,7 +18,7 @@ import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
 import SelectUser from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from "./pages/PostsPage/UpdatePostsPage";
-import StudyPage from "./pages/StudyPage"; 
+
 
 function App() {
   return (
