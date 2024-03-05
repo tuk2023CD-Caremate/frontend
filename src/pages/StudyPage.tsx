@@ -3,7 +3,9 @@ import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
 import calender from '../assets/images/calender.png'
 import playIcon from '../assets/images/play.png'
+import stopIcon from '../assets/images/stop.png'
 import StudyPostingModal from '../components/StudyPostingModal'
+import AddStudyModal from '../components/AddStudyModal'
 import { useState } from 'react'
 
 const Container = styled.div`
@@ -134,15 +136,42 @@ const StudyingTime = styled.div`
 `
 
 function StudyPage() {
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [currentImg, setCurrentImg] = useState(playIcon)
+    const [time, setTime]=useState(0)
+    const [isRunning, setIsRunning]=useState(false)
+    const [postingmodalOpen, setPostingModalOpen] = useState(false)
+    const [addmodalOpen, setAddModalOpen] = useState(false)
+    const [interval, setIntervalId] = useState<number | undefined>(undefined); 
 
-  const OpenModal = () => {
-    setModalOpen(true)
-  }
-  const CloseModal = () => {
-    setModalOpen(false)
-  }
 
+    const ClickHandler = () => {
+        if (!isRunning) {
+            setCurrentImg(stopIcon); // 멈춤버튼 이미지로 변경
+            const interval = setInterval(() => {
+                setTime((prevTime) => prevTime + 1000);
+            }, 1000);
+            setIntervalId(interval); // interval 변수 업데이트
+            setIsRunning(true);
+        } else {
+            setCurrentImg(playIcon); // 재생버튼 이미지 변경
+            clearInterval(interval);
+            setIsRunning(false);
+        }
+    }
+
+    const PostingOpenModal = () => {
+        setPostingModalOpen(true)
+    }
+    const PostingCloseModal = () => {
+        setPostingModalOpen(false)
+    }
+    
+    const AddOpenModal = () => {
+        setAddModalOpen(true)
+    }
+    const AddCloseModal = () => {
+        setAddModalOpen(false)
+  }
   const studylist = [
     { id: 1, name: 'js 코딩', time: '00:00:00' },
     { id: 2, name: '영어 회화 공부', time: '00:00:00' },
@@ -158,23 +187,29 @@ function StudyPage() {
           <LeftWrapper>
             <TimeRecodingWrapper>
               <TodayText>오늘 총 공부 시간</TodayText>
-              <TotalTime>02:12:10</TotalTime>
+              <TotalTime> {`${('0' + Math.floor(time / 3600000)).slice(-2)}
+                    :${('0' + Math.floor((time / 60000) % 60)).slice(-2)}
+                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`
+                    }</TotalTime>
             </TimeRecodingWrapper>
             <Calender src={calender} />
           </LeftWrapper>
           <RightWrapper>
             <BtnWrapper>
-              <Btn>과목 추가</Btn>
+              <Btn onClick={AddOpenModal}>과목 추가</Btn>
             </BtnWrapper>
             <StudyListWrapper>
               {studylist.map((study) => (
                 <StudyList key={study.id}>
                   <IconWrapper>
-                    <StatusIcon src={playIcon} />
+                    <StatusIcon src={currentImg} onClick={ClickHandler}/>
                   </IconWrapper>
                   <ListInfoWrapper>
-                    <StudyName onClick={OpenModal}>{study.name}</StudyName>
-                    <StudyingTime>{study.time}</StudyingTime>
+                    <StudyName onClick={PostingOpenModal}>{study.name}</StudyName>
+                    <StudyingTime> {`${('0' + Math.floor(time / 3600000)).slice(-2)}
+                    :${('0' + Math.floor((time / 60000) % 60)).slice(-2)}
+                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`
+                    }</StudyingTime>
                   </ListInfoWrapper>
                 </StudyList>
               ))}
@@ -182,7 +217,8 @@ function StudyPage() {
           </RightWrapper>
         </StudyWrapper>
       </Container>
-        {modalOpen && (<StudyPostingModal CloseModal={CloseModal} />)}
+        {postingmodalOpen && (<StudyPostingModal PostingCloseModal={PostingCloseModal} />)}
+        {addmodalOpen && (<AddStudyModal AddCloseModal={AddCloseModal} />)}
     </div>
   )
 }
