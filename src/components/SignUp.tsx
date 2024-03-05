@@ -16,7 +16,7 @@ const SignUpWrapper = styled.div`
   align-items: center;
   width: 700px;
   height: 800px;
-  padding: 40px;
+  padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--Gray-03, #bdbdbd);
 `
@@ -28,7 +28,7 @@ const SignUpH2 = styled.h2`
   font-size: 46px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 40px;
 `
 
 const SignUpInput = styled.input`
@@ -124,6 +124,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassowrd2] = useState('')
+  const [phonenumber, setPhonenumber] = useState('')
   const [interests, SetInterests] = useState('')
   const [part, SetPart] = useState('')
 
@@ -154,6 +155,9 @@ export default function SignUp() {
   const onPartHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetPart(e.target.value)
   }
+  const onPhoneNumber = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setPhonenumber(e.target.value)
+  }
 
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -165,7 +169,8 @@ export default function SignUp() {
       nickname === '' ||
       password2 === '' ||
       part === '' ||
-      interests === ''
+      interests === '' ||
+      phonenumber ===''
     ) {
       alert(' 입력정보를 다시 확인해주세요.')
       return
@@ -213,6 +218,12 @@ export default function SignUp() {
             placeholder="비밀번호 확인"
             value={password2}
             onChange={onPassword2Handler}
+          />
+           <SignUpInput
+            type="number"
+            placeholder="전화번호"
+            value={phonenumber}
+            onChange={onPhoneNumber}
           />
           <SelectBox>
             <RoleSelect value={part} onChange={onPartHandler}>
