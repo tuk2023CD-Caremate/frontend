@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
-import calender from '../assets/images/calender.png'
 import playIcon from '../assets/images/play.png'
 import stopIcon from '../assets/images/stop.png'
 import StudyPostingModal from '../components/StudyPostingModal'
 import AddStudyModal from '../components/AddStudyModal'
+import Calendar from '../components/StudyCalendar.tsx'
 import { useState } from 'react'
 
 const Container = styled.div`
@@ -44,13 +44,6 @@ const TodayText = styled.div`
 const TotalTime = styled.div`
   font-size: 85px;
   font-weight: bold;
-`
-
-const Calender = styled.img`
-  display: flex;
-  width: 600px;
-  height: 500px;
-  margin-top: 20px;
 `
 
 const RightWrapper = styled.div`
@@ -192,7 +185,7 @@ function StudyPage() {
                     :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`
                     }</TotalTime>
             </TimeRecodingWrapper>
-            <Calender src={calender} />
+            <Calendar />
           </LeftWrapper>
           <RightWrapper>
             <BtnWrapper>
