@@ -15,7 +15,7 @@ const SignUpWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 700px;
-  height: 800px;
+  height: 730px;
   padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--Gray-03, #bdbdbd);
@@ -28,12 +28,16 @@ const SignUpH2 = styled.h2`
   font-size: 46px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 70px;
+`
+
+const InputWrap = styled.div`
+  display: flex;
 `
 
 const SignUpInput = styled.input`
   text-indent: 20px;
-  width: 600px;
+  width: 300px;
   height: 60px;
   box-sizing: border-box;
   background-color: #f8f8f8;
@@ -66,26 +70,26 @@ const InterestsSelect = styled.select`
   margin: 10px;
 `
 
-const Checkbox = styled.div`
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  font-size: 18px;
-`
+// const Checkbox = styled.div`
+//   margin: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   font-size: 18px;
+// `
 
-const AgreeCheck = styled.input`
-  width: 12px;
-  height: 12px;
-  background-color: #fff;
-  border: 1.5px solid gainsboro;
-  border-radius: 4px;
+// const AgreeCheck = styled.input`
+//   width: 12px;
+//   height: 12px;
+//   background-color: #fff;
+//   border: 1.5px solid gainsboro;
+//   border-radius: 4px;
 
-  &:checked {
-    //추후 check표시 이미지 추가
-    background-color: #650fa9;
-    border: 1px #650fa9 solid;
-  }
-`
+//   &:checked {
+//     //추후 check표시 이미지 추가
+//     background-color: #650fa9;
+//     border: 1px #650fa9 solid;
+//   }
+// `
 
 const SignUpSubmit = styled.button`
   width: 600px;
@@ -97,7 +101,7 @@ const SignUpSubmit = styled.button`
   text-align: center;
   font-size: 20px;
   font-weight: bold;
-  margin: 10px;
+  margin: 50px;
   &:active {
     background: #490e76;
   }
@@ -109,11 +113,11 @@ const partList = [
 ]
 
 const interestsList = [
-  { value: 'KOREAN', name: '국어' },
-  { value: 'MATH', name: '수학' },
-  { value: 'ENGLISH', name: '영어' },
-  { value: 'SCIENCE', name: '과학' },
   { value: 'PROGRAMMING', name: 'PROGRAMMING' },
+  { value: 'KOREAN', name: 'KOREAN' },
+  { value: 'MATH', name: 'MATH' },
+  { value: 'ENGLISH', name: 'ENGLISH' },
+  { value: 'SCIENCE', name: 'SCIENCE' },
 ]
 
 export default function SignUp() {
@@ -123,10 +127,12 @@ export default function SignUp() {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [password2, setPassowrd2] = useState('')
-  const [phonenumber, setPhonenumber] = useState('')
+  const [tel, setTel] = useState('')
   const [interests, SetInterests] = useState('')
   const [part, SetPart] = useState('')
+  const [blogurl, setBlogurl] = useState('')
+  const [PR, setPR] = useState('')
+  const [job, setJob] = useState('')
 
   const navigate = useNavigate()
 
@@ -145,9 +151,7 @@ export default function SignUp() {
   const onPassword1Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setPassword(e.target.value)
   }
-  const onPassword2Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setPassowrd2(e.target.value)
-  }
+
   const onInterestHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetInterests(e.target.value)
   }
@@ -155,8 +159,17 @@ export default function SignUp() {
   const onPartHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetPart(e.target.value)
   }
-  const onPhoneNumber = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setPhonenumber(e.target.value)
+  const onTel = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setTel(e.target.value)
+  }
+  const onBlogurl = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setBlogurl(e.target.value)
+  }
+  const onPR = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setPR(e.target.value)
+  }
+  const onJob = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setJob(e.target.value)
   }
 
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
@@ -167,12 +180,10 @@ export default function SignUp() {
       password === '' ||
       name === '' ||
       nickname === '' ||
-      password2 === '' ||
-      part === '' ||
-      interests === '' ||
-      phonenumber ===''
+      tel === '' ||
+      job === ''
     ) {
-      alert(' 입력정보를 다시 확인해주세요.')
+      alert('필수 정보를 입력해주세요.')
       return
     }
 
@@ -184,6 +195,10 @@ export default function SignUp() {
         nickname: nickname,
         part: part,
         interests: interests,
+        tel: tel,
+        blogUrl: blogurl,
+        publicRelations: PR,
+        job: job,
       })
 
       console.log(response.status)
@@ -191,6 +206,7 @@ export default function SignUp() {
       navigate('/login')
     } catch (error) {
       alert('회원가입에 실패했습니다.')
+      console.error
     }
   }
 
@@ -199,32 +215,50 @@ export default function SignUp() {
       <form onSubmit={onSignupHandler}>
         <SignUpWrapper>
           <SignUpH2>Sign up to StudyMate</SignUpH2>
-          <SignUpInput type="text" placeholder="이름" value={name} onChange={onNameHandler} />
-          <SignUpInput
-            type="text"
-            placeholder="닉네임"
-            value={nickname}
-            onChange={onNickNameHandler}
-          />
-          <SignUpInput type="email" placeholder="이메일" value={email} onChange={onEmailHandler} />
-          <SignUpInput
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={onPassword1Handler}
-          />
-          <SignUpInput
-            type="password"
-            placeholder="비밀번호 확인"
-            value={password2}
-            onChange={onPassword2Handler}
-          />
-           <SignUpInput
-            type="number"
-            placeholder="전화번호"
-            value={phonenumber}
-            onChange={onPhoneNumber}
-          />
+          <InputWrap>
+            <SignUpInput type="text" placeholder="이름" value={name} onChange={onNameHandler} />
+            <SignUpInput
+              type="text"
+              placeholder="닉네임"
+              value={nickname}
+              onChange={onNickNameHandler}
+            />
+          </InputWrap>
+          <InputWrap>
+            <SignUpInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
+            <SignUpInput
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={onPassword1Handler}
+            />
+          </InputWrap>
+          <InputWrap>
+            {/* <SignUpInput
+              type="password"
+              placeholder="비밀번호 확인"
+              value={password2}
+              onChange={onPassword2Handler}
+            /> */}
+            <SignUpInput
+              type="number"
+              placeholder="전화번호 ( - 제외 )"
+              value={tel}
+              onChange={onTel}
+            />
+            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+          </InputWrap>
+
+          <InputWrap>
+            <SignUpInput type="text" placeholder="PR ( 선택 )" value={PR} onChange={onPR} />
+            <SignUpInput
+              type="text"
+              placeholder="블로그 링크 ( 선택 )"
+              value={blogurl}
+              onChange={onBlogurl}
+            />
+          </InputWrap>
+
           <SelectBox>
             <RoleSelect value={part} onChange={onPartHandler}>
               {partList.map((item) => (
@@ -241,7 +275,7 @@ export default function SignUp() {
               ))}
             </InterestsSelect>
           </SelectBox>
-          <Checkbox>
+          {/* <Checkbox>
             <label>
               <AgreeCheck type="checkbox" /> 이용약관 동의 (필수)
             </label>
@@ -251,7 +285,7 @@ export default function SignUp() {
             <label>
               <AgreeCheck type="checkbox" /> 위치정보서비스 이용동의 (선택)
             </label>
-          </Checkbox>
+          </Checkbox> */}
           <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>
         </SignUpWrapper>
       </form>
