@@ -2,6 +2,15 @@ import Login from '../components/Login.tsx'
 import Header2 from '../components/Header2.tsx'
 import { styled } from 'styled-components'
 
+const WhiteSpace = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 109px;
+  padding-left: 140px;
+  padding-right: 140px;
+`
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -12,7 +21,7 @@ const Container = styled.div`
 function LoginPage() {
   return (
     <div>
-      <Header2 />
+      <WhiteSpace />
       <Container>
         <Login />
       </Container>
