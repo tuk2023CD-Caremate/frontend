@@ -1,6 +1,14 @@
-import Header2 from '../components/Header2.tsx'
 import SignUp from '../components/SignUp.tsx'
 import { styled } from 'styled-components'
+
+const WhiteSpace = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 109px;
+  padding-left: 140px;
+  padding-right: 140px;
+`
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +20,7 @@ const Container = styled.div`
 function SignUpPage() {
   return (
     <div>
-      <Header2 />
+      <WhiteSpace />
       <Container>
         <SignUp />
       </Container>
