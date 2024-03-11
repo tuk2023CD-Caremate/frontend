@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -331,6 +332,23 @@ function DetailQuestionPostPage() {
     getPost()
   }, [])
 
+  //게시글 수정&삭제 버튼이 작성자에게만 보이도록
+  const { apiUrl } = useApiUrlStore()
+  const [nickname, setNickname] = useState<string>('')
+
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickname(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
 
   //게시글 삭제
   const deletePost = async() =>{
@@ -357,6 +375,7 @@ function DetailQuestionPostPage() {
   //댓글CRUD
   const [content, SetContent]=useState('')
   const [editcontent, setEditContent] = useState('')
+  const [commentnickname, setCommentNickname] = useState<string>('')
   const [commentData, setCommentData] = useState<CommentData[]>([])
   
 
@@ -378,6 +397,23 @@ function DetailQuestionPostPage() {
 
 
 
+  //댓글 수정 &삭제 버튼 작성자만 보이게
+  const getcommentNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentNickname(response.data.nickname)
+      console.log(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getcommentNickname()
+  }, [])
+
+  
 //댓글생성
   const createComment = async() =>{
     const comment = {
@@ -463,10 +499,12 @@ function DetailQuestionPostPage() {
                     <Time>{postsData.createdAt}</Time>
                   </NameWrapper>
                 </UserWrapper>
-                <ButtonWrapper>
-                  <Modify onClick={handlePostEdit}>수정</Modify>
-                  <Delete onClick={deletePost}>삭제</Delete>
-                </ButtonWrapper>
+                {nickname ===postsData.nickname ?
+              <ButtonWrapper>
+                <Modify onClick={handlePostEdit}>수정</Modify>
+                <Delete onClick={deletePost}>삭제</Delete>
+              </ButtonWrapper> :
+              null}
               </Upper>
               <Lower>
                 <Title>{postsData.title}</Title>
@@ -493,6 +531,7 @@ function DetailQuestionPostPage() {
                     <CommentTime>{comments.createdAt}</CommentTime>
                   </NameWrapper>
                 </CommentUserWrapper>
+                {commentnickname === comments.nickname ?
                 <ButtonWrapper>
                     <CommentDelete
                       onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
@@ -506,6 +545,7 @@ function DetailQuestionPostPage() {
                       <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
                     )}
                   </ButtonWrapper>
+                  : null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (
                   <div>

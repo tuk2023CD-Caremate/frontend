@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -300,7 +301,6 @@ function DetailMainPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate()
 
-
   //게시판 글 data
   const [postsData, SetpostData] = useState<PostsData>({
     post_id: 0,
@@ -329,6 +329,24 @@ function DetailMainPostPage() {
     getPost()
   }, [])
 
+  //게시글 수정&삭제 버튼이 작성자에게만 보이도록
+  const { apiUrl } = useApiUrlStore()
+  const [nickname, setNickname] = useState<string>('')
+
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickname(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
+
   //게시글 삭제
   const deletePost = async () => {
     if (window.confirm('게시글을 삭제할까요?')) {
@@ -345,20 +363,19 @@ function DetailMainPostPage() {
       navigate('/posts')
     }
   }
-  
-    //게시글 수정
-  const handlePostEdit =() =>{
+
+  //게시글 수정
+  const handlePostEdit = () => {
     if (window.confirm('게시글을 수정할까요?')) {
-      navigate('/posts/update/'+post_id)
+      navigate('/posts/update/' + post_id)
     }
   }
-
 
   //댓글CRUD
   const [content, SetContent] = useState('')
   const [editcontent, setEditContent] = useState('')
+  const [commentnickname, setCommentNickname] = useState<string>('')
   const [commentData, setCommentData] = useState<CommentData[]>([])
-
 
   //댓글 조회
   const getComment = async () => {
@@ -377,6 +394,23 @@ function DetailMainPostPage() {
   useEffect(() => {
     getComment()
   }, [commentData]) //변수가 달라질 때마다 getComment
+
+//댓글 수정 &삭제 버튼 작성자만 보이게
+  const getcommentNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentNickname(response.data.nickname)
+      console.log(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getcommentNickname()
+  }, [])
+
 
   //댓글생성
   const createComment = async () => {
@@ -420,11 +454,10 @@ function DetailMainPostPage() {
     }
   }
 
-
   //댓글수정
   const [isediting, setIsEditing] = useState(0) //수정할 comment_id 초기화
 
-  const handleEdit = (comment_id:number) => {
+  const handleEdit = (comment_id: number) => {
     setIsEditing(comment_id) //comment_id와 일치하는 댓글만 버튼 변경
     setEditContent('')
   }
@@ -436,22 +469,22 @@ function DetailMainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, editcomment,
+        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`,
+        editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      const updatedComments = commentData.map(comment => {
-        if(comment.comment_id === comment_id) {
-          return response.data;
-        } 
-        return comment;
-      });
-      setCommentData(updatedComments);
+      const updatedComments = commentData.map((comment) => {
+        if (comment.comment_id === comment_id) {
+          return response.data
+        }
+        return comment
+      })
+      setCommentData(updatedComments)
     } catch (error) {}
     setIsEditing(0) //comment_id 초기화
   }
-  
 
   return (
     <div>
@@ -470,10 +503,12 @@ function DetailMainPostPage() {
                   <Time>{postsData.createdAt}</Time>
                 </NameWrapper>
               </UserWrapper>
+              {nickname ===postsData.nickname ?
               <ButtonWrapper>
                 <Modify onClick={handlePostEdit}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
-              </ButtonWrapper>
+              </ButtonWrapper> :
+              null}
             </Upper>
             <Lower>
               <Title>{postsData.title}</Title>
@@ -500,19 +535,24 @@ function DetailMainPostPage() {
                       <CommentTime>{comments.createdAt}</CommentTime>
                     </NameWrapper>
                   </CommentUserWrapper>
+                  {commentnickname === comments.nickname ?
                   <ButtonWrapper>
                     <CommentDelete
                       onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
                       삭제
                     </CommentDelete>
-                    {isediting === comments.comment_id ?  (
-                      <EditBtn onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
+                    {isediting === comments.comment_id ? (
+                      <EditBtn
+                        onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
                         완료
                       </EditBtn>
                     ) : (
-                      <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
+                      <CommentUpdate onClick={() => handleEdit(comments.comment_id)}>
+                        수정
+                      </CommentUpdate>
                     )}
                   </ButtonWrapper>
+                  :null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (
                   <div>
