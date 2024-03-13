@@ -3,6 +3,8 @@ import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
 import profileImg from '../assets/images/profile.png'
+import axios from 'axios'
+import { useApiUrlStore } from '../store/store'
 
 interface Content {
   content: string
@@ -107,8 +109,40 @@ const SendButton = styled.button`
   color: #ffffff;
   cursor: pointer;
 `
+const BtnWrap = styled.div`
+  display: flex;
+  margin-left: auto;
+  margin-right: 10px;
+`
+
+const ZoomLoginBtn = styled.button`
+  width: 120px;
+  height: 70px;
+  margin: 10px;
+  border-radius: 20px;
+  font-size: large;
+  font-weight: bold;
+  border: none;
+  background-color: #650fa9;
+  color: #ffffff;
+  cursor: pointer;
+`
+const CreateMeetingBtn = styled.button`
+  width: 120px;
+  height: 70px;
+  margin: 10px;
+  border-radius: 20px;
+  font-size: x-large;
+  font-weight: bold;
+  border: none;
+  background-color: #650fa9;
+  color: #ffffff;
+  cursor: pointer;
+`
 
 function Chat() {
+  const { apiUrl } = useApiUrlStore()
+
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
@@ -123,9 +157,46 @@ function Chat() {
     }
   }
 
+  const getAuth = async () => {
+    try {
+      window.open(
+        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2Fstudymate-tuk.kro.kr%3A8080%2Fapi%2Fmeeting%2FzoomApi',
+      )
+    } catch (error) {}
+  }
+
+  const getUrl = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/meeting/create`, {})
+
+      // console.log(response.data.start_url)
+      window.open(response.data.start_url)
+    } catch (error) {
+      alert('Zoom 로그인을 먼저 해주세요!')
+    }
+  }
+
+  const handleZoomLogin = async () => {
+    try {
+      getAuth()
+    } catch (error) {
+      // 에러 처리
+    }
+  }
+
+  const handleCreatMeeting = async () => {
+    try {
+      getUrl()
+    } catch (error) {}
+  }
+
   return (
     <div>
       <Container>
+        <BtnWrap>
+          <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
+          <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
+        </BtnWrap>
         <ChatWrap>
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} userName="user">
