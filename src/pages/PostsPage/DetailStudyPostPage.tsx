@@ -321,7 +321,7 @@ function DetailStudyPostPage() {
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -356,7 +356,7 @@ function DetailStudyPostPage() {
     if(window.confirm('게시글을 삭제할까요?')){
       try{
       const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -384,7 +384,7 @@ function DetailStudyPostPage() {
   const getComment = async() => {
     try {
     const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
@@ -422,7 +422,7 @@ function DetailStudyPostPage() {
     if(content != ''){
       try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
+      const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`,comment, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
@@ -441,7 +441,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
     if(window.confirm('댓글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
-        const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
+        const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
          
           headers: { Authorization: `Bearer ${access}` },
         })
@@ -465,7 +465,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, editcomment,
+        `${apiUrl}/posts/${post_id}/comments/${comment_id}`, editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },
         },

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 
 const Container = styled.div`
@@ -118,7 +119,7 @@ export default function WritingPostPage() {
   const [content, SetContent] = useState('')
   const [interests, SetInterests] = useState('')
   const [category, SetCategory] = useState('')
-
+  const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
 
@@ -145,7 +146,7 @@ export default function WritingPostPage() {
 
     try{
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post('http://studymate-tuk.kro.kr:8080/api/posts', postData, {
+      const response = await axios.post(`${apiUrl}/posts`, postData, {
         headers: { Authorization: `Bearer ${access}` },
       })
       navigate('/posts')

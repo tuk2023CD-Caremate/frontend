@@ -318,7 +318,7 @@ function DetailMainPostPage() {
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -353,7 +353,7 @@ function DetailMainPostPage() {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(
-          `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`,
+          `${apiUrl}/posts/${post_id}`,
           {
             headers: { Authorization: `Bearer ${access}` },
           },
@@ -382,7 +382,7 @@ function DetailMainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,
+        `${apiUrl}/posts/${post_id}/comments`,
         {
           headers: { Authorization: `Bearer ${access}` },
         },
@@ -422,7 +422,7 @@ function DetailMainPostPage() {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.post(
-          `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,
+          `${apiUrl}/posts/${post_id}/comments`,
           comment,
           {
             headers: { Authorization: `Bearer ${access}` },
@@ -444,7 +444,7 @@ function DetailMainPostPage() {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(
-          `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`,
+          `${apiUrl}/posts/${post_id}/comments/${comment_id}`,
           {
             headers: { Authorization: `Bearer ${access}` },
           },
@@ -469,7 +469,7 @@ function DetailMainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`,
+        `${apiUrl}/posts/${post_id}/comments/${comment_id}`,
         editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },

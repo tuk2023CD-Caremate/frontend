@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 
 interface PostsData {
@@ -143,13 +144,14 @@ function UpdatePostPage() {
   const [interests, SetInterests] = useState(postsData.interests)
   const [category, SetCategory] = useState(postsData.category)
   const { post_id } = useParams()
+  const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
 
   useEffect(() => {
     const getPost = async () => {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -185,7 +187,7 @@ function UpdatePostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`,
+        `${apiUrl}/posts/${post_id}`,
         editcontent,
         {
           headers: { Authorization: `Bearer ${access}` },
