@@ -1,5 +1,5 @@
 import Header2 from '../../components/Header2.tsx'
-import MypageBar from '../../components/sidebar/MypageBar.tsx'
+import MypageBar from '../../components/sidebar/Mypagebar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
