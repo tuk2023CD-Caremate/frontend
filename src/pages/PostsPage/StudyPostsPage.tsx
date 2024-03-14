@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx';
 import Navbar2 from '../../components/Navbar2.tsx';
@@ -193,6 +194,7 @@ const Listoption =[
 
 function StudyPostPage() {
 
+  const { apiUrl } = useApiUrlStore()
   const [listoption, SetListoption] = useState("")
   const [postsData, SetpostData] = useState<postsData[]>([])
     
@@ -224,7 +226,7 @@ function StudyPostPage() {
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get('http://studymate-tuk.kro.kr:8080/api/posts', {
+      const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -245,7 +247,7 @@ function StudyPostPage() {
        if(searchkeyword !==''){
          try {
            const access = localStorage.getItem('accessToken')
-           const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/search`, {
+           const response = await axios.get(`${apiUrl}/posts/search`, {
              params: {keyword : searchkeyword},
              headers: { Authorization: `Bearer ${access}` },
            })

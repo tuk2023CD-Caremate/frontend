@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -320,7 +321,7 @@ function DetailStudyPostPage() {
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -331,12 +332,31 @@ function DetailStudyPostPage() {
     getPost()
   }, [])
 
+    //게시글 수정&삭제 버튼이 작성자에게만 보이도록
+    const { apiUrl } = useApiUrlStore()
+    const [nickname, setNickname] = useState<string>('')
+  
+    const getNickname = async () => {
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(`${apiUrl}/user`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setNickname(response.data.nickname)
+      } catch (error) {}
+    }
+  
+    useEffect(() => {
+      getNickname()
+    }, [])
+  
+
   //게시글 삭제
   const deletePost = async() =>{
     if(window.confirm('게시글을 삭제할까요?')){
       try{
       const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}`, {
+      const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
@@ -356,6 +376,7 @@ function DetailStudyPostPage() {
   //댓글CRUD
   const [content, SetContent] = useState('')
   const [editcontent, setEditContent] = useState('')
+  const [commentnickname, setCommentNickname] = useState<string>('')
   const [commentData, setCommentData] = useState<CommentData[]>([])
   
 
@@ -363,7 +384,7 @@ function DetailStudyPostPage() {
   const getComment = async() => {
     try {
     const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`, {
+      const response = await axios.get(`${apiUrl}/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
@@ -375,6 +396,22 @@ function DetailStudyPostPage() {
   }, [commentData]) //변수가 달라질 때마다 getComment
 
 
+  //댓글 수정 &삭제 버튼 작성자만 보이게
+  const getcommentNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentNickname(response.data.nickname)
+      console.log(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getcommentNickname()
+  }, [])
+  
 
 //댓글생성
   const createComment = async() =>{
@@ -385,7 +422,7 @@ function DetailStudyPostPage() {
     if(content != ''){
       try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments`,comment, {
+      const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`,comment, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
@@ -404,7 +441,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
     if(window.confirm('댓글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
-        const response = await axios.delete(`http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, {
+        const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
          
           headers: { Authorization: `Bearer ${access}` },
         })
@@ -428,7 +465,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `http://studymate-tuk.kro.kr:8080/api/posts/${post_id}/comments/${comment_id}`, editcomment,
+        `${apiUrl}/posts/${post_id}/comments/${comment_id}`, editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },
         },
@@ -462,10 +499,12 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
                     <Time>{postsData.createdAt}</Time>
                   </NameWrapper>
                 </UserWrapper>
+                {nickname ===postsData.nickname ?
                 <ButtonWrapper>
                 <Modify onClick={handlePostEdit}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
-              </ButtonWrapper>
+              </ButtonWrapper> :
+              null}
               </Upper>
               <Lower>
                 <Title>{postsData.title}</Title>
@@ -492,6 +531,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
                     <CommentTime>{comments.createdAt}</CommentTime>
                 </NameWrapper>
               </CommentUserWrapper>
+              {commentnickname === comments.nickname ?
               <ButtonWrapper>
                     <CommentDelete
                       onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
@@ -505,6 +545,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
                       <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
                     )}
                   </ButtonWrapper>
+                  : null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (
                   <div>
