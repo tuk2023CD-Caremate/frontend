@@ -147,16 +147,25 @@ function Chat() {
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
+  const chatRef = useRef<HTMLDivElement>(null)
+
   const sendMessage = (messageContent: string) => {
     if (messageContent.trim() !== '') {
       const newMessage: Content = {
         content: messageContent,
-        sender: 'user', // Assuming the user is the sender
+        sender: 'user',
       }
 
       setMessages([...messages, newMessage])
       setInputMessage('')
     }
+  }
+
+  // 메세지 입력시 스크롤 아래로 이동
+  if (chatRef.current) {
+    setTimeout(() => {
+      chatRef.current!.scrollTop = chatRef.current!.scrollHeight
+    }, 0)
   }
 
   const getAuth = async () => {
@@ -170,10 +179,8 @@ function Chat() {
   const getUrl = async () => {
     try {
       const response = await axios.get(`${apiUrl}/meeting/create`, {})
-
-      window.open(response.data.start_url)
       const joinUrl = response.data.join_url
-      // joinUrl을 메시지로 전송하여 채팅창에 보여주기
+      window.open(response.data.start_url)
       sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`)
       console.log(response.data)
     } catch (error) {
@@ -202,7 +209,7 @@ function Chat() {
           <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
           <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
         </BtnWrap>
-        <ChatWrap>
+        <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} userName="user">
               <Messages sender={message.sender} userName="user">
