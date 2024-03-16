@@ -202,6 +202,12 @@ function Chat() {
     } catch (error) {}
   }
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage(inputMessage)
+    }
+  }
+
   return (
     <div>
       <Container>
@@ -224,6 +230,7 @@ function Chat() {
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
           <SendButton onClick={() => sendMessage(inputMessage)}>전송</SendButton>
         </InputWrap>
