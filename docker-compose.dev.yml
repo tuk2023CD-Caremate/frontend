@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    volumes:
+      - .:/frontend/
+      - /frontend/node_modules
+    networks:
+      - study_mate
+    tty: true
+    stdin_open: true
+
+networks:
+  study_mate:
+    driver: bridge
