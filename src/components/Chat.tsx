@@ -146,12 +146,13 @@ function Chat() {
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
-  const sendMessage = () => {
-    if (inputMessage.trim() !== '') {
+  const sendMessage = (messageContent: string) => {
+    if (messageContent.trim() !== '') {
       const newMessage: Content = {
-        content: inputMessage,
+        content: messageContent,
         sender: 'user', // Assuming the user is the sender
       }
+
       setMessages([...messages, newMessage])
       setInputMessage('')
     }
@@ -169,8 +170,11 @@ function Chat() {
     try {
       const response = await axios.get(`${apiUrl}/meeting/create`, {})
 
-      // console.log(response.data.start_url)
       window.open(response.data.start_url)
+      const joinUrl = response.data.join_url
+      // joinUrl을 메시지로 전송하여 채팅창에 보여주기
+      sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`)
+      console.log(response.data)
     } catch (error) {
       alert('Zoom 로그인을 먼저 해주세요!')
     }
@@ -213,7 +217,7 @@ function Chat() {
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
           />
-          <SendButton onClick={sendMessage}>전송</SendButton>
+          <SendButton onClick={() => sendMessage(inputMessage)}>전송</SendButton>
         </InputWrap>
       </Container>
     </div>
