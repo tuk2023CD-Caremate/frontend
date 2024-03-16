@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
@@ -66,9 +66,10 @@ const Profile = styled.img<ProfileProps>`
 
 const Messages = styled.div<MessagesProps>`
   display: flex;
-  max-width: 80%;
-  padding: 30px;
-  height: 10px;
+  max-width: 40%;
+  padding: 20px;
+  margin: 10px;
+  height: auto;
   justify-content: center;
   align-items: center;
   background: ${(props) =>
