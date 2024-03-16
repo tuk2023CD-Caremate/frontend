@@ -162,11 +162,11 @@ function Chat() {
   }
 
   // 메세지 입력시 스크롤 아래로 이동
-  if (chatRef.current) {
-    setTimeout(() => {
-      chatRef.current!.scrollTop = chatRef.current!.scrollHeight
-    }, 0)
-  }
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }, [messages])
 
   const getAuth = async () => {
     try {
