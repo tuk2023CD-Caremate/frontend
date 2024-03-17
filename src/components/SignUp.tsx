@@ -15,7 +15,7 @@ const SignUpWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 700px;
-  height: 730px;
+  height: 850px;
   padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--Gray-03, #bdbdbd);
@@ -29,6 +29,7 @@ const SignUpH2 = styled.h2`
   font-weight: bold;
   text-align: center;
   margin-bottom: 70px;
+  margin-top: 20px;
 `
 
 const InputWrap = styled.div`
@@ -44,6 +45,42 @@ const SignUpInput = styled.input`
   border-radius: 10px;
   margin: 10px;
   font-size: 20px;
+`
+
+const BtnWrap = styled.div`
+  display: flex;
+  width: 300px;
+  height: 60px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 10px;
+  font-size: 20px;
+  justify-content: start;
+`
+
+const SendNumBtn = styled.button`
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background-color: #650fa9;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+`
+
+const VerifyBtn = styled.button`
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background-color: #650fa9;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
 `
 
 const SelectBox = styled.div`
@@ -127,6 +164,7 @@ export default function SignUp() {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
   const [tel, setTel] = useState('')
   const [interests, SetInterests] = useState('')
   const [part, SetPart] = useState('')
@@ -150,6 +188,10 @@ export default function SignUp() {
 
   const onPassword1Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setPassword(e.target.value)
+  }
+
+  const onPassword2Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setPassword2(e.target.value)
   }
 
   const onInterestHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -226,27 +268,33 @@ export default function SignUp() {
           </InputWrap>
           <InputWrap>
             <SignUpInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
+            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+          </InputWrap>
+          <InputWrap>
             <SignUpInput
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={onPassword1Handler}
             />
-          </InputWrap>
-          <InputWrap>
-            {/* <SignUpInput
+            <SignUpInput
               type="password"
               placeholder="비밀번호 확인"
               value={password2}
               onChange={onPassword2Handler}
-            /> */}
+            />
+          </InputWrap>
+          <InputWrap>
             <SignUpInput
               type="number"
               placeholder="전화번호 ( - 제외 )"
               value={tel}
               onChange={onTel}
             />
-            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+            <BtnWrap>
+              <SendNumBtn>인증번호 발송</SendNumBtn>
+              <VerifyBtn>인증번호 확인</VerifyBtn>
+            </BtnWrap>
           </InputWrap>
 
           <InputWrap>
