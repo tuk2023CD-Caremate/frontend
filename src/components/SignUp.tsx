@@ -179,6 +179,7 @@ export default function SignUp() {
   const [PR, setPR] = useState('')
   const [job, setJob] = useState('')
   const [authNum, setAuthNum] = useState('')
+  const [isAuth, setIsAuth] = useState(false)
 
   const navigate = useNavigate()
 
@@ -238,6 +239,9 @@ export default function SignUp() {
       job === ''
     ) {
       alert('필수 정보를 입력해주세요.')
+      return
+    } else if (isAuth === false) {
+      alert('휴대폰 번호 인증을 해주세요.')
       return
     }
 
@@ -304,6 +308,7 @@ export default function SignUp() {
       })
 
       if (response.status === 200) {
+        setIsAuth(true)
         alert('인증되었습니다.')
       }
     } catch (error) {
