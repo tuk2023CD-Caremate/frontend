@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
@@ -66,9 +66,10 @@ const Profile = styled.img<ProfileProps>`
 
 const Messages = styled.div<MessagesProps>`
   display: flex;
-  max-width: 80%;
-  padding: 30px;
-  height: 10px;
+  max-width: 40%;
+  padding: 20px;
+  margin: 10px;
+  height: auto;
   justify-content: center;
   align-items: center;
   background: ${(props) =>
@@ -146,16 +147,26 @@ function Chat() {
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
-  const sendMessage = () => {
-    if (inputMessage.trim() !== '') {
+  const chatRef = useRef<HTMLDivElement>(null)
+
+  const sendMessage = (messageContent: string) => {
+    if (messageContent.trim() !== '') {
       const newMessage: Content = {
-        content: inputMessage,
-        sender: 'user', // Assuming the user is the sender
+        content: messageContent,
+        sender: 'user',
       }
+
       setMessages([...messages, newMessage])
       setInputMessage('')
     }
   }
+
+  // 메세지 입력시 스크롤 아래로 이동
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }, [messages])
 
   const getAuth = async () => {
     try {
@@ -168,9 +179,10 @@ function Chat() {
   const getUrl = async () => {
     try {
       const response = await axios.get(`${apiUrl}/meeting/create`, {})
-
-      // console.log(response.data.start_url)
+      const joinUrl = response.data.join_url
       window.open(response.data.start_url)
+      sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`)
+      console.log(response.data)
     } catch (error) {
       alert('Zoom 로그인을 먼저 해주세요!')
     }
@@ -190,6 +202,12 @@ function Chat() {
     } catch (error) {}
   }
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage(inputMessage)
+    }
+  }
+
   return (
     <div>
       <Container>
@@ -197,7 +215,7 @@ function Chat() {
           <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
           <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
         </BtnWrap>
-        <ChatWrap>
+        <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} userName="user">
               <Messages sender={message.sender} userName="user">
@@ -212,8 +230,9 @@ function Chat() {
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
-          <SendButton onClick={sendMessage}>전송</SendButton>
+          <SendButton onClick={() => sendMessage(inputMessage)}>전송</SendButton>
         </InputWrap>
       </Container>
     </div>

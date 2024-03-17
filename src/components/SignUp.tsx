@@ -15,7 +15,7 @@ const SignUpWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 700px;
-  height: 730px;
+  height: 850px;
   padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--Gray-03, #bdbdbd);
@@ -29,6 +29,7 @@ const SignUpH2 = styled.h2`
   font-weight: bold;
   text-align: center;
   margin-bottom: 70px;
+  margin-top: 20px;
 `
 
 const InputWrap = styled.div`
@@ -44,6 +45,49 @@ const SignUpInput = styled.input`
   border-radius: 10px;
   margin: 10px;
   font-size: 20px;
+`
+
+const PhoneWrap = styled.div`
+  display: flex;
+  width: 300px;
+  height: 60px;
+  box-sizing: border-box;
+  margin: 10px;
+`
+
+const SendNumBtn = styled.button`
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background-color: #650fa9;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+`
+
+const PhoneInput = styled.input`
+  text-indent: 20px;
+  width: 250px;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  font-size: 20px;
+  margin-right: 10px;
+`
+
+const VerifyBtn = styled.button`
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background-color: #650fa9;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
 `
 
 const SelectBox = styled.div`
@@ -127,12 +171,15 @@ export default function SignUp() {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
   const [tel, setTel] = useState('')
-  const [interests, SetInterests] = useState('')
-  const [part, SetPart] = useState('')
+  const [interests, SetInterests] = useState('PROGRAMMING')
+  const [part, SetPart] = useState('MENTOR')
   const [blogurl, setBlogurl] = useState('')
   const [PR, setPR] = useState('')
   const [job, setJob] = useState('')
+  const [authNum, setAuthNum] = useState('')
+  const [isAuth, setIsAuth] = useState(false)
 
   const navigate = useNavigate()
 
@@ -150,6 +197,10 @@ export default function SignUp() {
 
   const onPassword1Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setPassword(e.target.value)
+  }
+
+  const onPassword2Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setPassword2(e.target.value)
   }
 
   const onInterestHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -172,6 +223,10 @@ export default function SignUp() {
     setJob(e.target.value)
   }
 
+  const onAuthNum = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setAuthNum(e.target.value)
+  }
+
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
@@ -184,6 +239,9 @@ export default function SignUp() {
       job === ''
     ) {
       alert('필수 정보를 입력해주세요.')
+      return
+    } else if (isAuth === false) {
+      alert('휴대폰 번호 인증을 해주세요.')
       return
     }
 
@@ -210,6 +268,55 @@ export default function SignUp() {
     }
   }
 
+  // 인증번호 발송 api 요청
+  const sendAuthNum = async (e: { preventDefault: () => void }) => {
+    e.preventDefault() // 폼 제출 방지
+
+    if (tel === '') {
+      alert('전화번호를 입력해주세요.')
+      return
+    }
+
+    try {
+      const response = await axios.post(`${apiUrl}/signIn/message`, {
+        tel: tel,
+      })
+
+      if (response.status === 200) {
+        alert('인증번호가 발송되었습니다.')
+      } else {
+        alert('휴대폰 번호 11자리를 입력해주세요')
+      }
+    } catch (error) {
+      console.error('Error : ', error)
+      alert('휴대폰 번호 11자리를 입력해주세요')
+    }
+  }
+
+  // 인증번호 검증 api 요청
+  const verifyAuthNum = async (e: { preventDefault: () => void }) => {
+    e.preventDefault() // 폼 제출 방지
+
+    if (authNum === '') {
+      alert('인증번호를 입력해주세요.')
+      return
+    }
+    try {
+      const response = await axios.post(`${apiUrl}/signIn/message/verify`, {
+        phoneNumber: tel,
+        randomNumber: authNum,
+      })
+
+      if (response.status === 200) {
+        setIsAuth(true)
+        alert('인증되었습니다.')
+      }
+    } catch (error) {
+      console.error('Error : ', error)
+      alert('잘못된 인증번호 입니다.')
+    }
+  }
+
   return (
     <Container>
       <form onSubmit={onSignupHandler}>
@@ -226,27 +333,41 @@ export default function SignUp() {
           </InputWrap>
           <InputWrap>
             <SignUpInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
+            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+          </InputWrap>
+          <InputWrap>
             <SignUpInput
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={onPassword1Handler}
             />
-          </InputWrap>
-          <InputWrap>
-            {/* <SignUpInput
+            <SignUpInput
               type="password"
               placeholder="비밀번호 확인"
               value={password2}
               onChange={onPassword2Handler}
-            /> */}
-            <SignUpInput
-              type="number"
-              placeholder="전화번호 ( - 제외 )"
-              value={tel}
-              onChange={onTel}
             />
-            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+          </InputWrap>
+          <InputWrap>
+            <PhoneWrap>
+              <PhoneInput
+                type="number"
+                placeholder="전화번호 ( - 제외 )"
+                value={tel}
+                onChange={onTel}
+              />
+              <SendNumBtn onClick={sendAuthNum}>인증번호 발송</SendNumBtn>
+            </PhoneWrap>
+            <PhoneWrap>
+              <PhoneInput
+                type="number"
+                placeholder="인증번호"
+                value={authNum}
+                onChange={onAuthNum}
+              />
+              <VerifyBtn onClick={verifyAuthNum}>인증번호 확인</VerifyBtn>
+            </PhoneWrap>
           </InputWrap>
 
           <InputWrap>
