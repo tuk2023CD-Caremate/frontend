@@ -3,10 +3,22 @@ import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
 import playIcon from '../assets/images/play.png'
 import stopIcon from '../assets/images/stop.png'
-import StudyPostingModal from '../components/StudyPostingModal'
+import StudyPostingModal from '../components/StudyPostingModal.tsx'
 import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useApiUrlStore } from '../store/store.ts'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+
+interface studyData {
+  id: number
+  content: string
+  studyClass: string
+  starttime: string
+  endtime: string
+  entiretime: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -54,24 +66,34 @@ const RightWrapper = styled.div`
   margin-top: 30px;
 `
 
+const StudyingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 800px;
+  margin-top: 80px;
+`
+const Study = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const BtnWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  width: 250px;
-  height: 80px;
-  padding-bottom: 30px;
 `
-const Btn = styled.div`
+
+const WriteBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 80px;
-  font-size: 32px;
+  width: 100px;
+  height: 60px;
+  font-size: 28px;
   font-weight: bold;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  margin-right: 20px;
   cursor: pointer;
 `
 const StudyListWrapper = styled.div`
@@ -80,14 +102,16 @@ const StudyListWrapper = styled.div`
   align-items: center;
   width: 800px;
   min-height: 550px;
-  padding: 20px;
+  margin-top: 30px;
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
+  border-top: 1px solid #bdbdbd;
 `
 
-const StudyList = styled.div`
+const StudyList = styled(Link)`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 750px;
   height: 110px;
   border-bottom: 1px solid #bdbdbd;
@@ -96,6 +120,18 @@ const StudyList = styled.div`
 const IconWrapper = styled.div`
   width: 80px;
   height: 80px;
+  margin-right: 20px;
+`
+const AddStudy = styled.select`
+  display: flex;
+  align-items: center;
+  width: 150px;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 15px;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  cursor: pointer;
 `
 
 const StatusIcon = styled.img`
@@ -106,14 +142,15 @@ const StatusIcon = styled.img`
 const ListInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 650px;
-  height: 80px;
-  padding: 15px;
+  height: 90px;
 `
 
 const StudyName = styled.div`
   display: flex;
   align-items: center;
+  width: 300px;
   font-size: 36px;
   font-weight: bold;
   padding: 5px;
@@ -124,52 +161,100 @@ const StudyingTime = styled.div`
   align-items: center;
   margin-right: 20px;
   font-size: 36px;
-  font-weight: bold;
   color: #bdbdbd;
 `
+const DeleteBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  font-size: 28px;
+  font-weight: bold;
+  border: 0.5px solid #bdbdbd;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  cursor: pointer;
+`
+
+const interestsList = [
+  { value: 'KOREAN', name: '국어' },
+  { value: 'MATH', name: '수학' },
+  { value: 'ENGLISH', name: '영어' },
+  { value: 'SCIENCE', name: '과학' },
+  { value: 'PROGRAMMING', name: '코딩' },
+]
 
 function StudyPage() {
-    const [currentImg, setCurrentImg] = useState(playIcon)
-    const [time, setTime]=useState(0)
-    const [isRunning, setIsRunning]=useState(false)
-    const [postingmodalOpen, setPostingModalOpen] = useState(false)
-    const [addmodalOpen, setAddModalOpen] = useState(false)
-    const [interval, setIntervalId] = useState<number | undefined>(undefined); 
+  //스탑워치
+  const [currentImg, setCurrentImg] = useState(playIcon)
+  const [time, setTime] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
 
+  //모달창
+  const [postingmodalOpen, setPostingModalOpen] = useState(false)
+  const [addmodalOpen, setAddModalOpen] = useState(false)
 
-    const ClickHandler = () => {
-        if (!isRunning) {
-            setCurrentImg(stopIcon); // 멈춤버튼 이미지로 변경
-            const interval = setInterval(() => {
-                setTime((prevTime) => prevTime + 1000);
-            }, 1000);
-            setIntervalId(interval); // interval 변수 업데이트
-            setIsRunning(true);
-        } else {
-            setCurrentImg(playIcon); // 재생버튼 이미지 변경
-            clearInterval(interval);
-            setIsRunning(false);
-        }
-    }
+  //props
+  const [studyClass, setStudyClass] = useState('');
+  const[starttime, setStartTime]=useState(new Date())
+  const[endtime, setEndTime]=useState(new Date())
+  const[entiretime, setEntireTime]=useState('')
 
-    const PostingOpenModal = () => {
-        setPostingModalOpen(true)
+  const [interval, setIntervalId] = useState<number | undefined>(undefined)
+  const { apiUrl } = useApiUrlStore()
+
+  const [studyData, SetstudyData] = useState<studyData[]>([])
+
+  
+  const ClickHandler = () => {
+    if (!isRunning) {
+      setCurrentImg(stopIcon) // 멈춤버튼 이미지로 변경
+      setStartTime(new Date())
+      const interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1000)
+      }, 1000)
+      setIntervalId(interval) // interval 변수 업데이트
+      setEndTime(new Date())
+      setIsRunning(true)
+    } else {
+      setCurrentImg(playIcon) // 재생버튼 이미지 변경
+      clearInterval(interval)
+      setIsRunning(false)
     }
-    const PostingCloseModal = () => {
-        setPostingModalOpen(false)
-    }
-    
-    const AddOpenModal = () => {
-        setAddModalOpen(true)
-    }
-    const AddCloseModal = () => {
-        setAddModalOpen(false)
+    console.log(starttime)
+    console.log(endtime)
   }
-  const studylist = [
-    { id: 1, name: 'js 코딩', time: '00:00:00' },
-    { id: 2, name: '영어 회화 공부', time: '00:00:00' },
-    { id: 3, name: '졸업 작품 UI', time: '02:12:10' },
-  ]
+
+  const PostingOpenModal = () => {
+    setPostingModalOpen(true)
+  }
+  const PostingCloseModal = () => {
+    setPostingModalOpen(false)
+  }
+
+  const AddOpenModal = () => {
+    setAddModalOpen(true)
+  }
+  const AddCloseModal = () => {
+    setAddModalOpen(false)
+  }
+
+  //게시글 전체조회
+  const getStudy = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/calender`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      SetstudyData(response.data)
+      console.log(response.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getStudy()
+  }, [])
 
   return (
     <div>
@@ -180,29 +265,43 @@ function StudyPage() {
           <LeftWrapper>
             <TimeRecodingWrapper>
               <TodayText>오늘 총 공부 시간</TodayText>
-              <TotalTime> {`${('0' + Math.floor(time / 3600000)).slice(-2)}
-                    :${('0' + Math.floor((time / 60000) % 60)).slice(-2)}
-                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`
-                    }</TotalTime>
+              <TotalTime>
+                00:00:00
+              </TotalTime>
             </TimeRecodingWrapper>
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
-            <BtnWrapper>
-              <Btn onClick={AddOpenModal}>과목 추가</Btn>
-            </BtnWrapper>
-            <StudyListWrapper>
-              {studylist.map((study) => (
-                <StudyList key={study.id}>
-                  <IconWrapper>
-                    <StatusIcon src={currentImg} onClick={ClickHandler}/>
-                  </IconWrapper>
-                  <ListInfoWrapper>
-                    <StudyName onClick={PostingOpenModal}>{study.name}</StudyName>
-                    <StudyingTime> {`${('0' + Math.floor(time / 3600000)).slice(-2)}
+            <StudyingWrapper>
+              <Study>
+                <IconWrapper>
+                  <StatusIcon src={currentImg} onClick={ClickHandler} />
+                </IconWrapper>
+                <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}>
+                  {interestsList.map((item) => (
+                    <option value={item.value} key={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </AddStudy>
+              </Study>
+              <StudyingTime>
+                {`${('0' + Math.floor(time / 3600000)).slice(-2)}
                     :${('0' + Math.floor((time / 60000) % 60)).slice(-2)}
-                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`
-                    }</StudyingTime>
+                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`}
+              </StudyingTime>
+              <BtnWrapper>
+                <WriteBtn onClick={PostingOpenModal}>작성</WriteBtn>
+                <DeleteBtn>삭제</DeleteBtn>
+              </BtnWrapper>
+            </StudyingWrapper>
+            <StudyListWrapper>
+            {Array.isArray(studyData) &&
+              studyData.map((study) => (
+                <StudyList key={study.id} to={`/calender/${study.id}`}>
+                  <ListInfoWrapper>
+                    <StudyName onClick={AddOpenModal}>{study.studyClass}</StudyName>
+                    <StudyingTime>00:00:00</StudyingTime>
                   </ListInfoWrapper>
                 </StudyList>
               ))}
@@ -210,8 +309,13 @@ function StudyPage() {
           </RightWrapper>
         </StudyWrapper>
       </Container>
-        {postingmodalOpen && (<StudyPostingModal PostingCloseModal={PostingCloseModal} />)}
-        {addmodalOpen && (<AddStudyModal AddCloseModal={AddCloseModal} />)}
+      {addmodalOpen && <AddStudyModal AddCloseModal={AddCloseModal} />}
+      {postingmodalOpen && <StudyPostingModal
+      PostingCloseModal={PostingCloseModal}
+      studyClass={studyClass}
+      starttime={starttime}
+      endtime={endtime}
+      entiretime={entiretime}/>}
     </div>
   )
 }

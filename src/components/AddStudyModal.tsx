@@ -29,19 +29,28 @@ const Modal = styled.div`
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
   background-color: white;
 `
+const Close = styled.div`
+ width: 40px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 25px;
+ margin-left: 90%;
+ margin-top: 10px;
+ cursor: pointer;
+`
 
 const Title = styled.div`
   font-size: 34px;
   font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 `
 
 const Textarea = styled.textarea`
   width: 650px;
   height: 400px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `
 
 const BtnWrapper = styled.div`
@@ -68,11 +77,12 @@ function AddStudyModal({ AddCloseModal }: Prop) {
     <div>
       <Container>
           <Modal>
-              <Title>추가할 스터디의 이름을 작성해주세요! </Title>
+            <Close onClick={AddCloseModal}>X</Close>
+              <Title>작성한 스터디 기록 </Title>
               <Textarea/>
               <BtnWrapper>
-                <Btn onClick={AddCloseModal}>완료</Btn>
-                <Btn onClick={AddCloseModal}>취소</Btn>
+                <Btn onClick={AddCloseModal}>수정</Btn>
+                <Btn>삭제</Btn>
               </BtnWrapper>
           </Modal>
       </Container>
@@ -81,3 +91,4 @@ function AddStudyModal({ AddCloseModal }: Prop) {
 }
 
 export default AddStudyModal
+

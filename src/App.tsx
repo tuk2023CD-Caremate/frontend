@@ -18,6 +18,7 @@ import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
 import SelectUser from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from "./pages/PostsPage/UpdatePostsPage";
+import StudyingPostingModal from './components/AddStudyModal'
 
 
 function App() {
@@ -44,7 +45,8 @@ function App() {
         <Route path="/posts/study/:post_id" element={< DetailStudyPostsPage/>} />
         <Route path="/posts/questions/:post_id" element={< DetailQuestionsPostsPage/>} />
 
-        <Route path="/study" element={<StudyPage />} />
+        <Route path="/calender" element={<StudyPage />} />
+        <Route path="/calender/calender:id" element={<StudyingPostingModal />} />
 
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />

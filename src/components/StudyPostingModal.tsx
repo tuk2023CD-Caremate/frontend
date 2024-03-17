@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { useApiUrlStore } from '../store/store'
+import axios from 'axios'
 
 type Prop = {
   PostingCloseModal?: () => void
+  studyClass: string; // studyClass prop 추가
+  starttime: Date;
+  endtime: Date;
+  entiretime: string;
 }
 
 const Container = styled.div`
@@ -32,15 +39,32 @@ const Modal = styled.div`
 const Title = styled.div`
   font-size: 34px;
   font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px ;
+`
+const Info = styled.div`
+  display: flex;
+  justify-content: baseline;
+  width: 430px;
+  margin-bottom: 30px;
+`
+
+const StudyClass = styled.div`
+  font-size: 26px;
+  font-weight: bold;
+  margin-right: 100px;
+`
+const EntireTime = styled.div`
+  font-size: 26px;
+  font-weight: bold;
 `
 
 const Textarea = styled.textarea`
-  width: 650px;
-  height: 400px;
+  width: 700px;
+  height: 350px;
+  font-size: 22px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 `
 
 const BtnWrapper = styled.div`
@@ -62,15 +86,51 @@ height: 40px;
   cursor: pointer;
 `
 
-function StudyingPostingModal({ PostingCloseModal }: Prop) {
+function StudyPostingModal({ PostingCloseModal, studyClass, starttime, endtime, entiretime}: Prop) {
+
+  const[content, setContent] = useState('')
+  const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate()
+
+  const createStudy = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const studyData= {
+      content: content,
+      studyClass: studyClass,
+      starttime: starttime,
+      endtime: endtime,
+      entiretime: entiretime,
+    };
+
+    try{
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post(`${apiUrl}/calender`, studyData, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      console.log(response.data)
+      PostingCloseModal;
+    }
+    catch(error){
+      alert('error')
+    }
+  }
+
+
+
+  
   return (
     <div>
       <Container>
           <Modal>
               <Title>오늘 스터디를 기록해보세요 </Title>
-              <Textarea/>
+              <Info>
+                <StudyClass> 공부과목 : {studyClass} </StudyClass>
+                <EntireTime> 공부시간 : {entiretime} </EntireTime>
+              </Info>
+              <Textarea value={content}  onChange={(e) => setContent(e.target.value)}/>
               <BtnWrapper>
-                <Btn onClick={PostingCloseModal}>완료</Btn>
+                <Btn onClick={createStudy}>저장</Btn>
                 <Btn onClick={PostingCloseModal}>취소</Btn>
               </BtnWrapper>
           </Modal>
@@ -79,4 +139,9 @@ function StudyingPostingModal({ PostingCloseModal }: Prop) {
   )
 }
 
-export default StudyingPostingModal
+export default StudyPostingModal
+
+
+
+
+
