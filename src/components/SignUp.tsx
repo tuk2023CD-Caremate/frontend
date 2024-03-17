@@ -47,15 +47,12 @@ const SignUpInput = styled.input`
   font-size: 20px;
 `
 
-const BtnWrap = styled.div`
+const PhoneWrap = styled.div`
   display: flex;
   width: 300px;
   height: 60px;
   box-sizing: border-box;
-  border-radius: 10px;
   margin: 10px;
-  font-size: 20px;
-  justify-content: start;
 `
 
 const SendNumBtn = styled.button`
@@ -64,10 +61,20 @@ const SendNumBtn = styled.button`
   border-radius: 10px;
   background-color: #650fa9;
   color: white;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  cursor: pointer;
   padding: 10px;
+  cursor: pointer;
+`
+
+const PhoneInput = styled.input`
+  text-indent: 20px;
+  width: 250px;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  font-size: 20px;
   margin-right: 10px;
 `
 
@@ -77,7 +84,7 @@ const VerifyBtn = styled.button`
   border-radius: 10px;
   background-color: #650fa9;
   color: white;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
   padding: 10px;
   cursor: pointer;
@@ -171,6 +178,7 @@ export default function SignUp() {
   const [blogurl, setBlogurl] = useState('')
   const [PR, setPR] = useState('')
   const [job, setJob] = useState('')
+  const [authNum, setAuthNum] = useState('')
 
   const navigate = useNavigate()
 
@@ -214,6 +222,10 @@ export default function SignUp() {
     setJob(e.target.value)
   }
 
+  const onAuthNum = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setAuthNum(e.target.value)
+  }
+
   const onSignupHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
@@ -252,6 +264,33 @@ export default function SignUp() {
     }
   }
 
+  // 인증번호 발송 api 요청
+  const sendAuthNum = () => {
+    try {
+      axios.post(`${apiUrl}/signIn/message`, {
+        tel: tel,
+      })
+      alert('인증번호가 발송되었습니다.')
+    } catch (error) {
+      console.error('Error : ', error)
+      alert('휴대폰 번호 11자리를 입력해주세요')
+    }
+  }
+
+  // 인증번호 검증 api 요청
+  const verifyAuthNum = () => {
+    try {
+      axios.post(`${apiUrl}/signIn/message/verify`, {
+        phoneNumber: tel,
+        randomNumber: authNum,
+      })
+      alert('인증번호가 발송되었습니다.')
+    } catch (error) {
+      console.error('Error : ', error)
+      alert('휴대폰 번호 11자리를 입력해주세요')
+    }
+  }
+
   return (
     <Container>
       <form onSubmit={onSignupHandler}>
@@ -285,16 +324,24 @@ export default function SignUp() {
             />
           </InputWrap>
           <InputWrap>
-            <SignUpInput
-              type="number"
-              placeholder="전화번호 ( - 제외 )"
-              value={tel}
-              onChange={onTel}
-            />
-            <BtnWrap>
-              <SendNumBtn>인증번호 발송</SendNumBtn>
-              <VerifyBtn>인증번호 확인</VerifyBtn>
-            </BtnWrap>
+            <PhoneWrap>
+              <PhoneInput
+                type="number"
+                placeholder="전화번호 ( - 제외 )"
+                value={tel}
+                onChange={onTel}
+              />
+              <SendNumBtn onClick={sendAuthNum}>인증번호 발송</SendNumBtn>
+            </PhoneWrap>
+            <PhoneWrap>
+              <PhoneInput
+                type="number"
+                placeholder="인증번호"
+                value={authNum}
+                onChange={onAuthNum}
+              />
+              <VerifyBtn onClick={verifyAuthNum}>인증번호 확인</VerifyBtn>
+            </PhoneWrap>
           </InputWrap>
 
           <InputWrap>
