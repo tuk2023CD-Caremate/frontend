@@ -265,29 +265,39 @@ export default function SignUp() {
   }
 
   // 인증번호 발송 api 요청
-  const sendAuthNum = () => {
+  const sendAuthNum = async (e) => {
+    e.preventDefault() // 폼 제출 방지
+
+    if (tel === '') {
+      alert('전화번호를 입력해주세요.')
+      return
+    }
+
     try {
-      axios.post(`${apiUrl}/signIn/message`, {
+      const response = await axios.post(`${apiUrl}/signIn/message`, {
         tel: tel,
       })
-      alert('인증번호가 발송되었습니다.')
+
+      if (response.status === 200) {
+        alert('인증번호가 발송되었습니다.')
+      } else {
+        alert('휴대폰 번호 11자리를 입력해주세요')
+      }
     } catch (error) {
       console.error('Error : ', error)
-      alert('휴대폰 번호 11자리를 입력해주세요')
     }
   }
 
   // 인증번호 검증 api 요청
-  const verifyAuthNum = () => {
+  const verifyAuthNum = async () => {
     try {
-      axios.post(`${apiUrl}/signIn/message/verify`, {
+      const response = await axios.post(`${apiUrl}/signIn/message/verify`, {
         phoneNumber: tel,
         randomNumber: authNum,
       })
-      alert('인증번호가 발송되었습니다.')
     } catch (error) {
       console.error('Error : ', error)
-      alert('휴대폰 번호 11자리를 입력해주세요')
+      alert('잘못된 인증번호 입니다.')
     }
   }
 
