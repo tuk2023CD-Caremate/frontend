@@ -9,24 +9,26 @@ import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 
 interface Content {
-  content: string
-  sender?: string
+  type: string
+  roomId: string
+  sender: string
+  message: string
 }
 
 interface MessagesProps {
   sender?: string
-  userName: string
+  nickname: string
 }
 
 interface ProfileProps {
   sender?: string
-  userName: string
+  nickname: string
   src: string
 }
 
 interface MessageContainerProps {
   sender?: string
-  userName: string
+  nickname: string
 }
 
 const Container = styled.div`
@@ -51,19 +53,19 @@ const ChatWrap = styled.div`
 const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.sender !== props.userName ? 'flex-start' : 'flex-start')};
+  justify-content: ${(props) => (props.sender !== props.nickname ? 'flex-start' : 'flex-start')};
 `
 
-const Time = styled.span`
-  font-size: 12px;
-  color: #888; /* Gray color for time */
-`
+// const Time = styled.span`
+//   font-size: 12px;
+//   color: #888; /* Gray color for time */
+// `
 
 const Profile = styled.img<ProfileProps>`
   width: 100px;
   height: 100px;
-  margin-left: ${(props) => (props.sender !== props.userName ? '0' : '16px')};
-  margin-right: ${(props) => (props.sender !== props.userName ? '16px' : '0')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '16px')};
+  margin-right: ${(props) => (props.sender !== props.nickname ? '16px' : '0')};
 `
 
 const Messages = styled.div<MessagesProps>`
@@ -75,11 +77,11 @@ const Messages = styled.div<MessagesProps>`
   justify-content: center;
   align-items: center;
   background: ${(props) =>
-    props.sender !== props.userName ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
-  color: ${(props) => (props.sender !== props.userName ? 'black' : 'white')};
+    props.sender !== props.nickname ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
+  color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 16px;
   font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.userName ? '0' : 'auto')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : 'auto')};
 `
 
 const InputWrap = styled.div`
@@ -146,7 +148,7 @@ const CreateMeetingBtn = styled.button`
 function Chat() {
   const { apiUrl } = useApiUrlStore()
 
-  const [nickname, setNickname] = useState<string>()
+  const [nickname, setNickname] = useState<string>('')
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
   const [roomId, setRoomId] = useState<string>()
@@ -178,7 +180,7 @@ function Chat() {
         await getNickname()
       }
       const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
-      const response = await axios.post(`${apiUrl}/chat/room?name=${randomName}`, {
+      const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
         // headers: { Authorization: `Bearer ${access}` },
       })
       setRoomId(response.data.roomId)
@@ -228,15 +230,17 @@ function Chat() {
       // WebSocket 연결이 열렸을 때의 처리 코드
       stomp.onConnect = () => {
         console.log('WebSocket 연결이 열렸습니다.')
-        const subscriptionDestination = `/sub/chat/room/${roomId}`
+        const subscriptionDestination = `/sub/chat/room/1234`
 
-        stomp.subscribe(subscriptionDestination, (frame) => {
+        stomp.subscribe(subscriptionDestination, (message) => {
           try {
-            const parsedMessage = JSON.parse(frame.body)
+            const parsedMessage = JSON.parse(message.body)
             console.log(parsedMessage)
+            console.log('*****메시지왔어요*****')
             setMessages((prevMessages) => [...prevMessages, parsedMessage])
           } catch (error) {
             console.error('오류가 발생했습니다:', error)
+            console.log('**********')
           }
         })
       }
@@ -245,16 +249,25 @@ function Chat() {
     }
   }
 
-  const sendMessage = (messageContent: string) => {
-    if (messageContent.trim() !== '') {
-      const newMessage: Content = {
-        content: messageContent,
-        sender: 'user',
-      }
+  const sendMessage = (messageContent: string, nickname: string) => {
+    const destination = '/pub/chat/message/1234'
 
-      setMessages([...messages, newMessage])
-      setInputMessage('')
+    const newMessage: Content = {
+      type: 'TALK',
+      roomId: '1234',
+      sender: nickname,
+      message: messageContent,
     }
+
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({
+        destination,
+        body: JSON.stringify(newMessage),
+      })
+    }
+
+    setMessages([...messages, newMessage])
+    setInputMessage('')
   }
 
   // 메세지 입력시 스크롤 아래로 이동
@@ -277,7 +290,11 @@ function Chat() {
       const response = await axios.get(`${apiUrl}/meeting/create`, {})
       const joinUrl = response.data.join_url
       window.open(response.data.start_url)
-      sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`)
+      if (nickname) {
+        sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`, nickname)
+      } else {
+        console.error('Nickname이 없습니다.')
+      }
       console.log(response.data)
     } catch (error) {
       alert('Zoom 로그인을 먼저 해주세요!')
@@ -300,7 +317,11 @@ function Chat() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      sendMessage(inputMessage)
+      if (nickname) {
+        sendMessage(inputMessage, nickname)
+      } else {
+        console.error('Nickname이 없습니다.')
+      }
     }
   }
 
@@ -313,11 +334,11 @@ function Chat() {
         </BtnWrap>
         <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
-            <MessageContainer key={index} sender={message.sender} userName="user">
-              <Messages sender={message.sender} userName="user">
-                {message.content}
+            <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
+              <Messages sender={message.sender} nickname={nickname || ''}>
+                {message.message}
               </Messages>
-              <Profile sender={message.sender} userName="user" src={profileImg} />
+              <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
             </MessageContainer>
           ))}
         </ChatWrap>
@@ -328,7 +349,7 @@ function Chat() {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-          <SendButton onClick={() => sendMessage(inputMessage)}>전송</SendButton>
+          <SendButton onClick={() => sendMessage(inputMessage, nickname)}>전송</SendButton>
         </InputWrap>
       </Container>
     </div>
