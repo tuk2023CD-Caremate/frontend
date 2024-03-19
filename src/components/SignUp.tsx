@@ -143,26 +143,24 @@ const interestsList = [
   { value: 'SCIENCE', name: 'SCIENCE' },
 ]
 
-const initialFormState = {
-  name: '',
-  nickname: '',
-  email: '',
-  password: '',
-  password2: '',
-  tel: '',
-  interests: 'PROGRAMMING',
-  part: 'MENTOR',
-  blogurl: '',
-  PR: '',
-  job: '',
-  authNum: '',
-  isAuth: false,
-}
-
 export default function SignUp() {
   const { apiUrl } = useApiUrlStore()
 
-  const [formData, setFormData] = useState(initialFormState)
+  const [formData, setFormData] = useState({
+    name: '',
+    nickname: '',
+    email: '',
+    password: '',
+    password2: '',
+    tel: '',
+    interests: 'PROGRAMMING',
+    part: 'MENTOR',
+    blogurl: '',
+    PR: '',
+    job: '',
+    authNum: '',
+    isAuth: false,
+  })
 
   const navigate = useNavigate()
 
@@ -178,12 +176,18 @@ export default function SignUp() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
-    const { email, password, name, nickname, tel, job, PR, blogurl } = formData
-
-    if (!email || !password || initialFormState.password2 || !name || !nickname || !tel || !job) {
+    if (
+      !formData.email ||
+      !formData.password ||
+      !formData.password2 ||
+      !formData.name ||
+      !formData.nickname ||
+      !formData.tel ||
+      !formData.job
+    ) {
       alert('필수 정보를 입력해주세요.')
       return
-    } else if (!initialFormState.isAuth) {
+    } else if (!formData.isAuth) {
       alert('휴대폰 번호 인증을 해주세요.')
       return
     }
