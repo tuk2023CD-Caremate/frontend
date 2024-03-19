@@ -145,10 +145,28 @@ const CreateMeetingBtn = styled.button`
 function Chat() {
   const { apiUrl } = useApiUrlStore()
 
+  const [nickname, setNickname] = useState('')
+
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
   const chatRef = useRef<HTMLDivElement>(null)
+
+  // 닉네임 요청
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+
+      setNickname(response.data.nickname)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
 
   const sendMessage = (messageContent: string) => {
     if (messageContent.trim() !== '') {
