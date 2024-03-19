@@ -192,9 +192,23 @@ export default function SignUp() {
       return
     }
 
+    // 회원가입 시 보낼 데이터 생성
+    const postData = {
+      name: formData.name,
+      nickname: formData.nickname,
+      password: formData.password,
+      email: formData.email,
+      tel: formData.tel,
+      interests: formData.interests,
+      part: formData.part,
+      blogurl: formData.blogurl,
+      PR: formData.PR,
+      job: formData.job,
+    }
+
     // 회원가입 api
     try {
-      const response = await axios.post(`${apiUrl}/signIn`, formData)
+      const response = await axios.post(`${apiUrl}/signIn`, postData)
 
       console.log(response.status)
       alert('회원가입에 성공하였습니다.')
