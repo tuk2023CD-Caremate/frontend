@@ -147,6 +147,8 @@ function Chat() {
 
   const [nickname, setNickname] = useState('')
 
+  const [roomId, setRoomId] = useState<string>()
+
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
@@ -167,6 +169,24 @@ function Chat() {
   useEffect(() => {
     getNickname()
   }, [])
+
+  // 채팅방 생성 api
+  async function creatChatroom() {
+    // const access = localStorage.getItem('accessToken')
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/v1/chat/rooms',
+        {},
+        // {
+        //   headers: { Authorization: `Bearer ${access}` },
+        // },
+      )
+      setRoomId(response.data.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const sendMessage = (messageContent: string) => {
     if (messageContent.trim() !== '') {
