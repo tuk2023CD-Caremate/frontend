@@ -177,11 +177,13 @@ function Chat() {
       if (nickname == '') {
         await getNickname()
       }
-      const response = await axios.post(`${apiUrl}/chat/room?name=안녕하세요`, {
+      const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
+      const response = await axios.post(`${apiUrl}/chat/room?name=${randomName}`, {
         // headers: { Authorization: `Bearer ${access}` },
       })
       setRoomId(response.data.roomId)
-      console.log('채팅방 번호:', roomId)
+      console.log('채팅방 id:', roomId)
+      console.log(`채팅방 name: ${response.data.name}`)
     } catch (error) {
       console.error(error)
       console.log('에러')
