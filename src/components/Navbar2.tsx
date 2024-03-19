@@ -58,15 +58,6 @@ export default function Navbar2() {
 
   return (
     <Container>
-      <Offline
-        to="/offline"
-        style={{
-          backgroundColor: location.pathname === '/offline' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/offline' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/offline' ? 'bold' : 'inherit',
-        }}>
-        오프라인 매칭
-      </Offline>
       <Online
         to="/online"
         style={{
