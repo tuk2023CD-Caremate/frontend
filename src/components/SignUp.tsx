@@ -114,27 +114,6 @@ const InterestsSelect = styled.select`
   margin: 10px;
 `
 
-// const Checkbox = styled.div`
-//   margin: 10px;
-//   display: flex;
-//   flex-direction: column;
-//   font-size: 18px;
-// `
-
-// const AgreeCheck = styled.input`
-//   width: 12px;
-//   height: 12px;
-//   background-color: #fff;
-//   border: 1.5px solid gainsboro;
-//   border-radius: 4px;
-
-//   &:checked {
-//     //추후 check표시 이미지 추가
-//     background-color: #650fa9;
-//     border: 1px #650fa9 solid;
-//   }
-// `
-
 const SignUpSubmit = styled.button`
   width: 600px;
   height: 70px;
@@ -167,112 +146,85 @@ const interestsList = [
 export default function SignUp() {
   const { apiUrl } = useApiUrlStore()
 
-  const [name, setName] = useState('')
-  const [nickname, setNickname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [password2, setPassword2] = useState('')
-  const [tel, setTel] = useState('')
-  const [interests, SetInterests] = useState('PROGRAMMING')
-  const [part, SetPart] = useState('MENTOR')
-  const [blogurl, setBlogurl] = useState('')
-  const [PR, setPR] = useState('')
-  const [job, setJob] = useState('')
-  const [authNum, setAuthNum] = useState('')
-  const [isAuth, setIsAuth] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    nickname: '',
+    email: '',
+    password: '',
+    password2: '',
+    tel: '',
+    interests: 'PROGRAMMING',
+    part: 'MENTOR',
+    blogurl: '',
+    PR: '',
+    job: '',
+    authNum: '',
+    isAuth: false,
+  })
 
   const navigate = useNavigate()
 
-  const onNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    // 리팩토링할 때 함수 한번에 합치는걸로 수정
-    setName(e.target.value)
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target
+    setFormData((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }))
   }
 
-  const onEmailHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setEmail(e.target.value)
-  }
-  const onNickNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setNickname(e.target.value)
-  }
-
-  const onPassword1Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setPassword(e.target.value)
-  }
-
-  const onPassword2Handler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setPassword2(e.target.value)
-  }
-
-  const onInterestHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetInterests(e.target.value)
-  }
-
-  const onPartHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetPart(e.target.value)
-  }
-  const onTel = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setTel(e.target.value)
-  }
-  const onBlogurl = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setBlogurl(e.target.value)
-  }
-  const onPR = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setPR(e.target.value)
-  }
-  const onJob = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setJob(e.target.value)
-  }
-
-  const onAuthNum = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setAuthNum(e.target.value)
-  }
-
-  const onSignupHandler = async (e: { preventDefault: () => void }) => {
+  // 회원가입 요청
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
     if (
-      email === '' ||
-      password === '' ||
-      name === '' ||
-      nickname === '' ||
-      tel === '' ||
-      job === ''
+      !formData.email ||
+      !formData.password ||
+      !formData.password2 ||
+      !formData.name ||
+      !formData.nickname ||
+      !formData.tel ||
+      !formData.job
     ) {
       alert('필수 정보를 입력해주세요.')
       return
-    } else if (isAuth === false) {
+    } else if (!formData.isAuth) {
       alert('휴대폰 번호 인증을 해주세요.')
       return
     }
 
+    // 회원가입 시 보낼 데이터 생성
+    const postData = {
+      name: formData.name,
+      nickname: formData.nickname,
+      password: formData.password,
+      email: formData.email,
+      tel: formData.tel,
+      interests: formData.interests,
+      part: formData.part,
+      blogurl: formData.blogurl,
+      PR: formData.PR,
+      job: formData.job,
+    }
+
+    // 회원가입 api
     try {
-      const response = await axios.post(`${apiUrl}/signIn`, {
-        email: email,
-        password: password,
-        name: name,
-        nickname: nickname,
-        part: part,
-        interests: interests,
-        tel: tel,
-        blogUrl: blogurl,
-        publicRelations: PR,
-        job: job,
-      })
+      const response = await axios.post(`${apiUrl}/signIn`, postData)
 
       console.log(response.status)
       alert('회원가입에 성공하였습니다.')
       navigate('/login')
     } catch (error) {
       alert('회원가입에 실패했습니다.')
-      console.error
+      console.error(error)
     }
   }
 
   // 인증번호 발송 api 요청
-  const sendAuthNum = async (e: { preventDefault: () => void }) => {
-    e.preventDefault() // 폼 제출 방지
+  const handleSendAuthNum = async (e: { preventDefault: () => void }) => {
+    e.preventDefault()
 
-    if (tel === '') {
+    const { tel } = formData
+    if (!tel) {
       alert('전화번호를 입력해주세요.')
       return
     }
@@ -294,10 +246,11 @@ export default function SignUp() {
   }
 
   // 인증번호 검증 api 요청
-  const verifyAuthNum = async (e: { preventDefault: () => void }) => {
-    e.preventDefault() // 폼 제출 방지
+  const handleVerifyAuthNum = async (e: { preventDefault: () => void }) => {
+    e.preventDefault()
 
-    if (authNum === '') {
+    const { tel, authNum } = formData
+    if (!authNum) {
       alert('인증번호를 입력해주세요.')
       return
     }
@@ -308,7 +261,10 @@ export default function SignUp() {
       })
 
       if (response.status === 200) {
-        setIsAuth(true)
+        setFormData((prevData: any) => ({
+          ...prevData,
+          isAuth: true,
+        }))
         alert('인증되었습니다.')
       }
     } catch (error) {
@@ -319,34 +275,55 @@ export default function SignUp() {
 
   return (
     <Container>
-      <form onSubmit={onSignupHandler}>
+      <form onSubmit={handleSubmit}>
         <SignUpWrapper>
           <SignUpH2>Sign up to StudyMate</SignUpH2>
           <InputWrap>
-            <SignUpInput type="text" placeholder="이름" value={name} onChange={onNameHandler} />
+            <SignUpInput
+              type="text"
+              placeholder="이름"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
             <SignUpInput
               type="text"
               placeholder="닉네임"
-              value={nickname}
-              onChange={onNickNameHandler}
+              name="nickname"
+              value={formData.nickname}
+              onChange={handleChange}
             />
           </InputWrap>
           <InputWrap>
-            <SignUpInput type="text" placeholder="이메일" value={email} onChange={onEmailHandler} />
-            <SignUpInput type="text" placeholder="직업" value={job} onChange={onJob} />
+            <SignUpInput
+              type="text"
+              placeholder="이메일"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <SignUpInput
+              type="text"
+              placeholder="직업"
+              name="job"
+              value={formData.job}
+              onChange={handleChange}
+            />
           </InputWrap>
           <InputWrap>
             <SignUpInput
               type="password"
               placeholder="비밀번호"
-              value={password}
-              onChange={onPassword1Handler}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
             />
             <SignUpInput
               type="password"
               placeholder="비밀번호 확인"
-              value={password2}
-              onChange={onPassword2Handler}
+              name="password2"
+              value={formData.password2}
+              onChange={handleChange}
             />
           </InputWrap>
           <InputWrap>
@@ -354,41 +331,48 @@ export default function SignUp() {
               <PhoneInput
                 type="number"
                 placeholder="전화번호 ( - 제외 )"
-                value={tel}
-                onChange={onTel}
+                name="tel"
+                value={formData.tel}
+                onChange={handleChange}
               />
-              <SendNumBtn onClick={sendAuthNum}>인증번호 발송</SendNumBtn>
+              <SendNumBtn onClick={handleSendAuthNum}>인증번호 발송</SendNumBtn>
             </PhoneWrap>
             <PhoneWrap>
               <PhoneInput
                 type="number"
                 placeholder="인증번호"
-                value={authNum}
-                onChange={onAuthNum}
+                name="authNum"
+                value={formData.authNum}
+                onChange={handleChange}
               />
-              <VerifyBtn onClick={verifyAuthNum}>인증번호 확인</VerifyBtn>
+              <VerifyBtn onClick={handleVerifyAuthNum}>인증번호 확인</VerifyBtn>
             </PhoneWrap>
           </InputWrap>
-
           <InputWrap>
-            <SignUpInput type="text" placeholder="PR ( 선택 )" value={PR} onChange={onPR} />
+            <SignUpInput
+              type="text"
+              placeholder="PR ( 선택 )"
+              name="PR"
+              value={formData.PR}
+              onChange={handleChange}
+            />
             <SignUpInput
               type="text"
               placeholder="블로그 링크 ( 선택 )"
-              value={blogurl}
-              onChange={onBlogurl}
+              name="blogurl"
+              value={formData.blogurl}
+              onChange={handleChange}
             />
           </InputWrap>
-
           <SelectBox>
-            <RoleSelect value={part} onChange={onPartHandler}>
+            <RoleSelect name="part" value={formData.part} onChange={handleChange}>
               {partList.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
                 </option>
               ))}
             </RoleSelect>
-            <InterestsSelect value={interests} onChange={onInterestHandler}>
+            <InterestsSelect name="interests" value={formData.interests} onChange={handleChange}>
               {interestsList.map((item) => (
                 <option value={item.value} key={item.name}>
                   {item.name}
@@ -396,18 +380,7 @@ export default function SignUp() {
               ))}
             </InterestsSelect>
           </SelectBox>
-          {/* <Checkbox>
-            <label>
-              <AgreeCheck type="checkbox" /> 이용약관 동의 (필수)
-            </label>
-            <label>
-              <AgreeCheck type="checkbox" /> 개인정보 수집 및 이용동의 (필수)
-            </label>
-            <label>
-              <AgreeCheck type="checkbox" /> 위치정보서비스 이용동의 (선택)
-            </label>
-          </Checkbox> */}
-          <SignUpSubmit onClick={onSignupHandler}>가입하기</SignUpSubmit>
+          <SignUpSubmit>가입하기</SignUpSubmit>
         </SignUpWrapper>
       </form>
     </Container>
