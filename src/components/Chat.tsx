@@ -6,6 +6,7 @@ import profileImg from '../assets/images/profile.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
 import Stomp from '@stomp/stompjs'
+import { Client } from '@stomp/stompjs'
 
 interface Content {
   content: string
@@ -145,8 +146,9 @@ const CreateMeetingBtn = styled.button`
 function Chat() {
   const { apiUrl } = useApiUrlStore()
 
-  const [nickname, setNickname] = useState('')
+  const [nickname, setNickname] = useState<string>()
 
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
   const [roomId, setRoomId] = useState<string>()
 
   const [messages, setMessages] = useState<Content[]>([])
@@ -163,28 +165,74 @@ function Chat() {
       })
 
       setNickname(response.data.nickname)
+      console.log('닉네임:', nickname)
     } catch (error) {}
   }
 
-  useEffect(() => {
-    getNickname()
-  }, [])
-
   // 채팅방 생성 api
-  async function creatChatroom() {
+  async function createChatroom() {
     // const access = localStorage.getItem('accessToken')
 
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/v1/chat/rooms',
-        {},
-        // {
-        //   headers: { Authorization: `Bearer ${access}` },
-        // },
-      )
-      setRoomId(response.data.data)
+      if (nickname == '') {
+        await getNickname()
+      }
+      const response = await axios.post(`${apiUrl}/chat/room?name=안녕하세요`, {
+        // headers: { Authorization: `Bearer ${access}` },
+      })
+      setRoomId(response.data.roomId)
+      console.log('채팅방 번호:', roomId)
     } catch (error) {
       console.error(error)
+      console.log('에러')
+    }
+  }
+  useEffect(() => {
+    getNickname().then(() => {
+      createChatroom().then(() => {
+        initializeChat()
+      })
+    })
+
+    return () => {
+      if (stompClient && stompClient.connected) {
+        stompClient.deactivate()
+      }
+    }
+  }, [])
+
+  const initializeChat = async () => {
+    try {
+      const stomp = new Client({
+        brokerURL: 'ws://studymate-tuk.kro.kr:8080/ws/chat',
+        debug: (str: string) => {
+          console.log(str)
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      })
+      setStompClient(stomp)
+
+      stomp.activate()
+
+      // WebSocket 연결이 열렸을 때의 처리 코드
+      stomp.onConnect = () => {
+        console.log('WebSocket 연결이 열렸습니다.')
+        const subscriptionDestination = `/sub/chat/room/${roomId}`
+
+        stomp.subscribe(subscriptionDestination, (frame) => {
+          try {
+            const parsedMessage = JSON.parse(frame.body)
+            console.log(parsedMessage)
+            setMessages((prevMessages) => [...prevMessages, parsedMessage])
+          } catch (error) {
+            console.error('오류가 발생했습니다:', error)
+          }
+        })
+      }
+    } catch (error) {
+      console.error('채팅 룸 생성 중 오류가 발생했습니다:', error)
     }
   }
 
