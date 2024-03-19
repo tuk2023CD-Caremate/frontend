@@ -8,10 +8,19 @@ import { useEffect, useState } from 'react'
 import { useApiUrlStore } from '../../store/store.ts'
 
 interface ProfileData {
-  part: string
+  name: string
   nickname: string
+  part: string
   email: string
+  tel: number
   interests: string
+  blogUrl: string
+  publicRelations: string
+  job: string
+  heart: number
+  starAverage: number
+  solved: number
+  matchingCount: number
 }
 
 const Container = styled.div`
@@ -115,10 +124,19 @@ function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
 
   const [profileData, setProfileData] = useState<ProfileData>({
-    part: '',
+    name: '',
     nickname: '',
+    part: '',
     email: '',
+    tel: 0,
     interests: '',
+    blogUrl: '',
+    publicRelations: '',
+    job: '',
+    heart: 0,
+    starAverage: 0,
+    solved: 0,
+    matchingCount: 0,
   })
 
   const getProfile = async () => {
