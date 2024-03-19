@@ -266,7 +266,7 @@ function Chat() {
       })
     }
 
-    setMessages([...messages, newMessage])
+    // setMessages([...messages, newMessage])
     setInputMessage('')
   }
 
