@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import profileImg from '../assets/images/profile.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
+import Stomp from '@stomp/stompjs'
 
 interface Content {
   content: string
