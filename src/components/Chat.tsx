@@ -64,15 +64,15 @@ const MessageContainer = styled.div<MessageContainerProps>`
 const Profile = styled.img<ProfileProps>`
   width: 100px;
   height: 100px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '16px')};
-  margin-right: ${(props) => (props.sender !== props.nickname ? '16px' : '0')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '10px')};
+  margin-right: ${(props) => (props.sender !== props.nickname ? '10px' : '0')};
 `
 
 const Messages = styled.div<MessagesProps>`
   display: flex;
   max-width: 40%;
   padding: 20px;
-  margin: 10px;
+  margin-right: 10px;
   height: auto;
   justify-content: center;
   align-items: center;
@@ -81,7 +81,7 @@ const Messages = styled.div<MessagesProps>`
   color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 16px;
   font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : 'auto')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '20px' : 'auto')};
 `
 
 const InputWrap = styled.div`
