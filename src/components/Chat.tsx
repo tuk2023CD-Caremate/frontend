@@ -188,11 +188,12 @@ function Chat() {
     }
   }
   useEffect(() => {
-    getNickname().then(() => {
-      createChatroom().then(() => {
-        initializeChat()
-      })
-    })
+    const fetchData = async () => {
+      await getNickname()
+      await createChatroom()
+    }
+
+    fetchData()
 
     return () => {
       if (stompClient && stompClient.connected) {
@@ -200,6 +201,12 @@ function Chat() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (roomId) {
+      initializeChat()
+    }
+  }, [roomId])
 
   const initializeChat = async () => {
     try {
