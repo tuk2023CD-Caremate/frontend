@@ -110,12 +110,12 @@ const StudyListWrapper = styled.div`
 
 const StudyList = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 750px;
   height: 110px;
   border-bottom: 1px solid #bdbdbd;
-  border: 1px solid tomato;
 `
 
 const IconWrapper = styled.div`
@@ -144,7 +144,7 @@ const ListInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 650px;
+  width: 550px;
   height: 90px;
 `
 
@@ -200,6 +200,7 @@ function StudyPage() {
   const [studyClass, setStudyClass] = useState('');
   const [startTime, setStartTime]=useState('')
   const [endTime, setEndTime]=useState('')
+  const [sumTime, setSumTime] =useState('')
   const { apiUrl } = useApiUrlStore()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
  
@@ -239,6 +240,23 @@ function StudyPage() {
   const AddCloseModal = () => {
     setAddModalOpen(false)
   }
+  //기록 전체조회
+  const getStudy = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/calender`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCalenderList(response.data.calenderList)
+      console.log(response.data)
+    } catch (error) {
+      alert('error');
+    }
+  }
+
+  useEffect(() => {
+    getStudy()
+  }, [])
 
   return (
     <div>
@@ -250,8 +268,7 @@ function StudyPage() {
             <TimeRecodingWrapper>
               <TodayText>오늘 총 공부 시간</TodayText>
               <TotalTime>
-              {calenderList.length > 0 &&
-                calenderList.map(item=>item.entireTime)}
+                00:00
               </TotalTime>
             </TimeRecodingWrapper>
             <Calendar />
@@ -280,16 +297,18 @@ function StudyPage() {
                 <DeleteBtn>삭제</DeleteBtn>
               </BtnWrapper>
             </StudyingWrapper>
-            <StudyListWrapper>
+            <StudyListWrapper >
             {Array.isArray(calenderList) &&
-              calenderList.map((calender) => (
-                <StudyList key={calender.id}>
+                calenderList.map((calender) => (
+              <StudyList  key={calender.id}>
                   <ListInfoWrapper>
-                    <StudyName onClick={AddOpenModal}>{calender.studyClass}</StudyName>
+                    <StudyName onClick={AddOpenModal}>
+                    {interestsList.find(item => item.value === calender.studyClass)?.name}
+                    </StudyName>
                     <StudyingTime>{calender.entireTime}</StudyingTime>
                   </ListInfoWrapper>
                 </StudyList>
-              ))}
+                ))}
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>
