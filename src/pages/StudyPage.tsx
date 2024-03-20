@@ -8,16 +8,16 @@ import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
 import { useState, useEffect } from 'react'
 import { useApiUrlStore } from '../store/store.ts'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
+import moment from 'moment';
 
-interface studyData {
+interface calenderList {
   id: number
   content: string
   studyClass: string
-  starttime: string
-  endtime: string
-  entiretime: string
+  startTime: string
+  endTime: string
+  entireTime: string
 }
 
 const Container = styled.div`
@@ -108,13 +108,14 @@ const StudyListWrapper = styled.div`
   border-top: 1px solid #bdbdbd;
 `
 
-const StudyList = styled(Link)`
+const StudyList = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 750px;
   height: 110px;
   border-bottom: 1px solid #bdbdbd;
+  border: 1px solid tomato;
 `
 
 const IconWrapper = styled.div`
@@ -161,7 +162,6 @@ const StudyingTime = styled.div`
   align-items: center;
   margin-right: 20px;
   font-size: 36px;
-  color: #bdbdbd;
 `
 const DeleteBtn = styled.div`
   display: flex;
@@ -190,6 +190,7 @@ function StudyPage() {
   const [currentImg, setCurrentImg] = useState(playIcon)
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
+  const [interval, setIntervalId] = useState<number | undefined>(undefined)
 
   //모달창
   const [postingmodalOpen, setPostingModalOpen] = useState(false)
@@ -197,35 +198,34 @@ function StudyPage() {
 
   //props
   const [studyClass, setStudyClass] = useState('');
-  const[starttime, setStartTime]=useState(new Date())
-  const[endtime, setEndTime]=useState(new Date())
-  const[entiretime, setEntireTime]=useState('')
-
-  const [interval, setIntervalId] = useState<number | undefined>(undefined)
+  const [startTime, setStartTime]=useState('')
+  const [endTime, setEndTime]=useState('')
   const { apiUrl } = useApiUrlStore()
+  const [calenderList, setCalenderList] = useState<calenderList[]>([])
+ 
 
-  const [studyData, SetstudyData] = useState<studyData[]>([])
-
-  
   const ClickHandler = () => {
+
+    //시간 형식 변환
+    const startTime = moment().format('YYYY-MM-DD HH:mm');
+    const endTime = moment().format('YYYY-MM-DD HH:mm');
+
     if (!isRunning) {
       setCurrentImg(stopIcon) // 멈춤버튼 이미지로 변경
-      setStartTime(new Date())
+      setStartTime(startTime); // 현재 시간을 startTime으로 설정
+
       const interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1000)
-      }, 1000)
+        setTime((prevTime) => prevTime + 1000)}, 1000)
       setIntervalId(interval) // interval 변수 업데이트
-      setEndTime(new Date())
       setIsRunning(true)
+    
     } else {
       setCurrentImg(playIcon) // 재생버튼 이미지 변경
       clearInterval(interval)
       setIsRunning(false)
+      setEndTime(endTime) //endTime업데이트
     }
-    console.log(starttime)
-    console.log(endtime)
   }
-
   const PostingOpenModal = () => {
     setPostingModalOpen(true)
   }
@@ -240,22 +240,6 @@ function StudyPage() {
     setAddModalOpen(false)
   }
 
-  //게시글 전체조회
-  const getStudy = async () => {
-    try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/calender`, {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-      SetstudyData(response.data)
-      console.log(response.data)
-    } catch (error) {}
-  }
-
-  useEffect(() => {
-    getStudy()
-  }, [])
-
   return (
     <div>
       <Header2 />
@@ -266,13 +250,14 @@ function StudyPage() {
             <TimeRecodingWrapper>
               <TodayText>오늘 총 공부 시간</TodayText>
               <TotalTime>
-                00:00:00
+              {calenderList.length > 0 &&
+                calenderList.map(item=>item.entireTime)}
               </TotalTime>
             </TimeRecodingWrapper>
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
-            <StudyingWrapper>
+            <StudyingWrapper>                                                        
               <Study>
                 <IconWrapper>
                   <StatusIcon src={currentImg} onClick={ClickHandler} />
@@ -280,7 +265,7 @@ function StudyPage() {
                 <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}>
                   {interestsList.map((item) => (
                     <option value={item.value} key={item.name}>
-                      {item.name}
+                       {item.name}
                     </option>
                   ))}
                 </AddStudy>
@@ -296,12 +281,12 @@ function StudyPage() {
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
-            {Array.isArray(studyData) &&
-              studyData.map((study) => (
-                <StudyList key={study.id} to={`/calender/${study.id}`}>
+            {Array.isArray(calenderList) &&
+              calenderList.map((calender) => (
+                <StudyList key={calender.id}>
                   <ListInfoWrapper>
-                    <StudyName onClick={AddOpenModal}>{study.studyClass}</StudyName>
-                    <StudyingTime>00:00:00</StudyingTime>
+                    <StudyName onClick={AddOpenModal}>{calender.studyClass}</StudyName>
+                    <StudyingTime>{calender.entireTime}</StudyingTime>
                   </ListInfoWrapper>
                 </StudyList>
               ))}
@@ -313,9 +298,8 @@ function StudyPage() {
       {postingmodalOpen && <StudyPostingModal
       PostingCloseModal={PostingCloseModal}
       studyClass={studyClass}
-      starttime={starttime}
-      endtime={endtime}
-      entiretime={entiretime}/>}
+      startTime={startTime}
+      endTime={endTime}/>}
     </div>
   )
 }

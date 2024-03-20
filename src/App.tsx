@@ -46,8 +46,7 @@ function App() {
         <Route path="/posts/questions/:post_id" element={< DetailQuestionsPostsPage/>} />
 
         <Route path="/calender" element={<StudyPage />} />
-        <Route path="/calender/calender:id" element={<StudyingPostingModal />} />
-
+     
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
