@@ -80,6 +80,20 @@ const Heart = styled.div`
   font-size: 30px;
 `
 
+const RequestBtn = styled.button`
+  display: flex;
+  align-items: center;
+  background-color: #e8dcf2;
+  color: #650fa9;
+  width: 100px;
+  height: 50px;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+`
+
 const FindAgain = styled.div`
   display: flex;
   align-items: center;
@@ -152,6 +166,7 @@ function SelectUserModal(id: any) {
                       <HeartIMG src={HeartImg} />
                       {user.heart}
                     </Heart>
+                    <RequestBtn>매칭 요청</RequestBtn>
                   </UserDetail>
                 </AccordionPanel>
               </AccordionItem>
