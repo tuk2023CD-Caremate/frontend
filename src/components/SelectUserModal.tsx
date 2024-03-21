@@ -117,6 +117,7 @@ function SelectUserModal(id: any) {
   const parsedObject = JSON.parse(decodedValue)
   const question_id = parsedObject.id
 
+  // 멘토 리스트 조회
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
     if (access) {
@@ -134,9 +135,32 @@ function SelectUserModal(id: any) {
     }
   }
 
+  // 매칭 요청
+  const onRequestMatching = async (mentorId: number) => {
+    const access = localStorage.getItem('accessToken')
+    if (access) {
+      try {
+        const response = await axios.get(`${apiUrl}/matching/${question_id}/${mentorId}`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        console.log('매칭요청발송:')
+      } catch (error) {
+        console.error('Error ', error)
+      }
+    } else {
+      console.error('Access token not found.')
+    }
+  }
+
   useEffect(() => {
     getUserList()
   }, [])
+
+  // 매칭 요청 버튼 클릭 핸들러
+  const handleRequestMatching = (mentorId: number) => {
+    onRequestMatching(mentorId)
+    // 매칭 요청이 성공했을 때의 추가적인 로직을 구현할 수 있습니다.
+  }
 
   return (
     <div>
@@ -166,7 +190,9 @@ function SelectUserModal(id: any) {
                       <HeartIMG src={HeartImg} />
                       {user.heart}
                     </Heart>
-                    <RequestBtn>매칭 요청</RequestBtn>
+                    <RequestBtn onClick={() => handleRequestMatching(user.id)}>
+                      매칭 요청
+                    </RequestBtn>
                   </UserDetail>
                 </AccordionPanel>
               </AccordionItem>
