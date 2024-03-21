@@ -5,26 +5,30 @@ import styled from 'styled-components'
 import profileImg from '../assets/images/profile.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
+import Stomp from '@stomp/stompjs'
+import { Client } from '@stomp/stompjs'
 
 interface Content {
-  content: string
-  sender?: string
+  type: string
+  roomId: string
+  sender: string
+  message: string
 }
 
 interface MessagesProps {
   sender?: string
-  userName: string
+  nickname: string
 }
 
 interface ProfileProps {
   sender?: string
-  userName: string
+  nickname: string
   src: string
 }
 
 interface MessageContainerProps {
   sender?: string
-  userName: string
+  nickname: string
 }
 
 const Container = styled.div`
@@ -49,35 +53,35 @@ const ChatWrap = styled.div`
 const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.sender !== props.userName ? 'flex-start' : 'flex-start')};
+  justify-content: ${(props) => (props.sender !== props.nickname ? 'flex-start' : 'flex-start')};
 `
 
-const Time = styled.span`
-  font-size: 12px;
-  color: #888; /* Gray color for time */
-`
+// const Time = styled.span`
+//   font-size: 12px;
+//   color: #888; /* Gray color for time */
+// `
 
 const Profile = styled.img<ProfileProps>`
   width: 100px;
   height: 100px;
-  margin-left: ${(props) => (props.sender !== props.userName ? '0' : '16px')};
-  margin-right: ${(props) => (props.sender !== props.userName ? '16px' : '0')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '10px')};
+  margin-right: ${(props) => (props.sender !== props.nickname ? '10px' : '0')};
 `
 
 const Messages = styled.div<MessagesProps>`
   display: flex;
   max-width: 40%;
   padding: 20px;
-  margin: 10px;
+  margin-right: 10px;
   height: auto;
   justify-content: center;
   align-items: center;
   background: ${(props) =>
-    props.sender !== props.userName ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
-  color: ${(props) => (props.sender !== props.userName ? 'black' : 'white')};
+    props.sender !== props.nickname ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
+  color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 16px;
   font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.userName ? '0' : 'auto')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '20px' : 'auto')};
 `
 
 const InputWrap = styled.div`
@@ -144,21 +148,126 @@ const CreateMeetingBtn = styled.button`
 function Chat() {
   const { apiUrl } = useApiUrlStore()
 
+  const [nickname, setNickname] = useState<string>('')
+
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
+  const [roomId, setRoomId] = useState<string>()
+
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
 
   const chatRef = useRef<HTMLDivElement>(null)
 
-  const sendMessage = (messageContent: string) => {
-    if (messageContent.trim() !== '') {
-      const newMessage: Content = {
-        content: messageContent,
-        sender: 'user',
-      }
+  // 닉네임 요청
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
 
-      setMessages([...messages, newMessage])
-      setInputMessage('')
+      setNickname(response.data.nickname)
+      console.log('닉네임:', nickname)
+    } catch (error) {}
+  }
+
+  // 채팅방 생성 api
+  async function createChatroom() {
+    // const access = localStorage.getItem('accessToken')
+
+    try {
+      if (nickname == '') {
+        await getNickname()
+      }
+      const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
+      const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
+        // headers: { Authorization: `Bearer ${access}` },
+      })
+      setRoomId(response.data.roomId)
+      console.log('채팅방 id:', roomId)
+      console.log(`채팅방 name: ${response.data.name}`)
+    } catch (error) {
+      console.error(error)
+      console.log('에러')
     }
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      await getNickname()
+      await createChatroom()
+    }
+
+    fetchData()
+
+    return () => {
+      if (stompClient && stompClient.connected) {
+        stompClient.deactivate()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (roomId) {
+      initializeChat()
+    }
+  }, [roomId])
+
+  const initializeChat = async () => {
+    try {
+      const stomp = new Client({
+        brokerURL: 'ws://studymate-tuk.kro.kr:8080/ws/chat',
+        debug: (str: string) => {
+          console.log(str)
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      })
+      setStompClient(stomp)
+
+      stomp.activate()
+
+      // WebSocket 연결이 열렸을 때의 처리 코드
+      stomp.onConnect = () => {
+        console.log('WebSocket 연결이 열렸습니다.')
+        const subscriptionDestination = `/sub/chat/room/1234`
+
+        stomp.subscribe(subscriptionDestination, (message) => {
+          try {
+            const parsedMessage = JSON.parse(message.body)
+            console.log(parsedMessage)
+            console.log('*****메시지왔어요*****')
+            setMessages((prevMessages) => [...prevMessages, parsedMessage])
+          } catch (error) {
+            console.error('오류가 발생했습니다:', error)
+            console.log('**********')
+          }
+        })
+      }
+    } catch (error) {
+      console.error('채팅 룸 생성 중 오류가 발생했습니다:', error)
+    }
+  }
+
+  const sendMessage = (messageContent: string, nickname: string) => {
+    const destination = '/pub/chat/message/1234'
+
+    const newMessage: Content = {
+      type: 'TALK',
+      roomId: '1234',
+      sender: nickname,
+      message: messageContent,
+    }
+
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({
+        destination,
+        body: JSON.stringify(newMessage),
+      })
+    }
+
+    // setMessages([...messages, newMessage])
+    setInputMessage('')
   }
 
   // 메세지 입력시 스크롤 아래로 이동
@@ -181,7 +290,11 @@ function Chat() {
       const response = await axios.get(`${apiUrl}/meeting/create`, {})
       const joinUrl = response.data.join_url
       window.open(response.data.start_url)
-      sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`)
+      if (nickname) {
+        sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`, nickname)
+      } else {
+        console.error('Nickname이 없습니다.')
+      }
       console.log(response.data)
     } catch (error) {
       alert('Zoom 로그인을 먼저 해주세요!')
@@ -204,7 +317,11 @@ function Chat() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      sendMessage(inputMessage)
+      if (nickname) {
+        sendMessage(inputMessage, nickname)
+      } else {
+        console.error('Nickname이 없습니다.')
+      }
     }
   }
 
@@ -217,11 +334,11 @@ function Chat() {
         </BtnWrap>
         <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
-            <MessageContainer key={index} sender={message.sender} userName="user">
-              <Messages sender={message.sender} userName="user">
-                {message.content}
+            <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
+              <Messages sender={message.sender} nickname={nickname || ''}>
+                {message.message}
               </Messages>
-              <Profile sender={message.sender} userName="user" src={profileImg} />
+              <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
             </MessageContainer>
           ))}
         </ChatWrap>
@@ -232,7 +349,7 @@ function Chat() {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-          <SendButton onClick={() => sendMessage(inputMessage)}>전송</SendButton>
+          <SendButton onClick={() => sendMessage(inputMessage, nickname)}>전송</SendButton>
         </InputWrap>
       </Container>
     </div>
