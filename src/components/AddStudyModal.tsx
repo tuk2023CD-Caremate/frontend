@@ -1,21 +1,32 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useNavigate,useParams } from 'react-router-dom';
+import { useApiUrlStore } from '../store/store.ts'
+import axios from 'axios'
 
 type Prop = {
   AddCloseModal?: () => void
 }
 
+interface calenderList {
+  id: number
+  content: string
+  studyClass: string
+  startTime: string
+  endTime: string
+  entireTime: string
+}
+
 const Container = styled.div`
-  position: fixed;
   width: 100%;
-  height: 100%;
   top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: rgba(255,255,255,0.15);
   backdrop-filter: blur(5px);
-
+  display: flex;
+  height: calc(100vh - 220px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `
 
 const Modal = styled.div`
@@ -72,17 +83,84 @@ height: 40px;
   cursor: pointer;
 `
 
-function AddStudyModal({ AddCloseModal }: Prop) {
+function AddStudyModal({AddCloseModal} : Prop) {
+  const [calenderList, setCalenderList] = useState<calenderList>({
+    id: 0,
+    content: '',
+    studyClass: '',
+    startTime: '',
+    endTime: '',
+    entireTime: '',
+  })
+
+  //스터디기록 불러오기)
+  const [content, setContent] = useState(calenderList.content)
+  const { calender_id } = useParams()
+  const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate();
+
+  
+   useEffect(() => {
+   const getStudy = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/calender/${calender_id}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCalenderList(response.data)
+      setContent(response.data.content)
+      console.log(response.data)
+    } catch (error) {
+      alert('get error')
+    }
+  }
+  getStudy();
+}, [calender_id])
+
+useEffect(()=>{
+  setContent(calenderList.content)
+}, [calenderList.content]);
+
+//스터디기록 수정
+
+
+ //스터디기록 삭제
+ const deleteStudy = async () => {
+  if (window.confirm('기록을 삭제할까요?')) {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.delete(
+        `${apiUrl}/calender/${calender_id}`,
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      setCalenderList(response.data)
+    } catch (error) {
+      alert('delete error')
+    }
+    navigate('/calender')
+  }
+}
+
+
+
+const BacktoPage = () => {
+  navigate('/calender')
+}
   return (
     <div>
       <Container>
           <Modal>
-            <Close onClick={AddCloseModal}>X</Close>
+            <Close onClick={BacktoPage}>X</Close>
               <Title>작성한 스터디 기록 </Title>
-              <Textarea/>
+              <Textarea
+              name='content'
+              value={content}
+              onChange={(e)=>setContent(e.target.value)}/>
               <BtnWrapper>
-                <Btn onClick={AddCloseModal}>수정</Btn>
-                <Btn>삭제</Btn>
+                <Btn onClick={BacktoPage}>수정</Btn>
+                <Btn onClick={deleteStudy}>삭제</Btn>
               </BtnWrapper>
           </Modal>
       </Container>

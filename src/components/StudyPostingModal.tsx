@@ -5,9 +5,9 @@ import axios from 'axios'
 
 type Prop = {
   PostingCloseModal: () => void
-  studyClass: string; 
-  startTime: string;
-  endTime: string;
+  studyClass: string
+  startTime: string
+  endTime: string
 }
 
 const Container = styled.div`
@@ -18,7 +18,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
 `
 
@@ -45,7 +45,7 @@ const Title = styled.div`
   font-size: 34px;
   font-weight: bold;
   margin-top: 20px;
-  margin-bottom: 20px ;
+  margin-bottom: 20px;
 `
 const Textarea = styled.textarea`
   width: 700px;
@@ -56,15 +56,15 @@ const Textarea = styled.textarea`
 `
 
 const BtnWrapper = styled.div`
-display: flex;
-align-items: center;
-justify-content: space-between;
-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
 `
 
 const Btn = styled.div`
-width: 80px;
-height: 40px;
+  width: 80px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,9 +74,8 @@ height: 40px;
   cursor: pointer;
 `
 
-function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime}: Prop) {
-
-  const[content, setContent] = useState('')
+function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime }: Prop) {
+  const [content, setContent] = useState('')
   const { apiUrl } = useApiUrlStore()
 
   const createStudy = async () => {
@@ -85,33 +84,32 @@ function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime}:
       studyClass: studyClass,
       startTime: startTime,
       endTime: endTime,
-    };
+    }
     try {
-      const access = localStorage.getItem('accessToken');
+      const access = localStorage.getItem('accessToken')
       const response = await axios.post(`${apiUrl}/calender`, calenderList, {
         headers: { Authorization: `Bearer ${access}` },
-      });
+      })
       alert('완료되었습니다.')
-      PostingCloseModal();
+      
+      console.log(response.data)
+      PostingCloseModal()
     } catch (error) {
-      alert('입력값이 비어있습니다. 확인해주세요.');
+      alert('입력값이 비어있습니다. 확인해주세요.')
     }
   }
-  
 
   return (
     <div>
       <Container>
-          <Modal>
-              <Title>오늘 스터디를 기록해보세요 </Title> <Info>
-        
-              </Info>
-              <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
-              <BtnWrapper>
-                <Btn onClick={createStudy}>저장</Btn>
-                <Btn onClick={PostingCloseModal}>취소</Btn>
-              </BtnWrapper>
-          </Modal>
+        <Modal>
+          <Title>오늘 스터디를 기록해보세요 </Title> <Info></Info>
+          <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
+          <BtnWrapper>
+            <Btn onClick={createStudy}>저장</Btn>
+            <Btn onClick={PostingCloseModal}>취소</Btn>
+          </BtnWrapper>
+        </Modal>
       </Container>
     </div>
   )

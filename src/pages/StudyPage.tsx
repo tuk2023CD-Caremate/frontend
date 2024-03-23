@@ -7,6 +7,7 @@ import StudyPostingModal from '../components/StudyPostingModal.tsx'
 import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
 import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
 import moment from 'moment';
@@ -148,7 +149,7 @@ const ListInfoWrapper = styled.div`
   height: 90px;
 `
 
-const StudyName = styled.div`
+const StudyName = styled(Link)`
   display: flex;
   align-items: center;
   width: 300px;
@@ -200,8 +201,8 @@ function StudyPage() {
   const [studyClass, setStudyClass] = useState('');
   const [startTime, setStartTime]=useState('')
   const [endTime, setEndTime]=useState('')
-  const [sumTime, setSumTime] =useState('')
   const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
  
 
@@ -240,7 +241,10 @@ function StudyPage() {
   const AddCloseModal = () => {
     setAddModalOpen(false)
   }
+
+
   //기록 전체조회
+  useEffect(() => {
   const getStudy = async () => {
     try {
       const access = localStorage.getItem('accessToken')
@@ -248,16 +252,13 @@ function StudyPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCalenderList(response.data.calenderList)
-      console.log(response.data)
-    } catch (error) {
-      alert('error');
-    }
+    } catch (error) {}
   }
-
-  useEffect(() => {
+    if (!calenderList.length) {
     getStudy()
+    }
   }, [])
-
+  
   return (
     <div>
       <Header2 />
@@ -300,9 +301,9 @@ function StudyPage() {
             <StudyListWrapper >
             {Array.isArray(calenderList) &&
                 calenderList.map((calender) => (
-              <StudyList  key={calender.id}>
+              <StudyList key={calender.id}>
                   <ListInfoWrapper>
-                    <StudyName onClick={AddOpenModal}>
+                    <StudyName onClick={AddOpenModal} to={`/calender/${calender.id}`}>
                     {interestsList.find(item => item.value === calender.studyClass)?.name}
                     </StudyName>
                     <StudyingTime>{calender.entireTime}</StudyingTime>
