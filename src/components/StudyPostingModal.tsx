@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useApiUrlStore } from '../store/store'
 import axios from 'axios'
@@ -91,7 +91,7 @@ function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime }
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('완료되었습니다.')
-      
+
       console.log(response.data)
       PostingCloseModal()
     } catch (error) {

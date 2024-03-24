@@ -1,4 +1,3 @@
-import React, { useState, ChangeEvent, useEffect } from 'react'
 import styled from 'styled-components'
 import Header2 from '../../components/Header2'
 import Navbar2 from '../../components/Navbar2'

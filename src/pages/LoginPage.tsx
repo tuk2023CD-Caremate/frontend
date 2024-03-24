@@ -1,5 +1,4 @@
 import Login from '../components/Login.tsx'
-import Header2 from '../components/Header2.tsx'
 import { styled } from 'styled-components'
 
 const WhiteSpace = styled.div`

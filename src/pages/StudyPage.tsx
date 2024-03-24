@@ -7,10 +7,10 @@ import StudyPostingModal from '../components/StudyPostingModal.tsx'
 import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
-import moment from 'moment';
+import moment from 'moment'
 
 interface calenderList {
   id: number
@@ -198,29 +198,27 @@ function StudyPage() {
   const [addmodalOpen, setAddModalOpen] = useState(false)
 
   //props
-  const [studyClass, setStudyClass] = useState('');
-  const [startTime, setStartTime]=useState('')
-  const [endTime, setEndTime]=useState('')
+  const [studyClass, setStudyClass] = useState('')
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
- 
 
   const ClickHandler = () => {
-
     //시간 형식 변환
-    const startTime = moment().format('YYYY-MM-DD HH:mm');
-    const endTime = moment().format('YYYY-MM-DD HH:mm');
+    const startTime = moment().format('YYYY-MM-DD HH:mm')
+    const endTime = moment().format('YYYY-MM-DD HH:mm')
 
     if (!isRunning) {
       setCurrentImg(stopIcon) // 멈춤버튼 이미지로 변경
-      setStartTime(startTime); // 현재 시간을 startTime으로 설정
+      setStartTime(startTime) // 현재 시간을 startTime으로 설정
 
       const interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1000)}, 1000)
+        setTime((prevTime) => prevTime + 1000)
+      }, 1000)
       setIntervalId(interval) // interval 변수 업데이트
       setIsRunning(true)
-    
     } else {
       setCurrentImg(playIcon) // 재생버튼 이미지 변경
       clearInterval(interval)
@@ -238,27 +236,26 @@ function StudyPage() {
   const AddOpenModal = () => {
     setAddModalOpen(true)
   }
-  const AddCloseModal = () => {
-    setAddModalOpen(false)
-  }
-
+  // const AddCloseModal = () => {
+  //   setAddModalOpen(false)
+  // }
 
   //기록 전체조회
   useEffect(() => {
-  const getStudy = async () => {
-    try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/calender`, {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-      setCalenderList(response.data.calenderList)
-    } catch (error) {}
-  }
+    const getStudy = async () => {
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(`${apiUrl}/calender`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setCalenderList(response.data.calenderList)
+      } catch (error) {}
+    }
     if (!calenderList.length) {
-    getStudy()
+      getStudy()
     }
   }, [])
-  
+
   return (
     <div>
       <Header2 />
@@ -268,14 +265,12 @@ function StudyPage() {
           <LeftWrapper>
             <TimeRecodingWrapper>
               <TodayText>오늘 총 공부 시간</TodayText>
-              <TotalTime>
-                00:00
-              </TotalTime>
+              <TotalTime>00:00</TotalTime>
             </TimeRecodingWrapper>
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
-            <StudyingWrapper>                                                        
+            <StudyingWrapper>
               <Study>
                 <IconWrapper>
                   <StatusIcon src={currentImg} onClick={ClickHandler} />
@@ -283,7 +278,7 @@ function StudyPage() {
                 <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}>
                   {interestsList.map((item) => (
                     <option value={item.value} key={item.name}>
-                       {item.name}
+                      {item.name}
                     </option>
                   ))}
                 </AddStudy>
@@ -298,28 +293,31 @@ function StudyPage() {
                 <DeleteBtn>삭제</DeleteBtn>
               </BtnWrapper>
             </StudyingWrapper>
-            <StudyListWrapper >
-            {Array.isArray(calenderList) &&
+            <StudyListWrapper>
+              {Array.isArray(calenderList) &&
                 calenderList.map((calender) => (
-              <StudyList key={calender.id}>
-                  <ListInfoWrapper>
-                    <StudyName onClick={AddOpenModal} to={`/calender/${calender.id}`}>
-                    {interestsList.find(item => item.value === calender.studyClass)?.name}
-                    </StudyName>
-                    <StudyingTime>{calender.entireTime}</StudyingTime>
-                  </ListInfoWrapper>
-                </StudyList>
+                  <StudyList key={calender.id}>
+                    <ListInfoWrapper>
+                      <StudyName onClick={AddOpenModal} to={`/calender/${calender.id}`}>
+                        {interestsList.find((item) => item.value === calender.studyClass)?.name}
+                      </StudyName>
+                      <StudyingTime>{calender.entireTime}</StudyingTime>
+                    </ListInfoWrapper>
+                  </StudyList>
                 ))}
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>
       </Container>
-      {addmodalOpen && <AddStudyModal AddCloseModal={AddCloseModal} />}
-      {postingmodalOpen && <StudyPostingModal
-      PostingCloseModal={PostingCloseModal}
-      studyClass={studyClass}
-      startTime={startTime}
-      endTime={endTime}/>}
+      {addmodalOpen && <AddStudyModal />}
+      {postingmodalOpen && (
+        <StudyPostingModal
+          PostingCloseModal={PostingCloseModal}
+          studyClass={studyClass}
+          startTime={startTime}
+          endTime={endTime}
+        />
+      )}
     </div>
   )
 }

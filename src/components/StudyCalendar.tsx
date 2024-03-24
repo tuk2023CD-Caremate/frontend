@@ -18,19 +18,16 @@ const StyledCalendar = styled(Calendar)`
   background-color: white;
   padding: 20px;
 
-
-
   // 네비게이션 폰트 설정
   .react-calendar__navigation button {
     font-weight: bold;
     font-size: 32px;
   }
 
-   /* 년/월 상단 네비게이션 칸 크기 줄이기 */
-   .react-calendar__navigation__label {
+  /* 년/월 상단 네비게이션 칸 크기 줄이기 */
+  .react-calendar__navigation__label {
     flex-grow: 0 !important;
   }
-
 
   //네비게이션 버튼 컬러
   .react-calendar__navigation button:focus,
@@ -50,27 +47,26 @@ const StyledCalendar = styled(Calendar)`
     background-color: white;
   }
 
-//네비게이션 현재 월 스타일 적용 
+  //네비게이션 현재 월 스타일 적용
   .react-calendar__tile--hasActive {
     background-color: #650fa9;
-      color: white;
+    color: white;
   }
 
-  // 일 날짜 간격 
+  // 일 날짜 간격
   .react-calendar__tile {
     padding: 0px 0px 22px;
   }
 
-  // 선택한 날짜 스타일 적용 
+  // 선택한 날짜 스타일 적용
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus,
   .react-calendar__tile--active {
-    background-color: #E8DCF2;
+    background-color: #e8dcf2;
     color: #650fa9;
     font-weight: bold;
     border-radius: 10px;
   }
-  
 `
 
 type ValuePiece = Date | null
@@ -89,9 +85,9 @@ const StudyCalendar = () => {
       <StyledCalendar
         value={date}
         onChange={handleDateChange}
-        formatDay={(locale, date) => moment(date).format('D')} // 일 제거 숫자만 보이게
-        formatYear={(locale, date) => moment(date).format('YYYY')} // 네비게이션 눌렀을때 숫자 년도만 보이게
-        formatMonthYear={(locale, date) => moment(date).format('YYYY. MM')} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+        formatDay={(date) => moment(date).format('D')} // 일 제거 숫자만 보이게
+        formatYear={(date) => moment(date).format('YYYY')} // 네비게이션 눌렀을때 숫자 년도만 보이게
+        formatMonthYear={(date) => moment(date).format('YYYY. MM')} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
         calendarType="gregory" // 일요일 부터 시작
         showNeighboringMonth={false} // 전달, 다음달 날짜 숨기기
         next2Label={null} // +1년 & +10년 이동 버튼 숨기기
