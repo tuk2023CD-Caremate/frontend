@@ -57,7 +57,7 @@ const MatchingList = styled(Link)`
   border-radius: 20px;
 `
 
-export default function MypageBar() {
+export default function Mypagebar() {
   const location = useLocation()
 
   return (
