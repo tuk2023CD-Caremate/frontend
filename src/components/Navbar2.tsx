@@ -77,11 +77,11 @@ export default function Navbar2() {
         게시판
       </Post>
       <StudyList
-        to="/study"
+        to="/calender"
         style={{
-          backgroundColor: location.pathname === '/study' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/study' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/study' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname === '/calender' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/calender' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/calender' ? 'bold' : 'inherit',
         }}>
         스터디 기록
       </StudyList>

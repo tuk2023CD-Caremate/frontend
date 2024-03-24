@@ -16,6 +16,8 @@ import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
 import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
+import AddStudyPage from './pages/AddStudyPage'
+import AddStudyModal from './components/AddStudyModal'
 import SelectUser from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 
@@ -43,8 +45,9 @@ function App() {
         <Route path="/posts/study/:post_id" element={<DetailStudyPostsPage />} />
         <Route path="/posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
 
-        <Route path="/study" element={<StudyPage />} />
-
+        <Route path="/calender" element={<StudyPage />} />
+        <Route path="/calender/:calender_id" element={<AddStudyPage />} />
+     
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
