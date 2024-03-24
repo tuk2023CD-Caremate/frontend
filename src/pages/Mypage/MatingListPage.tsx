@@ -1,5 +1,5 @@
 import Header2 from '../../components/Header2.tsx'
-import MypageBar from '../../components/sidebar/Mypagebar.tsx'
+import Mypagebar from '../../components/sidebar/Mypagebar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
@@ -125,7 +125,7 @@ function MatchingListPage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <MypageBar />
+        <Mypagebar />
         <MatchingListWrapper>
           <PageTitle>매칭 기록</PageTitle>
           {lists.map((list, index) => (
