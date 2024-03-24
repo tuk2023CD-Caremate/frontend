@@ -12,13 +12,6 @@ const Container = styled.div`
   border-bottom: 1px solid #d8d8d8;
 `
 
-const Offline = styled(Link)`
-  font-size: 22px;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: inherit;
-`
 const Online = styled(Link)`
   font-size: 22px;
   padding: 20px 40px 20px 40px;

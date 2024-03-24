@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import UserImg from '../assets/images/profile.png'
 import HeartImg from '../assets/images/likeicon.png'
@@ -143,7 +143,8 @@ function SelectUserModal(id: any) {
         const response = await axios.get(`${apiUrl}/matching/${question_id}/${mentorId}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        console.log('매칭요청발송:')
+        console.log('매칭요청발송')
+        console.log(response.data)
       } catch (error) {
         console.error('Error ', error)
       }

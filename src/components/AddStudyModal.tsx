@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
 
-type Prop = {
-  AddCloseModal?: () => void
-}
+// type Prop = {
+//   AddCloseModal?: () => void
+// }
 
 interface calenderList {
   id: number
@@ -107,7 +107,7 @@ const Btn = styled.div`
   cursor: pointer;
 `
 
-function AddStudyModal({ AddCloseModal }: Prop) {
+function AddStudyModal() {
   const [calenderList, setCalenderList] = useState<calenderList>({
     id: 0,
     content: '',
@@ -122,7 +122,7 @@ function AddStudyModal({ AddCloseModal }: Prop) {
   const [interests, setStudyClass] = useState(calenderList.studyClass)
   const [startTime, setStartTime] = useState(calenderList.startTime)
   const [endTime, setEndTime] = useState(calenderList.endTime)
-  const [entireTime, setEntireime] = useState(calenderList.entireTime)
+  // const [entireTime, setEntireime] = useState(calenderList.entireTime)
   const [editmode, setEditmode] = useState(false)
   const { calender_id } = useParams()
   const { apiUrl } = useApiUrlStore()

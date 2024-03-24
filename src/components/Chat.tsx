@@ -179,7 +179,7 @@ function Chat() {
       if (nickname == '') {
         await getNickname()
       }
-      const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
+      // const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
       const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
         // headers: { Authorization: `Bearer ${access}` },
       })

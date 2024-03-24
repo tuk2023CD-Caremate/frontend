@@ -4,7 +4,6 @@ import SignUpPage from './pages/SignUpPage'
 import MainPostsPage from './pages/PostsPage/MainPostsPage'
 import StudyPostsPage from './pages/PostsPage/StudyPostsPage'
 import ProfilePage from './pages/Mypage/ProfilePage'
-import OfflinePage from './pages/OfflinePage'
 import StartPage from './pages/OnlinePage/StartPage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
@@ -17,7 +16,6 @@ import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
 import AddStudyPage from './pages/AddStudyPage'
-import AddStudyModal from './components/AddStudyModal'
 import SelectUser from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 
@@ -47,7 +45,7 @@ function App() {
 
         <Route path="/calender" element={<StudyPage />} />
         <Route path="/calender/:calender_id" element={<AddStudyPage />} />
-     
+
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />

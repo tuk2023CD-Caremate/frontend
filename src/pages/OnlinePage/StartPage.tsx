@@ -1,11 +1,11 @@
-import React, { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import Header2 from '../../components/Header2'
 import Navbar2 from '../../components/Navbar2'
-import SelectUserModal from '../../components/SelectUserModal'
-import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
-import FindLoadingModal from '../../components/FindLoadingModal'
-import MatchingLoadingModal from '../../components/MatchingLoadingModal'
+// import SelectUserModal from '../../components/SelectUserModal'
+// import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
+// import FindLoadingModal from '../../components/FindLoadingModal'
+// import MatchingLoadingModal from '../../components/MatchingLoadingModal'
 import axios from 'axios'
 import { useApiUrlStore } from '../../store/store'
 import { useNavigate } from 'react-router-dom'
@@ -97,7 +97,7 @@ function StartPage() {
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
-  const [options, setOptions] = useState<Option[]>([
+  const [options] = useState<Option[]>([
     {
       label: 'PROGRAMMING',
     },
@@ -167,8 +167,10 @@ function StartPage() {
               </option>
             ))}
           </SelectInterest>
-          <InputTitle placeholder="제목을 적어주세요"></InputTitle>
-          <InputContent placeholder="내용을 적어주세요"></InputContent>
+          <InputTitle placeholder="제목을 적어주세요" onChange={handleTitleChange}></InputTitle>
+          <InputContent
+            placeholder="내용을 적어주세요"
+            onChange={handleContentChange}></InputContent>
           <StartMatchingBtn onClick={handleSubmit}>온라인 매칭 시작하기</StartMatchingBtn>
         </StartWrap>
         {/* <SelectUserModal /> */}
