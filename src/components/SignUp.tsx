@@ -201,8 +201,8 @@ export default function SignUp() {
       tel: formData.tel,
       interests: formData.interests,
       part: formData.part,
-      blogurl: formData.blogurl,
-      PR: formData.PR,
+      blogUrl: formData.blogurl,
+      publicRelations: formData.PR,
       job: formData.job,
     }
 
