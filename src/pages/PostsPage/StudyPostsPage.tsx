@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx';
-import Navbar2 from '../../components/Navbar2.tsx';
-import PostsBar from '../../components/sidebar/Postsbar';
-import commentImg from '../../assets/images/comment2.png';
-import likeimg from '../../assets/images/likeicon.png';
-import DividerImg from '../../assets/images/divider1.png';
+import Header2 from '../../components/Header2.tsx'
+import Navbar2 from '../../components/Navbar2.tsx'
+import PostsBar from '../../components/sidebar/Postsbar'
+import commentImg from '../../assets/images/comment2.png'
+import likeimg from '../../assets/images/likeicon.png'
+import DividerImg from '../../assets/images/divider1.png'
 
 interface postsData {
   post_id: number
@@ -34,7 +34,7 @@ const StudyPostsWrapper = styled.div`
   width: calc(100% - 400px);
   min-height: 780px;
   border-left: 1px solid #d8d8d8;
- `
+`
 
 const Upper = styled.div`
   display: flex;
@@ -47,15 +47,15 @@ const BtnWrapper = styled.div`
   padding-bottom: 10px;
 `
 const Btn = styled.button`
-width: 124px;
-height: 48px;
-border-radius: 10px;
-border: none;
-font-size: 24px;
-margin-right:36px;
-background-color: #E8E8E8;
-color: #BDBDBD;
-&:hover,
+  width: 124px;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  font-size: 24px;
+  margin-right: 36px;
+  background-color: #e8e8e8;
+  color: #bdbdbd;
+  &:hover,
   &:active {
     font-weight: bold;
     color: #650fa9;
@@ -63,7 +63,7 @@ color: #BDBDBD;
   }
 `
 const SearchWrapper = styled.div`
-height: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   padding: 10px 10px 10px 0;
@@ -71,7 +71,7 @@ height: 80px;
   margin-bottom: 10px;
 `
 const SideWrapper = styled.div`
- display: flex;
+  display: flex;
 `
 
 const Search = styled.div`
@@ -82,7 +82,7 @@ const Search = styled.div`
 const Input = styled.input`
   text-indent: 30px;
   width: 760px;
-  height:65px;
+  height: 65px;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 24px;
@@ -90,9 +90,9 @@ const Input = styled.input`
 `
 
 const SerarchBtn = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 80px;
   height: 50px;
   border-radius: 5px;
@@ -108,7 +108,7 @@ const SelectBox = styled.select`
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 20px;
-  margin-right:20px;
+  margin-right: 20px;
   cursor: pointer;
   text-align: center;
 `
@@ -173,7 +173,7 @@ const CommentCount = styled.div`
   font-weight: bolder;
 `
 const Divider = styled.img`
-margin: 0 20px 0 20px;
+  margin: 0 20px 0 20px;
   width: 2px;
   height: 20px;
 `
@@ -185,42 +185,37 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption =[
-  { value: "LIKE", name: "좋아요 순"},
-  { value: "LATEST", name: "최신 순"},
+const Listoption = [
+  { value: 'LIKE', name: '좋아요 순' },
+  { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
-];
-
+]
 
 function StudyPostPage() {
-
   const { apiUrl } = useApiUrlStore()
-  const [listoption, SetListoption] = useState("")
+  const [listoption, SetListoption] = useState('')
   const [postsData, SetpostData] = useState<postsData[]>([])
-    
+
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     SetListoption(e.target.value)
   }
 
-
   //게시글 정렬
-  const OnSortpostData = () =>{
+  const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-       
-      if(listoption === "LATEST"){ //최신 순 option을 선택했을 경우
-        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(); 
+      if (listoption === 'LATEST') {
+        //최신 순 option을 선택했을 경우
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+      } else if (listoption === 'LIKE') {
+        //좋아요 순 option을 선택했을 경우
+        return b.likeCount - a.likeCount
+      } else if (listoption === 'COMMENT') {
+        return b.commentCount - a.commentCount
       }
-      else if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
-        return b.likeCount - a.likeCount;
-    }
-    else if (listoption === 'COMMENT') {
-      return b.commentCount - a.commentCount
-    }
-    return 0;
-  });
-  SetpostData(sortList);
+      return 0
+    })
+    SetpostData(sortList)
   }
-
 
   //게시글 전체조회
   const getPost = async () => {
@@ -237,67 +232,109 @@ function StudyPostPage() {
     getPost()
   }, [])
 
+  //게시글 검색
+  const [searchkeyword, SetSearchKeyword] = useState('')
 
+  const searchpost = async () => {
+    if (searchkeyword !== '') {
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(`${apiUrl}/posts/search`, {
+          params: { keyword: searchkeyword },
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        SetpostData(response.data)
+      } catch (error) {}
+    } else if (searchkeyword == '') {
+      alert('검색어를 입력해주세요')
+      getPost() //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+    }
+  }
 
+  //게시글 필터링
+  const [isClicked, setIsClicked] = useState('')
 
-     //게시글 검색
-     const [searchkeyword, SetSearchKeyword]= useState("")
-
-     const searchpost = async ()=> {
-       if(searchkeyword !==''){
-         try {
-           const access = localStorage.getItem('accessToken')
-           const response = await axios.get(`${apiUrl}/posts/search`, {
-             params: {keyword : searchkeyword},
-             headers: { Authorization: `Bearer ${access}` },
-           })
-           SetpostData(response.data)
-         } catch (error) {}
-       } else if(searchkeyword ==''){
-         alert("검색어를 입력해주세요")
-         getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
-       }}
-
+  const OnFinishFilter = () => {
+    setIsClicked('finish')
+    if (!isClicked) {
+      const filteredPosts = postsData.filter((post) => post.recruitmentStatus === false)
+      SetpostData(filteredPosts)
+    } else {
+      setIsClicked('')
+      getPost()
+    }
+  }
+  const OnRecruitingFilter = () => {
+    setIsClicked('recruiting')
+    if (!isClicked) {
+      const filteredPosts = postsData.filter((post) => post.recruitmentStatus === true)
+      SetpostData(filteredPosts)
+    } else {
+      setIsClicked('')
+      getPost()
+    }
+  }
 
   return (
-      <div>
-        <Header2/>
-        <Navbar2/>
-        <Container>
-          <PostsBar/>
-            <StudyPostsWrapper>
-              <Upper>
-                <BtnWrapper>
-                <Btn >모집중</Btn>
-                <Btn >모집완료</Btn>
-                </BtnWrapper>
-                <SearchWrapper>
-                <Search>
-                <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>
+    <div>
+      <Header2 />
+      <Navbar2 />
+      <Container>
+        <PostsBar />
+        <StudyPostsWrapper>
+          <Upper>
+            <BtnWrapper>
+              <Btn
+                onClick={OnRecruitingFilter}
+                style={{
+                  backgroundColor: isClicked === 'recruiting' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'recruiting' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'recruiting' ? 'bold' : 'normal',
+                }}>
+                모집중
+              </Btn>
+              <Btn
+                onClick={OnFinishFilter}
+                style={{
+                  backgroundColor: isClicked === 'finish' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'finish' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'finish' ? 'bold' : 'normal',
+                }}>
+                모집완료
+              </Btn>
+            </BtnWrapper>
+            <SearchWrapper>
+              <Search>
+                <Input
+                  type="text"
+                  value={searchkeyword}
+                  onChange={(e) => SetSearchKeyword(e.target.value)}
+                  placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
+                />
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
-                </Search>
-                <SideWrapper>
+              </Search>
+              <SideWrapper>
                 <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                {Listoption.map((item) => (
-                <option value={item.value} key={item.name}>
-                  {item.name}
-                  </option>
+                  {Listoption.map((item) => (
+                    <option value={item.value} key={item.name}>
+                      {item.name}
+                    </option>
                   ))}
-                  </SelectBox>
+                </SelectBox>
                 <Link to="/posts/write">
-                <WriteButton> 글쓰기</WriteButton>
+                  <WriteButton> 글쓰기</WriteButton>
                 </Link>
-                </SideWrapper>
-                </SearchWrapper>
-              </Upper>
-              {postsData
-              .filter(post => post.category === 'STUDY')
-              .map((post)=>(
-              <StudyPosts  key={post.post_id} to={`/posts/study/${post.post_id}`}>
+              </SideWrapper>
+            </SearchWrapper>
+          </Upper>
+          {postsData
+            .filter((post) => post.category === 'STUDY')
+            .map((post) => (
+              <StudyPosts key={post.post_id} to={`/posts/study/${post.post_id}`}>
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>
                 <FooterWrapper>
-                  <LikeImg src={likeimg}/>
+                  <LikeImg src={likeimg} />
                   <Likecount>{post.likeCount}</Likecount>
                   <CommentImg src={commentImg} />
                   <CommentCount>{post.commentCount}</CommentCount>
@@ -307,11 +344,11 @@ function StudyPostPage() {
                   <Writer>{post.nickname}</Writer>
                 </FooterWrapper>
               </StudyPosts>
-              ))}
-            </StudyPostsWrapper>
-        </Container>
-      </div>
-    );
-  }
+            ))}
+        </StudyPostsWrapper>
+      </Container>
+    </div>
+  )
+}
 
-export default StudyPostPage 
+export default StudyPostPage

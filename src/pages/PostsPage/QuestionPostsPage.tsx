@@ -253,6 +253,61 @@ function QuestionPostPage() {
          getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
        }}
 
+ //게시글 필터링
+ const [isClicked, setIsClicked] = useState('')
+
+ const OnKoreanFilter = () => {
+   setIsClicked('KOREAN')
+   if (!isClicked) {
+     const filteredPosts = postsData.filter((post) => post.interests === 'KOREAN')
+     SetpostData(filteredPosts)
+   } else {
+     setIsClicked('')
+     getPost()
+   }
+ }
+ const OnMathFilter = () => {
+   setIsClicked('MATH')
+   if (!isClicked) {
+     const filteredPosts = postsData.filter((post) => post.interests === 'MATH')
+     SetpostData(filteredPosts)
+   } else {
+     setIsClicked('')
+     getPost()
+   }
+ }
+ const OnEnglishFilter = () => {
+   setIsClicked('ENGLISH')
+   if (!isClicked) {
+     const filteredPosts = postsData.filter((post) => post.interests === 'ENGLISH')
+     SetpostData(filteredPosts)
+   } else {
+     setIsClicked('')
+     getPost()
+   }
+ }
+
+ const OnScienceFilter = () => {
+   setIsClicked('SCIENCE')
+   if (!isClicked) {
+     const filteredPosts = postsData.filter((post) => post.interests === 'SCIENCE')
+     SetpostData(filteredPosts)
+   } else {
+     setIsClicked('')
+     getPost()
+   }
+ }
+
+ const OnProgrammingFilter = () => {
+   setIsClicked('PROGRAMMING')
+   if (!isClicked) {
+     const filteredPosts = postsData.filter((post) => post.interests === 'PROGRAMMING')
+     SetpostData(filteredPosts)
+   } else {
+     setIsClicked('')
+     getPost()
+   }
+ }
 
   return (
     <div>
@@ -262,12 +317,52 @@ function QuestionPostPage() {
         <PostsBar />
         <QuestionPostsWrapper>
           <Upper>
-            <BtnWrapper>
-              <Btn>국어</Btn>
-              <Btn>수학</Btn>
-              <Btn>영어</Btn>
-              <Btn>과학</Btn>
-              <Btn>코딩</Btn>
+           <BtnWrapper>
+              <Btn
+                onClick={OnKoreanFilter}
+                style={{
+                  backgroundColor: isClicked === 'KOREAN' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'KOREAN' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'KOREAN' ? 'bold' : 'normal',
+                }}>
+                국어
+              </Btn>
+              <Btn
+                onClick={OnMathFilter}
+                style={{
+                  backgroundColor: isClicked === 'MATH' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'MATH' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'MATH' ? 'bold' : 'normal',
+                }}>
+                수학
+              </Btn>
+              <Btn
+                onClick={OnEnglishFilter}
+                style={{
+                  backgroundColor: isClicked === 'ENGLISH' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'ENGLISH' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'ENGLISH' ? 'bold' : 'normal',
+                }}>
+                영어
+              </Btn>
+              <Btn
+                onClick={OnScienceFilter}
+                style={{
+                  backgroundColor: isClicked === 'SCIENCE' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'SCIENCE' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'SCIENCE' ? 'bold' : 'normal',
+                }}>
+                과학
+              </Btn>
+              <Btn
+                onClick={OnProgrammingFilter}
+                style={{
+                  backgroundColor: isClicked === 'PROGRAMMING' ? '#E8DCF2' : '#e8e8e8',
+                  color: isClicked === 'PROGRAMMING' ? '#650FA9' : '#bdbdbd',
+                  fontWeight: isClicked === 'PROGRAMMING' ? 'bold' : 'normal',
+                }}>
+                코딩
+              </Btn>
             </BtnWrapper>
             <SearchWrapper>
               <Search>
