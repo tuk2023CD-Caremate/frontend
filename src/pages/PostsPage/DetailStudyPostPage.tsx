@@ -404,7 +404,6 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-      console.log(response.data.nickname)
     } catch (error) {}
   }
 
@@ -426,6 +425,8 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
+      const updatecommentcount = postsData.commentCount+1;
+      SetpostData({...postsData, commentCount: updatecommentcount}); 
     } catch (error) {}
     SetContent('')
   }

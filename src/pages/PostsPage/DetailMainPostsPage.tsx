@@ -482,6 +482,8 @@ function DetailMainPostPage() {
           },
         )
         setCommentData([...commentData, response.data])
+        const updatecommentcount = postsData.commentCount+1;
+        SetpostData({...postsData, commentCount: updatecommentcount}); 
       } catch (error) {}
       SetContent('')
     }

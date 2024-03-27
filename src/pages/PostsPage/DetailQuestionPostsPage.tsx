@@ -375,7 +375,6 @@ function DetailQuestionPostPage() {
     //게시글 좋아요
   const [isliked, setIsLiked] = useState(false)
 
- 
   const onLikeBtn = async (postId:number) => {
     setIsLiked(true);
     console.log(postsData)
@@ -388,8 +387,6 @@ function DetailQuestionPostPage() {
       )
       const updatelikecount = postsData.likeCount+1
       SetpostData({...postsData, likeCount : updatelikecount}); 
-      console.log(response.data)
-   
     } catch (error) {
       alert('Error while liking post');
     }
@@ -414,7 +411,6 @@ function DetailQuestionPostPage() {
     } catch (error) {}
   }
 
-  
   useEffect(() => {
     getComment()
   }, [commentData]) //변수가 달라질 때마다 getComment
@@ -429,7 +425,6 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-      console.log(response.data.nickname)
     } catch (error) {}
   }
 
@@ -451,10 +446,12 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
+      const updatecommentcount = postsData.commentCount+1;
+      SetpostData({...postsData, commentCount: updatecommentcount}); 
     } catch (error) {}
     }SetContent('')
   }
-
+ 
   useEffect(() => {
     createComment()
   }, [])
@@ -464,13 +461,13 @@ function DetailQuestionPostPage() {
   const deleteCommet = async(post_id: number, comment_id: number) =>{
     if(window.confirm('댓글을 삭제할까요?')){
       try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
-    })
-    setCommentData(response.data)
-    } catch (error) {}
-    } 
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCommentData(response.data)
+    }catch (error) {}
+  }
   }
 
   
