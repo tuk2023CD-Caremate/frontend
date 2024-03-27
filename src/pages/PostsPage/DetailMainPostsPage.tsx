@@ -8,6 +8,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
+import unlikeimg from '../../assets/images/unlikeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
 
 interface PostsData {
@@ -370,6 +371,59 @@ function DetailMainPostPage() {
       navigate('/posts/update/' + post_id)
     }
   }
+  
+  const [isliked, setIsLiked] = useState(false)
+  const [likedPost, setLikedPost] = useState<PostsData[]>([])
+
+
+  //좋아요 누른 게시글인지 확인
+  const LikedPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken');
+        const response = await axios.get(
+          `${apiUrl}/user/post/heart`,
+          {
+            headers: { Authorization: `Bearer ${access}` }
+          });
+          setLikedPost(response.data)
+          console.log(response.data)
+      } catch (error) {
+      alert('Error while liking post');
+    }
+  }; 
+  useEffect(()=>{
+    LikedPost()
+  }, [])
+
+
+  //게시글 좋아요
+  const onLikeBtn = async (postId:number) => {
+    const access = localStorage.getItem('accessToken');
+    try {
+      if(likedPost.map((post)=>post.post_id !== postId)){
+        const response = await axios.post(`${apiUrl}/post/heart/${postId}`, //좋아요 생성
+          {}, 
+          {headers: { Authorization: `Bearer ${access}` },} // headers는 세 번째 매개변수로 전달
+        );
+        const updatelikecount = postsData.likeCount+1;
+        SetpostData({...postsData, likeCount: updatelikecount});
+        setIsLiked(!isliked)
+      } else{
+        const response = await axios.delete(`${apiUrl}/post/heart/${postId}`, //좋아요 삭제
+          {headers: { Authorization: `Bearer ${access}` },} 
+        );
+        const updatelikecount = postsData.likeCount-1;
+        SetpostData({...postsData, likeCount: updatelikecount}); 
+        setIsLiked(isliked)
+      }
+    }
+    catch (error) {
+      alert('Error while liking post');
+      }
+  };
+
+
+
 
   //댓글CRUD
   const [content, SetContent] = useState('')
@@ -403,7 +457,6 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-      console.log(response.data.nickname)
     } catch (error) {}
   }
 
@@ -516,12 +569,12 @@ function DetailMainPostPage() {
             </Lower>
             <FooterWrapper>
               <DetailFooterWrapper>
-                <LikeImg src={likeimg} />
+                <LikeImg src={isliked ? likeimg : unlikeimg}/>
                 <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
                 <CommentCount>{postsData.commentCount}</CommentCount>
               </DetailFooterWrapper>
-              <LikeBtn>좋아요</LikeBtn>
+              <LikeBtn onClick={()=>onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>
             </FooterWrapper>
           </MainPostWrapper>
           {Array.isArray(commentData) &&
