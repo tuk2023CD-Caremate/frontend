@@ -1,5 +1,5 @@
 import Header2 from '../../components/Header2.tsx'
-import Mypagebar from '../../components/sidebar/Mypagebar.tsx'
+import Userbar from '../../components/sidebar/Userbar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import CommentImg from '../../assets/images/comment.png'
 
@@ -55,7 +55,7 @@ function NotificationPage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <Mypagebar />
+        <Userbar />
         <NotificationWrapper>
           {notifications.map((notification) => (
             <Notification key={notification.id}>
