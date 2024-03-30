@@ -26,6 +26,7 @@ interface postsData {
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
+  border: 1px solid green;
 `
 const FreePostsWrapper = styled.div`
   display: flex;
@@ -34,12 +35,14 @@ const FreePostsWrapper = styled.div`
   width: calc(100% - 400px);
   min-height: 780px;
   border-left: 1px solid #d8d8d8;
+  border: 1px solid tomato;
 `
 
 const Upper = styled.div`
   display: flex;
   flex-direction: column;
   width: calc(100% - 100px);
+  border: 1px solid blue;
 `
 const BtnWrapper = styled.div`
   display: flex;
@@ -193,6 +196,8 @@ const Listoption = [
 function MainPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [listoption, SetListoption] = useState('')
+  const [searchkeyword, SetSearchKeyword] = useState('')
+  const [isClicked, setIsClicked] = useState('')
   const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -232,8 +237,6 @@ function MainPostPage() {
   }, [])
 
   //게시글 검색
-  const [searchkeyword, SetSearchKeyword] = useState('')
-
   const searchpost = async () => {
     if (searchkeyword !== '') {
       try {
@@ -251,8 +254,6 @@ function MainPostPage() {
   }
 
   //게시글 필터링
-  const [isClicked, setIsClicked] = useState('')
-
   const OnKoreanFilter = () => {
     setIsClicked('KOREAN')
     if (!isClicked) {
