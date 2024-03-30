@@ -26,7 +26,6 @@ interface postsData {
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
-  border: 1px solid green;
 `
 const FreePostsWrapper = styled.div`
   display: flex;
@@ -35,14 +34,12 @@ const FreePostsWrapper = styled.div`
   width: calc(100% - 400px);
   min-height: 780px;
   border-left: 1px solid #d8d8d8;
-  border: 1px solid tomato;
 `
 
 const Upper = styled.div`
   display: flex;
   flex-direction: column;
   width: calc(100% - 100px);
-  border: 1px solid blue;
 `
 const BtnWrapper = styled.div`
   display: flex;
@@ -58,12 +55,6 @@ const Btn = styled.button`
   margin-right: 36px;
   background-color: #e8e8e8;
   color: #bdbdbd;
-  &:hover,
-  &:active {
-    font-weight: bold;
-    color: #650fa9;
-    background-color: #e8dcf2; /* #dcc4ef의 60% 투명한 버전 */
-  }
 `
 const SearchWrapper = styled.div`
   height: 80px;
@@ -193,11 +184,13 @@ const Listoption = [
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
+
 function MainPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [listoption, SetListoption] = useState('')
   const [searchkeyword, SetSearchKeyword] = useState('')
-  const [isClicked, setIsClicked] = useState('')
+  const [filterPost, setfilterPost] = useState<postsData[]>([])
+  const [isClicked, setIsClicked] = useState(false)
   const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -254,58 +247,36 @@ function MainPostPage() {
   }
 
   //게시글 필터링
-  const OnKoreanFilter = () => {
-    setIsClicked('KOREAN')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.interests === 'KOREAN')
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
-  }
-  const OnMathFilter = () => {
-    setIsClicked('MATH')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.interests === 'MATH')
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
-  }
-  const OnEnglishFilter = () => {
-    setIsClicked('ENGLISH')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.interests === 'ENGLISH')
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
+  const OnFilter = (interests: string) => {
+    setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
+    const CopyPost = [...postsData.filter((post) => post.category === 'FREE')] //postData 복사
+    const filterPost = CopyPost.filter((post) => post.interests === interests) //복사된 값에서 filter
+    setfilterPost(filterPost)
   }
 
-  const OnScienceFilter = () => {
-    setIsClicked('SCIENCE')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.interests === 'SCIENCE')
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
-  }
-
-  const OnProgrammingFilter = () => {
-    setIsClicked('PROGRAMMING')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.interests === 'PROGRAMMING')
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
-  }
+  //중복 코드 컴포넌트화
+  const Post = ({ posts }: { posts: postsData[] }) => (
+    <>
+      {posts
+        .filter((post) => post.category === 'FREE')
+        .map((post) => (
+          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+            <Title>{post.title}</Title>
+            <Context>{post.content}</Context>
+            <FooterWrapper>
+              <LikeImg src={likeimg} />
+              <Likecount>{post.likeCount}</Likecount>
+              <CommentImg src={commentImg} />
+              <CommentCount>{post.commentCount}</CommentCount>
+              <Divider src={DividerImg} />
+              <DateCreated>{post.createdAt}</DateCreated>
+              <Divider src={DividerImg} />
+              <Writer>{post.nickname}</Writer>
+            </FooterWrapper>
+          </MainPosts>
+        ))}
+    </>
+  )
 
   return (
     <div>
@@ -316,51 +287,11 @@ function MainPostPage() {
         <FreePostsWrapper>
           <Upper>
             <BtnWrapper>
-              <Btn
-                onClick={OnKoreanFilter}
-                style={{
-                  backgroundColor: isClicked === 'KOREAN' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'KOREAN' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'KOREAN' ? 'bold' : 'normal',
-                }}>
-                국어
-              </Btn>
-              <Btn
-                onClick={OnMathFilter}
-                style={{
-                  backgroundColor: isClicked === 'MATH' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'MATH' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'MATH' ? 'bold' : 'normal',
-                }}>
-                수학
-              </Btn>
-              <Btn
-                onClick={OnEnglishFilter}
-                style={{
-                  backgroundColor: isClicked === 'ENGLISH' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'ENGLISH' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'ENGLISH' ? 'bold' : 'normal',
-                }}>
-                영어
-              </Btn>
-              <Btn
-                onClick={OnScienceFilter}
-                style={{
-                  backgroundColor: isClicked === 'SCIENCE' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'SCIENCE' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'SCIENCE' ? 'bold' : 'normal',
-                }}>
-                과학
-              </Btn>
-              <Btn
-                onClick={OnProgrammingFilter}
-                style={{
-                  backgroundColor: isClicked === 'PROGRAMMING' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'PROGRAMMING' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'PROGRAMMING' ? 'bold' : 'normal',
-                }}>
-                코딩
-              </Btn>
+              <Btn onClick={() => OnFilter('KOREAN')}>국어</Btn>
+              <Btn onClick={() => OnFilter('MATH')}>수학</Btn>
+              <Btn onClick={() => OnFilter('ENGLISH')}>영어</Btn>
+              <Btn  onClick={() => OnFilter('SCIENCE')}>과학</Btn>
+              <Btn  onClick={() => OnFilter('PROGRAMMING')}>코딩</Btn>
             </BtnWrapper>
             <SearchWrapper>
               <Search>
@@ -386,24 +317,7 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {postsData
-            .filter((post) => post.category === 'FREE')
-            .map((post) => (
-              <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
-                <Title>{post.title}</Title>
-                <Context>{post.content}</Context>
-                <FooterWrapper>
-                  <LikeImg src={likeimg} />
-                  <Likecount>{post.likeCount}</Likecount>
-                  <CommentImg src={commentImg} />
-                  <CommentCount>{post.commentCount}</CommentCount>
-                  <Divider src={DividerImg} />
-                  <DateCreated>{post.createdAt}</DateCreated>
-                  <Divider src={DividerImg} />
-                  <Writer>{post.nickname}</Writer>
-                </FooterWrapper>
-              </MainPosts>
-            ))}
+          <Post posts={isClicked ? filterPost : postsData} />
         </FreePostsWrapper>
       </Container>
     </div>

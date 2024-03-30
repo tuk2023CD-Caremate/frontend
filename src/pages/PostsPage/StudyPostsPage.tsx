@@ -194,6 +194,9 @@ const Listoption = [
 function StudyPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [listoption, SetListoption] = useState('')
+  const [searchkeyword, SetSearchKeyword] = useState('')
+  const [filterPost, setfilterPost] = useState<postsData[]>([])
+  const [isClicked, setIsClicked] = useState(false)
   const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -233,8 +236,6 @@ function StudyPostPage() {
   }, [])
 
   //게시글 검색
-  const [searchkeyword, SetSearchKeyword] = useState('')
-
   const searchpost = async () => {
     if (searchkeyword !== '') {
       try {
@@ -252,29 +253,36 @@ function StudyPostPage() {
   }
 
   //게시글 필터링
-  const [isClicked, setIsClicked] = useState('')
-
-  const OnFinishFilter = () => {
-    setIsClicked('finish')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.recruitmentStatus === false)
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
-  }
-  const OnRecruitingFilter = () => {
-    setIsClicked('recruiting')
-    if (!isClicked) {
-      const filteredPosts = postsData.filter((post) => post.recruitmentStatus === true)
-      SetpostData(filteredPosts)
-    } else {
-      setIsClicked('')
-      getPost()
-    }
+  const OnFilter = (recruitmentStatus: boolean) => {
+    setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
+    const CopyPost = [...postsData.filter((post) => post.recruitmentStatus === true)] //postData 복사
+    const filterPost = CopyPost.filter((post) => post.recruitmentStatus === recruitmentStatus) //복사된 값에서 filter
+    setfilterPost(filterPost)
   }
 
+  //중복 코드 컴포넌트화
+  const Post = ({ posts }: { posts: postsData[] }) => (
+    <>
+      {posts
+        .filter((post) => post.category === 'STUDY')
+        .map((post) => (
+          <StudyPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+            <Title>{post.title}</Title>
+            <Context>{post.content}</Context>
+            <FooterWrapper>
+              <LikeImg src={likeimg} />
+              <Likecount>{post.likeCount}</Likecount>
+              <CommentImg src={commentImg} />
+              <CommentCount>{post.commentCount}</CommentCount>
+              <Divider src={DividerImg} />
+              <DateCreated>{post.createdAt}</DateCreated>
+              <Divider src={DividerImg} />
+              <Writer>{post.nickname}</Writer>
+            </FooterWrapper>
+          </StudyPosts>
+        ))}
+    </>
+  )
   return (
     <div>
       <Header2 />
@@ -284,24 +292,8 @@ function StudyPostPage() {
         <StudyPostsWrapper>
           <Upper>
             <BtnWrapper>
-              <Btn
-                onClick={OnRecruitingFilter}
-                style={{
-                  backgroundColor: isClicked === 'recruiting' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'recruiting' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'recruiting' ? 'bold' : 'normal',
-                }}>
-                모집중
-              </Btn>
-              <Btn
-                onClick={OnFinishFilter}
-                style={{
-                  backgroundColor: isClicked === 'finish' ? '#E8DCF2' : '#e8e8e8',
-                  color: isClicked === 'finish' ? '#650FA9' : '#bdbdbd',
-                  fontWeight: isClicked === 'finish' ? 'bold' : 'normal',
-                }}>
-                모집완료
-              </Btn>
+              <Btn onClick={() => OnFilter(true)}>모집중</Btn>
+              <Btn onClick={() => OnFilter(false)}>모집완료</Btn>
             </BtnWrapper>
             <SearchWrapper>
               <Search>
@@ -327,24 +319,7 @@ function StudyPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {postsData
-            .filter((post) => post.category === 'STUDY')
-            .map((post) => (
-              <StudyPosts key={post.post_id} to={`/posts/study/${post.post_id}`}>
-                <Title>{post.title}</Title>
-                <Context>{post.content}</Context>
-                <FooterWrapper>
-                  <LikeImg src={likeimg} />
-                  <Likecount>{post.likeCount}</Likecount>
-                  <CommentImg src={commentImg} />
-                  <CommentCount>{post.commentCount}</CommentCount>
-                  <Divider src={DividerImg} />
-                  <DateCreated>{post.createdAt}</DateCreated>
-                  <Divider src={DividerImg} />
-                  <Writer>{post.nickname}</Writer>
-                </FooterWrapper>
-              </StudyPosts>
-            ))}
+          <Post posts={isClicked ? filterPost : postsData} />
         </StudyPostsWrapper>
       </Container>
     </div>
