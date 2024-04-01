@@ -5,7 +5,7 @@ import onboarding1 from '../assets/images/onboarding1.png'
 const Container = styled.div`
   background-image: url(${onboarding1});
   width: 100dvw;
-  height: 100dvh;
+  height: calc(100vh - 110px);
   background-size: cover;
 `
 
