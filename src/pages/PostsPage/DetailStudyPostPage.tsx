@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
+import { useApiUrlStore, useLikedStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import commentImg from '../../assets/images/comment2.png'
 import likeimg from '../../assets/images/likeicon.png'
+import unlikeimg from '../../assets/images/unlikeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
 
 interface postsData {
@@ -301,8 +302,11 @@ const Send = styled.div`
 
 function DetailStudyPostPage() {
   const { post_id } = useParams()
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  const {isliked, setIsLiked } = useLikedStore()
+  const { apiUrl } = useApiUrlStore()
+  const [nickname, setNickname] = useState<string>('')
+  const [likedPost, setLikedPost] = useState<postsData[]>([])
 
   //게시판 글 DATA
   const [postsData, SetpostData] = useState<postsData>({
@@ -333,9 +337,6 @@ function DetailStudyPostPage() {
   }, [])
 
     //게시글 수정&삭제 버튼이 작성자에게만 보이도록
-    const { apiUrl } = useApiUrlStore()
-    const [nickname, setNickname] = useState<string>('')
-  
     const getNickname = async () => {
       try {
         const access = localStorage.getItem('accessToken')
@@ -371,7 +372,55 @@ function DetailStudyPostPage() {
         navigate('/posts/update/'+post_id)
       }
     }
+
+    //좋아요 누른 게시글인지 확인
+  const LikedPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user/post/heart`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setLikedPost(response.data)
+    } catch (error) {
+      alert('Error while liking post')
+    }
+  }
   
+  //게시글 좋아요
+  const onLikeBtn = async (postId: number) => {
+    const access = localStorage.getItem('accessToken')
+    try {
+      const isPostLiked = likedPost.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+
+      if (!isPostLiked) {
+        //없을 경우
+        const response = await axios.post(
+          `${apiUrl}/post/heart/${postId}`, //좋아요 생성
+          {},
+          { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
+        )
+        const updatelikecount = postsData.likeCount + 1
+        SetpostData({ ...postsData, likeCount: updatelikecount })
+        setIsLiked(true)
+      } else {
+        //있을경우
+        const response = await axios.delete(
+          `${apiUrl}/post/heart/${postId}`, //좋아요 삭제
+          { headers: { Authorization: `Bearer ${access}` } },
+        )
+        const updatelikecount = postsData.likeCount - 1
+        SetpostData({ ...postsData, likeCount: updatelikecount })
+        setIsLiked(false)
+      }
+    } catch (error) {
+      console.error('Error while toggling like:', error)
+      alert('Error while liking post')
+    }
+  }
+
+  useEffect(() => {
+    LikedPost()
+  }, [])
 
   //댓글CRUD
   const [content, SetContent] = useState('')
@@ -513,7 +562,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                <LikeImg src={likeimg} />
+                <LikeImg src={isliked ? likeimg : unlikeimg} />
                 <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
                 <CommentCount>{postsData.commentCount}</CommentCount>
