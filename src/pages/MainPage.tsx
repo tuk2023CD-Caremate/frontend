@@ -36,9 +36,9 @@ const Slogan1 = styled.div`
   position: relative;
   left: 140px;
   color: #ffffff;
-  width: 652px;
-  height: 308px;
-  font-size: 100px;
+  width: 760px;
+  height: 330px;
+  font-size: 120px;
   letter-spacing: 15px;
   font-weight: bold;
 
@@ -51,9 +51,9 @@ const Slogan2 = styled.div`
   position: relative;
   left: 140px;
   color: #ffffff;
-  width: 660px;
+  width: 780px;
   height: 308px;
-  font-size: 30px;
+  font-size: 36px;
 
   letter-spacing: 0.8px;
   font-weight: bold;
