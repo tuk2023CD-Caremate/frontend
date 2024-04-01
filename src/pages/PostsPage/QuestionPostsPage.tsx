@@ -45,21 +45,16 @@ const BtnWrapper = styled.div`
   align-items: center;
   padding-bottom: 10px;
 `
-const Btn = styled.button`
+const Btn = styled.button<{active: boolean}>`
   width: 124px;
   height: 48px;
   border-radius: 10px;
   border: none;
   font-size: 24px;
   margin-right: 36px;
-  background-color: #e8e8e8;
-  color: #bdbdbd;
-  &:hover,
-  &:active {
-    font-weight: bold;
-    color: #650fa9;
-    background-color:#e8dcf2; /* #dcc4ef의 60% 투명한 버전 */
-  }
+  background-color: ${({ active }) => (active ? '#E8DCF2' : '#e8e8e8')};
+  color: ${({ active }) => (active ? '#650FA9' : '#bdbdbd')};
+  font-weight: ${({ active }) => (active ? 'bolder' : 'normal')};
 `
 const SearchWrapper = styled.div`
   height: 80px;
@@ -190,6 +185,14 @@ const Listoption = [
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
+const interestLabels:  { [key: string]: string}= {
+  KOREAN: '국어',
+  MATH: '수학',
+  ENGLISH: '영어',
+  SCIENCE: '과학',
+  PROGRAMMING: '코딩'
+};
+
 function QuestionPostPage() {
 
   const { apiUrl } = useApiUrlStore()
@@ -294,13 +297,16 @@ function QuestionPostPage() {
         <PostsBar />
         <QuestionPostsWrapper>
           <Upper>
-            <BtnWrapper>
-              <Btn onClick={() => OnFilter('KOREAN')}>국어</Btn>
-              <Btn onClick={() => OnFilter('MATH')}>수학</Btn>
-              <Btn onClick={() => OnFilter('ENGLISH')}>영어</Btn>
-              <Btn  onClick={() => OnFilter('SCIENCE')}>과학</Btn>
-              <Btn  onClick={() => OnFilter('PROGRAMMING')}>코딩</Btn>
-            </BtnWrapper>
+          <BtnWrapper>
+            {Object.keys(interestLabels).map(interest => (
+            <Btn
+              key={interest}
+              active={isClicked && filterPost.some(post => post.interests === interest)}
+              onClick={() => OnFilter(interest)}>
+                {interestLabels[interest]}
+              </Btn>
+              ))}
+          </BtnWrapper>
             <SearchWrapper>
               <Search>
               <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>

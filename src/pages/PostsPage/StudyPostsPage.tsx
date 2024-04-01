@@ -46,21 +46,16 @@ const BtnWrapper = styled.div`
   align-items: center;
   padding-bottom: 10px;
 `
-const Btn = styled.button`
+const Btn = styled.button<{ active: boolean }>`
   width: 124px;
   height: 48px;
   border-radius: 10px;
   border: none;
   font-size: 24px;
   margin-right: 36px;
-  background-color: #e8e8e8;
-  color: #bdbdbd;
-  &:hover,
-  &:active {
-    font-weight: bold;
-    color: #650fa9;
-    background-color: rgba(220, 196, 239, 0.4); /* #dcc4ef의 60% 투명한 버전 */
-  }
+  background-color: ${({ active }) => (active ? '#E8DCF2' : '#e8e8e8')};
+  color: ${({ active }) => (active ? '#650FA9' : '#bdbdbd')};
+  font-weight: ${({ active }) => (active ? 'bolder' : 'normal')};
 `
 const SearchWrapper = styled.div`
   height: 80px;
@@ -191,6 +186,11 @@ const Listoption = [
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
+const recruitmentStatusLabels: { [key: string]: string } = {
+  'false': '모집완료',
+  'true': '모집중'
+};
+
 function StudyPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [listoption, SetListoption] = useState('')
@@ -291,9 +291,15 @@ function StudyPostPage() {
         <PostsBar />
         <StudyPostsWrapper>
           <Upper>
-            <BtnWrapper>
-              <Btn onClick={() => OnFilter(true)}>모집중</Btn>
-              <Btn onClick={() => OnFilter(false)}>모집완료</Btn>
+          <BtnWrapper>
+              {Object.keys(recruitmentStatusLabels).map(status => (
+                <Btn
+                  key={status}
+                  active={isClicked && filterPost.some(post => post.recruitmentStatus === (status === 'true'))}
+                  onClick={() => OnFilter(status === 'true')}>
+                  {recruitmentStatusLabels[status]}
+                </Btn>
+              ))}
             </BtnWrapper>
             <SearchWrapper>
               <Search>
