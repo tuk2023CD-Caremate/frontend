@@ -54,20 +54,3 @@ export const useUserListStore = create<UserListState>((set) => ({
   userList: [],
   setUserList: (userList) => set({ userList }),
 }))
-
-interface LikedState {
-  isliked: boolean
-  setIsLiked: (liked: boolean) => void
-}
-
-export const useLikedStore = create(
-  persist<LikedState>(
-    (set) => ({
-      isliked: false,
-      setIsLiked: (liked) => set({ isliked: liked }),
-    }),
-    {
-      name: 'likedStateStorage',
-    },
-  ),
-)
