@@ -1,11 +1,19 @@
 import { useNavigate } from 'react-router-dom'
-import Header from '../components/Header'
-import Header2 from '../components/Header2'
+import styled from 'styled-components'
+import MainHeader1 from '../components/main/MainHeader1'
+import MainHeader2 from '../components/main/MainHeader2'
 import MainFirst from '../components/main/MainFirst'
 import MainFourth from '../components/main/MainFourth'
 import MainSecond from '../components/main/MainSecond'
 import MainThird from '../components/main/MainThird'
 import StartNav from '../components/main/StartNav'
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`
 
 function MainPage() {
   const navigate = useNavigate()
@@ -20,16 +28,18 @@ function MainPage() {
     }
   }
 
-  const headerComponent = token ? <Header2 /> : <Header />
+  const headerComponent = token ? <MainHeader2 /> : <MainHeader1 />
 
   return (
     <div>
       {headerComponent}
-      <MainFirst />
-      <MainSecond />
-      <MainThird />
-      <MainFourth />
-      <StartNav handleStart={handleStart} />
+      <Container>
+        <MainFirst />
+        <MainSecond />
+        <MainThird />
+        <MainFourth />
+        <StartNav handleStart={handleStart} />
+      </Container>
     </div>
   )
 }

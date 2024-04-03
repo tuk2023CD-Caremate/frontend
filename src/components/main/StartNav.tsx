@@ -4,10 +4,21 @@ interface StartNavProps {
   handleStart: () => void
 }
 
-const PlaystoreBtn = styled.button`
+const Container = styled.div`
   position: fixed;
-  left: 800px;
-  bottom: 70px;
+  bottom: 0;
+  z-index: 3;
+`
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  align-items: center;
+  margin-bottom: 20px;
+`
+
+const PlaystoreBtn = styled.button`
+  margin: 30px;
   border-radius: 15px;
   width: 260px;
   height: 70px;
@@ -23,9 +34,7 @@ const PlaystoreBtn = styled.button`
   }
 `
 const StartBtn = styled.button`
-  position: fixed;
-  left: 1120px;
-  bottom: 70px;
+  margin: 30px;
   border-radius: 15px;
   width: 260px;
   height: 70px;
@@ -44,8 +53,12 @@ const StartBtn = styled.button`
 function StartNav({ handleStart }: StartNavProps) {
   return (
     <div>
-      <PlaystoreBtn onClick={() => alert('준비 중입니다')}>PLAY STORE</PlaystoreBtn>
-      <StartBtn onClick={handleStart}>시작하기</StartBtn>
+      <Container>
+        <Wrap>
+          <PlaystoreBtn onClick={() => alert('준비 중입니다')}>PLAY STORE</PlaystoreBtn>
+          <StartBtn onClick={handleStart}>시작하기</StartBtn>
+        </Wrap>
+      </Container>
     </div>
   )
 }
