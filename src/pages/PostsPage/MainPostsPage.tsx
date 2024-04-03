@@ -181,7 +181,6 @@ const Writer = styled.div`
 `
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
-  { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
@@ -209,6 +208,7 @@ function MainPostPage() {
   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
+
       if (sortoption === 'LATEST') {
         //최신 순 option을 선택했을 경우
         return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
@@ -230,7 +230,7 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
+      SetpostData(response.data.reverse())
     } catch (error) {}
   }
 

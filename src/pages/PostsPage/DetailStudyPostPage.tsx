@@ -301,8 +301,10 @@ const Send = styled.div`
 
 function DetailStudyPostPage() {
   const { post_id } = useParams()
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  const { apiUrl } = useApiUrlStore()
+  const [nickname, setNickname] = useState<string>('')
+  const [likeData, setLikedData] = useState<postsData[]>([])
 
   //게시판 글 DATA
   const [postsData, SetpostData] = useState<postsData>({
@@ -333,9 +335,6 @@ function DetailStudyPostPage() {
   }, [])
 
     //게시글 수정&삭제 버튼이 작성자에게만 보이도록
-    const { apiUrl } = useApiUrlStore()
-    const [nickname, setNickname] = useState<string>('')
-  
     const getNickname = async () => {
       try {
         const access = localStorage.getItem('accessToken')
@@ -371,7 +370,59 @@ function DetailStudyPostPage() {
         navigate('/posts/update/'+post_id)
       }
     }
+
+    //좋아요 누른 게시글인지 확인
+  const LikedPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user/post/heart`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setLikedData(response.data)
+    } catch (error) {
+      alert('Error while liking post')
+    }
+  }
+
+
+  useEffect(() => {
+    LikedPost()
+  }, [])
   
+  //게시글 좋아요
+  const onLikeBtn = async (postId: number) => {
+    const access = localStorage.getItem('accessToken')
+    try {
+      const isPostLiked = likeData.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+
+      if (!isPostLiked) {
+        //없을 경우
+        const response = await axios.post(
+          `${apiUrl}/post/heart/${postId}`, //좋아요 생성
+          {},
+          { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
+        )
+        const updatelikecount = postsData.likeCount + 1
+        SetpostData({ ...postsData, likeCount: updatelikecount })
+        LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
+        console.log(response.data)
+      } else {
+        //있을경우
+        const response = await axios.delete(
+          `${apiUrl}/post/heart/${postId}`, //좋아요 삭제
+          { headers: { Authorization: `Bearer ${access}` } },
+        )
+        const updatelikecount = postsData.likeCount - 1
+        SetpostData({ ...postsData, likeCount: updatelikecount })
+        LikedPost()
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error('Error while toggling like:', error)
+      alert('Error while liking post')
+    }
+  }
+
 
   //댓글CRUD
   const [content, SetContent] = useState('')
@@ -404,7 +455,6 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-      console.log(response.data.nickname)
     } catch (error) {}
   }
 
@@ -426,6 +476,8 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
+      const updatecommentcount = postsData.commentCount+1;
+      SetpostData({...postsData, commentCount: updatecommentcount}); 
     } catch (error) {}
     SetContent('')
   }
@@ -512,7 +564,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                <LikeImg src={likeimg} />
+                <LikeImg src={ likeimg } />
                 <Likecount>{postsData.likeCount}</Likecount>
                 <CommentImg src={commentImg} />
                 <CommentCount>{postsData.commentCount}</CommentCount>

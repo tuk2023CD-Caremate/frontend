@@ -181,7 +181,6 @@ const Writer = styled.div`
 `
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
-  { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
@@ -216,7 +215,7 @@ function QuestionPostPage() {
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
+      SetpostData(response.data.reverse())
     } catch (error) {}
   }
 
