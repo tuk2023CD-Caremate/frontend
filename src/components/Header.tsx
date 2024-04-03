@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const Logo = styled.img`
   width: 236px;
+  cursor: pointer;
 `
 
 const RightWrapper = styled.div`
