@@ -79,6 +79,11 @@ export default function Header2() {
     getNickname()
   }, [])
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken')
+    navigate('/')
+  }
+
   return (
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
@@ -86,7 +91,7 @@ export default function Header2() {
         <Profile src={ProfileImg} />
         <NickName>{nickname}</NickName>
         <Sir>님</Sir>
-        <SignOut>로그아웃</SignOut>
+        <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>
     </Container>
   )
