@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import LogoImg from '../assets/images/StudyMate.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -37,11 +37,11 @@ const Btn = styled.div`
 `
 
 export default function Header() {
+  const navigate = useNavigate()
+
   return (
     <Container>
-      <Link to={'/'}>
-        <Logo src={LogoImg} />
-      </Link>
+      <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
         <Link to={'/login'}>
           <Btn>로그인</Btn>

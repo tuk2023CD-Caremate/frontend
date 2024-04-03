@@ -4,6 +4,7 @@ import ProfileImg from '../assets/images/profile.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -55,6 +56,7 @@ const SignOut = styled.div`
 
 export default function Header2() {
   const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
 
   const getNickname = async () => {
@@ -79,7 +81,7 @@ export default function Header2() {
 
   return (
     <Container>
-      <Logo src={LogoImg} />
+      <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
         <Profile src={ProfileImg} />
         <NickName>{nickname}</NickName>
