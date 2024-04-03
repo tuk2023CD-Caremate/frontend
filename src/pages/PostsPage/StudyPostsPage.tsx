@@ -180,7 +180,7 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption = [
+const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
@@ -193,26 +193,27 @@ const recruitmentStatusLabels: { [key: string]: string } = {
 
 function StudyPostPage() {
   const { apiUrl } = useApiUrlStore()
-  const [listoption, SetListoption] = useState('')
+  const [sortoption, setSortoption] = useState('')
+  const [filteroption, setFilteroption] = useState('')
   const [searchkeyword, SetSearchKeyword] = useState('')
   const [filterPost, setfilterPost] = useState<postsData[]>([])
   const [isClicked, setIsClicked] = useState(false)
   const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetListoption(e.target.value)
+    setSortoption(e.target.value)
   }
 
   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-      if (listoption === 'LATEST') {
+      if (sortoption === 'LATEST') {
         //최신 순 option을 선택했을 경우
         return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-      } else if (listoption === 'LIKE') {
+      } else if (sortoption === 'LIKE') {
         //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } else if (listoption === 'COMMENT') {
+      } else if (sortoption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -254,10 +255,16 @@ function StudyPostPage() {
 
   //게시글 필터링
   const OnFilter = (recruitmentStatus: boolean) => {
+    if(isClicked && sortoption ===recruitmentStatus.toString()){
+      setIsClicked(false);
+      setfilterPost([]);
+    } else {
     setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
     const CopyPost = [...postsData.filter((post) => post.recruitmentStatus === true)] //postData 복사
     const filterPost = CopyPost.filter((post) => post.recruitmentStatus === recruitmentStatus) //복사된 값에서 filter
     setfilterPost(filterPost)
+    setFilteroption(recruitmentStatus.toString())
+    }
   }
 
   //중복 코드 컴포넌트화
@@ -312,8 +319,8 @@ function StudyPostPage() {
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
-                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                  {Listoption.map((item) => (
+                <SelectBox value={sortoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                  {Sortoption.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
                     </option>

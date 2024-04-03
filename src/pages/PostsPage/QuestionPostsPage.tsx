@@ -179,7 +179,7 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption = [
+const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
@@ -196,7 +196,8 @@ const interestLabels:  { [key: string]: string}= {
 function QuestionPostPage() {
 
   const { apiUrl } = useApiUrlStore()
-  const [listoption, SetListoption] = useState('')
+  const [sortoption, setSortoption] = useState('')
+  const [filteroption, setFilteroption] = useState('')
   const [searchkeyword, SetSearchKeyword]= useState("")
   const [postsData, SetpostData] = useState<postsData[]>([])
   const [filterPost, setfilterPost] = useState<postsData[]>([])
@@ -204,7 +205,7 @@ function QuestionPostPage() {
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetListoption(e.target.value)
+    setSortoption(e.target.value)
   }
 
 
@@ -227,13 +228,13 @@ function QuestionPostPage() {
    //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-      if (listoption === 'LATEST') {
+      if (sortoption === 'LATEST') {
         //최신 순 option을 선택했을 경우
         return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-      } else if (listoption === 'LIKE') {
+      } else if (sortoption === 'LIKE') {
         //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } else if (listoption === 'COMMENT') {
+      } else if (sortoption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -257,14 +258,23 @@ function QuestionPostPage() {
          getPost(); //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
        }}
 
+
   //게시글 필터링
   const OnFilter = (interests: string) => {
-    setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-    const CopyPost = [...postsData.filter((post) => post.category === 'QUESTION')] //postData 복사
-    const filterPost = CopyPost.filter((post) => post.interests === interests) //복사된 값에서 filter
-    setfilterPost(filterPost)
+    if (isClicked && filteroption==interests) {
+ 
+      setIsClicked(false) 
+      setfilterPost([])
+    } else {
+      setIsClicked(true) 
+      const CopyPost = [...postsData.filter((post) => post.category === 'QUESTION')] 
+      const filterPost = CopyPost.filter((post) => post.interests === interests) 
+      setfilterPost(filterPost)
+      setFilteroption(interests) 
+    }
   }
 
+  
   //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: postsData[] }) => (
     <>
@@ -313,8 +323,8 @@ function QuestionPostPage() {
               <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
-                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                  {Listoption.map((item) => (
+                <SelectBox value={sortoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                  {Sortoption.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
                     </option>

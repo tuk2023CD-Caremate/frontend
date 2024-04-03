@@ -179,42 +179,43 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption = [
+const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'LATEST', name: '최신 순' },
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
-const interestLabels:  { [key: string]: string}= {
+const interestLabels: { [key: string]: string } = {
   KOREAN: '국어',
   MATH: '수학',
   ENGLISH: '영어',
   SCIENCE: '과학',
-  PROGRAMMING: '코딩'
-};
+  PROGRAMMING: '코딩',
+}
 
 function MainPostPage() {
   const { apiUrl } = useApiUrlStore()
-  const [listoption, SetListoption] = useState('')
+  const [sortoption, setSortoption] = useState('')
+  const [filteroption, setFilteroption] = useState('')
   const [searchkeyword, SetSearchKeyword] = useState('')
   const [filterPost, setfilterPost] = useState<postsData[]>([])
   const [isClicked, setIsClicked] = useState(false)
   const [postsData, SetpostData] = useState<postsData[]>([])
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetListoption(e.target.value)
+    setSortoption(e.target.value)
   }
 
   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-      if (listoption === 'LATEST') {
+      if (sortoption === 'LATEST') {
         //최신 순 option을 선택했을 경우
         return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-      } else if (listoption === 'LIKE') {
+      } else if (sortoption === 'LIKE') {
         //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } else if (listoption === 'COMMENT') {
+      } else if (sortoption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -254,13 +255,21 @@ function MainPostPage() {
     }
   }
 
+
   //게시글 필터링
   const OnFilter = (interests: string) => {
-    setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-    const CopyPost = [...postsData.filter((post) => post.category === 'FREE')] //postData 복사
-    const filterPost = CopyPost.filter((post) => post.interests === interests) //복사된 값에서 filter
-    setfilterPost(filterPost)
+    if (isClicked && filteroption==interests) { // 이미 선택된 버튼인지 확인
+      setIsClicked(false) // 이미 선택된 버튼을 다시 눌렀을 때 전체 조회로 변경
+      setfilterPost([])
+    } else {
+      setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
+      const CopyPost = [...postsData.filter((post) => post.category === 'FREE')] // postData 복사
+      const filterPost = CopyPost.filter((post) => post.interests === interests) // 복사된 값에서 filter
+      setfilterPost(filterPost)
+      setFilteroption(interests) 
+    }
   }
+
 
   //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: postsData[] }) => (
@@ -294,16 +303,16 @@ function MainPostPage() {
         <PostsBar />
         <FreePostsWrapper>
           <Upper>
-          <BtnWrapper>
-            {Object.keys(interestLabels).map(interest => (
-            <Btn
-              key={interest}
-              active={isClicked && filterPost.some(post => post.interests === interest)}
-              onClick={() => OnFilter(interest)}>
-                {interestLabels[interest]}
-              </Btn>
+            <BtnWrapper>
+              {Object.keys(interestLabels).map((interest) => (
+                <Btn
+                  key={interest}
+                  active={isClicked && filterPost.some((post) => post.interests === interest)}
+                  onClick={() => OnFilter(interest)}>
+                  {interestLabels[interest]}
+                </Btn>
               ))}
-          </BtnWrapper>
+            </BtnWrapper>
             <SearchWrapper>
               <Search>
                 <Input
@@ -315,8 +324,8 @@ function MainPostPage() {
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
-                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                  {Listoption.map((item) => (
+                <SelectBox value={sortoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                  {Sortoption.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
                     </option>
