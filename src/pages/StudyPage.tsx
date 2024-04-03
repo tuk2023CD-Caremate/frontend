@@ -29,7 +29,7 @@ const Container = styled.div`
 const StudyWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: calc(100% - 300px);
+  width: calc(100vw - 300px);
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
 `
