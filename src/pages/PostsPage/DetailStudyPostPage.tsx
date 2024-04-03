@@ -569,7 +569,7 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
                 <CommentImg src={commentImg} />
                 <CommentCount>{postsData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
-                <LikeBtn>좋아요</LikeBtn>
+                <LikeBtn onClick={() =>onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
             {Array.isArray(commentData) &&

@@ -206,10 +206,10 @@ function StudyPostPage() {
   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-   if(listoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
+   if(sortoption === "LIKE"){ //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount;
     }
-    else if (listoption === 'COMMENT') {
+    else if (sortoption === 'COMMENT') {
       return b.commentCount - a.commentCount
     }
     return 0;
@@ -251,7 +251,7 @@ function StudyPostPage() {
 
   //게시글 필터링
   const OnFilter = (recruitmentStatus: boolean) => {
-    if(isClicked && sortoption ===recruitmentStatus.toString()){
+    if(isClicked && filteroption ===recruitmentStatus.toString()){
       setIsClicked(false);
       setfilterPost([]);
     } else {
