@@ -4,6 +4,7 @@ import ProfileImg from '../assets/images/profile.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const Container = styled.div`
 
 const Logo = styled.img`
   width: 236px;
+  cursor: pointer;
 `
 
 const RightWrapper = styled.div`
@@ -55,6 +57,7 @@ const SignOut = styled.div`
 
 export default function Header2() {
   const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
 
   const getNickname = async () => {
@@ -77,14 +80,19 @@ export default function Header2() {
     getNickname()
   }, [])
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken')
+    navigate('/')
+  }
+
   return (
     <Container>
-      <Logo src={LogoImg} />
+      <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
         <Profile src={ProfileImg} />
         <NickName>{nickname}</NickName>
         <Sir>님</Sir>
-        <SignOut>로그아웃</SignOut>
+        <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>
     </Container>
   )
