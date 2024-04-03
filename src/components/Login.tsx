@@ -157,7 +157,7 @@ export default function Login() {
           <FindMore>
             <FindIt href="/findid">아이디 찾기</FindIt>
             <FindIt href="findpwd">비밀번호 찾기</FindIt>
-            <FindIt href="/signIn">회원가입</FindIt>
+            <FindIt href="/signUp">회원가입</FindIt>
           </FindMore>
           <LoginH4>간편로그인</LoginH4>
           <KakaoSubmit src={kakao_login} />

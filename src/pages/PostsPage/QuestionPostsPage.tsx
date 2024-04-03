@@ -45,21 +45,16 @@ const BtnWrapper = styled.div`
   align-items: center;
   padding-bottom: 10px;
 `
-const Btn = styled.button`
+const Btn = styled.button<{active: boolean}>`
   width: 124px;
   height: 48px;
   border-radius: 10px;
   border: none;
   font-size: 24px;
   margin-right: 36px;
-  background-color: #e8e8e8;
-  color: #bdbdbd;
-  &:hover,
-  &:active {
-    font-weight: bold;
-    color: #650fa9;
-    background-color: rgba(220, 196, 239, 0.4); /* #dcc4ef의 60% 투명한 버전 */
-  }
+  background-color: ${({ active }) => (active ? '#E8DCF2' : '#e8e8e8')};
+  color: ${({ active }) => (active ? '#650FA9' : '#bdbdbd')};
+  font-weight: ${({ active }) => (active ? 'bolder' : 'normal')};
 `
 const SearchWrapper = styled.div`
   height: 80px;
@@ -184,20 +179,32 @@ const Writer = styled.div`
   font-size: 28px;
   color: #9b9b9b;
 `
-const Listoption = [
+const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
+const interestLabels:  { [key: string]: string}= {
+  KOREAN: '국어',
+  MATH: '수학',
+  ENGLISH: '영어',
+  SCIENCE: '과학',
+  PROGRAMMING: '코딩'
+};
+
 function QuestionPostPage() {
 
   const { apiUrl } = useApiUrlStore()
-  const [listoption, SetListoption] = useState('')
+  const [sortoption, setSortoption] = useState('')
+  const [filteroption, setFilteroption] = useState('')
+  const [searchkeyword, SetSearchKeyword]= useState("")
   const [postsData, SetpostData] = useState<postsData[]>([])
+  const [filterPost, setfilterPost] = useState<postsData[]>([])
+  const [isClicked, setIsClicked] = useState(false)
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    SetListoption(e.target.value)
+    setSortoption(e.target.value)
   }
 
 
@@ -220,10 +227,13 @@ function QuestionPostPage() {
    //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsData.slice(0).sort((a, b) => {
-      if (listoption === 'LIKE') {
+      if (sortoption === 'LATEST') {
+        //최신 순 option을 선택했을 경우
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+      } else if (sortoption === 'LIKE') {
         //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } else if (listoption === 'COMMENT') {
+      } else if (sortoption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -232,8 +242,6 @@ function QuestionPostPage() {
   }
 
      //게시글 검색
-     const [searchkeyword, SetSearchKeyword]= useState("")
-
      const searchpost = async ()=> {
        if(searchkeyword !==''){
          try {
@@ -250,6 +258,46 @@ function QuestionPostPage() {
        }}
 
 
+  //게시글 필터링
+  const OnFilter = (interests: string) => {
+    if (isClicked && filteroption==interests) {
+ 
+      setIsClicked(false) 
+      setfilterPost([])
+    } else {
+      setIsClicked(true) 
+      const CopyPost = [...postsData.filter((post) => post.category === 'QUESTION')] 
+      const filterPost = CopyPost.filter((post) => post.interests === interests) 
+      setfilterPost(filterPost)
+      setFilteroption(interests) 
+    }
+  }
+
+  
+  //중복 코드 컴포넌트화
+  const Post = ({ posts }: { posts: postsData[] }) => (
+    <>
+      {posts
+        .filter((post) => post.category === 'QUESTION')
+        .map((post) => (
+          <QuestionPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+            <Title>{post.title}</Title>
+            <Context>{post.content}</Context>
+            <FooterWrapper>
+              <LikeImg src={likeimg} />
+              <Likecount>{post.likeCount}</Likecount>
+              <CommentImg src={commentImg} />
+              <CommentCount>{post.commentCount}</CommentCount>
+              <Divider src={DividerImg} />
+              <DateCreated>{post.createdAt}</DateCreated>
+              <Divider src={DividerImg} />
+              <Writer>{post.nickname}</Writer>
+            </FooterWrapper>
+          </QuestionPosts>
+        ))}
+    </>
+  )
+
   return (
     <div>
       <Header2 />
@@ -258,21 +306,24 @@ function QuestionPostPage() {
         <PostsBar />
         <QuestionPostsWrapper>
           <Upper>
-            <BtnWrapper>
-              <Btn>국어</Btn>
-              <Btn>수학</Btn>
-              <Btn>영어</Btn>
-              <Btn>과학</Btn>
-              <Btn>코딩</Btn>
-            </BtnWrapper>
+          <BtnWrapper>
+            {Object.keys(interestLabels).map(interest => (
+            <Btn
+              key={interest}
+              active={isClicked && filterPost.some(post => post.interests === interest)}
+              onClick={() => OnFilter(interest)}>
+                {interestLabels[interest]}
+              </Btn>
+              ))}
+          </BtnWrapper>
             <SearchWrapper>
               <Search>
               <Input type="text" value={searchkeyword} onChange={(e)=>SetSearchKeyword(e.target.value)} placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"/>
               <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
-                <SelectBox value={listoption} onChange={OnListtHandler} onClick={OnSortpostData}>
-                  {Listoption.map((item) => (
+                <SelectBox value={sortoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                  {Sortoption.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
                     </option>
@@ -284,24 +335,7 @@ function QuestionPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {postsData
-            .filter((post) => post.category === 'QUESTION')
-            .map((post) => (
-              <QuestionPosts key={post.post_id} to={`/posts/questions/${post.post_id}`}>
-                <Title>{post.title}</Title>
-                <Context>{post.content}</Context>
-                <FooterWrapper>
-                  <LikeImg src={likeimg} />
-                  <Likecount>{post.likeCount}</Likecount>
-                  <CommentImg src={commentImg} />
-                  <CommentCount>{post.commentCount}</CommentCount>
-                  <Divider src={DividerImg} />
-                  <DateCreated>{post.createdAt}</DateCreated>
-                  <Divider src={DividerImg} />
-                  <Writer>{post.nickname}</Writer>
-                </FooterWrapper>
-              </QuestionPosts>
-            ))}
+          <Post posts={isClicked ? filterPost : postsData} />
         </QuestionPostsWrapper>
       </Container>
     </div>

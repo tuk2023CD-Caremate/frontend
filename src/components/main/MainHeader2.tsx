@@ -1,14 +1,20 @@
 import styled from 'styled-components'
-import LogoImg from '../assets/images/StudyMate.svg'
-import ProfileImg from '../assets/images/profile.png'
+import LogoImg from '../../assets/images/StudyMate.svg'
+import ProfileImg from '../../assets/images/profile.png'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore } from '../../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
+  position: fixed;
+  z-index: 3;
+`
+const Wrap = styled.div`
+  background-color: #ffffff;
   display: flex;
   justify-content: space-between;
+  width: 100vw;
   align-items: center;
   height: 109px;
   padding-left: 140px;
@@ -55,7 +61,7 @@ const SignOut = styled.div`
   cursor: pointer;
 `
 
-export default function Header2() {
+export default function MainHeader2() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
@@ -87,13 +93,15 @@ export default function Header2() {
 
   return (
     <Container>
-      <Logo src={LogoImg} onClick={() => navigate('/')} />
-      <RightWrapper>
-        <Profile src={ProfileImg} />
-        <NickName>{nickname}</NickName>
-        <Sir>님</Sir>
-        <SignOut onClick={handleLogout}>로그아웃</SignOut>
-      </RightWrapper>
+      <Wrap>
+        <Logo src={LogoImg} onClick={() => navigate('/')} />
+        <RightWrapper>
+          <Profile src={ProfileImg} />
+          <NickName>{nickname}</NickName>
+          <Sir>님</Sir>
+          <SignOut onClick={handleLogout}>로그아웃</SignOut>
+        </RightWrapper>
+      </Wrap>
     </Container>
   )
 }

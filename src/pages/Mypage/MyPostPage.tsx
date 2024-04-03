@@ -1,5 +1,5 @@
 import Header2 from '../../components/Header2.tsx'
-import Mypagebar from '../../components/sidebar/Mypagebar.tsx'
+import Userbar from '../../components/sidebar/Userbar.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import CommentImg from '../../assets/images/comment2.png'
@@ -123,7 +123,7 @@ function MyPostPage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <Mypagebar />
+        <Userbar />
         <MyPostWrapper>
           <PageTitle>내가 쓴 글</PageTitle>
           {posts.map((post, index) => (

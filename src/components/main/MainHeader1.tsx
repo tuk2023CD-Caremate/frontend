@@ -1,10 +1,16 @@
 import styled from 'styled-components'
-import LogoImg from '../assets/images/StudyMate.svg'
+import LogoImg from '../../assets/images/StudyMate.svg'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
+  position: fixed;
+  z-index: 3;
+`
+const Wrap = styled.div`
+  background-color: #ffffff;
   display: flex;
   justify-content: space-between;
+  width: 100vw;
   align-items: center;
   height: 109px;
   padding-left: 140px;
@@ -37,20 +43,22 @@ const Btn = styled.div`
   cursor: pointer;
 `
 
-export default function Header() {
+export default function MainHeader1() {
   const navigate = useNavigate()
 
   return (
     <Container>
-      <Logo src={LogoImg} onClick={() => navigate('/')} />
-      <RightWrapper>
-        <Link to={'/login'}>
-          <Btn>로그인</Btn>
-        </Link>
-        <Link to={'/signup'}>
-          <Btn>회원가입</Btn>
-        </Link>
-      </RightWrapper>
+      <Wrap>
+        <Logo src={LogoImg} onClick={() => navigate('/')} />
+        <RightWrapper>
+          <Link to={'/login'}>
+            <Btn>로그인</Btn>
+          </Link>
+          <Link to={'/signup'}>
+            <Btn>회원가입</Btn>
+          </Link>
+        </RightWrapper>
+      </Wrap>
     </Container>
   )
 }
