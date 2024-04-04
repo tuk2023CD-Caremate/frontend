@@ -189,7 +189,6 @@ function StudyPage() {
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
-  // const navigate = useNavigate()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
 
   const ClickHandler = () => {
@@ -223,9 +222,7 @@ function StudyPage() {
   const AddOpenModal = () => {
     setAddModalOpen(true)
   }
-  // const AddCloseModal = () => {
-  //   setAddModalOpen(false)
-  // }
+
 
   //기록 전체조회
   useEffect(() => {
@@ -235,14 +232,15 @@ function StudyPage() {
         const response = await axios.get(`${apiUrl}/calender`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCalenderList(response.data.calenderList)
+        setCalenderList(response.data.calenderList);
         console.log(response.data)
-      } catch (error) {}
+        
+      } catch (error) {
+        alert('Error fetching study data:')
+      }
     }
-    if (!calenderList.length) {
-      getStudy()
-    }
-  }, [])
+      getStudy();
+  }, []);
 
 
   return (
