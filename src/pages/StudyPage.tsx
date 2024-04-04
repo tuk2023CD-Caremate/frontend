@@ -290,7 +290,6 @@ function StudyPage() {
               </StudyingTime>
               <BtnWrapper>
                 <WriteBtn onClick={PostingOpenModal}>작성</WriteBtn>
-                <DeleteBtn>삭제</DeleteBtn>
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
