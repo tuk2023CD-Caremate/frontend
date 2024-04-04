@@ -97,7 +97,7 @@ const SerarchBtn = styled.div`
 `
 
 const SelectBox = styled.select`
-  width: 120px;
+  width: 160px;
   height: 50px;
   border-radius: 5px;
   border: 0.5px solid #bdbdbd;
