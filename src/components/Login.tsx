@@ -125,15 +125,16 @@ export default function Login() {
     }
 
     try {
-
       const response = await axios.post(`${apiUrl}/login`, {
         email: email,
         password: password,
       })
 
-      const responsedToken = response.data.token
+      const access = response.data.accessToken
+      const refresh = response.data.refreshToken
 
-      localStorage.setItem('accessToken', responsedToken)
+      localStorage.setItem('accessToken', access)
+      localStorage.setItem('refreshToken', refresh)
       alert('로그인에 성공하였습니다.')
       navigate('/mypage')
     } catch (error) {
