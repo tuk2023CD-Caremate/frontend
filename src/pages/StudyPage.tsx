@@ -127,7 +127,7 @@ const IconWrapper = styled.div`
 const AddStudy = styled.select`
   display: flex;
   align-items: center;
-  width: 150px;
+  width: 200px;
   font-size: 32px;
   font-weight: bold;
   padding: 15px;
@@ -164,19 +164,6 @@ const StudyingTime = styled.div`
   margin-right: 20px;
   font-size: 36px;
 `
-const DeleteBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 60px;
-  font-size: 28px;
-  font-weight: bold;
-  border: 0.5px solid #bdbdbd;
-  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  cursor: pointer;
-`
 
 const interestsList = [
   { value: 'KOREAN', name: '국어' },
@@ -198,7 +185,7 @@ function StudyPage() {
   const [addmodalOpen, setAddModalOpen] = useState(false)
 
   //props
-  const [studyClass, setStudyClass] = useState('')
+  const [studyClass, setStudyClass] = useState('분야')
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
@@ -249,12 +236,14 @@ function StudyPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCalenderList(response.data.calenderList)
+        console.log(response.data)
       } catch (error) {}
     }
     if (!calenderList.length) {
       getStudy()
     }
   }, [])
+
 
   return (
     <div>
@@ -275,7 +264,8 @@ function StudyPage() {
                 <IconWrapper>
                   <StatusIcon src={currentImg} onClick={ClickHandler} />
                 </IconWrapper>
-                <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}>
+                <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}> 
+                 <option disabled hidden>분야</option>
                   {interestsList.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
