@@ -109,7 +109,7 @@ const SelectBox = styled.select`
 `
 
 const WriteButton = styled.button`
-  width: 120px;
+  width: 160px;
   height: 50px;
   border-radius: 5px;
   border: 0.5px solid #bdbdbd;
