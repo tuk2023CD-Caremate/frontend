@@ -88,8 +88,8 @@ const  StudyCalendar = () => {
         <StyledCalendar
           value={date}
           onChange={handleDateChange}
-          formatDay={(date) => dayjs(date).format("D")} // 일 제거 숫자만 보이게
-          formatMonthYear={(date) => dayjs(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+          formatDay={(_locate,date) => dayjs(date).format("D")} // 일 제거 숫자만 보이게
+          formatMonthYear={(_locate,date) => dayjs(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
           calendarType="gregory" // 일요일 부터 시작
           next2Label={null} // +1년 & +10년 이동 버튼 숨기기
           prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
