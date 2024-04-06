@@ -64,15 +64,15 @@ export default function PostBar() {
 
   return (
     <Container>
-      <NavLink to="/posts" isActive={location.pathname.startsWith('/posts') 
-      && location.pathname !== '/posts/questions' 
-      && location.pathname !== '/posts/study'}>
+      <NavLink to="/posts" isActive={location.pathname.includes('/posts')&&
+      !location.pathname.includes('/posts/questions') &&
+      !location.pathname.includes('/posts/study')}>
         자유 게시판
       </NavLink>
-      <NavLink to="/posts/questions" isActive={location.pathname.startsWith('/posts/questions')}>
+      <NavLink to="/posts/questions" isActive={location.pathname.includes('questions')}>
         질문 게시판
       </NavLink>
-      <NavLink to="/posts/study" isActive={location.pathname.startsWith('/posts/study')}>
+      <NavLink to="/posts/study" isActive={location.pathname.includes('study')}>
         스터디 게시판
       </NavLink>
     </Container>

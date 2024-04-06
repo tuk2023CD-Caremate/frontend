@@ -258,7 +258,7 @@ function StudyPostPage() {
       {posts
         .filter((post) => post.category === 'STUDY')
         .map((post) => (
-          <StudyPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+          <StudyPosts key={post.post_id} to={`/posts/study/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>

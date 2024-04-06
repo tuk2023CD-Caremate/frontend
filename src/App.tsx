@@ -42,10 +42,12 @@ function App() {
 
         <Route path="/posts/write" element={<WritingPostsPage />} />
         <Route path="/posts/update/:post_id" element={<UpdatePostsPage />} />
-        <Route path="/posts/:post_id" element={<DetailMainPostsPage />} />
-        <Route path="/posts/study/:post_id" element={<DetailStudyPostsPage />} />
-        <Route path="/posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
+gi
+        <Route path="posts/study/:post_id" element={<DetailStudyPostsPage />} />
+        <Route path="posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
+        <Route path="posts/:post_id" element={<DetailMainPostsPage />} />
 
+        
         <Route path="/calender" element={<StudyPage />} />
         <Route path="/calender/:calender_id" element={<AddStudyPage />} />
 

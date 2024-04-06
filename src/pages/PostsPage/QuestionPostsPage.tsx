@@ -267,7 +267,7 @@ function QuestionPostPage() {
       {posts
         .filter((post) => post.category === 'QUESTION')
         .map((post) => (
-          <QuestionPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+          <QuestionPosts key={post.post_id} to={`/posts/questions/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
