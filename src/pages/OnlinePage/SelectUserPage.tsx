@@ -26,8 +26,9 @@ const Text = styled.div`
 `
 
 function SelectUserPage() {
-  // const location = useLocation()
-  // const IdInfo = location.state
+  const location = useLocation()
+  const IdInfo = location.state
+
   const [userCount, setUserCount] = useState(5)
 
   return (
@@ -36,9 +37,7 @@ function SelectUserPage() {
       <Navbar2 />
       <Text>나에게 필요한 {userCount}명의 멘토 리스트</Text>
       <Container>
-        <SelectUser />
-        <SelectUser />
-        <SelectUser />
+        <SelectUser id={IdInfo} />
         {/* <SelectUserModal id={IdInfo} /> */}
         {/* <ConfirmMatchingModal /> */}
         {/* <FindLoadingModal /> */}
