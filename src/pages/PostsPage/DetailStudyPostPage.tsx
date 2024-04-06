@@ -6,9 +6,8 @@ import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
-import commentImg from '../../assets/images/comment2.png'
-import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+import { FaHeart, FaRegComment } from "react-icons/fa"
 
 interface postsData {
   post_id: number
@@ -154,24 +153,16 @@ const DetailFooterWrapper = styled.div`
   align-items: center;
   margin-bottom: 10px;
 `
-const LikeImg = styled.img`
-  margin-right: 5px;
-  width: 25px;
-  height: 25px;
-`
 const Likecount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
-  margin-right: 10px;
-`
-const CommentImg = styled.img`
-  margin-right: 5px;
-  width: 25x;
-  height: 25px;
+  margin-left: 5px;
+  margin-right: 20px;
 `
 const CommentCount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
+  margin-left: 5px;
 `
 const LikeBtn = styled.button`
   display: flex;
@@ -564,9 +555,9 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                <LikeImg src={ likeimg } />
+                <FaHeart color='#ff0000' size="25"/>
                 <Likecount>{postsData.likeCount}</Likecount>
-                <CommentImg src={commentImg} />
+                <FaRegComment size="25"/>
                 <CommentCount>{postsData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
                 <LikeBtn onClick={() =>onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>

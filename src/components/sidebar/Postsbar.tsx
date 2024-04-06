@@ -44,39 +44,37 @@ const Study = styled(Link)`
   padding: 20px 0px 20px 40px;
   border-radius: 20px;
 `
+const NavLink = styled(Link)<{ isActive: boolean }>`
+  width: 240px;
+  font-size: 25px;
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 20px 0px 20px 40px;
+  border-radius: 20px;
+  background-color: ${({ isActive }) => (isActive ? '#E8DCF2' : 'inherit')};
+  color: ${({ isActive }) => (isActive ? '#650FA9' : 'inherit')};
+  font-weight: ${({ isActive }) => (isActive ? 'bold' : 'inherit')};
+`
 
 export default function PostBar() {
   const location = useLocation()
 
   return (
     <Container>
-      <Post
-        to="/posts"
-        style={{
-          backgroundColor: location.pathname === '/posts' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts' ? 'bold' : 'inherit',
-        }}>
+      <NavLink to="/posts" isActive={location.pathname.startsWith('/posts') 
+      && location.pathname !== '/posts/questions' 
+      && location.pathname !== '/posts/study'}>
         자유 게시판
-      </Post>
-      <Questions
-        to="/posts/questions"
-        style={{
-          backgroundColor: location.pathname === '/posts/questions' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts/questions' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts/questions' ? 'bold' : 'inherit',
-        }}>
+      </NavLink>
+      <NavLink to="/posts/questions" isActive={location.pathname.startsWith('/posts/questions')}>
         질문 게시판
-      </Questions>
-      <Study
-        to="/posts/study"
-        style={{
-          backgroundColor: location.pathname === '/posts/study' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts/study' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts/study' ? 'bold' : 'inherit',
-        }}>
+      </NavLink>
+      <NavLink to="/posts/study" isActive={location.pathname.startsWith('/posts/study')}>
         스터디 게시판
-      </Study>
+      </NavLink>
     </Container>
   )
 }

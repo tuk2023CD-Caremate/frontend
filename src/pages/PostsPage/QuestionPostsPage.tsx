@@ -6,9 +6,8 @@ import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
-import commentImg from '../../assets/images/comment2.png'
-import likeimg from '../../assets/images/likeicon.png'
 import DividerImg from '../../assets/images/divider1.png'
+import { FaHeart, FaRegComment } from "react-icons/fa"
 
 interface postsData {
   post_id: number
@@ -96,7 +95,7 @@ justify-content: center;
 `
 
 const SelectBox = styled.select`
-  width: 120px;
+  width: 140px;
   height: 50px;
   border-radius: 5px;
   border: 0.5px solid #bdbdbd;
@@ -108,7 +107,7 @@ const SelectBox = styled.select`
 `
 
 const WriteButton = styled.button`
-  width: 160px;
+  width: 120px;
   height: 50px;
   border-radius: 5px;
   border: 0.5px solid #bdbdbd;
@@ -146,21 +145,10 @@ const FooterWrapper = styled.div`
   margin-top: 20px;
   align-items: center;
 `
-
-const LikeImg = styled.img`
-  margin-right: 5px;
-  width: 30px;
-  height: 30px;
-`
 const Likecount = styled.div`
   font-size: 28px;
   font-weight: bolder;
   margin-right: 10px;
-`
-const CommentImg = styled.img`
-  margin-right: 5px;
-  width: 30x;
-  height: 30px;
 `
 const CommentCount = styled.div`
   font-size: 28px;
@@ -201,7 +189,6 @@ function QuestionPostPage() {
   const [postsData, SetpostData] = useState<postsData[]>([])
   const [filterPost, setfilterPost] = useState<postsData[]>([])
   const [isClicked, setIsClicked] = useState(false)
-
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortoption(e.target.value)
@@ -284,9 +271,9 @@ function QuestionPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-              <LikeImg src={likeimg} />
+            <FaHeart color='#ff0000' size="25"/>
               <Likecount>{post.likeCount}</Likecount>
-              <CommentImg src={commentImg} />
+              <FaRegComment size="25"/>
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
               <DateCreated>{post.createdAt}</DateCreated>
