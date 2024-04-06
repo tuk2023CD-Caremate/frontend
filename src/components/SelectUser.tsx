@@ -4,6 +4,8 @@ import { useApiUrlStore, useUserListStore } from '../store/store'
 import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
+import { useDisclosure } from '@chakra-ui/react'
+import ReviewModal from './ReviewModal'
 
 const Container = styled.div`
   display: flex;
@@ -135,6 +137,7 @@ function SelectUser(id: any) {
   const { userList, setUserList } = useUserListStore()
   // 각 유저의 클릭 여부 상태를 관리
   const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({})
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const encodedValue = JSON.stringify(id)
   const decodedValue = decodeURIComponent(encodedValue)
@@ -251,7 +254,7 @@ function SelectUser(id: any) {
                   <IoMdStar size={40} />
                   <BigContent>{user.starAverage}</BigContent>
                   <Content>/</Content>
-                  <BigContent>리뷰 {13}</BigContent>
+                  <BigContent onClick={onOpen}>리뷰 {13}</BigContent>
                 </Section>
               </ReputationWrap>
               <LikeWrap>
@@ -263,6 +266,8 @@ function SelectUser(id: any) {
               <RequestBtn onClick={() => handleRequestMatching(user.id)}>매칭 요청</RequestBtn>
             </Lower>
           </RightWrap>
+          {/* 리뷰 모달창 */}
+          <ReviewModal isOpen={isOpen} onClose={onClose} />
         </Container>
       ))}
     </div>
