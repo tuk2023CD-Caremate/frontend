@@ -122,7 +122,6 @@ function AddStudyModal() {
   const [interests, setStudyClass] = useState(calenderList.studyClass)
   const [startTime, setStartTime] = useState(calenderList.startTime)
   const [endTime, setEndTime] = useState(calenderList.endTime)
-  // const [entireTime, setEntireime] = useState(calenderList.entireTime)
   const [editmode, setEditmode] = useState(false)
   const { calender_id } = useParams()
   const { apiUrl } = useApiUrlStore()
