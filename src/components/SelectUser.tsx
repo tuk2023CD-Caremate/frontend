@@ -3,7 +3,7 @@ import { IoMdStar, IoMdHeartEmpty, IoIosContacts } from 'react-icons/io'
 import { useApiUrlStore, useUserListStore } from '../store/store'
 import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const Container = styled.div`
   display: flex;
@@ -81,6 +81,7 @@ const Detail = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin: 5px;
+  cursor: pointer;
 `
 
 const RightWrap = styled.div`
@@ -132,6 +133,8 @@ const RequestBtn = styled.button`
 function SelectUser(id: any) {
   const { apiUrl } = useApiUrlStore()
   const { userList, setUserList } = useUserListStore()
+  // 각 유저의 클릭 여부 상태를 관리
+  const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({})
 
   const encodedValue = JSON.stringify(id)
   const decodedValue = decodeURIComponent(encodedValue)
@@ -178,11 +181,18 @@ function SelectUser(id: any) {
     getUserList()
   }, [])
 
-  // 매칭 요청 버튼 클릭 핸들러
   const handleRequestMatching = (mentorId: number) => {
     onRequestMatching(mentorId)
     alert('요청되었습니다.')
     // 매칭 요청이 성공했을 때의 추가적인 로직
+  }
+
+  // 유저를 클릭했을 때 해당 유저의 클릭 여부 상태를 변경
+  const handleUserClick = (userId: number) => {
+    setExpandedUsers((prevState) => ({
+      ...prevState,
+      [userId]: !prevState[userId], // 해당 유저의 상태를 토글
+    }))
   }
 
   return (
@@ -203,7 +213,15 @@ function SelectUser(id: any) {
               <Section>
                 <Title>분야</Title>
                 <Content>{user.interests}</Content>
-                <Detail>{user.expertiseField}</Detail>
+                {expandedUsers[user.id] ? (
+                  <Detail onClick={() => handleUserClick(user.id)}>{user.expertiseField}</Detail>
+                ) : (
+                  <Detail onClick={() => handleUserClick(user.id)}>
+                    {user.expertiseField.length > 8
+                      ? `${user.expertiseField.slice(0, 8)}...`
+                      : user.expertiseField}
+                  </Detail>
+                )}
               </Section>
               <Section>
                 <Title>직업</Title>
