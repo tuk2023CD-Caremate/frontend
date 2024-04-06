@@ -118,7 +118,7 @@ const WriteButton = styled.button`
   cursor: pointer;
 `
 
-const StudyPosts = styled(Link)`
+const StudyPosts = styled(Link)<{recruitmentStatus: boolean}>`
   display: flex;
   height: 200px;
   padding: 20px 0px 0px 20px;
@@ -127,7 +127,7 @@ const StudyPosts = styled(Link)`
   flex-direction: column;
   justify-content: center;
   text-decoration: none;
-  color: black;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#000000' : '#e8e8e8')};
 `
 
 const Title = styled.div`
@@ -258,7 +258,10 @@ function StudyPostPage() {
       {posts
         .filter((post) => post.category === 'STUDY')
         .map((post) => (
-          <StudyPosts key={post.post_id} to={`/posts/study/${post.post_id}`}>
+          <StudyPosts 
+          key={post.post_id} 
+          to={`/posts/study/${post.post_id}`}
+          recruitmentStatus={post.recruitmentStatus}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>

@@ -296,7 +296,7 @@ function DetailStudyPostPage() {
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const [recruitmentStatus, setRecruitmentStatus] = useState(true)
+  const [recruitmentStatus, setRecruitmentStatus] = useState<boolean>(true)
   const [likeData, setLikedData] = useState<postsData[]>([])
 
   //게시판 글 DATA
@@ -321,7 +321,6 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data)
-      console.log(response.data)
     } catch (error) {}
   }
 
@@ -371,23 +370,24 @@ function DetailStudyPostPage() {
     content: postsData.content,
     category: postsData.category,
     interests: postsData.interests,
-    recruitmentStatus: false  
+    recruitmentStatus: true,
   }
 
-  const handleCompleted= async () => {
+  const handleCompleted = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.put(
-        `${apiUrl}/posts/${post_id}`,
-        completed,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        },
-      )
+      const response = await axios.put(`${apiUrl}/posts/${post_id}`, completed, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setRecruitmentStatus(true)
       SetpostData(response.data)
-      console.log(response.data)
+      navigate('/posts/study')
     } catch (error) {}
   }
+
+  useEffect(() => {
+    getPost()
+  }, [recruitmentStatus])
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -564,7 +564,7 @@ function DetailStudyPostPage() {
               </UserWrapper>
               {nickname === postsData.nickname ? (
                 <ButtonWrapper>
-                  <Modify onClick={handleCompleted}>모집완료</Modify>
+                  {!recruitmentStatus && <Modify onClick={handleCompleted}>모집완료</Modify>}
                   <Modify onClick={handlePostEdit}>수정</Modify>
                   <Delete onClick={deletePost}>삭제</Delete>
                 </ButtonWrapper>

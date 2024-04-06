@@ -129,6 +129,7 @@ export default function WritingPostPage() {
       content: content,
       category: category,
       interests: interests,
+      recruitmentStatus: true,
     }
     if (category === '' || interests === '' || title === '' || content === '') {
       alert(' 입력정보를 다시 확인해주세요.')
