@@ -54,9 +54,9 @@ export default function Navbar2() {
       <Online
         to="/online"
         style={{
-          backgroundColor: location.pathname === '/online' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/online' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/online' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname.includes('/online') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/online') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/online') ? 'bold' : 'inherit',
         }}>
         온라인 매칭
       </Online>
