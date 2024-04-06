@@ -10,7 +10,10 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
-import moment from 'moment'
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+dayjs.locale('ko'); 
 
 interface calenderList {
   id: number
@@ -193,8 +196,8 @@ function StudyPage() {
 
   const ClickHandler = () => {
     //시간 형식 변환
-    const startTime = moment().format('YYYY-MM-DD HH:mm')
-    const endTime = moment().format('YYYY-MM-DD HH:mm')
+    const startTime = dayjs().format('YYYY-MM-DD HH:mm')
+    const endTime = dayjs().format('YYYY-MM-DD HH:mm')
 
     if (!isRunning) {
       setCurrentImg(stopIcon) // 멈춤버튼 이미지로 변경
