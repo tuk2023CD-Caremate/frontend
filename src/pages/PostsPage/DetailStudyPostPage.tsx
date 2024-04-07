@@ -7,7 +7,7 @@ import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { FaHeart, FaRegComment } from 'react-icons/fa'
+import { IoIosHeart, IoIosText } from "react-icons/io"
 
 interface postsData {
   post_id: number
@@ -576,9 +576,9 @@ function DetailStudyPostPage() {
             </Lower>
             <FooterWrapper>
               <DetailFooterWrapper>
-                <FaHeart color="#ff0000" size="25" />
+                <IoIosHeart color='#ff0000' size="30"/>
                 <Likecount>{postsData.likeCount}</Likecount>
-                <FaRegComment size="25" />
+                <IoIosText size="30"/>
                 <CommentCount>{postsData.commentCount}</CommentCount>
               </DetailFooterWrapper>
               <LikeBtn onClick={() => onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>

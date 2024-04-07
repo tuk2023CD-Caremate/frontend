@@ -7,7 +7,7 @@ import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
-import { FaHeart, FaRegComment } from "react-icons/fa"
+import { IoIosHeart, IoIosText } from "react-icons/io"
 
 interface postsData {
   post_id: number
@@ -150,11 +150,13 @@ const Likecount = styled.div`
   font-size: 28px;
   font-weight: bolder;
   margin-right: 10px;
+  margin-left: 5px;
 `
 
 const CommentCount = styled.div`
   font-size: 28px;
   font-weight: bolder;
+  margin-left: 5px;
 `
 const Divider = styled.img`
   margin: 0 20px 0 20px;
@@ -265,9 +267,9 @@ function StudyPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-            <FaHeart color='#ff0000' size="25"/>
-              <Likecount>{post.likeCount}</Likecount>
-              <FaRegComment size="25"/>
+              <IoIosHeart color='#ff0000' size="25"/>
+              <Likecount >{post.likeCount}</Likecount>
+              <IoIosText size="25"/>
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
               <DateCreated>{post.createdAt}</DateCreated>
