@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore} from '../../store/store.ts'
+import { useApiUrlStore, usePostDataStore,useLikeDataStore } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -9,17 +9,7 @@ import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosText } from "react-icons/io"
 
-interface PostsData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-}
+
 
 interface CommentData {
   post_id: number
@@ -293,20 +283,10 @@ function DetailMainPostPage() {
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const [likeData, setLikedData] = useState<PostsData[]>([])
+  const {likeData, setLikedData} = useLikeDataStore()
 
   //게시판 글 data
-  const [postsData, SetpostData] = useState<PostsData>({
-    post_id: 0,
-    title: '',
-    content: '',
-    nickname: '',
-    createdAt: Date.toString(),
-    likeCount: 0,
-    commentCount: 0,
-    interests: '',
-    category: '',
-  })
+  const {postsData, setPostData} = usePostDataStore()
 
   //게시글 단건조회
   const getPost = async () => {
@@ -315,7 +295,7 @@ function DetailMainPostPage() {
       const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
+      setPostData(response.data)
     } catch (error) {}
   }
 
@@ -344,7 +324,7 @@ function DetailMainPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        SetpostData(response.data)
+        setPostData(response.data)
       } catch (error) {}
       navigate('/posts')
     }
@@ -389,7 +369,7 @@ function DetailMainPostPage() {
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
         const updatelikecount = postsData.likeCount + 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
+        setPostData({ ...postsData, likeCount: updatelikecount })
         LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
         console.log(response.data)
       } 
@@ -399,7 +379,7 @@ function DetailMainPostPage() {
           { headers: { Authorization: `Bearer ${access}` } },
         )
         const updatelikecount = postsData.likeCount - 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
+        setPostData({ ...postsData, likeCount: updatelikecount })
         LikedPost()
         console.log(response.data)
     } }catch (error) {
@@ -460,7 +440,7 @@ function DetailMainPostPage() {
         })
         setCommentData([...commentData, response.data])
         const updatecommentcount = postsData.commentCount + 1
-        SetpostData({ ...postsData, commentCount: updatecommentcount })
+        setPostData({ ...postsData, commentCount: updatecommentcount })
       } catch (error) {}
       SetContent('')
     }

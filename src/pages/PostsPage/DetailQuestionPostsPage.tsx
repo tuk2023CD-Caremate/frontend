@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
+import { useApiUrlStore, PostDataState } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -19,6 +19,7 @@ interface postsData {
   commentCount: number
   interests: string
   category: string
+  recruitmentStatus: boolean
 }
 
 interface CommentData{
@@ -310,6 +311,7 @@ function DetailQuestionPostPage() {
     commentCount: 0,
     interests: '',
     category: '',
+    recruitmentStatus: true
   })
 
   //게시글 단건조회

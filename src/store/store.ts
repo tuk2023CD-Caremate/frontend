@@ -54,3 +54,54 @@ export const useUserListStore = create<UserListState>((set) => ({
   userList: [],
   setUserList: (userList) => set({ userList }),
 }))
+
+
+/* 게시글 데이터*/
+interface PostDataState {
+  postsData: PostsData[]
+  setPostData: (postsData: PostsData[]) => void
+}
+
+export interface PostsData {
+  post_id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+  recruitmentStatus: boolean
+}
+
+export const usePostDataStore = create<PostDataState>((set) => ({
+  postsData: [],
+  setPostData: (postsData) => set({ postsData }),
+}))
+
+
+
+/* 좋아요게시글 데이터*/
+interface LikeDataState {
+  likeData: likeData[]
+  setLikedData: (likeData: likeData[]) => void
+}
+
+export interface likeData {
+  post_id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+  recruitmentStatus: boolean
+}
+
+export const useLikeDataStore = create<LikeDataState>((set) => ({
+  likeData: [],
+  setLikedData: (likeData) => set({ likeData }),
+}))
