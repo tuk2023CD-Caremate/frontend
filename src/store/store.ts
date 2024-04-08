@@ -63,7 +63,7 @@ interface PostDataState {
 }
 
 export interface PostsData {
-  post_id: number
+  id: number
   title: string
   content: string
   nickname: string
