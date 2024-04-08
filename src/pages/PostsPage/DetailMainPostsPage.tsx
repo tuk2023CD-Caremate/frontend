@@ -1,23 +1,19 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore, usePostDataStore, useLikeDataStore } from '../../store/store.ts'
+import {
+  useApiUrlStore,
+  usePostStore,
+  useLikeDataStore,
+  useCommentDataStore,
+  usePostListStore,
+} from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart, IoIosText } from "react-icons/io"
-
-
-
-interface CommentData {
-  post_id: number
-  nickname: string
-  content: string
-  comment_id: number
-  createdAt: string
-}
+import { IoIosHeart, IoIosText } from 'react-icons/io'
 
 const Container = styled.div`
   display: flex;
@@ -49,7 +45,7 @@ const MainPostWrapper = styled.div`
   height: 370px;
   padding-left: 20px;
   width: calc(100% - 100px);
-  border: 1px solid #d8d8d8;
+  border: 1px solid #e8e8e8;
 `
 const Upper = styled.div`
   display: flex;
@@ -283,10 +279,9 @@ function DetailMainPostPage() {
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const {likeData, setLikedData} = useLikeDataStore()
-
-  //게시판 글 data
-  const {postsData, setPostData} = usePostDataStore()
+  const { likeList, setLikedList } = useLikeDataStore()
+  const { postData, setPostData } = usePostStore() //게시글 객체
+  const { postsList, setPostList } = usePostListStore() //게시글 배열
 
   //게시글 단건조회
   const getPost = async () => {
@@ -324,7 +319,7 @@ function DetailMainPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setPostData(response.data)
+        setPostList(response.data)
       } catch (error) {}
       navigate('/posts')
     }
@@ -336,7 +331,6 @@ function DetailMainPostPage() {
       navigate('/posts/update/' + post_id)
     }
   }
-  
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -345,63 +339,55 @@ function DetailMainPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedData(response.data)
+      setLikedList(response.data)
     } catch (error) {
       alert('Error while liking post')
-    } 
+    }
   }
 
   useEffect(() => {
     LikedPost()
   }, [])
 
-
   //게시글 좋아요
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeData.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+      const isPostLiked = likeList.some((post) => post.id === postId) //좋아요 누른 게시글인지 조회
 
-      if (!isPostLiked) { //없을 경우
+      if (!isPostLiked) {
+        //없을 경우
         const response = await axios.post(
           `${apiUrl}/post/heart/${postId}`, //좋아요 생성
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-          const updatedPostsData = postsData.map(post =>({
-              ...post,
-              likeCount: post.id === postId ? post.likeCount + 1 : post.likeCount
-          }));
-          setPostData(updatedPostsData);
+        const updatelikecount = postData.likeCount + 1
+        setPostData({ ...postData, likeCount: updatelikecount })
         LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
         console.log(response.data)
-      } 
-      else {//있을경우
+      } else {
+        //있을경우
         const response = await axios.delete(
           `${apiUrl}/post/heart/${postId}`, //좋아요 삭제
           { headers: { Authorization: `Bearer ${access}` } },
         )
-        const updatedPostsData = postsData.map(post =>({
-          ...post,
-          likeCount: post.id === postId ? post.likeCount - 1 : post.likeCount
-      }));
-      setPostData(updatedPostsData);
+        const updatelikecount = postData.likeCount - 1
+        setPostData({ ...postData, likeCount: updatelikecount })
         LikedPost()
         console.log(response.data)
-    } }catch (error) {
+      }
+    } catch (error) {
       console.error('Error while toggling like:', error)
       alert('Error while liking post')
-    } 
+    }
   }
-
-
-
 
   //댓글CRUD
   const [content, SetContent] = useState('')
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
-  const [commentData, setCommentData] = useState<CommentData[]>([])
+  const { commentData, setCommentData } = useCommentDataStore()
 
   //댓글 조회
   const getComment = async () => {
@@ -445,8 +431,11 @@ function DetailMainPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData([...commentData, response.data])
-        const updatecommentcount = postsData.commentCount + 1
-        setPostData({ ...postsData, commentCount: updatecommentcount })
+        const updateCommentCount = postsList.map((post) => ({
+          ...post,
+          commentCount: post.commentCount + 1,
+        }))
+        setPostList(updateCommentCount)
       } catch (error) {}
       SetContent('')
     }
@@ -509,17 +498,16 @@ function DetailMainPostPage() {
         <PostsBar />
         <PostWrapper>
           <PageTitle>자유게시판</PageTitle>
-          {postsData.map((post) => (
           <MainPostWrapper>
             <Upper>
               <UserWrapper>
                 <Profile src={ProfileImg} />
                 <NameWrapper>
-                  <Nickname>{post.nickname}</Nickname>
-                  <Time>{post.createdAt}</Time>
+                  <Nickname>{postData.nickname}</Nickname>
+                  <Time>{postData.createdAt}</Time>
                 </NameWrapper>
               </UserWrapper>
-              {nickname === post.nickname ? (
+              {nickname === postData.nickname ? (
                 <ButtonWrapper>
                   <Modify onClick={handlePostEdit}>수정</Modify>
                   <Delete onClick={deletePost}>삭제</Delete>
@@ -527,20 +515,19 @@ function DetailMainPostPage() {
               ) : null}
             </Upper>
             <Lower>
-              <Title>{post.title}</Title>
-              <Context>{post.content}</Context>
+              <Title>{postData.title}</Title>
+              <Context>{postData.content}</Context>
             </Lower>
             <FooterWrapper>
               <DetailFooterWrapper>
-                <IoIosHeart color='#ff0000' size="30"/>
-                <Likecount>{post.likeCount}</Likecount>
-                <IoIosText size="30"/>
-                <CommentCount>{post.commentCount}</CommentCount>
+                <IoIosHeart color="#ff0000" size="30" />
+                <Likecount>{postData.likeCount}</Likecount>
+                <IoIosText size="30" />
+                <CommentCount>{postData.commentCount}</CommentCount>
               </DetailFooterWrapper>
-              <LikeBtn onClick={() =>onLikeBtn(post.id)}>좋아요</LikeBtn>
+              <LikeBtn onClick={() => onLikeBtn(postData.id)}>좋아요</LikeBtn>
             </FooterWrapper>
           </MainPostWrapper>
-          ))}
           {Array.isArray(commentData) &&
             commentData.map((comments) => (
               <CommentWrapper key={comments.comment_id}>
@@ -553,22 +540,22 @@ function DetailMainPostPage() {
                     </NameWrapper>
                   </CommentUserWrapper>
                   {commentnickname === comments.nickname ? (
-                      <ButtonWrapper>
-                        <CommentDelete
-                          onClick={() => deleteCommet(postsData.id, comments.comment_id)}>
-                          삭제
-                        </CommentDelete>
-                        {isediting === comments.comment_id ? (
-                          <EditBtn
-                            onClick={() => updateComment(postsData.id, comments.comment_id)}>
-                            완료
-                          </EditBtn>
-                        ) : (
-                          <CommentUpdate onClick={() => handleEdit(comments.comment_id)}>
-                            수정
-                          </CommentUpdate>
-                        )}
-                      </ButtonWrapper>
+                    <ButtonWrapper>
+                      <CommentDelete
+                        onClick={() => deleteCommet(postData.id, comments.comment_id)}>
+                        삭제
+                      </CommentDelete>
+                      {isediting === comments.comment_id ? (
+                        <EditBtn
+                          onClick={() => updateComment(postData.id, comments.comment_id)}>
+                          완료
+                        </EditBtn>
+                      ) : (
+                        <CommentUpdate onClick={() => handleEdit(comments.comment_id)}>
+                          수정
+                        </CommentUpdate>
+                      )}
+                    </ButtonWrapper>
                   ) : null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (

@@ -56,13 +56,13 @@ export const useUserListStore = create<UserListState>((set) => ({
 }))
 
 
-/* 게시글 데이터*/
-interface PostDataState {
-  postsData: PostsData[]
-  setPostData: (postsData: PostsData[]) => void
+/* 게시글 배열 데이터*/
+interface PostListState {
+  postsList: PostsList[]
+  setPostList: (postsList: PostsList[]) => void
 }
 
-export interface PostsData {
+export interface PostsList {
   id: number
   title: string
   content: string
@@ -75,33 +75,69 @@ export interface PostsData {
   recruitmentStatus: boolean
 }
 
-export const usePostDataStore = create<PostDataState>((set) => ({
-  postsData: [],
-  setPostData: (postsData) => set({ postsData }),
+export const usePostListStore = create<PostListState>((set) => ({
+  postsList: [],
+  setPostList: (postsList) => set({ postsList }),
 }))
 
+/* 상세 게시글 객체 데이터*/
+interface PostState {
+  postData: PostsList
+  setPostData: (postData: PostsList) => void
+}
+
+
+export const usePostStore = create<PostState>((set) => ({
+  postData: {
+    id: 0,
+    title: '',
+    content: '',
+    nickname: '',
+    createdAt: '',
+    likeCount: 0,
+    commentCount: 0,
+    interests: '',
+    category: '',
+    recruitmentStatus: false
+  },
+  setPostData: (postData) => set({ postData: postData }),
+}))
 
 
 /* 좋아요게시글 데이터*/
-interface LikeDataState {
-  likeData: likeData[]
-  setLikedData: (likeData: likeData[]) => void
+interface LikeState {
+  likeList: PostsList[]
+  setLikedList: (likeList: PostsList[]) => void
 }
 
-export interface likeData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-  recruitmentStatus: boolean
-}
-
-export const useLikeDataStore = create<LikeDataState>((set) => ({
-  likeData: [],
-  setLikedData: (likeData) => set({ likeData }),
+export const useLikeDataStore = create<LikeState>((set) => ({
+  likeList: [],
+  setLikedList: (likeList) => set({ likeList }),
 }))
+
+
+/* 댓글 데이터*/
+interface CommentDataState {
+  commentData: CommentData[]
+  setCommentData: (commentData: CommentData[]) => void
+}
+
+export interface CommentData {
+  post_id: number
+  nickname: string
+  content: string
+  comment_id: number
+  createdAt: string
+}
+
+export const useCommentDataStore = create<CommentDataState>((set) => ({
+  commentData: [],
+  setCommentData: (commentData) => set({ commentData }),
+}))
+
+
+
+
+
+
+

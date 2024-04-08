@@ -221,6 +221,7 @@ function MainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       SetpostData(response.data.reverse())
+      console.log(response.data)
     } catch (error) {}
   }
 
