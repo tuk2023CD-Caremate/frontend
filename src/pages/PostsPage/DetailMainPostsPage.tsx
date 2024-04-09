@@ -275,12 +275,11 @@ const Send = styled.div`
 
 function DetailMainPostPage() {
   const { post_id } = useParams()
-  const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
+  const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
-
 
   //게시글 단건조회
   const getPost = async () => {
@@ -291,12 +290,11 @@ function DetailMainPostPage() {
       })
       setPostData(response.data)
     } catch (error) {
-      alert("Error while fetching post")
+      alert('Error while fetching post')
     }
   }
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
-
   const getNickname = async () => {
     try {
       const access = localStorage.getItem('accessToken')
@@ -305,7 +303,7 @@ function DetailMainPostPage() {
       })
       setNickname(response.data.nickname)
     } catch (error) {
-      alert("Error while fetching post")
+      alert('Error while fetching post')
     }
   }
 
@@ -313,8 +311,6 @@ function DetailMainPostPage() {
     getPost()
     getNickname()
   }, [])
-
-
 
   //게시글 삭제
   const deletePost = async () => {
@@ -326,7 +322,7 @@ function DetailMainPostPage() {
         })
         console.log(response.data)
       } catch (error) {
-        alert("Error while delete post")
+        alert('Error while delete post')
       }
       navigate('/posts')
     }
@@ -338,7 +334,6 @@ function DetailMainPostPage() {
       navigate('/posts/update/' + post_id)
     }
   }
-
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -356,8 +351,6 @@ function DetailMainPostPage() {
   useEffect(() => {
     LikedPost()
   }, [])
-
-
 
   //게시글 좋아요
   const onLikeBtn = async (postId: number) => {
@@ -408,10 +401,9 @@ function DetailMainPostPage() {
       })
       setCommentData(response.data)
     } catch (error) {
-      alert("Error while fetching comment")
+      alert('Error while fetching comment')
     }
   }
-
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -422,7 +414,7 @@ function DetailMainPostPage() {
       })
       setCommentNickname(response.data.nickname)
     } catch (error) {
-      alert("Error while fetching comment")
+      alert('Error while fetching comment')
     }
   }
 
@@ -443,19 +435,15 @@ function DetailMainPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData([...commentData, response.data])
-        const updatelikecount = postData.commentCount - 1
-        setPostData({ ...postData, commentCount: updatelikecount })
+        const updateCommentCount = postData.likeCount + 1
+        setPostData({ ...postData, likeCount: updateCommentCount })
         getComment()
       } catch (error) {
-        alert("Error while creating post")
+        alert('Error while creating comment')
       }
       SetContent('')
     }
   }
-
-  useEffect(() => {
-    createComment()
-  }, [])
 
   //댓글 삭제
   const deleteCommet = async (post_id: number, comment_id: number) => {
@@ -467,7 +455,7 @@ function DetailMainPostPage() {
         })
         setCommentData(response.data)
       } catch (error) {
-        alert("Error while delete post")
+        alert('Error while delete comment')
       }
     }
   }
@@ -501,7 +489,7 @@ function DetailMainPostPage() {
       })
       setCommentData(updatedComments)
     } catch (error) {
-      alert("Error while updating post")
+      alert('Error while updating comment')
     }
     setIsEditing(0) //comment_id 초기화
   }
@@ -557,13 +545,11 @@ function DetailMainPostPage() {
                   </CommentUserWrapper>
                   {commentnickname === comments.nickname ? (
                     <ButtonWrapper>
-                      <CommentDelete
-                        onClick={() => deleteCommet(postData.id, comments.comment_id)}>
+                      <CommentDelete onClick={() => deleteCommet(postData.id, comments.comment_id)}>
                         삭제
                       </CommentDelete>
                       {isediting === comments.comment_id ? (
-                        <EditBtn
-                          onClick={() => updateComment(postData.id, comments.comment_id)}>
+                        <EditBtn onClick={() => updateComment(postData.id, comments.comment_id)}>
                           완료
                         </EditBtn>
                       ) : (

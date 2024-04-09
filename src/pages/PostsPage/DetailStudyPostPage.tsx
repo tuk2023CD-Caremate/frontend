@@ -6,7 +6,6 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
-  usePostListStore,
  } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -285,7 +284,7 @@ function DetailStudyPostPage() {
   const [recruitmentStatus, setRecruitmentStatus] = useState<boolean>(true)
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() 
-  const { postsList, setPostList } = usePostListStore() 
+
 
   //게시글 단건조회
   const getPost = async () => {
@@ -296,7 +295,7 @@ function DetailStudyPostPage() {
       })
       setPostData(response.data)
     } catch (error) {
-      alert('Error while liking post')
+      alert('Error while fetching post')
     }
   }
 
@@ -311,7 +310,7 @@ function DetailStudyPostPage() {
       })
       setNickname(response.data.nickname)
     } catch (error) {
-      alert('Error while liking post')
+      alert('Error while fetching post')
     }
   }
 
@@ -370,7 +369,6 @@ function DetailStudyPostPage() {
     getPost()
   }, [recruitmentStatus])
 
-
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
     try {
@@ -378,7 +376,7 @@ function DetailStudyPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setPostList(response.data)
+      setLikedList(response.data)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -401,7 +399,7 @@ function DetailStudyPostPage() {
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-        const updatelikecount = postData.likeCount + 1
+        const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
         console.log(response.data)
@@ -441,6 +439,7 @@ function DetailStudyPostPage() {
     }
   }
 
+ 
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -473,12 +472,9 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData([...commentData, response.data])
-      const updateCommentCount = postsList.map((post) => ({
-        ...post,
-        commentCount: post.commentCount + 1,
-      }))
-      setPostList(updateCommentCount)
-      getComment()
+        const updateCommentCount = postData.likeCount + 1
+        setPostData({ ...postData, likeCount: updateCommentCount })
+        getComment()
       } catch (error) {
         alert('Error while creating comment')
       }
@@ -486,9 +482,6 @@ function DetailStudyPostPage() {
     }
   }
 
-  useEffect(() => {
-    createComment()
-  }, [])
 
   //댓글 삭제
   const deleteCommet = async (post_id: number, comment_id: number) => {

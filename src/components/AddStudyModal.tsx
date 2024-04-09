@@ -108,7 +108,7 @@ const Btn = styled.div`
 `
 
 function AddStudyModal() {
-  const [calenderData, setCalenderData] = useState<calenderList>({
+  const [calenderList, setCalenderList] = useState<calenderList>({
     id: 0,
     content: '',
     studyClass: '',
@@ -118,46 +118,42 @@ function AddStudyModal() {
   })
 
   //스터디기록 불러오기)
-  const [content, setContent] = useState(calenderData.content)
-  const [interests, setStudyClass] = useState(calenderData.studyClass)
-  const [startTime, setStartTime] = useState(calenderData.startTime)
-  const [endTime, setEndTime] = useState(calenderData.endTime)
+  const [content, setContent] = useState(calenderList.content)
+  const [interests, setStudyClass] = useState(calenderList.studyClass)
+  const [startTime, setStartTime] = useState(calenderList.startTime)
+  const [endTime, setEndTime] = useState(calenderList.endTime)
   const [editmode, setEditmode] = useState(false)
   const { calender_id } = useParams()
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
-  
-
+  useEffect(() => {
     const getStudy = async () => {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.get(`${apiUrl}/calender/${calender_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCalenderData(response.data)
+        setCalenderList(response.data)
       } catch (error) {
         alert('get error')
       }
     }
-
-    useEffect(() => {
-      getStudy()
-    }, [])
-
+    getStudy()
+  }, [])
 
   useEffect(() => {
-    setContent(calenderData.content)
-  }, [calenderData.content])
+    setContent(calenderList.content)
+  }, [calenderList.content])
   useEffect(() => {
-    setStartTime(calenderData.startTime)
-  }, [calenderData.startTime])
+    setStartTime(calenderList.startTime)
+  }, [calenderList.startTime])
   useEffect(() => {
-    setEndTime(calenderData.endTime)
-  }, [calenderData.endTime])
+    setEndTime(calenderList.endTime)
+  }, [calenderList.endTime])
   useEffect(() => {
-    setStudyClass(calenderData.studyClass)
-  }, [calenderData.studyClass])
+    setStudyClass(calenderList.studyClass)
+  }, [calenderList.studyClass])
 
   const editcontent = {
     content: content,
@@ -177,7 +173,7 @@ function AddStudyModal() {
       const response = await axios.put(`${apiUrl}/calender/${calender_id}`, editcontent, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setCalenderData(response.data)
+      setCalenderList(response.data)
       alert('수정되었습니다')
       navigate('/calender')
     } catch (error) {
@@ -193,7 +189,7 @@ function AddStudyModal() {
         const response = await axios.delete(`${apiUrl}/calender/${calender_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCalenderData(response.data)
+        setCalenderList(response.data)
       } catch (error) {
         alert('delete error')
       }
@@ -211,13 +207,13 @@ function AddStudyModal() {
           <Close onClick={BacktoPage}>X</Close>
           <Title>작성한 스터디 기록 </Title>
           <Info>
-            <StudyClass>공부 과목 : {calenderData.studyClass}</StudyClass>
-            <EntireTime>공부 시간 : {calenderData.entireTime}</EntireTime>
+            <StudyClass>공부 과목 : {calenderList.studyClass}</StudyClass>
+            <EntireTime>공부 시간 : {calenderList.entireTime}</EntireTime>
           </Info>
           {editmode ? (
             <Textarea name="content" value={content} onChange={(e) => setContent(e.target.value)} />
           ) : (
-            <Text>{calenderData.content}</Text>
+            <Text>{calenderList.content}</Text>
           )}
           <BtnWrapper>
             {editmode ? (

@@ -6,7 +6,7 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
-  usePostListStore, } from '../../store/store.ts'
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -283,7 +283,6 @@ function DetailQuestionPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() 
-  const { postsList, setPostList } = usePostListStore() 
 
 
 
@@ -296,9 +295,10 @@ function DetailQuestionPostPage() {
       })
       setPostData(response.data)
     } catch (error) {
-      alert("Error while fetching post")
+      alert('Error while fetching post')
     }
   }
+
 
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
@@ -310,7 +310,7 @@ function DetailQuestionPostPage() {
       })
       setNickname(response.data.nickname)
     } catch (error) {
-      alert("Error while fetching post")
+      alert('Error while fetching post')
     }
   }
 
@@ -329,7 +329,7 @@ function DetailQuestionPostPage() {
       })
       console.log(response.data)
     } catch (error) {
-      alert("Error while delete post")
+      alert('Error while delete post')
     }
     navigate('/posts/questions')
     } 
@@ -418,6 +418,7 @@ function DetailQuestionPostPage() {
   }
 
 
+
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
     try {
@@ -450,11 +451,8 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
-      const updateCommentCount = postsList.map((post) => ({
-        ...post,
-        commentCount: post.commentCount + 1,
-      }))
-      setPostList(updateCommentCount)
+      const updateCommentCount = postData.likeCount + 1
+      setPostData({ ...postData, likeCount: updateCommentCount })
       getComment()
     } catch (error) {
       alert('Error while creating comment')
@@ -462,6 +460,7 @@ function DetailQuestionPostPage() {
     }SetContent('')
   }
  
+
 
 //댓글 삭제
   const deleteCommet = async(post_id: number, comment_id: number) =>{

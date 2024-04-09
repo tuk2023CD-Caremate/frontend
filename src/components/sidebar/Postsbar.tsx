@@ -32,9 +32,13 @@ export default function PostBar() {
 
   return (
     <Container>
-      <NavLink to="/posts" isActive={location.pathname.includes('/posts')&&
-      !location.pathname.includes('/posts/questions') &&
-      !location.pathname.includes('/posts/study')}>
+      <NavLink
+        to="/posts"
+        isActive={
+          location.pathname.includes('/posts') &&
+          !location.pathname.includes('/posts/questions') &&
+          !location.pathname.includes('/posts/study')
+        }>
         자유 게시판
       </NavLink>
       <NavLink to="/posts/questions" isActive={location.pathname.includes('questions')}>
