@@ -15,14 +15,6 @@ import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosText } from "react-icons/io"
 
 
-interface CommentData{
-  post_id: number
-  nickname: string
-  content: string
-  comment_id: number
-  createdAt: string
-}
-
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
@@ -303,12 +295,11 @@ function DetailQuestionPostPage() {
       headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching post")
+    }
   }
 
-  useEffect(() => {
-    getPost()
-  }, [])
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -318,10 +309,13 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching post")
+    }
   }
 
   useEffect(() => {
+    getPost()
     getNickname()
   }, [])
 
@@ -333,8 +327,10 @@ function DetailQuestionPostPage() {
       const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
-      setPostList(response.data)
-    } catch (error) {}
+      console.log(response.data)
+    } catch (error) {
+      alert("Error while delete post")
+    }
     navigate('/posts/questions')
     } 
   }
@@ -380,7 +376,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -390,7 +386,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -416,13 +412,10 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
-
-  useEffect(() => {
-    getComment()
-  }, [commentData]) //변수가 달라질 때마다 getComment
-
 
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
@@ -433,10 +426,13 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 
@@ -459,14 +455,13 @@ function DetailQuestionPostPage() {
         commentCount: post.commentCount + 1,
       }))
       setPostList(updateCommentCount)
-    } catch (error) {}
+      getComment()
+    } catch (error) {
+      alert('Error while creating comment')
+    }
     }SetContent('')
   }
  
-  useEffect(() => {
-    createComment()
-  }, [])
-
 
 //댓글 삭제
   const deleteCommet = async(post_id: number, comment_id: number) =>{
@@ -477,7 +472,9 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    }catch (error) {}
+    }catch (error) {
+      alert('Error while delete comment')
+    }
   }
   }
 
@@ -509,7 +506,9 @@ function DetailQuestionPostPage() {
         return comment;
       });
       setCommentData(updatedComments);
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
   

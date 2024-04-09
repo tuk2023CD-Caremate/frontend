@@ -12,38 +12,6 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const Post = styled(Link)`
-  width: 240px;
-  font-size: 25px;
-  display: flex;
-  margin-top: 50px;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
-`
-const Questions = styled(Link)`
-  width: 240px;
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
-`
-
-const Study = styled(Link)`
-  width: 240px;
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
-`
 const NavLink = styled(Link)<{ isActive: boolean }>`
   width: 240px;
   font-size: 25px;

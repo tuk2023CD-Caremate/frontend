@@ -295,12 +295,12 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while liking post')
+    }
   }
 
-  useEffect(() => {
-    getPost()
-  }, [])
+
 
   //게시글 모집완료&수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -310,10 +310,13 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while liking post')
+    }
   }
 
   useEffect(() => {
+    getPost()
     getNickname()
   }, [])
 
@@ -325,8 +328,10 @@ function DetailStudyPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setPostList(response.data)
-      } catch (error) {}
+        console.log(response.data)
+      } catch (error) {
+        alert('Error while delete post')
+      }
       navigate('/posts/study')
     }
   }
@@ -356,12 +361,15 @@ function DetailStudyPostPage() {
       setRecruitmentStatus(true)
       setPostData(response.data)
       navigate('/posts/study')
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while completing post')
+    }
   }
 
   useEffect(() => {
     getPost()
   }, [recruitmentStatus])
+
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -393,9 +401,9 @@ function DetailStudyPostPage() {
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-        const updatelikecount = postData.likeCount - 1
+        const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -405,7 +413,7 @@ function DetailStudyPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -428,12 +436,11 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
-  useEffect(() => {
-    getComment()
-  }, [commentData]) //변수가 달라질 때마다 getComment
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -443,10 +450,13 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 
@@ -468,7 +478,10 @@ function DetailStudyPostPage() {
         commentCount: post.commentCount + 1,
       }))
       setPostList(updateCommentCount)
-      } catch (error) {}
+      getComment()
+      } catch (error) {
+        alert('Error while creating comment')
+      }
       SetContent('')
     }
   }
@@ -486,7 +499,9 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData(response.data)
-      } catch (error) {}
+      } catch (error) {
+        alert('Error while delete comment')
+      }
     }
   }
 
@@ -518,7 +533,9 @@ function DetailStudyPostPage() {
         return comment
       })
       setCommentData(updatedComments)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
 

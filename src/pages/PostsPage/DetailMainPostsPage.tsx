@@ -6,7 +6,6 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
-  usePostListStore,
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -276,12 +275,12 @@ const Send = styled.div`
 
 function DetailMainPostPage() {
   const { post_id } = useParams()
-  const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
+  const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
-  const { postsList, setPostList } = usePostListStore() //게시글 배열
+
 
   //게시글 단건조회
   const getPost = async () => {
@@ -291,7 +290,9 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching post")
+    }
   }
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
@@ -303,13 +304,17 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching post")
+    }
   }
 
   useEffect(() => {
     getPost()
     getNickname()
   }, [])
+
+
 
   //게시글 삭제
   const deletePost = async () => {
@@ -319,8 +324,10 @@ function DetailMainPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setPostList(response.data)
-      } catch (error) {}
+        console.log(response.data)
+      } catch (error) {
+        alert("Error while delete post")
+      }
       navigate('/posts')
     }
   }
@@ -331,6 +338,7 @@ function DetailMainPostPage() {
       navigate('/posts/update/' + post_id)
     }
   }
+
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -349,6 +357,8 @@ function DetailMainPostPage() {
     LikedPost()
   }, [])
 
+
+
   //게시글 좋아요
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
@@ -364,7 +374,7 @@ function DetailMainPostPage() {
         )
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -374,7 +384,7 @@ function DetailMainPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -397,12 +407,11 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching comment")
+    }
   }
 
-  useEffect(() => {
-    getComment()
-  }, [commentData]) //변수가 달라질 때마다 getComment
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -412,10 +421,13 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while fetching comment")
+    }
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 
@@ -431,12 +443,12 @@ function DetailMainPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData([...commentData, response.data])
-        const updateCommentCount = postsList.map((post) => ({
-          ...post,
-          commentCount: post.commentCount + 1,
-        }))
-        setPostList(updateCommentCount)
-      } catch (error) {}
+        const updatelikecount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updatelikecount })
+        getComment()
+      } catch (error) {
+        alert("Error while creating post")
+      }
       SetContent('')
     }
   }
@@ -454,7 +466,9 @@ function DetailMainPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData(response.data)
-      } catch (error) {}
+      } catch (error) {
+        alert("Error while delete post")
+      }
     }
   }
 
@@ -486,7 +500,9 @@ function DetailMainPostPage() {
         return comment
       })
       setCommentData(updatedComments)
-    } catch (error) {}
+    } catch (error) {
+      alert("Error while updating post")
+    }
     setIsEditing(0) //comment_id 초기화
   }
 
