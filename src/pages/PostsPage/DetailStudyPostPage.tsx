@@ -463,8 +463,8 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData([...commentData, response.data])
-        const updateCommentCount = postData.likeCount + 1
-        setPostData({ ...postData, likeCount: updateCommentCount })
+        const updateCommentCount = postData.commentCount + 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
         getComment()
       } catch (error) {
         alert('Error while creating comment')
