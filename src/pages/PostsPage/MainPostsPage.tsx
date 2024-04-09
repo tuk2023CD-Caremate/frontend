@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
+import { useApiUrlStore, usePostListStore,useFilterListStore, PostsList } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -9,18 +9,7 @@ import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosText } from "react-icons/io"
 
-interface postsData {
-  post_id: number
-  title: string
-  content: string
-  likeCount: number
-  commentCount: number
-  nickname: string
-  createdAt: string
-  interests: string
-  category: 'FREE'
-  recruitmentStatus: boolean
-}
+
 
 const Container = styled.div`
   display: flex;
@@ -184,33 +173,31 @@ const interestLabels: { [key: string]: string } = {
 
 function MainPostPage() {
   const { apiUrl } = useApiUrlStore()
-  const [sortoption, setSortoption] = useState('')
-  const [filteroption, setFilteroption] = useState('')
-  const [searchkeyword, SetSearchKeyword] = useState('')
-  const [filterPost, setfilterPost] = useState<postsData[]>([])
+  const [sortOption, setSortOption] = useState('')
+  const [filterOption, setFilterOption] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const {filterList, setFilterList}= useFilterListStore()
+  const {postsList, setPostList} = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [postsData, SetpostData] = useState<postsData[]>([])
+
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setSortoption(e.target.value)
+    setSortOption(e.target.value)
   }
 
   //게시글 정렬
   const OnSortpostData = () => {
-    const sortList = postsData.slice(0).sort((a, b) => {
-
-      if (sortoption === 'LATEST') {
-        //최신 순 option을 선택했을 경우
-        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-      } else if (sortoption === 'LIKE') {
-        //좋아요 순 option을 선택했을 경우
+    const sortList = postsList.slice(0).sort((a, b) => {
+      
+      if (sortOption === 'LIKE') {//좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } else if (sortoption === 'COMMENT') {
+      } 
+      else if (sortOption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
     })
-    SetpostData(sortList)
+    setPostList(sortList)
   }
 
   //게시글 전체조회
@@ -220,7 +207,7 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data.reverse())
+      setPostList(response.data.reverse())
       console.log(response.data)
     } catch (error) {}
   }
@@ -231,16 +218,16 @@ function MainPostPage() {
 
   //게시글 검색
   const searchpost = async () => {
-    if (searchkeyword !== '') {
+    if (searchKeyword !== '') {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.get(`${apiUrl}/posts/search`, {
-          params: { keyword: searchkeyword },
+          params: { keyword: searchKeyword },
           headers: { Authorization: `Bearer ${access}` },
         })
-        SetpostData(response.data)
+        setPostList(response.data)
       } catch (error) {}
-    } else if (searchkeyword == '') {
+    } else if (searchKeyword == '') {
       alert('검색어를 입력해주세요')
       getPost() //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
     }
@@ -249,26 +236,24 @@ function MainPostPage() {
 
   //게시글 필터링
   const OnFilter = (interests: string) => {
-    if (isClicked && filteroption==interests) { // 이미 선택된 버튼인지 확인
+    if (isClicked && filterOption==interests) { // 이미 선택된 버튼인지 확인
       setIsClicked(false) // 이미 선택된 버튼을 다시 눌렀을 때 전체 조회로 변경
-      setfilterPost([])
+      setFilterList([])
     } else {
       setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-      const CopyPost = [...postsData.filter((post) => post.category === 'FREE')] // postData 복사
+      const CopyPost = [...postsList.filter((post) => post.category === 'FREE')] // postData 복사
       const filterPost = CopyPost.filter((post) => post.interests === interests) // 복사된 값에서 filter
-      setfilterPost(filterPost)
-      setFilteroption(interests) 
+      setFilterList(filterPost)
+      setFilterOption(interests) 
     }
   }
 
-
-  //중복 코드 컴포넌트화
-  const Post = ({ posts }: { posts: postsData[] }) => (
+  const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
       {posts
         .filter((post) => post.category === 'FREE')
         .map((post) => (
-          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+          <MainPosts key={post.id} to={`/posts/${post.id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
@@ -284,7 +269,8 @@ function MainPostPage() {
           </MainPosts>
         ))}
     </>
-  )
+  );
+  
 
   return (
     <div>
@@ -298,7 +284,7 @@ function MainPostPage() {
               {Object.keys(interestLabels).map((interest) => (
                 <Btn
                   key={interest}
-                  active={isClicked && filterPost.some((post) => post.interests === interest)}
+                  active={isClicked && filterList.some((post) => post.interests === interest)}
                   onClick={() => OnFilter(interest)}>
                   {interestLabels[interest]}
                 </Btn>
@@ -308,14 +294,14 @@ function MainPostPage() {
               <Search>
                 <Input
                   type="text"
-                  value={searchkeyword}
-                  onChange={(e) => SetSearchKeyword(e.target.value)}
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
                 />
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
-                <SelectBox value={sortoption} onChange={OnListtHandler} onClick={OnSortpostData}>
+                <SelectBox value={sortOption} onChange={OnListtHandler} onClick={OnSortpostData}>
                   {Sortoption.map((item) => (
                     <option value={item.value} key={item.name}>
                       {item.name}
@@ -328,7 +314,7 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          <Post posts={isClicked ? filterPost : postsData} />
+          <Post posts={isClicked ? filterList : postsList} />
         </FreePostsWrapper>
       </Container>
     </div>

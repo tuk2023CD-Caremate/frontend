@@ -115,6 +115,17 @@ export const useLikeDataStore = create<LikeState>((set) => ({
   setLikedList: (likeList) => set({ likeList }),
 }))
 
+/* 필터링게시글 데이터*/
+interface FilterState {
+  filterList: PostsList[]
+  setFilterList: (filterList: PostsList[]) => void
+}
+
+export const useFilterListStore = create<FilterState>((set) => ({
+  filterList: [],
+  setFilterList: (filterList) => set({ filterList }),
+}))
+
 
 /* 댓글 데이터*/
 interface CommentDataState {
