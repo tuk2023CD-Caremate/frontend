@@ -6,7 +6,6 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
-  usePostListStore,
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -368,7 +367,7 @@ function DetailMainPostPage() {
         )
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -378,7 +377,7 @@ function DetailMainPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -420,6 +419,7 @@ function DetailMainPostPage() {
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 

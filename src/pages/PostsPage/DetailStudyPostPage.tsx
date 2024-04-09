@@ -299,9 +299,6 @@ function DetailStudyPostPage() {
     }
   }
 
-  useEffect(() => {
-    getPost()
-  }, [])
 
   //게시글 모집완료&수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -317,6 +314,7 @@ function DetailStudyPostPage() {
   }
 
   useEffect(() => {
+    getPost()
     getNickname()
   }, [])
 
@@ -396,9 +394,9 @@ function DetailStudyPostPage() {
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-        const updatelikecount = postData.likeCount - 1
+        const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -408,7 +406,7 @@ function DetailStudyPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -448,6 +446,7 @@ function DetailStudyPostPage() {
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 

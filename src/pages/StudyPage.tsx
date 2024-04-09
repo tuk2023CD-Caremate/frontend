@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
-import playIcon from '../assets/images/play.png'
-import stopIcon from '../assets/images/stop.png'
 import { IoStopCircleSharp } from "react-icons/io5";
 import { IoIosPlayCircle } from "react-icons/io";
 import StudyPostingModal from '../components/StudyPostingModal.tsx'
@@ -139,11 +137,6 @@ const AddStudy = styled.select`
   border: 1px solid #bdbdbd;
   border-radius: 10px;
   cursor: pointer;
-`
-
-const StatusIcon = styled.img`
-  width: 80px;
-  height: 80px;
 `
 
 const ListInfoWrapper = styled.div`

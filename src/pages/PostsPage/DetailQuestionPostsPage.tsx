@@ -15,13 +15,6 @@ import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosText } from "react-icons/io"
 
 
-interface CommentData{
-  post_id: number
-  nickname: string
-  content: string
-  comment_id: number
-  createdAt: string
-}
 
 const Container = styled.div`
   display: flex;
@@ -323,8 +316,10 @@ function DetailQuestionPostPage() {
   }
 
   useEffect(() => {
+    getPost()
     getNickname()
   }, [])
+
 
   //게시글 삭제
   const deletePost = async() =>{
@@ -383,7 +378,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       } else {
         //있을경우
@@ -393,7 +388,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        LikedPost()
+        setLikedList([...likeList, response.data])
         console.log(response.data)
       }
     } catch (error) {
@@ -436,6 +431,7 @@ function DetailQuestionPostPage() {
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 
