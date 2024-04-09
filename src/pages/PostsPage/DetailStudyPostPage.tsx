@@ -299,7 +299,9 @@ function DetailStudyPostPage() {
     }
   }
 
-
+  useEffect(() => {
+    getPost()
+  }, [])
 
   //게시글 모집완료&수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -315,7 +317,6 @@ function DetailStudyPostPage() {
   }
 
   useEffect(() => {
-    getPost()
     getNickname()
   }, [])
 
@@ -328,9 +329,7 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         console.log(response.data)
-      } catch (error) {
-        alert('Error while delete post')
-      }
+      } catch (error) {}
       navigate('/posts/study')
     }
   }
@@ -360,9 +359,7 @@ function DetailStudyPostPage() {
       setRecruitmentStatus(true)
       setPostData(response.data)
       navigate('/posts/study')
-    } catch (error) {
-      alert('Error while completing post')
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -401,7 +398,7 @@ function DetailStudyPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        setLikedList([...likeList, response.data])
+        LikedPost()
         console.log(response.data)
       } else {
         //있을경우
@@ -411,7 +408,7 @@ function DetailStudyPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        setLikedList([...likeList, response.data])
+        LikedPost()
         console.log(response.data)
       }
     } catch (error) {
@@ -434,9 +431,7 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {
-      alert('Error while fetching comment')
-    }
+    } catch (error) {}
   }
 
  
@@ -449,13 +444,10 @@ function DetailStudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {
-      alert('Error while fetching comment')
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
-    getComment()
     getcommentNickname()
   }, [])
 
@@ -492,9 +484,7 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setCommentData(response.data)
-      } catch (error) {
-        alert('Error while delete comment')
-      }
+      } catch (error) {}
     }
   }
 
@@ -526,9 +516,7 @@ function DetailStudyPostPage() {
         return comment
       })
       setCommentData(updatedComments)
-    } catch (error) {
-      alert('Error while updating comment')
-    }
+    } catch (error) {}
     setIsEditing(0) //comment_id 초기화
   }
 

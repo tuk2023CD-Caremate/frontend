@@ -15,6 +15,14 @@ import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosText } from "react-icons/io"
 
 
+interface CommentData{
+  post_id: number
+  nickname: string
+  content: string
+  comment_id: number
+  createdAt: string
+}
+
 const Container = styled.div`
   display: flex;
   margin-top: 100px;
@@ -315,7 +323,6 @@ function DetailQuestionPostPage() {
   }
 
   useEffect(() => {
-    getPost()
     getNickname()
   }, [])
 
@@ -376,7 +383,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        setLikedList([...likeList, response.data])
+        LikedPost()
         console.log(response.data)
       } else {
         //있을경우
@@ -386,7 +393,7 @@ function DetailQuestionPostPage() {
         )
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
-        setLikedList([...likeList, response.data])
+        LikedPost()
         console.log(response.data)
       }
     } catch (error) {
@@ -412,9 +419,7 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {
-      alert('Error while fetching comment')
-    }
+    } catch (error) {}
   }
 
 
@@ -427,13 +432,10 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {
-      alert('Error while fetching comment')
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
-    getComment()
     getcommentNickname()
   }, [])
 
@@ -471,9 +473,7 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    }catch (error) {
-      alert('Error while delete comment')
-    }
+    }catch (error) {}
   }
   }
 
@@ -505,9 +505,7 @@ function DetailQuestionPostPage() {
         return comment;
       });
       setCommentData(updatedComments);
-    } catch (error) {
-      alert('Error while updating comment')
-    }
+    } catch (error) {}
     setIsEditing(0) //comment_id 초기화
   }
   
