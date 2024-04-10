@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import Modal from 'react-modal'
-import { IoMdStar, IoMdClose } from 'react-icons/io'
+import { IoMdStar, IoMdClose, IoMdStarOutline } from 'react-icons/io'
+import { useReviewListStore } from '../store/store'
 
 interface ReviewModalProps {
   isOpen: boolean
   onClose: () => void
+  userName: string
 }
 
 const Header = styled.div`
@@ -59,7 +61,9 @@ const Content = styled.div`
   margin-top: 10px;
 `
 
-function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
+function ReviewModal({ isOpen, onClose, userName }: ReviewModalProps) {
+  const { reviewList } = useReviewListStore()
+
   useEffect(() => {}, [])
 
   return (
@@ -70,8 +74,8 @@ function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
         overlay: {
           backgroundColor: 'rgba(181, 181, 181, 0.2)',
           display: 'flex',
-          justifyContent: 'center', // 수평 가운데 정렬
-          alignItems: 'center', // 수직 가운데 정렬
+          justifyContent: 'center',
+          alignItems: 'center',
         },
         content: {
           width: '1200px',
@@ -80,7 +84,7 @@ function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-          padding: '20px', // 모달 내부 요소를 기준으로 절대 위치 설정
+          padding: '20px',
         },
       }}>
       <IoMdClose
@@ -95,75 +99,30 @@ function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
           marginBottom: '20px',
         }}
       />
-      <Header>우혁정님의 리뷰</Header>
-      <MainWrap>
-        <Writer>휘리릭</Writer>
-        <WriteDate>3월 24, 2024</WriteDate>
-        <StarWrap>
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-        </StarWrap>
-        <Title>제목</Title>
-        <Content>
-          첫 수업이 굉장히 알차게 흘러갔어요! 발음과 단어 그리고 이미지를 활용한 표현방법 연습 등
-          여러가지를 50분동안 배웠는데요. 낭비되는 시간없이 꽉꽉 채워 수업을 할 수 있어서 매우
-          만족스럽습니다! :) 여태까지 진행했던 프레플리 수업 중에서 가장 기억에 남는 수업입니다!
-        </Content>
-      </MainWrap>
-      <MainWrap>
-        <Writer>휘리릭</Writer>
-        <WriteDate>3월 24, 2024</WriteDate>
-        <StarWrap>
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-        </StarWrap>
-        <Title>제목</Title>
-        <Content>
-          첫 수업이 굉장히 알차게 흘러갔어요! 발음과 단어 그리고 이미지를 활용한 표현방법 연습 등
-          여러가지를 50분동안 배웠는데요. 낭비되는 시간없이 꽉꽉 채워 수업을 할 수 있어서 매우
-          만족스럽습니다! :) 여태까지 진행했던 프레플리 수업 중에서 가장 기억에 남는 수업입니다!
-        </Content>
-      </MainWrap>
-      <MainWrap>
-        <Writer>휘리릭</Writer>
-        <WriteDate>3월 24, 2024</WriteDate>
-        <StarWrap>
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-        </StarWrap>
-        <Title>제목</Title>
-        <Content>
-          첫 수업이 굉장히 알차게 흘러갔어요! 발음과 단어 그리고 이미지를 활용한 표현방법 연습 등
-          여러가지를 50분동안 배웠는데요. 낭비되는 시간없이 꽉꽉 채워 수업을 할 수 있어서 매우
-          만족스럽습니다! :) 여태까지 진행했던 프레플리 수업 중에서 가장 기억에 남는 수업입니다!
-        </Content>
-      </MainWrap>
-      <MainWrap>
-        <Writer>휘리릭</Writer>
-        <WriteDate>3월 24, 2024</WriteDate>
-        <StarWrap>
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-          <IoMdStar size={32} />
-        </StarWrap>
-        <Title>제목</Title>
-        <Content>
-          첫 수업이 굉장히 알차게 흘러갔어요! 발음과 단어 그리고 이미지를 활용한 표현방법 연습 등
-          여러가지를 50분동안 배웠는데요. 낭비되는 시간없이 꽉꽉 채워 수업을 할 수 있어서 매우
-          만족스럽습니다! :) 여태까지 진행했던 프레플리 수업 중에서 가장 기억에 남는 수업입니다!
-        </Content>
-      </MainWrap>
+      <Header>{userName}님의 리뷰</Header>
+      {reviewList.map((review) => (
+        <MainWrap>
+          <Writer>{review.writer}</Writer>
+          <WriteDate>{review.createAt}</WriteDate>
+          <StarWrap>
+            {/* 별점을 반올림하여 표시 */}
+            {(() => {
+              const roundedStar = Math.round(review.star)
+              const stars = []
+              for (let i = 0; i < 5; i++) {
+                if (i < roundedStar) {
+                  stars.push(<IoMdStar key={i} size={32} />)
+                } else {
+                  stars.push(<IoMdStarOutline key={i} size={32} />)
+                }
+              }
+              return stars
+            })()}
+          </StarWrap>
+          <Title>제목</Title>
+          <Content>{review.content}</Content>
+        </MainWrap>
+      ))}
     </Modal>
   )
 }

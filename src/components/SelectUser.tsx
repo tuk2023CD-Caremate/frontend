@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { IoMdStar, IoMdHeartEmpty, IoIosContacts } from 'react-icons/io'
-import { useApiUrlStore, useUserListStore } from '../store/store'
+import { useApiUrlStore, useReviewListStore, useUserListStore } from '../store/store'
 import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
@@ -134,10 +134,13 @@ const RequestBtn = styled.button`
 function SelectUser(id: any) {
   const { apiUrl } = useApiUrlStore()
   const { userList, setUserList } = useUserListStore()
-  // 각 유저의 클릭 여부 상태를 관리
-  const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({})
+  const { setReviewList } = useReviewListStore()
+  const [clickedUsername, setClickedUsername] = useState<string>() // 클릭한 유저 정보
+
+  const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({}) // 각 유저의 클릭 여부 상태
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // 질문 폼 정보 디코딩
   const encodedValue = JSON.stringify(id)
   const decodedValue = decodeURIComponent(encodedValue)
   const parsedObject = JSON.parse(decodedValue)
@@ -189,6 +192,30 @@ function SelectUser(id: any) {
     // 매칭 요청이 성공했을 때의 추가적인 로직
   }
 
+  // 해당 멘토 리뷰 조회
+  const getReviewList = async (mentorId: number) => {
+    const access = localStorage.getItem('accessToken')
+    if (access) {
+      try {
+        const response = await axios.get(`${apiUrl}/matching/review/${mentorId}`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        console.log(response.data)
+        setReviewList(response.data)
+      } catch (error) {
+        console.error('Error ', error)
+      }
+    } else {
+      console.error('Access token not found.')
+    }
+  }
+
+  useEffect(() => {}, [])
+
+  const handleGetReviewList = (mentorId: number) => {
+    getReviewList(mentorId)
+  }
+
   // 유저를 클릭했을 때 해당 유저의 클릭 여부 상태를 변경
   const handleUserClick = (userId: number) => {
     setExpandedUsers((prevState) => ({
@@ -197,12 +224,10 @@ function SelectUser(id: any) {
     }))
   }
 
-  // 모달 열기 함수
   const openModal = () => {
     setIsModalOpen(true)
   }
 
-  // 모달 닫기 함수
   const closeModal = () => {
     setIsModalOpen(false)
   }
@@ -248,11 +273,7 @@ function SelectUser(id: any) {
                 <Content>{user.blogUrl}</Content>
               </Section>
               <Section>
-                <Content>
-                  {/* 지식을 배우고 나눠요 — 더 좋은 경험, 더 좋은 콘텐츠로 올바른 IT생태계를 만들기
-                  위해 노력합니다.{' '} */}
-                  {user.publicRelations}
-                </Content>
+                <Content>{user.publicRelations}</Content>
               </Section>
             </InfoWrap>
           </LeftWrap>
@@ -263,7 +284,14 @@ function SelectUser(id: any) {
                   <IoMdStar size={40} />
                   <BigContent>{user.starAverage}</BigContent>
                   <Content>/</Content>
-                  <BigContent onClick={openModal}>리뷰 {13}</BigContent>
+                  <BigContent
+                    onClick={() => {
+                      openModal()
+                      handleGetReviewList(user.id)
+                      setClickedUsername(user.name)
+                    }}>
+                    리뷰 {13}
+                  </BigContent>
                 </Section>
               </ReputationWrap>
               <LikeWrap>
@@ -276,7 +304,9 @@ function SelectUser(id: any) {
             </Lower>
           </RightWrap>
           {/* 리뷰 모달창 */}
-          <ReviewModal isOpen={isModalOpen} onClose={closeModal} />
+          {clickedUsername && (
+            <ReviewModal isOpen={isModalOpen} onClose={closeModal} userName={clickedUsername} />
+          )}
         </Container>
       ))}
     </div>
