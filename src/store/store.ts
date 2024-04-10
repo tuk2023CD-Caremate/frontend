@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  // apiUrl: 'http://study-mate.kro.kr:8080/api',
-  apiUrl: 'https://study-mate.kro.kr/api',
+  apiUrl: 'http://study-mate.kro.kr:8080/api',
+  // apiUrl: 'https://study-mate.kro.kr/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
@@ -55,4 +55,27 @@ interface UserList {
 export const useUserListStore = create<UserListState>((set) => ({
   userList: [],
   setUserList: (userList) => set({ userList }),
+}))
+
+/* 리뷰 리스트 */
+interface ReviewListState {
+  reviewList: ReviewList[]
+  setReviewList: (reviewList: ReviewList[]) => void
+}
+
+interface ReviewList {
+  reviewId: number
+  title: string
+  content: string
+  writer: string
+  mentor: string
+  star: number
+  isSolved: boolean
+  heart: boolean
+  createAt: string
+}
+
+export const useReviewListStore = create<ReviewListState>((set) => ({
+  reviewList: [],
+  setReviewList: (reviewList) => set({ reviewList }),
 }))
