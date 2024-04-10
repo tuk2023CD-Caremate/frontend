@@ -22,7 +22,7 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-   apiUrl: 'http://study-mate.kro.kr:8080/api',
+  apiUrl: 'http://study-mate.kro.kr:8080/api',
   //apiUrl: 'https://study-mate.kro.kr/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
@@ -55,7 +55,6 @@ export const useUserListStore = create<UserListState>((set) => ({
   setUserList: (userList) => set({ userList }),
 }))
 
-
 /* 게시글 배열 데이터*/
 interface PostListState {
   postsList: PostsList[]
@@ -86,7 +85,6 @@ interface PostState {
   setPostData: (postData: PostsList) => void
 }
 
-
 export const usePostStore = create<PostState>((set) => ({
   postData: {
     post_id: 0,
@@ -98,11 +96,10 @@ export const usePostStore = create<PostState>((set) => ({
     commentCount: 0,
     interests: '',
     category: '',
-    recruitmentStatus: false
+    recruitmentStatus: false,
   },
   setPostData: (postData) => set({ postData: postData }),
 }))
-
 
 /* 좋아요게시글 데이터*/
 interface LikeState {
@@ -126,7 +123,6 @@ export const useFilterListStore = create<FilterState>((set) => ({
   setFilterList: (filterList) => set({ filterList }),
 }))
 
-
 /* 댓글 데이터*/
 interface CommentDataState {
   commentData: CommentData[]
@@ -145,10 +141,3 @@ export const useCommentDataStore = create<CommentDataState>((set) => ({
   commentData: [],
   setCommentData: (commentData) => set({ commentData }),
 }))
-
-
-
-
-
-
-
