@@ -14,7 +14,7 @@ const Container = styled.div`
   height: 360px;
   border: 3px solid #d8d8d8;
   &:hover {
-    border: 3px solid black;
+    border: 3px solid #650fa9;
   }
   margin-top: 15px;
   margin-bottom: 15px;
@@ -62,6 +62,15 @@ const BigContent = styled.div`
   font-size: 32px;
   font-weight: bold;
   margin: 5px;
+`
+
+const Review = styled.div`
+  display: flex;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 5px;
+  text-decoration: underline;
+  cursor: pointer;
 `
 
 const Title = styled.div`
@@ -284,14 +293,14 @@ function SelectUser(id: any) {
                   <IoMdStar size={40} />
                   <BigContent>{user.starAverage}</BigContent>
                   <Content>/</Content>
-                  <BigContent
+                  <Review
                     onClick={() => {
                       openModal()
                       handleGetReviewList(user.id)
                       setClickedUsername(user.name)
                     }}>
                     리뷰 {13}
-                  </BigContent>
+                  </Review>
                 </Section>
               </ReputationWrap>
               <LikeWrap>
