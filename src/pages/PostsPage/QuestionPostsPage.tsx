@@ -248,8 +248,7 @@ function QuestionPostPage() {
       setFilterList([])
     } else {
       setIsClicked(true) 
-      const CopyPost = [...postsList.filter((post) => post.category === 'QUESTION')] 
-      const filterPost = CopyPost.filter((post) => post.interests === interests) 
+      const filterPost = postsList.filter((post) => post.interests === interests); // 복사된 값에서 filter
       setFilterList(filterPost)
       setFilterOption(interests) 
     }

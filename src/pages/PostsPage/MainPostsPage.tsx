@@ -244,8 +244,7 @@ function MainPostPage() {
       setFilterList([])
     } else {
       setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-      const CopyPost = [...postsList.filter((post) => post.category === 'FREE')] // postData 복사
-      const filterPost = CopyPost.filter((post) => post.interests === interests) // 복사된 값에서 filter
+      const filterPost = postsList.filter((post) => post.interests === interests); // 복사된 값에서 filter
       setFilterList(filterPost)
       setFilterOption(interests) 
     }
