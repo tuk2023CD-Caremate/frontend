@@ -1,34 +1,19 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
+import { 
+  useApiUrlStore,
+  usePostStore,
+  useLikeDataStore,
+  useCommentDataStore,
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
-import commentImg from '../../assets/images/comment2.png'
-import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+import { IoIosHeart, IoIosText } from "react-icons/io"
 
-interface postsData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-}
-
-interface CommentData{
-  post_id: number
-  nickname: string
-  content: string
-  comment_id: number
-  createdAt: string
-}
 
 const Container = styled.div`
   display: flex;
@@ -154,24 +139,16 @@ const DetailFooterWrapper = styled.div`
   align-items: center;
   margin-bottom: 10px;
 `
-const LikeImg = styled.img`
-  margin-right: 5px;
-  width: 25px;
-  height: 25px;
-`
 const Likecount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
-  margin-right: 10px;
-`
-const CommentImg = styled.img`
-  margin-right: 5px;
-  width: 25x;
-  height: 25px;
+  margin-left: 5px;
+  margin-right: 20px;
 `
 const CommentCount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
+  margin-left: 5px;
 `
 const LikeBtn = styled.button`
   display: flex;
@@ -274,12 +251,12 @@ const InputWrapper = styled.div`
 `
 
 const Input = styled.input`
-text-indent: 20px;
+  text-indent: 20px;
   background-color: #f8f8f8;
   width: calc(100% - 100px);
   font-size: 24px;
   border: none;
-  
+
   &::placeholder {
     color: #bdbdbd;
   }
@@ -304,96 +281,113 @@ function DetailStudyPostPage() {
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const [likeData, setLikedData] = useState<postsData[]>([])
+  const { likeList, setLikedList } = useLikeDataStore()
+  const { postData, setPostData } = usePostStore() 
 
-  //게시판 글 DATA
-  const [postsData, SetpostData] = useState<postsData>({
-    post_id: 0,
-    title: '',
-    content: '',
-    nickname: '',
-    createdAt: Date.toString(),
-    likeCount: 0,
-    commentCount: 0,
-    interests: '',
-    category: '',
-  })
 
-//게시글 단건조회
+  //게시글 단건조회
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
+        headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
-    } catch (error) {}
+      setPostData(response.data)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+
+
+  //게시글 모집완료&수정&삭제 버튼이 작성자에게만 보이도록
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickname(response.data.nickname)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
   useEffect(() => {
     getPost()
+    getNickname()
   }, [])
 
-    //게시글 수정&삭제 버튼이 작성자에게만 보이도록
-    const getNickname = async () => {
+  //게시글 삭제
+  const deletePost = async () => {
+    if (window.confirm('게시글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
-        const response = await axios.get(`${apiUrl}/user`, {
+        const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setNickname(response.data.nickname)
-      } catch (error) {}
-    }
-  
-    useEffect(() => {
-      getNickname()
-    }, [])
-  
-
-  //게시글 삭제
-  const deletePost = async() =>{
-    if(window.confirm('게시글을 삭제할까요?')){
-      try{
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
-      })
-      SetpostData(response.data)
-    } catch(error){}
+        console.log(response.data)
+      } catch (error) {
+        alert('Error while delete post')
+      }
       navigate('/posts/study')
-    } 
+    }
   }
 
-     //게시글 수정
-     const handlePostEdit =() =>{
-      if (window.confirm('게시글을 수정할까요?')) {
-        navigate('/posts/update/'+post_id)
-      }
+  //게시글 수정
+  const handlePostEdit = () => {
+    if (window.confirm('게시글을 수정할까요?')) {
+      navigate('/posts/update/' + post_id)
     }
+  }
 
-    //좋아요 누른 게시글인지 확인
+  //게시글 모집완료
+  const completed = {
+    title: postData.title,
+    content: postData.content,
+    category: postData.category,
+    interests: postData.interests,
+    recruitmentStatus: postData.recruitmentStatus
+  }
+
+  const handleCompleted = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.put(`${apiUrl}/posts/${post_id}`,
+      { ...postData, recruitmentStatus: !completed.recruitmentStatus },
+      {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+    
+      setPostData(response.data)
+ 
+      navigate('/posts/study')
+    } catch (error) {
+      alert('Error while updating post')
+    }
+  }
+
+  //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedData(response.data)
+      setLikedList(response.data)
     } catch (error) {
       alert('Error while liking post')
     }
   }
 
-
   useEffect(() => {
     LikedPost()
   }, [])
-  
+
   //게시글 좋아요
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeData.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+      const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
 
       if (!isPostLiked) {
         //없을 경우
@@ -402,20 +396,20 @@ function DetailStudyPostPage() {
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-        const updatelikecount = postsData.likeCount + 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
-        LikedPost() // response data가 string이라 LikedPost를 불러서 배열을 업데이트
-        console.log(response.data)
+        const updatelikecount = postData.likeCount + 1
+        setPostData({ ...postData, likeCount: updatelikecount })
+        setLikedList([...likeList, response.data])
+        LikedPost()
       } else {
         //있을경우
         const response = await axios.delete(
           `${apiUrl}/post/heart/${postId}`, //좋아요 삭제
           { headers: { Authorization: `Bearer ${access}` } },
         )
-        const updatelikecount = postsData.likeCount - 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
+        const updatelikecount = postData.likeCount - 1
+        setPostData({ ...postData, likeCount: updatelikecount })
+        setLikedList([...likeList, response.data])
         LikedPost()
-        console.log(response.data)
       }
     } catch (error) {
       console.error('Error while toggling like:', error)
@@ -423,18 +417,16 @@ function DetailStudyPostPage() {
     }
   }
 
-
   //댓글CRUD
   const [content, SetContent] = useState('')
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
-  const [commentData, setCommentData] = useState<CommentData[]>([])
-  
+  const { commentData, setCommentData } = useCommentDataStore()
 
-//댓글 조회
-  const getComment = async() => {
+  //댓글 조회
+  const getComment = async () => {
     try {
-    const access = localStorage.getItem('accessToken')
+      const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -442,10 +434,7 @@ function DetailStudyPostPage() {
     } catch (error) {}
   }
 
-  useEffect(() => {
-    getComment()
-  }, [commentData]) //변수가 달라질 때마다 getComment
-
+ 
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -459,53 +448,54 @@ function DetailStudyPostPage() {
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
-  
 
-//댓글생성
-  const createComment = async() =>{
+  //댓글생성
+  const createComment = async () => {
     const comment = {
       content: content,
     }
-  
-    if(content != ''){
+
+    if (content != '') {
       try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`,comment, {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-      setCommentData([...commentData, response.data])
-      const updatecommentcount = postsData.commentCount+1;
-      SetpostData({...postsData, commentCount: updatecommentcount}); 
-    } catch (error) {}
-    SetContent('')
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`, comment, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setCommentData([...commentData, response.data])
+        const updateCommentCount = postData.commentCount + 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
+      } catch (error) {
+        alert('Error while creating comment')
+      }
+      SetContent('')
+    }
   }
-}
-
-useEffect(() => {
-  createComment()
-}, [])
 
 
-//댓글 삭제
-const deleteCommet = async (post_id: number, comment_id: number) => {
-    if(window.confirm('댓글을 삭제할까요?')) {
+  //댓글 삭제
+  const deleteCommet = async (post_id: number, comment_id: number) => {
+    if (window.confirm('댓글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
-         
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCommentData(response.data)
-     } catch (error) {}
+        console.log(response.data)
+        const updateCommentCount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
+      } catch (error) {}
     }
   }
 
   //댓글수정
   const [isediting, setIsEditing] = useState(0) //수정할 comment_id 초기화
 
-  const handleEdit = (comment_id:number) => {
+  const handleEdit = (comment_id: number) => {
     setIsEditing(comment_id) //comment_id와 일치하는 댓글만 버튼 변경
     setEditContent('')
   }
@@ -517,22 +507,25 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `${apiUrl}/posts/${post_id}/comments/${comment_id}`, editcomment,
+        `${apiUrl}/posts/${post_id}/comments/${comment_id}`,
+        editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      const updatedComments = commentData.map(comment => {
-        if(comment.comment_id === comment_id) {
-          return response.data;
-        } 
-        return comment;
-      });
-      setCommentData(updatedComments);
-    } catch (error) {}
+      const updatedComments = commentData.map((comment) => {
+        if (comment.comment_id === comment_id) {
+          return response.data
+        }
+        return comment
+      })
+      setCommentData(updatedComments)
+      getComment()
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
-
 
   return (
     <div>
@@ -542,62 +535,68 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
         <PostsBar />
         <PostWrapper>
           <PageTitle>스터디게시판</PageTitle>
-            <MainPostWrapper>
-              <Upper>
-                <UserWrapper>
-                  <Profile src={ProfileImg} />
-                  <NameWrapper>
-                    <Nickname>{postsData.nickname}</Nickname>
-                    <Time>{postsData.createdAt}</Time>
-                  </NameWrapper>
-                </UserWrapper>
-                {nickname ===postsData.nickname ?
-                <ButtonWrapper>
-                <Modify onClick={handlePostEdit}>수정</Modify>
-                <Delete onClick={deletePost}>삭제</Delete>
-              </ButtonWrapper> :
-              null}
-              </Upper>
-              <Lower>
-                <Title>{postsData.title}</Title>
-                <Context>{postsData.content}</Context>
-              </Lower>
-              <FooterWrapper>
-                <DetailFooterWrapper>
-                <LikeImg src={ likeimg } />
-                <Likecount>{postsData.likeCount}</Likecount>
-                <CommentImg src={commentImg} />
-                <CommentCount>{postsData.commentCount}</CommentCount>
-                </DetailFooterWrapper>
-                <LikeBtn onClick={() =>onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>
-              </FooterWrapper>
-            </MainPostWrapper>
-            {Array.isArray(commentData) &&
-            commentData.map((comments) => (
-          <CommentWrapper key={comments.comment_id}>
-            <CommentUpper>
-              <CommentUserWrapper>
-                <CommentProfile src={ProfileImg} />
+          <MainPostWrapper>
+            <Upper>
+              <UserWrapper>
+                <Profile src={ProfileImg} />
                 <NameWrapper>
-                    <CommentNickname>{comments.nickname}</CommentNickname>
-                    <CommentTime>{comments.createdAt}</CommentTime>
+                  <Nickname>{postData.nickname}</Nickname>
+                  <Time>{postData.createdAt}</Time>
                 </NameWrapper>
-              </CommentUserWrapper>
-              {commentnickname === comments.nickname ?
-              <ButtonWrapper>
-                    <CommentDelete
-                      onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
-                      삭제
-                    </CommentDelete>
-                    {isediting === comments.comment_id ?  (
-                      <EditBtn onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
-                        완료
-                      </EditBtn>
-                    ) : (
-                      <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
-                    )}
-                  </ButtonWrapper>
-                  : null}
+              </UserWrapper>
+              {nickname === postData.nickname ? (
+                <ButtonWrapper>
+                  <Modify onClick={handleCompleted}>
+                    {postData.recruitmentStatus ? '모집완료' : '모집중'}
+                  </Modify>
+                  <Modify onClick={handlePostEdit}>수정</Modify>
+                  <Delete onClick={deletePost}>삭제</Delete>
+                </ButtonWrapper>
+              ) : null}
+            </Upper>
+            <Lower>
+              <Title>{postData.title}</Title>
+              <Context>{postData.content}</Context>
+            </Lower>
+            <FooterWrapper>
+              <DetailFooterWrapper>
+                <IoIosHeart color='#ff0000' size="30"/>
+                <Likecount>{postData.likeCount}</Likecount>
+                <IoIosText size="30"/>
+                <CommentCount>{postData.commentCount}</CommentCount>
+              </DetailFooterWrapper>
+              <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
+            </FooterWrapper>
+          </MainPostWrapper>
+          {Array.isArray(commentData) &&
+            commentData.map((comments) => (
+              <CommentWrapper key={comments.comment_id}>
+                <CommentUpper>
+                  <CommentUserWrapper>
+                    <CommentProfile src={ProfileImg} />
+                    <NameWrapper>
+                      <CommentNickname>{comments.nickname}</CommentNickname>
+                      <CommentTime>{comments.createdAt}</CommentTime>
+                    </NameWrapper>
+                  </CommentUserWrapper>
+                  {commentnickname === comments.nickname ? (
+                    <ButtonWrapper>
+                      <CommentDelete
+                        onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
+                        삭제
+                      </CommentDelete>
+                      {isediting === comments.comment_id ? (
+                        <EditBtn
+                          onClick={() => updateComment(postData.post_id, comments.comment_id)}>
+                          완료
+                        </EditBtn>
+                      ) : (
+                        <CommentUpdate onClick={() => handleEdit(comments.comment_id)}>
+                          수정
+                        </CommentUpdate>
+                      )}
+                    </ButtonWrapper>
+                  ) : null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (
                   <div>
@@ -617,10 +616,10 @@ const deleteCommet = async (post_id: number, comment_id: number) => {
             ))}
           <InputWrapper>
             <Input
-            type="text"
-            placeholder="댓글을 입력하세요"
-            value={content} 
-            onChange={(e) => SetContent(e.target.value)}></Input>
+              type="text"
+              placeholder="댓글을 입력하세요"
+              value={content}
+              onChange={(e) => SetContent(e.target.value)}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>

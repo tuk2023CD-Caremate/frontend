@@ -116,7 +116,7 @@ const interestsList = [
 export default function WritingPostPage() {
   const [title, SetTitle] = useState('')
   const [content, SetContent] = useState('')
-  const [interests, SetInterests] = useState('')
+  const [interests, SetInterests] = useState('분야')
   const [category, SetCategory] = useState('')
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
@@ -185,6 +185,7 @@ export default function WritingPostPage() {
             </ButtonWrapper>
             <SerchWrapper>
               <InterestsSelect value={interests} onChange={(e) => SetInterests(e.target.value)}>
+                <option disabled hidden>분야</option>
                 {interestsList.map((item) => (
                   <option value={item.value} key={item.name}>
                     {item.name}

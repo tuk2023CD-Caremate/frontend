@@ -57,6 +57,92 @@ export const useUserListStore = create<UserListState>((set) => ({
   setUserList: (userList) => set({ userList }),
 }))
 
+/* 게시글 배열 데이터*/
+interface PostListState {
+  postsList: PostsList[]
+  setPostList: (postsList: PostsList[]) => void
+}
+
+export interface PostsList {
+  post_id: number
+  title: string
+  content: string
+  nickname: string
+  createdAt: string
+  likeCount: number
+  commentCount: number
+  interests: string
+  category: string
+  recruitmentStatus: boolean
+}
+
+export const usePostListStore = create<PostListState>((set) => ({
+  postsList: [],
+  setPostList: (postsList) => set({ postsList }),
+}))
+
+/* 상세 게시글 객체 데이터*/
+interface PostState {
+  postData: PostsList
+  setPostData: (postData: PostsList) => void
+}
+
+export const usePostStore = create<PostState>((set) => ({
+  postData: {
+    post_id: 0,
+    title: '',
+    content: '',
+    nickname: '',
+    createdAt: '',
+    likeCount: 0,
+    commentCount: 0,
+    interests: '',
+    category: '',
+    recruitmentStatus: false,
+  },
+  setPostData: (postData) => set({ postData: postData }),
+}))
+
+/* 좋아요게시글 데이터*/
+interface LikeState {
+  likeList: PostsList[]
+  setLikedList: (likeList: PostsList[]) => void
+}
+
+export const useLikeDataStore = create<LikeState>((set) => ({
+  likeList: [],
+  setLikedList: (likeList) => set({ likeList }),
+}))
+
+/* 필터링게시글 데이터*/
+interface FilterState {
+  filterList: PostsList[]
+  setFilterList: (filterList: PostsList[]) => void
+}
+
+export const useFilterListStore = create<FilterState>((set) => ({
+  filterList: [],
+  setFilterList: (filterList) => set({ filterList }),
+}))
+
+/* 댓글 데이터*/
+interface CommentDataState {
+  commentData: CommentData[]
+  setCommentData: (commentData: CommentData[]) => void
+}
+
+interface CommentData {
+  post_id: number
+  nickname: string
+  content: string
+  comment_id: number
+  createdAt: string
+}
+
+export const useCommentDataStore = create<CommentDataState>((set) => ({
+  commentData: [],
+  setCommentData: (commentData) => set({ commentData }),
+
 /* 리뷰 리스트 */
 interface ReviewListState {
   reviewList: ReviewList[]

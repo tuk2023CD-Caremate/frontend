@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
-import playIcon from '../assets/images/play.png'
-import stopIcon from '../assets/images/stop.png'
+import { IoStopCircleSharp } from "react-icons/io5";
+import { IoIosPlayCircle } from "react-icons/io";
 import StudyPostingModal from '../components/StudyPostingModal.tsx'
 import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
@@ -139,11 +139,6 @@ const AddStudy = styled.select`
   cursor: pointer;
 `
 
-const StatusIcon = styled.img`
-  width: 80px;
-  height: 80px;
-`
-
 const ListInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -178,7 +173,6 @@ const interestsList = [
 
 function StudyPage() {
   //스탑워치
-  const [currentImg, setCurrentImg] = useState(playIcon)
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [interval, setIntervalId] = useState<number | undefined>(undefined)
@@ -200,7 +194,7 @@ function StudyPage() {
     const endTime = dayjs().format('YYYY-MM-DD HH:mm')
 
     if (!isRunning) {
-      setCurrentImg(stopIcon) // 멈춤버튼 이미지로 변경
+      //setCurrentIcon(<IoStopCircleSharp />); // 멈춤버튼 이미지로 변경
       setStartTime(startTime) // 현재 시간을 startTime으로 설정
 
       const interval = setInterval(() => {
@@ -209,7 +203,7 @@ function StudyPage() {
       setIntervalId(interval) // interval 변수 업데이트
       setIsRunning(true)
     } else {
-      setCurrentImg(playIcon) // 재생버튼 이미지 변경
+      //setCurrentIcon(<IoIosPlayCircle />); // 재생버튼 이미지 변경
       clearInterval(interval)
       setIsRunning(false)
       setEndTime(endTime) //endTime업데이트
@@ -263,7 +257,9 @@ function StudyPage() {
             <StudyingWrapper>
               <Study>
                 <IconWrapper>
-                  <StatusIcon src={currentImg} onClick={ClickHandler} />
+                {isRunning ? 
+                <IoStopCircleSharp onClick={ClickHandler} size='80px' /> 
+                : <IoIosPlayCircle onClick={ClickHandler} size='80px' />}
                 </IconWrapper>
                 <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}> 
                  <option disabled hidden>분야</option>
