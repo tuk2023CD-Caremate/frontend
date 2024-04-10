@@ -142,6 +142,7 @@ interface CommentData {
 export const useCommentDataStore = create<CommentDataState>((set) => ({
   commentData: [],
   setCommentData: (commentData) => set({ commentData }),
+}))
 
 /* 리뷰 리스트 */
 interface ReviewListState {
