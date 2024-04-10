@@ -281,6 +281,7 @@ function DetailMainPostPage() {
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
 
+  
   //게시글 단건조회
   const getPost = async () => {
     try {
@@ -293,6 +294,7 @@ function DetailMainPostPage() {
       alert('Error while fetching post')
     }
   }
+
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -356,7 +358,7 @@ function DetailMainPostPage() {
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeList.some((post) => post.id === postId) //좋아요 누른 게시글인지 조회
+      const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
 
       if (!isPostLiked) {
         //없을 경우
@@ -368,7 +370,7 @@ function DetailMainPostPage() {
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       } else {
         //있을경우
         const response = await axios.delete(
@@ -378,7 +380,7 @@ function DetailMainPostPage() {
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       }
     } catch (error) {
       console.error('Error while toggling like:', error)
@@ -391,6 +393,7 @@ function DetailMainPostPage() {
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
   const { commentData, setCommentData } = useCommentDataStore()
+
 
   //댓글 조회
   const getComment = async () => {
@@ -453,7 +456,10 @@ function DetailMainPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCommentData(response.data)
+        console.log(response.data)
+        const updateCommentCount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
       } catch (error) {
         alert('Error while delete comment')
       }
@@ -488,6 +494,7 @@ function DetailMainPostPage() {
         return comment
       })
       setCommentData(updatedComments)
+      getComment()
     } catch (error) {
       alert('Error while updating comment')
     }
@@ -529,7 +536,7 @@ function DetailMainPostPage() {
                 <IoIosText size="30" />
                 <CommentCount>{postData.commentCount}</CommentCount>
               </DetailFooterWrapper>
-              <LikeBtn onClick={() => onLikeBtn(postData.id)}>좋아요</LikeBtn>
+              <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
             </FooterWrapper>
           </MainPostWrapper>
           {Array.isArray(commentData) &&
@@ -545,11 +552,13 @@ function DetailMainPostPage() {
                   </CommentUserWrapper>
                   {commentnickname === comments.nickname ? (
                     <ButtonWrapper>
-                      <CommentDelete onClick={() => deleteCommet(postData.id, comments.comment_id)}>
+                      <CommentDelete
+                        onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
                         삭제
                       </CommentDelete>
                       {isediting === comments.comment_id ? (
-                        <EditBtn onClick={() => updateComment(postData.id, comments.comment_id)}>
+                        <EditBtn
+                          onClick={() => updateComment(postData.post_id, comments.comment_id)}>
                           완료
                         </EditBtn>
                       ) : (

@@ -207,7 +207,9 @@ function StudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostList(response.data.reverse())
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
   useEffect(() => {
@@ -224,7 +226,9 @@ function StudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setPostList(response.data)
-      } catch (error) {}
+      } catch (error) {
+        alert('Error while searching keyword')
+      }
     } else if (searchKeyword == '') {
       alert('검색어를 입력해주세요')
       getPost() 
@@ -238,8 +242,8 @@ function StudyPostPage() {
       setFilterList([]);
     } else {
     setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-    const CopyPost = [...postsList.filter((post) => post.recruitmentStatus === true)] //postData 복사
-    const filterPost = CopyPost.filter((post) => post.recruitmentStatus === recruitmentStatus) //복사된 값에서 filter
+    const filterPost = postsList.filter((post) => 
+    post.recruitmentStatus === recruitmentStatus) 
     setFilterList(filterPost)
     setFilterOption(recruitmentStatus.toString())
     }
@@ -252,8 +256,8 @@ function StudyPostPage() {
         .filter((post) => post.category === 'STUDY')
         .map((post) => (
           <StudyPosts 
-          key={post.id} 
-          to={`/posts/study/${post.id}`}
+          key={post.post_id} 
+          to={`/posts/study/${post.post_id}`}
           recruitmentStatus={post.recruitmentStatus}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>

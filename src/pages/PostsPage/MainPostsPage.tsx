@@ -208,8 +208,9 @@ function MainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostList(response.data.reverse())
-      console.log(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
   useEffect(() => {
@@ -226,7 +227,9 @@ function MainPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         setPostList(response.data)
-      } catch (error) {}
+      } catch (error) {
+        alert('Error while searching keyword')
+      }
     } else if (searchKeyword == '') {
       alert('검색어를 입력해주세요')
       getPost() //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
@@ -250,10 +253,10 @@ function MainPostPage() {
 
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
-      {posts
+      {posts 
         .filter((post) => post.category === 'FREE')
         .map((post) => (
-          <MainPosts key={post.id} to={`/posts/${post.id}`}>
+          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>

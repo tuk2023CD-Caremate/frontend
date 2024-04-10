@@ -210,7 +210,9 @@ function QuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostList(response.data.reverse())
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
   useEffect(() => {
@@ -229,7 +231,9 @@ function QuestionPostPage() {
              headers: { Authorization: `Bearer ${access}` },
            })
            setPostList(response.data)
-         } catch (error) {}
+         } catch (error) {
+          alert('Error while searching keyword')
+         }
        } else if(searchKeyword ==''){
          alert("검색어를 입력해주세요")
          getPost(); 
@@ -258,7 +262,7 @@ function QuestionPostPage() {
       {posts
         .filter((post) => post.category === 'QUESTION')
         .map((post) => (
-          <QuestionPosts key={post.id} to={`/posts/questions/${post.id}`}>
+          <QuestionPosts key={post.post_id} to={`/posts/questions/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>

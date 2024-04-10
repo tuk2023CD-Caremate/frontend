@@ -352,7 +352,6 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setLikedList(response.data)
-      console.log(response.data)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -366,7 +365,7 @@ function DetailQuestionPostPage() {
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeList.some((post) => post.id === postId) //좋아요 누른 게시글인지 조회
+      const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
       console.log(isPostLiked)
       
       if (!isPostLiked) {
@@ -379,7 +378,7 @@ function DetailQuestionPostPage() {
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       } else {
         //있을경우
         const response = await axios.delete(
@@ -389,7 +388,7 @@ function DetailQuestionPostPage() {
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       }
     } catch (error) {
       console.error('Error while toggling like:', error)
@@ -414,7 +413,9 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
 
@@ -427,7 +428,9 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
   useEffect(() => {
@@ -467,10 +470,15 @@ function DetailQuestionPostPage() {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
         headers: { Authorization: `Bearer ${access}` },
-      })
-      setCommentData(response.data)
-    }catch (error) {}
-  }
+        })
+        console.log(response.data)
+        const updateCommentCount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
+      }catch (error) {
+        alert('Error while delete comment')
+      }
+    }
   }
 
   
@@ -501,7 +509,10 @@ function DetailQuestionPostPage() {
         return comment;
       });
       setCommentData(updatedComments);
-    } catch (error) {}
+      getComment()
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
   
@@ -541,7 +552,7 @@ function DetailQuestionPostPage() {
                   <IoIosText size="30"/>
                   <CommentCount>{postData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
-               <LikeBtn onClick={()=>onLikeBtn(postData.id)}>좋아요</LikeBtn>
+               <LikeBtn onClick={()=>onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
             {Array.isArray(commentData) && 
@@ -558,11 +569,11 @@ function DetailQuestionPostPage() {
                 {commentnickname === comments.nickname ?
                 <ButtonWrapper>
                     <CommentDelete
-                      onClick={() => deleteCommet(postData.id, comments.comment_id)}>
+                      onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
                       삭제
                     </CommentDelete>
                     {isediting === comments.comment_id ?  (
-                      <EditBtn onClick={() => updateComment(postData.id, comments.comment_id)}>
+                      <EditBtn onClick={() => updateComment(postData.post_id, comments.comment_id)}>
                         완료
                       </EditBtn>
                     ) : (

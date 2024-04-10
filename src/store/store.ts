@@ -63,7 +63,7 @@ interface PostListState {
 }
 
 export interface PostsList {
-  id: number
+  post_id: number
   title: string
   content: string
   nickname: string
@@ -89,7 +89,7 @@ interface PostState {
 
 export const usePostStore = create<PostState>((set) => ({
   postData: {
-    id: 0,
+    post_id: 0,
     title: '',
     content: '',
     nickname: '',

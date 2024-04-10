@@ -281,7 +281,6 @@ function DetailStudyPostPage() {
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const [recruitmentStatus, setRecruitmentStatus] = useState<boolean>(true)
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() 
 
@@ -327,7 +326,9 @@ function DetailStudyPostPage() {
           headers: { Authorization: `Bearer ${access}` },
         })
         console.log(response.data)
-      } catch (error) {}
+      } catch (error) {
+        alert('Error while delete post')
+      }
       navigate('/posts/study')
     }
   }
@@ -345,24 +346,25 @@ function DetailStudyPostPage() {
     content: postData.content,
     category: postData.category,
     interests: postData.interests,
-    recruitmentStatus: true,
+    recruitmentStatus: postData.recruitmentStatus
   }
 
   const handleCompleted = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.put(`${apiUrl}/posts/${post_id}`, completed, {
+      const response = await axios.put(`${apiUrl}/posts/${post_id}`,
+      { ...postData, recruitmentStatus: !completed.recruitmentStatus },
+      {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setRecruitmentStatus(true)
+    
       setPostData(response.data)
+ 
       navigate('/posts/study')
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while updating post')
+    }
   }
-
-  useEffect(() => {
-    getPost()
-  }, [recruitmentStatus])
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -385,7 +387,7 @@ function DetailStudyPostPage() {
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeList.some((post) => post.id === postId) //좋아요 누른 게시글인지 조회
+      const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
 
       if (!isPostLiked) {
         //없을 경우
@@ -397,7 +399,7 @@ function DetailStudyPostPage() {
         const updatelikecount = postData.likeCount + 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       } else {
         //있을경우
         const response = await axios.delete(
@@ -407,7 +409,7 @@ function DetailStudyPostPage() {
         const updatelikecount = postData.likeCount - 1
         setPostData({ ...postData, likeCount: updatelikecount })
         setLikedList([...likeList, response.data])
-        console.log(response.data)
+        LikedPost()
       }
     } catch (error) {
       console.error('Error while toggling like:', error)
@@ -482,7 +484,10 @@ function DetailStudyPostPage() {
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setCommentData(response.data)
+        console.log(response.data)
+        const updateCommentCount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
       } catch (error) {}
     }
   }
@@ -515,7 +520,10 @@ function DetailStudyPostPage() {
         return comment
       })
       setCommentData(updatedComments)
-    } catch (error) {}
+      getComment()
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
 
@@ -538,7 +546,9 @@ function DetailStudyPostPage() {
               </UserWrapper>
               {nickname === postData.nickname ? (
                 <ButtonWrapper>
-                  <Modify onClick={handleCompleted}>모집완료</Modify>
+                  <Modify onClick={handleCompleted}>
+                    {postData.recruitmentStatus ? '모집완료' : '모집중'}
+                  </Modify>
                   <Modify onClick={handlePostEdit}>수정</Modify>
                   <Delete onClick={deletePost}>삭제</Delete>
                 </ButtonWrapper>
@@ -555,7 +565,7 @@ function DetailStudyPostPage() {
                 <IoIosText size="30"/>
                 <CommentCount>{postData.commentCount}</CommentCount>
               </DetailFooterWrapper>
-              <LikeBtn onClick={() => onLikeBtn(postData.id)}>좋아요</LikeBtn>
+              <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
             </FooterWrapper>
           </MainPostWrapper>
           {Array.isArray(commentData) &&
@@ -572,12 +582,12 @@ function DetailStudyPostPage() {
                   {commentnickname === comments.nickname ? (
                     <ButtonWrapper>
                       <CommentDelete
-                        onClick={() => deleteCommet(postData.id, comments.comment_id)}>
+                        onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
                         삭제
                       </CommentDelete>
                       {isediting === comments.comment_id ? (
                         <EditBtn
-                          onClick={() => updateComment(postData.id, comments.comment_id)}>
+                          onClick={() => updateComment(postData.post_id, comments.comment_id)}>
                           완료
                         </EditBtn>
                       ) : (
