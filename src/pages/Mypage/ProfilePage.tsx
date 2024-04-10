@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useApiUrlStore } from '../../store/store.ts'
+import { ToastContainer, toast } from 'react-toastify'
 
 interface ProfileData {
   name: string
@@ -107,6 +108,15 @@ const Detail = styled.div`
   margin: 10px;
 `
 
+const StyledToastContainer = styled(ToastContainer)`
+  .Toastify__toast-container {
+    font-family: 'Arial', sans-serif;
+  }
+  .Toastify__toast--info {
+    background: #007bff;
+  }
+`
+
 function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
 
@@ -140,6 +150,20 @@ function ProfilePage() {
   useEffect(() => {
     getProfile()
   }, [])
+
+  // useEffect(() => {
+  //   const eventSource = new EventSource('/path-to-your-sse-endpoint')
+
+  //   eventSource.addEventListener('your-message', (e) => {
+  //     const data = JSON.parse(e.data as string) as INotification
+
+  //   })
+  //   })
+
+  //   eventSource.onerror = function (event) {
+  //     // 오류 처리 로직
+  //   }
+  // }, [])
 
   return (
     <div>
@@ -199,6 +223,7 @@ function ProfilePage() {
             </WrapContent>
           </Lower>
         </ProfileWrapper>
+        <StyledToastContainer />
       </Container>
     </div>
   )
