@@ -5,6 +5,7 @@ import Navbar2 from '../../components/Navbar2'
 import { useLocation } from 'react-router-dom'
 import SelectUser from '../../components/SelectUser'
 import { useState } from 'react'
+import { useUserListStore } from '../../store/store'
 
 const Container = styled.div`
   display: flex;
@@ -28,14 +29,13 @@ const Text = styled.div`
 function SelectUserPage() {
   const location = useLocation()
   const IdInfo = location.state
-
-  const [userCount, setUserCount] = useState(5)
+  const { userList } = useUserListStore()
 
   return (
     <div>
       <Header2 />
       <Navbar2 />
-      <Text>나에게 필요한 {userCount}명의 멘토 리스트</Text>
+      <Text>나에게 필요한 {userList.length}명의 멘토 리스트</Text>
       <Container>
         <SelectUser id={IdInfo} />
         {/* <SelectUserModal id={IdInfo} /> */}
