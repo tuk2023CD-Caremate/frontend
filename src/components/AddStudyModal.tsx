@@ -4,9 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
 
-// type Prop = {
-//   AddCloseModal?: () => void
-// }
 
 interface calenderList {
   id: number
@@ -127,6 +124,8 @@ function AddStudyModal() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
+
+  //스터디 기록 단건 조회
   useEffect(() => {
     const getStudy = async () => {
       try {
