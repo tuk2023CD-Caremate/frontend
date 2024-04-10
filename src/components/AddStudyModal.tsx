@@ -140,7 +140,7 @@ function AddStudyModal() {
       }
     }
     getStudy()
-  }, [calender_id])
+  }, [])
 
   useEffect(() => {
     setContent(calenderList.content)

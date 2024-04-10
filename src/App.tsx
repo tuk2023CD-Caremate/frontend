@@ -17,7 +17,7 @@ import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
 import AddStudyPage from './pages/AddStudyPage'
-import SelectUser from './pages/OnlinePage/SelectUserPage'
+import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
         {/* <Route path="/offline" element={<OfflinePage />} /> */}
 
         <Route path="/online" element={<StartPage />} />
-        <Route path="/online/select" element={<SelectUser />} />
+        <Route path="/online/select" element={<SelectUserPage />} />
 
         <Route path="/chat" element={<ChatPage />} />
 
@@ -42,10 +42,12 @@ function App() {
 
         <Route path="/posts/write" element={<WritingPostsPage />} />
         <Route path="/posts/update/:post_id" element={<UpdatePostsPage />} />
-        <Route path="/posts/:post_id" element={<DetailMainPostsPage />} />
-        <Route path="/posts/study/:post_id" element={<DetailStudyPostsPage />} />
-        <Route path="/posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
 
+        <Route path="posts/study/:post_id" element={<DetailStudyPostsPage />} />
+        <Route path="posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
+        <Route path="posts/:post_id" element={<DetailMainPostsPage />} />
+
+        
         <Route path="/calender" element={<StudyPage />} />
         <Route path="/calender/:calender_id" element={<AddStudyPage />} />
 

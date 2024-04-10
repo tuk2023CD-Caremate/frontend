@@ -10,7 +10,7 @@ interface OnboardProps {
 }
 
 const Container = styled.div`
-  background-color: #f7f7f7;
+  background-color: #f4eef4;
   width: 100vw;
   height: 100vh;
   position: relative;

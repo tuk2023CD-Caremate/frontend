@@ -12,7 +12,7 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const Post = styled(Link)`
+const NavLink = styled(Link)<{ isActive: boolean }>`
   width: 240px;
   font-size: 25px;
   display: flex;
@@ -22,27 +22,9 @@ const Post = styled(Link)`
   color: inherit;
   padding: 20px 0px 20px 40px;
   border-radius: 20px;
-`
-const Questions = styled(Link)`
-  width: 240px;
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
-`
-
-const Study = styled(Link)`
-  width: 240px;
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  background-color: ${({ isActive }) => (isActive ? '#E8DCF2' : 'inherit')};
+  color: ${({ isActive }) => (isActive ? '#650FA9' : 'inherit')};
+  font-weight: ${({ isActive }) => (isActive ? 'bold' : 'inherit')};
 `
 
 export default function PostBar() {
@@ -50,33 +32,21 @@ export default function PostBar() {
 
   return (
     <Container>
-      <Post
+      <NavLink
         to="/posts"
-        style={{
-          backgroundColor: location.pathname === '/posts' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts' ? 'bold' : 'inherit',
-        }}>
+        isActive={
+          location.pathname.includes('/posts') &&
+          !location.pathname.includes('/posts/questions') &&
+          !location.pathname.includes('/posts/study')
+        }>
         자유 게시판
-      </Post>
-      <Questions
-        to="/posts/questions"
-        style={{
-          backgroundColor: location.pathname === '/posts/questions' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts/questions' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts/questions' ? 'bold' : 'inherit',
-        }}>
+      </NavLink>
+      <NavLink to="/posts/questions" isActive={location.pathname.includes('questions')}>
         질문 게시판
-      </Questions>
-      <Study
-        to="/posts/study"
-        style={{
-          backgroundColor: location.pathname === '/posts/study' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/posts/study' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/posts/study' ? 'bold' : 'inherit',
-        }}>
+      </NavLink>
+      <NavLink to="/posts/study" isActive={location.pathname.includes('study')}>
         스터디 게시판
-      </Study>
+      </NavLink>
     </Container>
   )
 }

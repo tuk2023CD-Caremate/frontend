@@ -1,34 +1,20 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
+import { 
+  useApiUrlStore,
+  usePostStore,
+  useLikeDataStore,
+  useCommentDataStore,
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
-import commentImg from '../../assets/images/comment2.png'
-import likeimg from '../../assets/images/likeicon.png'
 import ProfileImg from '../../assets/images/profile.png'
+import { IoIosHeart, IoIosText } from "react-icons/io"
 
-interface postsData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-}
 
-interface CommentData{
-  post_id: number
-  nickname: string
-  content: string
-  comment_id: number
-  createdAt: string
-}
 
 const Container = styled.div`
   display: flex;
@@ -154,24 +140,16 @@ const DetailFooterWrapper = styled.div`
   align-items: center;
   margin-bottom: 10px;
 `
-const LikeImg = styled.img`
-  margin-right: 5px;
-  width: 25px;
-  height: 25px;
-`
 const Likecount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
-  margin-right: 10px;
-`
-const CommentImg = styled.img`
-  margin-right: 5px;
-  width: 25x;
-  height: 25px;
+  margin-left: 5px;
+  margin-right: 20px;
 `
 const CommentCount = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bolder;
+  margin-left: 5px;
 `
 const LikeBtn = styled.button`
   display: flex;
@@ -304,22 +282,10 @@ function DetailQuestionPostPage() {
   const navigate = useNavigate();
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
-  const [likeData, setLikedData] = useState<postsData[]>([])
+  const { likeList, setLikedList } = useLikeDataStore()
+  const { postData, setPostData } = usePostStore() 
 
 
-
-  //게시판 글 data
-  const [postsData, SetpostData] = useState<postsData>({
-    post_id: 0,
-    title: '',
-    content: '',
-    nickname: '',
-    createdAt: Date.toString(),
-    likeCount: 0,
-    commentCount: 0,
-    interests: '',
-    category: '',
-  })
 
   //게시글 단건조회
   const getPost = async () => {
@@ -328,13 +294,13 @@ function DetailQuestionPostPage() {
       const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
-    } catch (error) {}
+      setPostData(response.data)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
-  useEffect(() => {
-    getPost()
-  }, [])
+
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -344,12 +310,16 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching post')
+    }
   }
 
   useEffect(() => {
+    getPost()
     getNickname()
   }, [])
+
 
   //게시글 삭제
   const deletePost = async() =>{
@@ -359,8 +329,10 @@ function DetailQuestionPostPage() {
       const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
       headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
-    } catch (error) {}
+      console.log(response.data)
+    } catch (error) {
+      alert('Error while delete post')
+    }
     navigate('/posts/questions')
     } 
   }
@@ -379,7 +351,7 @@ function DetailQuestionPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedData(response.data)
+      setLikedList(response.data)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -393,8 +365,9 @@ function DetailQuestionPostPage() {
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
-      const isPostLiked = likeData.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
-
+      const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+      console.log(isPostLiked)
+      
       if (!isPostLiked) {
         //없을 경우
         const response = await axios.post(
@@ -402,20 +375,20 @@ function DetailQuestionPostPage() {
           {},
           { headers: { Authorization: `Bearer ${access}` } }, // headers는 세 번째 매개변수로 전달
         )
-        const updatelikecount = postsData.likeCount + 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
+        const updatelikecount = postData.likeCount + 1
+        setPostData({ ...postData, likeCount: updatelikecount })
+        setLikedList([...likeList, response.data])
         LikedPost()
-        console.log(response.data)
       } else {
         //있을경우
         const response = await axios.delete(
           `${apiUrl}/post/heart/${postId}`, //좋아요 삭제
           { headers: { Authorization: `Bearer ${access}` } },
         )
-        const updatelikecount = postsData.likeCount - 1
-        SetpostData({ ...postsData, likeCount: updatelikecount })
+        const updatelikecount = postData.likeCount - 1
+        setPostData({ ...postData, likeCount: updatelikecount })
+        setLikedList([...likeList, response.data])
         LikedPost()
-        console.log(response.data)
       }
     } catch (error) {
       console.error('Error while toggling like:', error)
@@ -429,7 +402,7 @@ function DetailQuestionPostPage() {
   const [content, SetContent]=useState('')
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
-  const [commentData, setCommentData] = useState<CommentData[]>([])
+  const { commentData, setCommentData } = useCommentDataStore()
   
 
 //댓글 조회
@@ -440,12 +413,10 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
-
-  useEffect(() => {
-    getComment()
-  }, [commentData]) //변수가 달라질 때마다 getComment
 
 
 
@@ -457,10 +428,13 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentNickname(response.data.nickname)
-    } catch (error) {}
+    } catch (error) {
+      alert('Error while fetching comment')
+    }
   }
 
   useEffect(() => {
+    getComment()
     getcommentNickname()
   }, [])
 
@@ -478,15 +452,15 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData([...commentData, response.data])
-      const updatecommentcount = postsData.commentCount+1;
-      SetpostData({...postsData, commentCount: updatecommentcount}); 
-    } catch (error) {}
+      const updateCommentCount = postData.commentCount + 1
+      setPostData({ ...postData, commentCount: updateCommentCount })
+      getComment()
+    } catch (error) {
+      alert('Error while creating comment')
+    }
     }SetContent('')
   }
  
-  useEffect(() => {
-    createComment()
-  }, [])
 
 
 //댓글 삭제
@@ -496,10 +470,15 @@ function DetailQuestionPostPage() {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
         headers: { Authorization: `Bearer ${access}` },
-      })
-      setCommentData(response.data)
-    }catch (error) {}
-  }
+        })
+        console.log(response.data)
+        const updateCommentCount = postData.commentCount - 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
+      }catch (error) {
+        alert('Error while delete comment')
+      }
+    }
   }
 
   
@@ -530,7 +509,10 @@ function DetailQuestionPostPage() {
         return comment;
       });
       setCommentData(updatedComments);
-    } catch (error) {}
+      getComment()
+    } catch (error) {
+      alert('Error while updating comment')
+    }
     setIsEditing(0) //comment_id 초기화
   }
   
@@ -548,11 +530,11 @@ function DetailQuestionPostPage() {
                 <UserWrapper>
                   <Profile src={ProfileImg} />
                   <NameWrapper>
-                    <Nickname>{postsData.nickname}</Nickname>
-                    <Time>{postsData.createdAt}</Time>
+                    <Nickname>{postData.nickname}</Nickname>
+                    <Time>{postData.createdAt}</Time>
                   </NameWrapper>
                 </UserWrapper>
-                {nickname ===postsData.nickname ?
+                {nickname ===postData.nickname ?
               <ButtonWrapper>
                 <Modify onClick={handlePostEdit}>수정</Modify>
                 <Delete onClick={deletePost}>삭제</Delete>
@@ -560,17 +542,17 @@ function DetailQuestionPostPage() {
               null}
               </Upper>
               <Lower>
-                <Title>{postsData.title}</Title>
-                <Context>{postsData.content}</Context>
+                <Title>{postData.title}</Title>
+                <Context>{postData.content}</Context>
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                <LikeImg src={ likeimg } />
-                <Likecount>{postsData.likeCount}</Likecount>
-                <CommentImg src={commentImg} />
-                <CommentCount>{postsData.commentCount}</CommentCount>
+                  <IoIosHeart color='#ff0000' size="30"/>
+                  <Likecount>{postData.likeCount}</Likecount>
+                  <IoIosText size="30"/>
+                  <CommentCount>{postData.commentCount}</CommentCount>
                 </DetailFooterWrapper>
-               <LikeBtn onClick={()=>onLikeBtn(postsData.post_id)}>좋아요</LikeBtn>
+               <LikeBtn onClick={()=>onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
               </FooterWrapper>
             </MainPostWrapper>
             {Array.isArray(commentData) && 
@@ -587,11 +569,11 @@ function DetailQuestionPostPage() {
                 {commentnickname === comments.nickname ?
                 <ButtonWrapper>
                     <CommentDelete
-                      onClick={() => deleteCommet(postsData.post_id, comments.comment_id)}>
+                      onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
                       삭제
                     </CommentDelete>
                     {isediting === comments.comment_id ?  (
-                      <EditBtn onClick={() => updateComment(postsData.post_id, comments.comment_id)}>
+                      <EditBtn onClick={() => updateComment(postData.post_id, comments.comment_id)}>
                         완료
                       </EditBtn>
                     ) : (
