@@ -40,6 +40,8 @@ interface UserList {
   nickname: string
   part: string
   email: string
+  tel: number
+  expertiseField: string
   interests: string
   blogUrl: string
   publicRelations: string
