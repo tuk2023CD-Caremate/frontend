@@ -7,6 +7,7 @@ import MainFourth from '../components/main/MainFourth'
 import MainSecond from '../components/main/MainSecond'
 import MainThird from '../components/main/MainThird'
 import StartNav from '../components/main/StartNav'
+import MainFooter from '../components/main/MainFooter'
 
 const Container = styled.div`
   width: 100vw;
@@ -38,6 +39,7 @@ function MainPage() {
         <MainSecond />
         <MainThird />
         <MainFourth />
+        <MainFooter />
         <StartNav handleStart={handleStart} />
       </Container>
     </div>

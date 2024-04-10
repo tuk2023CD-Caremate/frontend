@@ -40,6 +40,8 @@ interface UserList {
   nickname: string
   part: string
   email: string
+  tel: number
+  expertiseField: string
   interests: string
   blogUrl: string
   publicRelations: string
@@ -140,4 +142,26 @@ interface CommentData {
 export const useCommentDataStore = create<CommentDataState>((set) => ({
   commentData: [],
   setCommentData: (commentData) => set({ commentData }),
+
+/* 리뷰 리스트 */
+interface ReviewListState {
+  reviewList: ReviewList[]
+  setReviewList: (reviewList: ReviewList[]) => void
+}
+
+interface ReviewList {
+  reviewId: number
+  title: string
+  content: string
+  writer: string
+  mentor: string
+  star: number
+  isSolved: boolean
+  heart: boolean
+  createAt: string
+}
+
+export const useReviewListStore = create<ReviewListState>((set) => ({
+  reviewList: [],
+  setReviewList: (reviewList) => set({ reviewList }),
 }))
