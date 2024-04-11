@@ -188,6 +188,7 @@ function StudyPage() {
   const { apiUrl } = useApiUrlStore()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
 
+
   const ClickHandler = () => {
     //시간 형식 변환
     const startTime = dayjs().format('YYYY-MM-DD HH:mm')
@@ -222,7 +223,7 @@ function StudyPage() {
 
 
   //기록 전체조회
-  useEffect(() => {
+
     const getStudy = async () => {
       try {
         const access = localStorage.getItem('accessToken')
@@ -236,8 +237,10 @@ function StudyPage() {
         alert('Error fetching study data:')
       }
     }
+
+    useEffect(() => {
       getStudy();
-  }, []);
+    }, []);
 
 
   return (
@@ -302,6 +305,7 @@ function StudyPage() {
           studyClass={studyClass}
           startTime={startTime}
           endTime={endTime}
+          getStudy={getStudy}
         />
       )}
     </div>

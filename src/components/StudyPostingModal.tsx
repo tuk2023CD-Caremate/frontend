@@ -8,6 +8,7 @@ type Prop = {
   studyClass: string
   startTime: string
   endTime: string
+  getStudy: () => void
 }
 
 const Container = styled.div`
@@ -74,9 +75,10 @@ const Btn = styled.div`
   cursor: pointer;
 `
 
-function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime }: Prop) {
+function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime, getStudy }: Prop) {
   const [content, setContent] = useState('')
   const { apiUrl } = useApiUrlStore()
+
 
   const createStudy = async () => {
     const calenderList = {
@@ -91,9 +93,9 @@ function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime }
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('완료되었습니다.')
-
-      console.log(response.data)
+      getStudy()
       PostingCloseModal()
+      console.log(response.data)
     } catch (error) {
       alert('입력값이 비어있습니다. 확인해주세요.')
     }
