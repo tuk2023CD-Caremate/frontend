@@ -215,7 +215,7 @@ function Chat() {
   const initializeChat = async () => {
     try {
       const stomp = new Client({
-        brokerURL: 'ws://studymate-tuk.kro.kr:8080/ws/chat',
+        brokerURL: 'ws://study-mate.kro.kr:8080/ws/chat',
         debug: (str: string) => {
           console.log(str)
         },
@@ -280,7 +280,7 @@ function Chat() {
   const getAuth = async () => {
     try {
       window.open(
-        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2Fstudymate-tuk.kro.kr%3A8080%2Fapi%2Fmeeting%2FzoomApi',
+        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2Fstudy-mate.kro.kr%3A8080%2Fapi%2Fmeeting%2FzoomApi',
       )
     } catch (error) {}
   }
