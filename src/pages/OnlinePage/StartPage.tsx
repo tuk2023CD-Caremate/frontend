@@ -58,7 +58,7 @@ const InputTitle = styled.input`
   }
 `
 
-const InputContent = styled.input`
+const InputContent = styled.textarea`
   margin: 10px;
   border: solid 1px black;
   width: 600px;
@@ -66,6 +66,7 @@ const InputContent = styled.input`
   border-radius: 10px;
   padding: 10px;
   font-size: 28px;
+  resize: none;
   ::placeholder {
     color: BDBDBD; /* placeholder 텍스트 색상 설정 */
     font-style: italic; /* placeholder 텍스트 스타일 설정 */
@@ -123,7 +124,7 @@ function StartPage() {
     setTitle(event.target.value)
   }
 
-  const handleContentChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
   }
 
