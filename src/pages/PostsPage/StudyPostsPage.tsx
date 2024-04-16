@@ -135,10 +135,11 @@ const Context = styled.div`
   margin-top: 30px;
 `
 
-const FooterWrapper = styled.div`
+const FooterWrapper = styled.div<{recruitmentStatus: boolean}>`
   display: flex;
   margin-top: 20px;
   align-items: center;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
 `
 
 const Likecount = styled.div`
@@ -160,11 +161,9 @@ const Divider = styled.img`
 `
 const DateCreated = styled.div`
   font-size: 28px;
-  color: #9b9b9b;
 `
 const Writer = styled.div`
   font-size: 28px;
-  color: #9b9b9b;
 `
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
@@ -295,7 +294,7 @@ function StudyPostPage() {
           recruitmentStatus={post.recruitmentStatus}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
-            <FooterWrapper>
+            <FooterWrapper recruitmentStatus={post.recruitmentStatus}>
             {isliked ? (
             <IoIosHeart color="#ff0000" size="25" />
             ) : (
