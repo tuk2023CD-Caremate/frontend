@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 import { PiStar, PiStarFill } from 'react-icons/pi'
 import { ChangeEvent, useState } from 'react'
+import axios from 'axios'
+import { useApiUrlStore } from '../../store/store'
 
 interface ReviewModalProps {
   isOpen: boolean
@@ -33,18 +35,19 @@ const Text = styled.div`
   color: #666666;
 `
 
-const Button = styled.button`
+const StyledButton = styled.button<{ active?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
   width: 160px;
-  border: solid 1.5px #650fa9;
   border-radius: 10px;
   height: 40px;
   font-size: 24px;
-  color: #650fa9;
+  color: ${({ active }) => (active ? '#650fa9' : '#BDBDBD')};
+  border: 1.5px solid ${({ active }) => (active ? '#650fa9' : '#BDBDBD')};
   margin-left: 40px;
+  cursor: pointer;
 `
 
 const RateWrap = styled.div`
@@ -126,9 +129,12 @@ const CancelBtn = styled.button`
 `
 
 function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
+  const { apiUrl } = useApiUrlStore()
+
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [rating, setRating] = useState(0)
+  const [isSolved, setIsSolved] = useState<boolean | null>(null)
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
@@ -140,6 +146,35 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
 
   const handleStarClick = (index: number) => {
     setRating(index + 1)
+  }
+
+  const createReview = async (mentorId: number) => {
+    const access = localStorage.getItem('accessToken')
+    if (access) {
+      const reviewData = {
+        title: title,
+        content: content,
+        star: rating,
+        isSolved: isSolved,
+        heart: true,
+      }
+
+      try {
+        await axios.post(
+          `${apiUrl}/review/${mentorId}`,
+          {
+            reviewData,
+          },
+          {
+            headers: { Authorization: `Bearer ${access}` },
+          },
+        )
+      } catch (error) {
+        console.error('Error creating question:', error)
+      }
+    } else {
+      console.error('Access token not found.')
+    }
   }
 
   return (
@@ -187,20 +222,23 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
               ),
             )}
           </StarWrap>
-          {/* <PiStarFill /> */}
         </RateWrap>
         <SolvedWrap>
           <Text>문제가 해결 되셨나요 ?</Text>
           <ButtonWrap>
-            <Button>해결 됬어요</Button>
-            <Button>해결 못했어요</Button>
+            <StyledButton active={isSolved === true} onClick={() => setIsSolved(true)}>
+              해결 됬어요
+            </StyledButton>
+            <StyledButton active={isSolved === false} onClick={() => setIsSolved(false)}>
+              해결 못했어요
+            </StyledButton>
           </ButtonWrap>
         </SolvedWrap>
         <InputTitle placeholder="제목을 적어주세요" onChange={handleTitleChange}></InputTitle>
         <InputContent placeholder="내용을 적어주세요" onChange={handleContentChange}></InputContent>
         <ConfirmWrap>
-          <RegisterBtn>등록</RegisterBtn>
-          <CancelBtn>취소</CancelBtn>
+          <RegisterBtn onClick={() => createReview(mentorId)}>등록</RegisterBtn>
+          <CancelBtn onClick={onClose}>취소</CancelBtn>
         </ConfirmWrap>
       </MainWrap>
     </Modal>
