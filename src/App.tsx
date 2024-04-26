@@ -1,5 +1,8 @@
 import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { styled } from 'styled-components'
 import MainPage from './pages/MainPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
@@ -21,6 +24,15 @@ import AddStudyPage from './pages/AddStudyPage'
 import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 
+// 스타일 컴포넌트로 커스텀 ToastContainer 생성
+const CustomToastContainer = styled(ToastContainer)`
+  .Toastify__toast {
+    min-height: 100px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+`
+
 function App() {
   useEffect(() => {
     const eventSource = new EventSource(`http://localhost:8080/subscribe/11`)
@@ -30,16 +42,21 @@ function App() {
     eventSource.addEventListener('Like', (event) => {
       const data = JSON.parse(event.data)
       console.log('좋아요 알림 :', data)
+      toast.info(`${data.nickname}님께서 회원님의 게시글을 좋아합니다.`, { position: 'top-right' })
     })
 
     eventSource.addEventListener('Comment', (event) => {
       const data = JSON.parse(event.data)
       console.log('댓글 알림 :', data)
+      toast.info(`${data.nickname}님께서 회원님의 게시글에 댓글을 작성하였습니다.`, {
+        position: 'top-right',
+      })
     })
   }, [])
 
   return (
     <Router>
+      <CustomToastContainer />
       <Routes>
         <Route path="/" element={<MainPage />} />
 
