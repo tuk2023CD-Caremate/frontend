@@ -128,6 +128,7 @@ const CancelBtn = styled.button`
 function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [rating, setRating] = useState(0)
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
@@ -135,6 +136,10 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
 
   const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
+  }
+
+  const handleStarClick = (index: number) => {
+    setRating(index + 1)
   }
 
   return (
@@ -164,11 +169,23 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <RateWrap>
           <Text>평점을 남겨주세요 !</Text>
           <StarWrap>
-            <PiStar size={32} style={{ margin: '10px' }} />
-            <PiStar size={32} style={{ margin: '10px' }} />
-            <PiStar size={32} style={{ margin: '10px' }} />
-            <PiStar size={32} style={{ margin: '10px' }} />
-            <PiStar size={32} style={{ margin: '10px' }} />
+            {[...Array(5)].map((_, index) =>
+              index < rating ? (
+                <PiStarFill
+                  key={index}
+                  size={32}
+                  style={{ margin: '10px' }}
+                  onClick={() => handleStarClick(index)}
+                />
+              ) : (
+                <PiStar
+                  key={index}
+                  size={32}
+                  style={{ margin: '10px' }}
+                  onClick={() => handleStarClick(index)}
+                />
+              ),
+            )}
           </StarWrap>
           {/* <PiStarFill /> */}
         </RateWrap>
