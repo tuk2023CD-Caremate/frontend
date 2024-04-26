@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import MainPage from './pages/MainPage'
 import LoginPage from './pages/LoginPage'
@@ -21,6 +22,22 @@ import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 
 function App() {
+  useEffect(() => {
+    const eventSource = new EventSource(`http://localhost:8080/subscribe/11`)
+    eventSource.onopen = () => {
+      console.log('sse opened!')
+    }
+    eventSource.addEventListener('Like', (event) => {
+      const data = JSON.parse(event.data)
+      console.log('좋아요 알림 :', data)
+    })
+
+    eventSource.addEventListener('Comment', (event) => {
+      const data = JSON.parse(event.data)
+      console.log('댓글 알림 :', data)
+    })
+  }, [])
+
   return (
     <Router>
       <Routes>
@@ -47,7 +64,6 @@ function App() {
         <Route path="posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
         <Route path="posts/:post_id" element={<DetailMainPostsPage />} />
 
-        
         <Route path="/calender" element={<StudyPage />} />
         <Route path="/calender/:calender_id" element={<AddStudyPage />} />
 
