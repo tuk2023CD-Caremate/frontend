@@ -1,9 +1,8 @@
 import { Navigate } from 'react-router-dom'
 import useAuth from './useAuth'
 
-// Props를 위한 인터페이스 정의
 interface ProtectedRouteProps {
-  children: React.ReactNode // children을 React.ReactNode 타입으로 명시
+  children: React.ReactNode
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
