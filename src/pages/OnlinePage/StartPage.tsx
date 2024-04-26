@@ -158,7 +158,7 @@ function StartPage() {
       <Navbar2 />
       <Container>
         <StartWrap>
-          <Title>온라인 매칭을 시작해볼게요</Title>
+          <Title>질문에 맞는 멘토들을 추천 해드릴게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
