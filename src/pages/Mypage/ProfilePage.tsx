@@ -4,24 +4,8 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { useApiUrlStore } from '../../store/store.ts'
-
-interface ProfileData {
-  name: string
-  nickname: string
-  part: string
-  email: string
-  tel: number
-  interests: string
-  blogUrl: string
-  publicRelations: string
-  job: string
-  heart: number
-  starAverage: number
-  solved: number
-  matchingCount: number
-}
+import { useEffect } from 'react'
+import { useApiUrlStore, useUserInfoStore } from '../../store/store.ts'
 
 const Container = styled.div`
   display: flex;
@@ -109,22 +93,7 @@ const Detail = styled.div`
 
 function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
-
-  const [profileData, setProfileData] = useState<ProfileData>({
-    name: '',
-    nickname: '',
-    part: '',
-    email: '',
-    tel: 0,
-    interests: '',
-    blogUrl: '',
-    publicRelations: '',
-    job: '',
-    heart: 0,
-    starAverage: 0,
-    solved: 0,
-    matchingCount: 0,
-  })
+  const { userInfo, setUserInfo } = useUserInfoStore()
 
   const getProfile = async () => {
     try {
@@ -133,7 +102,8 @@ function ProfilePage() {
         headers: { Authorization: `Bearer ${access}` },
       })
 
-      setProfileData(response.data)
+      setUserInfo(response.data)
+      localStorage.setItem('id', JSON.stringify(userInfo.id))
     } catch (error) {}
   }
 
@@ -151,8 +121,8 @@ function ProfilePage() {
           <Upper>
             <NameWrapper>
               <Profile src={ProfileImg} />
-              <Role>{profileData.part}</Role>
-              <Nickname>{profileData.nickname}</Nickname>
+              <Role>{userInfo.part}</Role>
+              <Nickname>{userInfo.nickname}</Nickname>
             </NameWrapper>
             <Modify>수정하기</Modify>
           </Upper>
@@ -160,41 +130,41 @@ function ProfilePage() {
             <WrapContent>
               <Content>
                 <Title>이름</Title>
-                <Detail>{profileData.name}</Detail>
+                <Detail>{userInfo.name}</Detail>
               </Content>
               <Content>
                 <Title>전화번호</Title>
-                <Detail>{profileData.tel}</Detail>
+                <Detail>{userInfo.tel}</Detail>
               </Content>
             </WrapContent>
             <WrapContent>
               <Content>
                 <Title>PR</Title>
-                <Detail>{profileData.publicRelations}</Detail>
+                <Detail>{userInfo.publicRelations}</Detail>
               </Content>
               <Content>
                 <Title>Blog</Title>
-                <Detail>{profileData.blogUrl}</Detail>
+                <Detail>{userInfo.blogUrl}</Detail>
               </Content>
             </WrapContent>
             <WrapContent>
               <Content>
                 <Title>좋아요</Title>
-                <Detail>{profileData.heart}</Detail>
+                <Detail>{userInfo.heart}</Detail>
               </Content>
               <Content>
                 <Title>평점</Title>
-                <Detail>{profileData.starAverage}</Detail>
+                <Detail>{userInfo.starAverage}</Detail>
               </Content>
             </WrapContent>
             <WrapContent>
               <Content>
                 <Title>문제 해결</Title>
-                <Detail>{profileData.solved}</Detail>
+                <Detail>{userInfo.solved}</Detail>
               </Content>
               <Content>
                 <Title>매칭 수</Title>
-                <Detail>{profileData.matchingCount}</Detail>
+                <Detail>{userInfo.matchingCount}</Detail>
               </Content>
             </WrapContent>
           </Lower>

@@ -22,10 +22,60 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'http://study-mate.kro.kr:8080/api',
+  // apiUrl: 'http://study-mate.kro.kr:8080/api',
   // apiUrl: 'https://study-mate.kro.kr/api',
-  // apiUrl: 'http://localhost:8080/api',
+  apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
+}))
+
+/* 회원 정보 */
+interface UserInfoState {
+  userInfo: UserInfo
+  setUserInfo: (userInfo: UserInfo) => void
+}
+
+interface UserInfo {
+  id: number
+  name: string
+  nickname: string
+  part: string
+  email: string
+  tel: number
+  expertiseField: string
+  interests: string
+  blogUrl: string
+  publicRelations: string
+  job: string
+  heart: number
+  starAverage: number
+  solved: number
+  matchingCount: number
+  reviewCount: number
+}
+
+// 초기 UserInfo 객체를 정의
+const defaultUserInfo: UserInfo = {
+  id: 0,
+  name: '',
+  nickname: '',
+  part: '',
+  email: '',
+  tel: 0,
+  expertiseField: '',
+  interests: '',
+  blogUrl: '',
+  publicRelations: '',
+  job: '',
+  heart: 0,
+  starAverage: 0.0,
+  solved: 0,
+  matchingCount: 0,
+  reviewCount: 0,
+}
+
+export const useUserInfoStore = create<UserInfoState>((set) => ({
+  userInfo: defaultUserInfo,
+  setUserInfo: (userInfo) => set({ userInfo }),
 }))
 
 /* 유저 리스트 */
