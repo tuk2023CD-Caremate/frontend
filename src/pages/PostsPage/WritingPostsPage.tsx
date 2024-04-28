@@ -84,18 +84,17 @@ const PostWrapper = styled.div`
 `
 const PostTitle = styled.input`
   height: 105px;
-  font-size: 64px;
+  font-size: 44px;
   font-weight: bold;
-  text-indent: 20px;
   border: 1px solid #d8d8d8;
-  text-indent: 20px;
+  text-indent: 25px;
 `
 const PostContent = styled.textarea`
   font-size: 28px;
   height: 500px;
   border: 1px solid #d8d8d8;
-  text-indent: 20px;
   resize: none;
+  padding: 25px;
 `
 const FooterWrapper = styled.div`
   display: flex;
@@ -214,7 +213,7 @@ export default function WritingPostPage() {
               onChange={(e) => SetTitle(e.target.value)}
             />
             <PostContent
-              placeholder="게시글 내용을 입력하세요"
+              placeholder="게시글 내용을 적어주세요"
               value={content}
               onChange={(e) => SetContent(e.target.value)}
             />
