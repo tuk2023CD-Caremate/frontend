@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import Header2 from '../../components/Header2.tsx'
 import { useNavigate } from 'react-router-dom'
 import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
@@ -170,6 +171,7 @@ export default function WritingPostPage() {
 
   return (
     <div>
+      <Header2/>
       <Container>
         <AllWrapper>
           <Upper>
