@@ -88,6 +88,9 @@ const PostTitle = styled.input`
   font-weight: bold;
   border: 1px solid #d8d8d8;
   text-indent: 25px;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const PostContent = styled.textarea`
   font-size: 28px;
@@ -95,6 +98,9 @@ const PostContent = styled.textarea`
   border: 1px solid #d8d8d8;
   resize: none;
   padding: 25px;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const FooterWrapper = styled.div`
   display: flex;
