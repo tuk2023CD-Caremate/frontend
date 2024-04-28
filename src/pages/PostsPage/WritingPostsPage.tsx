@@ -55,7 +55,11 @@ const InterestsSelect = styled.select`
   text-align: center;
   margin-right: 80px;
   font-size: 28px;
-  border-radius: 5px;
+  font-weight: bolder;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+  color: #650fa9;
 `
 const Input = styled.input`
   width: 700px;
@@ -64,7 +68,8 @@ const Input = styled.input`
   margin-right: 80px;
   font-size: 24px;
   font-weight: bold;
-  border-radius: 5px;
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
 
   &::placeholder {
     color: #bdbdbd;
@@ -75,6 +80,7 @@ const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  margin-left: 10px;
 `
 const PostTitle = styled.input`
   height: 105px;
@@ -82,11 +88,13 @@ const PostTitle = styled.input`
   font-weight: bold;
   text-indent: 20px;
   border: 1px solid #d8d8d8;
+  text-indent: 20px;
 `
 const PostContent = styled.textarea`
   font-size: 28px;
   height: 500px;
   border: 1px solid #d8d8d8;
+  text-indent: 20px;
 `
 const FooterWrapper = styled.div`
   display: flex;
@@ -99,7 +107,9 @@ const PostBtn = styled.button`
   height: 60px;
   margin-left: 20px;
   border-radius: 10px;
-  border: 1px solid #bdbdbd;
+  background-color: #ECECEC;
+  color:#787878;
+  font-weight: bolder;
   &.post {
     color: #fff;
     background-color: #650fa9;
@@ -116,7 +126,7 @@ const interestsList = [
 export default function WritingPostPage() {
   const [title, SetTitle] = useState('')
   const [content, SetContent] = useState('')
-  const [interests, SetInterests] = useState('분야')
+  const [interests, SetInterests] = useState('관심분야')
   const [category, SetCategory] = useState('')
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
@@ -185,7 +195,7 @@ export default function WritingPostPage() {
             </ButtonWrapper>
             <SerchWrapper>
               <InterestsSelect value={interests} onChange={(e) => SetInterests(e.target.value)}>
-                <option disabled hidden>분야</option>
+                <option disabled hidden>관심분야</option>
                 {interestsList.map((item) => (
                   <option value={item.value} key={item.name}>
                     {item.name}
