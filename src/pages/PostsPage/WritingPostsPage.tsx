@@ -105,7 +105,7 @@ const PostContent = styled.textarea`
 const FooterWrapper = styled.div`
   display: flex;
   justify-content: end;
-  margin-top: 40px;
+  margin-top: 20px;
 `
 const PostBtn = styled.button`
   font-size: 28px;
