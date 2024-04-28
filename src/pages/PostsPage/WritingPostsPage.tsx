@@ -83,7 +83,7 @@ const PostWrapper = styled.div`
   margin-left: 10px;
 `
 const PostTitle = styled.input`
-  height: 105px;
+  height: 103px;
   font-size: 44px;
   font-weight: bold;
   border: 1px solid #d8d8d8;
@@ -94,7 +94,7 @@ const PostTitle = styled.input`
 `
 const PostContent = styled.textarea`
   font-size: 28px;
-  height: 500px;
+  height: 517px;
   border: 1px solid #d8d8d8;
   resize: none;
   padding: 25px;
