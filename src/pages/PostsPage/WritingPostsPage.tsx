@@ -8,17 +8,17 @@ import axios from 'axios'
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0 100px 30px 100px;
 `
 
 const AllWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 400px);
+  justify-content: center;
+  width: calc(100% - 600px);
   height: 950px;
   border-left: 1px solid #D8D8D8;
   border-right: 1px solid #D8D8D8;
-  padding: 0 80px 0 80px;
+  padding: 0 100px 0 100px;
 `
 
 const Upper = styled.div`
@@ -71,12 +71,10 @@ const Input = styled.input`
   width: 700px;
   height: 65px;
   text-indent: 20px;
-  margin-right: 80px;
   font-size: 24px;
   font-weight: bold;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
-
   &::placeholder {
     color: #bdbdbd;
   }
