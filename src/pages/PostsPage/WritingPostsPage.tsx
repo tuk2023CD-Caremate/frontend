@@ -95,6 +95,7 @@ const PostContent = styled.textarea`
   height: 500px;
   border: 1px solid #d8d8d8;
   text-indent: 20px;
+  resize: none;
 `
 const FooterWrapper = styled.div`
   display: flex;
