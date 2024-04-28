@@ -135,11 +135,20 @@ const Context = styled.div`
   margin-top: 30px;
 `
 
-const FooterWrapper = styled.div<{recruitmentStatus: boolean}>`
+const FooterWrapper = styled.div`
   display: flex;
   margin-top: 20px;
   align-items: center;
-  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
+`
+
+const LikedIcon = styled(IoIosHeart)<{recruitmentStatus: boolean}>`
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 25px;
+`
+
+const UnLikedIcon = styled(IoIosHeartEmpty)<{recruitmentStatus: boolean}>`
+ color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 25px;
 `
 
 const Likecount = styled.div`
@@ -159,12 +168,11 @@ const Divider = styled.img`
   width: 2px;
   height: 20px;
 `
-const DateCreated = styled.div`
+const Detail = styled.div<{recruitmentStatus: boolean}>`
   font-size: 28px;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
 `
-const Writer = styled.div`
-  font-size: 28px;
-`
+
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'COMMENT', name: '댓글 순' },
@@ -294,19 +302,19 @@ function StudyPostPage() {
           recruitmentStatus={post.recruitmentStatus}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
-            <FooterWrapper recruitmentStatus={post.recruitmentStatus}>
+            <FooterWrapper>
             {isliked ? (
-            <IoIosHeart color="#ff0000" size="25" />
+            <LikedIcon recruitmentStatus={post.recruitmentStatus}/>
             ) : (
-             <IoIosHeartEmpty color="#ff0000" size="25" />
+             <UnLikedIcon recruitmentStatus={post.recruitmentStatus}/>
             )}
               <Likecount >{post.likeCount}</Likecount>
               <IoIosText size="25"/>
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
-              <DateCreated>{post.createdAt}</DateCreated>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.createdAt}</Detail>
               <Divider src={DividerImg} />
-              <Writer>{post.nickname}</Writer>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.nickname}</Detail>
             </FooterWrapper>
           </StudyPosts>
         ))}
