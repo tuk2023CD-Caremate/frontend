@@ -11,16 +11,16 @@ dayjs.locale('ko');
 const StyledCalendar = styled(Calendar)`
   width: 690px;
   height: 620px;
-  font-size: 40px;
+  font-size: 35px;
   border-radius: 10px;
   background-color: white;
-  padding: 20px;
+  padding: 40px;
 
   // 네비게이션 폰트 설정
   .react-calendar__navigation button {
     font-weight: bold;
-    font-size: 44px;
-    margin-top: 30px;
+    font-size: 40px;
+    margin-top: 10px;
   }
 
   /* 년/월 상단 네비게이션 칸 크기 줄이기 */
@@ -44,27 +44,27 @@ const StyledCalendar = styled(Calendar)`
   .react-calendar__tile--now,
   .react-calendar__tile--now:hover {
     background-color: white;
+    color: #650fa9;
+    font-weight: bolder;
   }
 
   //네비게이션 현재 월 스타일 적용
   .react-calendar__tile--hasActive {
-    background-color: #650fa9;
     color: white;
   }
 
   // 일 날짜 간격
   .react-calendar__tile {
-    padding: 0px 0px 22px;
+    padding: 15px  0px 15px 0px;
   }
 
   // 선택한 날짜 스타일 적용
-  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile--now:hover,
   .react-calendar__tile:enabled:focus,
   .react-calendar__tile--active {
     background-color: #e8dcf2;
     color: #650fa9;
     font-weight: bold;
-    border-radius: 10px;
   }
 `
 
