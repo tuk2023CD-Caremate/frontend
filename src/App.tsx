@@ -19,6 +19,7 @@ import StudyPage from './pages/StudyPage'
 import AddStudyPage from './pages/AddStudyPage'
 import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
+import ProtectedRoute from './components/utils/ProtecetedRoute'
 
 function App() {
   return (
@@ -34,7 +35,14 @@ function App() {
         <Route path="/online" element={<StartPage />} />
         <Route path="/online/select" element={<SelectUserPage />} />
 
-        <Route path="/chat" element={<ChatPage />} />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/posts" element={<MainPostsPage />} />
         <Route path="/posts/questions" element={<QuestionPostsPage />} />
@@ -47,7 +55,6 @@ function App() {
         <Route path="posts/questions/:post_id" element={<DetailQuestionsPostsPage />} />
         <Route path="posts/:post_id" element={<DetailMainPostsPage />} />
 
-        
         <Route path="/calender" element={<StudyPage />} />
         <Route path="/calender/:calender_id" element={<AddStudyPage />} />
 
