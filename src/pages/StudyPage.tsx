@@ -25,22 +25,20 @@ interface calenderList {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  border: 1px solid red;
 `
 
 const StudyWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: calc(100vw - 300px);
+  width: 70%;
   height: 870px;
-  border: 1px solid;
 `
 
 const LeftWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 780px;
+  width: 40%;
   padding: 30px;
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
@@ -50,8 +48,7 @@ const RightWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 1140px;
-  padding: 30px;
+  width: 60%;
   border-right: 1px solid #bdbdbd;
 `
 
@@ -59,8 +56,8 @@ const StudyingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1140px;
-  margin-top: 30px;
+  width: 100%;
+  margin-top: 50px;
 `
 
 const TimeRecodingWrapper = styled.div`
@@ -104,7 +101,7 @@ const StudyListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1140px;
+  width: 100%;
   min-height: 450px;
   margin-top: 30px;
   border-top: 1px solid #bdbdbd;
