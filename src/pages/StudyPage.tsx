@@ -32,7 +32,7 @@ const Container = styled.div`
 const StudyWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: calc(100vw - 200px);
+  width: calc(100vw - 300px);
   height: 870px;
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
@@ -42,10 +42,10 @@ const StudyWrapper = styled.div`
 const LeftWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: center; /* 중앙 정렬을 위한 추가 */
   width: 780px;
-  border: 1px solid green;
   padding: 30px;
+  border: 1px solid green;
 `
 
 
@@ -99,7 +99,7 @@ const WriteBtn = styled.div`
   width: 135px;
   height: 55px;
   font-size: 28px;
-  font-weight: bold;
+  font-weight: bolder;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -121,15 +121,11 @@ const StudyList = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 110px;
+  width: 100%;
   border-bottom: 1px solid #bdbdbd;
 `
 
-const IconWrapper = styled.div`
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
-`
+
 const AddStudy = styled.select`
   display: flex;
   align-items: center;
@@ -144,26 +140,34 @@ const AddStudy = styled.select`
 
 const ListInfoWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 550px;
-  height: 90px;
+  justify-content: space-between;
+  width: 100%;
+  height: 112px;
+  border-bottom: 1px solid #bdbdbd;
+`
+const IconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  margin-left: 50px;
 `
 
-const StudyName = styled(Link)`
+const StudyName = styled.div`
   display: flex;
   align-items: center;
-  width: 300px;
   font-size: 36px;
   font-weight: bold;
-  padding: 5px;
+  margin-left: 20px;
   cursor: pointer;
 `
 const StudyingTime = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 40px;
   font-size: 36px;
+  font-weight: bold;
 `
 
 const interestsList = [
@@ -265,7 +269,7 @@ function StudyPage() {
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
-              {Array.isArray(calenderList) &&
+              {/*{Array.isArray(calenderList) &&
                 calenderList.map((calender) => (
                   <StudyList key={calender.id}>
                     <ListInfoWrapper>
@@ -275,7 +279,37 @@ function StudyPage() {
                       <StudyingTime>{calender.entireTime}</StudyingTime>
                     </ListInfoWrapper>
                   </StudyList>
-                ))}
+                ))}*/}
+                <StudyList>
+                  <ListInfoWrapper>
+                    <IconWrapper>
+                      <IoIosPlayCircle color="#650FA9" size="50"/>
+                      <StudyName>코딩테스트</StudyName>
+                    </IconWrapper>
+                    <StudyingTime>00:00:00</StudyingTime>
+                  </ListInfoWrapper>
+                  <ListInfoWrapper>
+                    <IconWrapper>
+                      <IoIosPlayCircle color="#650FA9" size="50"/>
+                      <StudyName>학교 과제</StudyName>
+                    </IconWrapper>
+                    <StudyingTime>02:00:00</StudyingTime>
+                  </ListInfoWrapper>
+                  <ListInfoWrapper>
+                    <IconWrapper>
+                      <IoIosPlayCircle color="#650FA9" size="50"/>
+                      <StudyName>프로젝트</StudyName>
+                    </IconWrapper>
+                    <StudyingTime>00:12:20</StudyingTime>
+                  </ListInfoWrapper>
+                  <ListInfoWrapper>
+                    <IconWrapper>
+                      <IoIosPlayCircle color="#650FA9" size="50"/>
+                      <StudyName>온라인 강의</StudyName>
+                    </IconWrapper>
+                    <StudyingTime>00:00:00</StudyingTime>
+                  </ListInfoWrapper>
+                </StudyList>
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>
