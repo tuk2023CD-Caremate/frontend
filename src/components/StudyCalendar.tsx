@@ -7,24 +7,20 @@ import { useState } from 'react'
 
 dayjs.locale('ko'); 
 
-const StyledCalendarWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-`
+
 const StyledCalendar = styled(Calendar)`
-  width: 600px;
-  height: 500px;
-  font-size: 30px;
-  border-radius: 30px;
+  width: 690px;
+  height: 620px;
+  font-size: 40px;
+  border-radius: 10px;
   background-color: white;
   padding: 20px;
 
   // 네비게이션 폰트 설정
   .react-calendar__navigation button {
     font-weight: bold;
-    font-size: 32px;
+    font-size: 44px;
+    margin-top: 30px;
   }
 
   /* 년/월 상단 네비게이션 칸 크기 줄이기 */
@@ -84,7 +80,6 @@ const  StudyCalendar = () => {
   };
   
   return (
-  	<StyledCalendarWrapper>
         <StyledCalendar
           value={date}
           onChange={handleDateChange}
@@ -94,7 +89,6 @@ const  StudyCalendar = () => {
           next2Label={null} // +1년 & +10년 이동 버튼 숨기기
           prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
         />
-      </StyledCalendarWrapper>
   );
 }
 
