@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
+import StatisticsBar from '../components/sidebar/Statisticsbar.tsx'
 //import { IoStopCircleSharp } from 'react-icons/io5'
 import { IoIosPlayCircle } from 'react-icons/io'
 import StudyPostingModal from '../components/StudyPostingModal.tsx'
@@ -163,6 +164,7 @@ function StudyPage() {
   const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
+  const [isStatisticsBarOpen, setIsStatisticsBarOpen] = useState(false);
 
   const ClickHandler = () => {
     //시간 형식 변환
@@ -191,6 +193,10 @@ function StudyPage() {
   const PostingCloseModal = () => {
     setPostingModalOpen(false)
   }
+
+  const toggleStatisticsBar = () => {
+    setIsStatisticsBarOpen(!isStatisticsBarOpen);
+  };
 
   //기록 전체조회
 
@@ -221,6 +227,7 @@ function StudyPage() {
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
+          <StatisticsBar isOpen={isStatisticsBarOpen} />
             <StudyingWrapper>
               <TimeRecodingWrapper>
                 <TodayText>2024. 04. 22</TodayText>
@@ -228,6 +235,7 @@ function StudyPage() {
               </TimeRecodingWrapper>
               <BtnWrapper>
                 <WriteBtn onClick={PostingOpenModal}>+ 과목</WriteBtn>
+                <WriteBtn onClick={toggleStatisticsBar}>임시</WriteBtn>
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
