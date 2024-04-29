@@ -1,0 +1,512 @@
+[33mcommit 1ce6e1564afceb23b0bf4a8e4d943f4837978264[m[33m ([m[1;36mHEAD -> [m[1;32mdesign/#117[m[33m)[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 21:51:14 2024 +0900
+
+    사용하지 않는 파일 삭제 & 추후 사용할 코드 주석처리
+
+[33mcommit c9768871e2c996eb8ad9968bc0da6cf8cd750823[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 19:57:15 2024 +0900
+
+    design: calender 디자인 수정
+
+[33mcommit 0ed9c395fedf1c30b7e450fe57b2746f10527721[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 19:36:58 2024 +0900
+
+    design: container border 수정
+
+[33mcommit ee1b67451007098a8c1d28d49ded58ba4a738a36[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 19:35:23 2024 +0900
+
+    design: calender 수정
+
+[33mcommit 4337368d0abe8cbb496ad2bee2a45f5398032b7e[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 19:35:04 2024 +0900
+
+    fix: apiurl 수정
+
+[33mcommit e818f53a7e245a1a34b2d867a026bd22573a789a[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 19:34:31 2024 +0900
+
+    design: ListInfoWrapper 크기 및 내용 수정
+
+[33mcommit b8a0f0948092841ef13390b32059948e5dae3238[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 18:43:45 2024 +0900
+
+    design: totaltime & studylist 크기 및 위치  수정
+
+[33mcommit 28d0a2e89f499818b1c98c8c74eacb63805f1136[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 29 18:33:44 2024 +0900
+
+    desgin: leftwrapper & right wraaper 크기 조정 및 포함되는 컨컨테이너 수정
+
+[33mcommit 979e771f8cdef9b90103d7e038ee955edbfa74ec[m[33m ([m[1;31morigin/design/#117[m[33m)[m
+Merge: 74814c4 e21fa26
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Wed Apr 17 21:34:24 2024 +0900
+
+    Merge pull request #109 from TUK2024CD-Studymate/design/#105
+    
+    [design] 온보딩 하단에 사업자 정보 추가
+
+[33mcommit e21fa266537f22e7fc617e8287385c9676055dd4[m[33m ([m[1;31morigin/design/#105[m[33m)[m
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Wed Apr 17 21:31:30 2024 +0900
+
+    Update MainFooter.tsx
+
+[33mcommit 065740359e4b28462da41e5651d460087e3e1176[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 17 12:28:27 2024 +0900
+
+    design : footer 에 사업자 추가
+
+[33mcommit 74814c4a20f5fed5e9fef6797fe1f7b9bcb9978d[m[33m ([m[1;31morigin/feat/#106[m[33m, [m[1;32mfeat/#106[m[33m)[m
+Merge: 737c508 157ff52
+Author: Heesu Jang <77227728+heesu52@users.noreply.github.com>
+Date:   Thu Apr 11 17:54:19 2024 +0900
+
+    Merge pull request #104 from TUK2024CD-Studymate/fix/#99
+    
+    [Fix] 스터디기록 생성 무한루프 에러 해결
+
+[33mcommit 737c5086149cba046259f2ded616283b6db294f4[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 17:13:24 2024 +0900
+
+    hotfix : zoom url 및 도메인 주소 수정
+
+[33mcommit 157ff52ca358469a6c649f8b013429c8f682a033[m[33m ([m[1;31morigin/fix/#99[m[33m, [m[1;32mfix/#99[m[33m)[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 11 02:37:00 2024 +0900
+
+    fix: 사용하지 않는 Props 삭제
+
+[33mcommit d8cc3f1393aafffcb021f033222afd0ebb971841[m
+Merge: 7c064d5 f4beef2
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 11 02:34:24 2024 +0900
+
+    Merge branch 'develop' into fix/#99
+
+[33mcommit f4beef27340a32cb2c2c99eed3c555d19103697c[m[33m ([m[1;32mdesign/#105[m[33m)[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 02:13:37 2024 +0900
+
+    hotfix : conflict 수정
+
+[33mcommit bc796b5681075d30e43e7fbeb457726cad35d749[m
+Merge: 0f3c40d 231c937
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 11 02:11:41 2024 +0900
+
+    Merge pull request #98 from TUK2024CD-Studymate/fix/#94
+    
+    [Fix]게시판 추가기능 구현 및 css 수정
+
+[33mcommit 231c9378edbfa7749aab017b17c8086e0b8edd30[m[33m ([m[1;31morigin/fix/#94[m[33m)[m
+Merge: 11c1b6d 0f3c40d
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 11 02:10:26 2024 +0900
+
+    Merge branch 'develop' into fix/#94
+
+[33mcommit 11c1b6d8f01058c6f156abeca02a871b10ec27fa[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 01:27:04 2024 +0900
+
+    fix : store.ts 수정
+
+[33mcommit b214248558b0bf40e5b267ff92484d8cf2859a5d[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 01:26:06 2024 +0900
+
+    fix : store.ts 수정
+
+[33mcommit e8809debc428824d6f257f22f28d7f30635b8e2d[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 01:23:56 2024 +0900
+
+    fix : yarn.lock 수정
+
+[33mcommit 05cc05f1a973f1fc1093460a65c99188db4bf5d5[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 11 01:21:02 2024 +0900
+
+    refactor: 코드 수정
+
+[33mcommit 0f3c40db8568f63b9e25f676e7d9708eea100eca[m
+Merge: ce29d53 2335e22
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 11 00:01:36 2024 +0900
+
+    Merge pull request #103 from TUK2024CD-Studymate/design/#102
+    
+    [Design] 온보딩 페이지 하단에 개인정보 보호정책 추가
+
+[33mcommit 2335e227acbb52ca2a2148c9220d93c99cdaedf5[m[33m ([m[1;31morigin/design/#102[m[33m)[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 10 23:54:58 2024 +0900
+
+    design : 메인 footer 생성
+
+[33mcommit caa0ff77de41e77092150b2402c61064bc98c17d[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 10 23:36:25 2024 +0900
+
+    hotfix : 전역상태관리 수정
+
+[33mcommit ce29d53a392f4353a5167563aba6934965203992[m
+Merge: 2780808 7772f77
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Wed Apr 10 23:23:41 2024 +0900
+
+    Merge pull request #101 from TUK2024CD-Studymate/design/#95
+    
+    [Feat] 매칭된 유저 리스트 UI 변경 및 리뷰 모달창 구현
+
+[33mcommit 7c064d5dcb1606e9c2fe7a82318be1847a16a6f9[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Wed Apr 10 21:17:58 2024 +0900
+
+    fix: getStudy 무한루프 수정
+
+[33mcommit 7772f77a1928fdec80cfaafd241b09f917c2e16b[m[33m ([m[1;31morigin/design/#95[m[33m)[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 10 20:46:45 2024 +0900
+
+    design : 리뷰창 시각적 표시
+
+[33mcommit 17ce0eb90c49bc10e9ba2769feba29c0f2d6a94c[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 10 20:41:15 2024 +0900
+
+    feat : 조회된 n명의 멘토 표시
+
+[33mcommit ac4a786a9eca8129b20e6f0f7e0de79eaaaf00ca[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Wed Apr 10 20:38:12 2024 +0900
+
+    feat : 멘토별 리뷰 목록 연동
+
+[33mcommit 7d6dcdc1994e0cdd7e7ae4aaaa961ce0d88d564f[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Wed Apr 10 19:39:30 2024 +0900
+
+    fix: postList id->post_id로 변경 및 에러 해결
+
+[33mcommit 0f486342cdf903ab478cf6192fc53913890df7e8[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 23:41:32 2024 +0900
+
+    refactor: Main/Questions/StudyPostPage zustand 적용
+
+[33mcommit f2361886cc93f92625cb6f48c9979471ba306fbc[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 23:08:13 2024 +0900
+
+    refactor: likecount -> commentcount로 변경
+
+[33mcommit 973664d4c9a06f7909357b5c30764b1554e4ca18[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 22:58:21 2024 +0900
+
+    refacotor: conflict해결 이후 정리 안된 코드 재정리
+
+[33mcommit 36b49539806b28060cb63009258a588d5cfd62b9[m
+Merge: 8211a2a 93e44b9
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 22:53:27 2024 +0900
+
+    fix: conflict 해결
+
+[33mcommit 8211a2aed4a0d38b87e362222e4fa4c3bc63a957[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 22:42:53 2024 +0900
+
+    refactor: 코드 재정리
+
+[33mcommit 93e44b9c72e17c33b9a0c8c9fc65c5d97daa21a2[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 22:03:51 2024 +0900
+
+    Revert "refactor: 코드 정리 및 build error 해결"
+    
+    This reverts commit 2e857e9754375d45c1a145c1728ab94a684fb0b7.
+
+[33mcommit 2e857e9754375d45c1a145c1728ab94a684fb0b7[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 21:35:22 2024 +0900
+
+    refactor: 코드 정리 및 build error 해결
+
+[33mcommit 3190d36aca1261c1fe8cc3f125efadc6c982666f[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Tue Apr 9 01:36:01 2024 +0900
+
+    refactor: postsData, likeData, commentData zustand로 상태관리
+
+[33mcommit f016e6067c3c0222095108859f5a42e64848335a[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 8 15:14:02 2024 +0900
+
+    refactor: postsData, likeData zustand로 관리
+
+[33mcommit 168f2a961bdea18ae089a69a9081f36f497552b9[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 8 02:12:10 2024 +0900
+
+    ㄹㅇ랑뤙룽
+
+[33mcommit 06f1349a6becfa3260aa038aa4621f10c0c67df3[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Mon Apr 8 00:13:30 2024 +0900
+
+    design: react icon/io로 변경
+
+[33mcommit 4fa32ab3a3eab7d796a0a6dd1335dcfd722885fe[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sun Apr 7 20:49:36 2024 +0900
+
+    chore : 의존성 설치
+
+[33mcommit 0b6e011edacb9f9cdeaa892fc4fe5a9e27a415cd[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sun Apr 7 01:34:56 2024 +0900
+
+    fix: 모집완료 버튼 구현 코드 수정
+
+[33mcommit b8e864c3cbc47d7ca797d33f86d74d870a63500f[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sun Apr 7 01:31:18 2024 +0900
+
+    feat: 모집완료 게시글 구분 구현
+
+[33mcommit aa34024cc66e98ce466801edfee9a936592a8a3e[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 23:44:20 2024 +0900
+
+    feat: 모집완료 버튼 구현
+
+[33mcommit be5ecd8aa1fa1f6f81a8c047c94c86fe70a9e013[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 23:35:14 2024 +0900
+
+    fix : chkra ui -> react-modal 변경
+
+[33mcommit ccf1260837b0e78eaba1cf27cad681a2c4a55854[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 22:18:17 2024 +0900
+
+    fix: 개별 게시물 클릭 시 post bar 활성화 유지
+
+[33mcommit da451fba1aa435d569a1250115f7f0dde56744e7[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 21:14:18 2024 +0900
+
+    feat : Chakra UI - modal 적용
+
+[33mcommit 0b7586c1a2f0b4ca9f0dfa8a84d8d30d6a20bdd4[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 20:32:02 2024 +0900
+
+    rename : 프로젝트 타이틀 수정
+
+[33mcommit ee490b252a325d127ba22b96b244e2785f617e96[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 20:09:11 2024 +0900
+
+    fix : Navbar pathname include 로 수정
+
+[33mcommit eea842194a0ba4df4a5ff30bc4a4e5d51d178c7a[m[33m ([m[1;32mdesign/#95[m[33m)[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 20:06:26 2024 +0900
+
+    feat : 전문분야 텍스트 초과시 핸들링 추가
+
+[33mcommit a0f3be52d507d60642ff6839df529c32be5f1c36[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 19:48:38 2024 +0900
+
+    feat : 매칭 api 연동
+
+[33mcommit 664e71ca977917dc585fc4c674a07920f643d954[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Sat Apr 6 19:29:46 2024 +0900
+
+    design : 매칭된 유저 페이지 퍼블리싱 작업
+
+[33mcommit 7c106abc3b546322aeb4fe86731370af3b5e73e4[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 18:05:26 2024 +0900
+
+    refacor: like&comment img react-icons로 변경
+
+[33mcommit 1f1f2528ff3deed35f3c000d5677c1a46fd7614f[m
+Merge: cb70405 2780808
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 17:42:52 2024 +0900
+
+    Merge branch 'develop' into fix/#94
+
+[33mcommit 27808088b8bcc750e4d61ecab627e638a39cad0a[m
+Merge: 6c0eef9 d060bf2
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Sat Apr 6 17:28:32 2024 +0900
+
+    Merge pull request #97 from TUK2024CD-Studymate/refactor/#96
+    
+    [Refactor] moment메소드에서 dayjs로 변경
+
+[33mcommit d060bf2a8e337ade54a9d63d616a84eeb996a827[m[33m ([m[1;31morigin/refactor/#96[m[33m, [m[1;32mrefactor/#96[m[33m)[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 17:25:41 2024 +0900
+
+    refactor: moment메소드에서 dayjs로 변경
+
+[33mcommit cb704051c18b45568399164ee71920145e36c92d[m
+Merge: 3f7f9d7 6c0eef9
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Sat Apr 6 16:47:51 2024 +0900
+
+    Merge branch 'develop' into fix/#94
+
+[33mcommit 6c0eef9fcfe3645801b9e3b2aeaf70fbfb0976f8[m
+Merge: 1a361cd 82481f7
+Author: Heesu Jang <77227728+heesu52@users.noreply.github.com>
+Date:   Sat Apr 6 16:47:02 2024 +0900
+
+    Merge pull request #93 from TUK2024CD-Studymate/fix/#90
+    
+    [Fix]스터디 기록 수정
+
+[33mcommit 3f7f9d73d2891c7fcee119ebd633f9434c4a6b93[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 02:30:24 2024 +0900
+
+    fix : 게시판 작성 정렬 기본값 수정
+
+[33mcommit c01429eb7579fff293edb32b450405650e288bb8[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 02:26:39 2024 +0900
+
+    refactor: 정렬버튼 width 수정
+
+[33mcommit f4b28a0bca33b9994da0f4e3000b40483e60a593[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 02:23:11 2024 +0900
+
+    refactor: 정렬 박스 크기 수정
+
+[33mcommit 82481f79d28a9c742ff7823cd96a973c3b900e6f[m[33m ([m[1;31morigin/fix/#90[m[33m, [m[1;32mfix/#90[m[33m)[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 02:15:27 2024 +0900
+
+    refactor: 필요없는 코드 삭제
+
+[33mcommit a85020c9f71d6d0aac879ac963e7eeacc12d9d6e[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 01:48:04 2024 +0900
+
+    refactor: 정렬 기본값 '분야'로 수정
+
+[33mcommit 20ede882f52bea13714cacd413d7e056e90f8863[m
+Merge: 7fd3f19 1a361cd
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Fri Apr 5 01:42:40 2024 +0900
+
+    Merge branch 'develop' into fix/#90
+
+[33mcommit 1a361cd73a1017a08b72e05afde88b28f87991d9[m
+Merge: ee33568 5c5f5ff
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Fri Apr 5 01:40:23 2024 +0900
+
+    Merge pull request #92 from TUK2024CD-Studymate/fix/#91
+    
+    [fix] 로그인 api response body 변경에 따른 코드 수정
+
+[33mcommit 7fd3f1916ec0598690478bca21b018f745c261a0[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 4 23:37:53 2024 +0900
+
+    fix: 캘린더 날짜 오류 수정
+
+[33mcommit 6dcae5788762bb06629d0f4f8dd4c0a5b2fa8289[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 4 23:36:44 2024 +0900
+
+    refactor: moment를 dayjs로 수정
+
+[33mcommit 6f74403d389279ac8d44d3b0e57d32b2efdbfee3[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 4 21:48:37 2024 +0900
+
+    fix: 삭제버튼 삭제
+
+[33mcommit 5c5f5ffbf78c8e64a22b603b47601377e1e82b74[m[33m ([m[1;31morigin/fix/#91[m[33m)[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 4 18:47:15 2024 +0900
+
+    fix : response body 수정
+
+[33mcommit ee33568c5856ab84d6ec250e9a00509942750bec[m
+Author: kimsunjae <woal9844@gmail.com>
+Date:   Thu Apr 4 17:33:32 2024 +0900
+
+    hotfix : 메인페이지 수정
+
+[33mcommit 08a264e896082493bb0cf225cc273bcc28f67685[m
+Merge: 312a29e 51b0da4
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 4 12:35:06 2024 +0900
+
+    Merge pull request #89 from TUK2024CD-Studymate/refactor/#88
+    
+    [Refactor] 필요없는 코드 삭제 및 수정
+
+[33mcommit 51b0da402f704c2b96fc54147c868634e49ceb79[m[33m ([m[1;31morigin/refactor/#88[m[33m, [m[1;32mrefactor/#88[m[33m)[m
+Author: Heesu Jang <heesu52@naver.com>
+Date:   Thu Apr 4 02:18:19 2024 +0900
+
+    refactor: 빌드 오류 해결, 필요없는 코드 삭제 및 수정
+
+[33mcommit 312a29e7eef3e1467d0649b2a4f094043611dba1[m
+Merge: 3bc8425 082be56
+Author: Heesu Jang <77227728+heesu52@users.noreply.github.com>
+Date:   Thu Apr 4 01:54:12 2024 +0900
+
+    Merge pull request #83 from TUK2024CD-Studymate/feat/#79
+    
+    [Feat] 게시글 좋아요/댓글수 구현
+
+[33mcommit 082be5617329c4d020a774528df17abfed5b05ac[m[33m ([m[1;31morigin/feat/#79[m[33m, [m[1;32mfeat/#79[m[33m)[m
+Merge: be0d5a4 3bc8425
+Author: Heesu Jang <77227728+heesu52@users.noreply.github.com>
+Date:   Thu Apr 4 01:53:16 2024 +0900
+
+    Merge branch 'develop' into feat/#79
+
+[33mcommit 3bc842597706600485fdbc7f670acdcdbac56604[m
+Merge: 822ce14 66418e9
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 4 00:57:14 2024 +0900
+
+    Merge pull request #78 from TUK2024CD-Studymate/fix/#77
+    
+    [Fix] 게시글 필터링 수정
+
+[33mcommit 822ce14de2b98709db5ec3b11c08e59d8259f04d[m
+Merge: 412f906 226587c
+Author: Sunjae Kim <83015089+sunjae98@users.noreply.github.com>
+Date:   Thu Apr 4 00:49:07 2024 +0900
+
+    Merge pull request #87 from TUK2024CD-Studymate/fix/#86
+    
+    [Fix] 온보딩 페이지 수정

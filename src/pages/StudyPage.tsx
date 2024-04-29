@@ -1,19 +1,17 @@
 import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
-import { IoStopCircleSharp } from "react-icons/io5";
-import { IoIosPlayCircle } from "react-icons/io";
+//import { IoStopCircleSharp } from 'react-icons/io5'
+import { IoIosPlayCircle } from 'react-icons/io'
 import StudyPostingModal from '../components/StudyPostingModal.tsx'
-import AddStudyModal from '../components/AddStudyModal'
 import Calendar from '../components/StudyCalendar.tsx'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store.ts'
 import axios from 'axios'
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+import dayjs from 'dayjs'
+import 'dayjs/locale/ko'
 
-dayjs.locale('ko'); 
+dayjs.locale('ko')
 
 interface calenderList {
   id: number
@@ -27,6 +25,7 @@ interface calenderList {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  border: 1px solid red;
 `
 
 const StudyWrapper = styled.div`
@@ -34,7 +33,7 @@ const StudyWrapper = styled.div`
   justify-content: center;
   width: calc(100vw - 300px);
   height: 870px;
-  
+  border: 1px solid;
 `
 
 const LeftWrapper = styled.div`
@@ -46,7 +45,6 @@ const LeftWrapper = styled.div`
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
 `
-
 
 const RightWrapper = styled.div`
   display: flex;
@@ -62,12 +60,9 @@ const StudyingWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 1140px;
-  margin-top: 60px;
+  margin-top: 30px;
 `
-const Study = styled.div`
-  display: flex;
-  align-items: center;
-`
+
 const TimeRecodingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -124,19 +119,6 @@ const StudyList = styled.div`
   border-bottom: 1px solid #bdbdbd;
 `
 
-
-const AddStudy = styled.select`
-  display: flex;
-  align-items: center;
-  width: 200px;
-  font-size: 32px;
-  font-weight: bold;
-  padding: 15px;
-  border: 1px solid #bdbdbd;
-  border-radius: 10px;
-  cursor: pointer;
-`
-
 const ListInfoWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -169,14 +151,6 @@ const StudyingTime = styled.div`
   font-weight: bold;
 `
 
-const interestsList = [
-  { value: 'KOREAN', name: '국어' },
-  { value: 'MATH', name: '수학' },
-  { value: 'ENGLISH', name: '영어' },
-  { value: 'SCIENCE', name: '과학' },
-  { value: 'PROGRAMMING', name: '코딩' },
-]
-
 function StudyPage() {
   //스탑워치
   const [time, setTime] = useState(0)
@@ -185,7 +159,6 @@ function StudyPage() {
 
   //모달창
   const [postingmodalOpen, setPostingModalOpen] = useState(false)
-  const [addmodalOpen, setAddModalOpen] = useState(false)
 
   //props
   const [studyClass, setStudyClass] = useState('분야')
@@ -193,7 +166,6 @@ function StudyPage() {
   const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
   const [calenderList, setCalenderList] = useState<calenderList[]>([])
-
 
   const ClickHandler = () => {
     //시간 형식 변환
@@ -223,30 +195,24 @@ function StudyPage() {
     setPostingModalOpen(false)
   }
 
-  const AddOpenModal = () => {
-    setAddModalOpen(true)
-  }
-
-
   //기록 전체조회
 
-    const getStudy = async () => {
-      try {
-        const access = localStorage.getItem('accessToken')
-        const response = await axios.get(`${apiUrl}/calender`, {
-          headers: { Authorization: `Bearer ${access}` },
-        })
-        setCalenderList(response.data.calenderList);
-        console.log(response.data)
-      } catch (error) {
-        alert('Error fetching study data:')
-      }
+  const getStudy = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/calender`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setCalenderList(response.data.calenderList)
+      console.log(response.data)
+    } catch (error) {
+      alert('Error fetching study data:')
     }
+  }
 
-    useEffect(() => {
-      getStudy();
-    }, []);
-
+  useEffect(() => {
+    getStudy()
+  }, [])
 
   return (
     <div>
@@ -279,41 +245,43 @@ function StudyPage() {
                     </ListInfoWrapper>
                   </StudyList>
                 ))}*/}
-                <StudyList>
-                  <ListInfoWrapper>
-                    <IconWrapper>
-                      <IoIosPlayCircle color="#650FA9" size="50"/>
-                      <StudyName>코딩테스트</StudyName>
-                    </IconWrapper>
-                    <StudyingTime>00:00:00</StudyingTime>
-                  </ListInfoWrapper>
-                  <ListInfoWrapper>
-                    <IconWrapper>
-                      <IoIosPlayCircle color="#650FA9" size="50"/>
-                      <StudyName>학교 과제</StudyName>
-                    </IconWrapper>
-                    <StudyingTime>02:00:00</StudyingTime>
-                  </ListInfoWrapper>
-                  <ListInfoWrapper>
-                    <IconWrapper>
-                      <IoIosPlayCircle color="#650FA9" size="50"/>
-                      <StudyName>프로젝트</StudyName>
-                    </IconWrapper>
-                    <StudyingTime>00:12:20</StudyingTime>
-                  </ListInfoWrapper>
-                  <ListInfoWrapper>
-                    <IconWrapper>
-                      <IoIosPlayCircle color="#650FA9" size="50"/>
-                      <StudyName>온라인 강의</StudyName>
-                    </IconWrapper>
-                    <StudyingTime>00:00:00</StudyingTime>
-                  </ListInfoWrapper>
-                </StudyList>
+              <StudyList>
+                <ListInfoWrapper>
+                  <IconWrapper>
+                    <IoIosPlayCircle color="#650FA9" size="50" onClick={ClickHandler}/>
+                    <StudyName>코딩테스트</StudyName>
+                  </IconWrapper>
+                  {/* <StudyingTime>
+                  {`${('0'+ Math.floor(time / 3600000)).slice(-2)}:${('0' + Math.floor((time / 60000) % 60)).slice(-2)}:${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`}
+                  </StudyingTime>*/}
+                  <StudyingTime>00:00:00</StudyingTime>
+                </ListInfoWrapper>
+                <ListInfoWrapper>
+                  <IconWrapper>
+                    <IoIosPlayCircle color="#650FA9" size="50" />
+                    <StudyName>학교 과제</StudyName>
+                  </IconWrapper>
+                  <StudyingTime>02:00:00</StudyingTime>
+                </ListInfoWrapper>
+                <ListInfoWrapper>
+                  <IconWrapper>
+                    <IoIosPlayCircle color="#650FA9" size="50" />
+                    <StudyName>프로젝트</StudyName>
+                  </IconWrapper>
+                  <StudyingTime>00:12:20</StudyingTime>
+                </ListInfoWrapper>
+                <ListInfoWrapper>
+                  <IconWrapper>
+                    <IoIosPlayCircle color="#650FA9" size="50" />
+                    <StudyName>온라인 강의</StudyName>
+                  </IconWrapper>
+                  <StudyingTime>00:00:00</StudyingTime>
+                </ListInfoWrapper>
+              </StudyList>
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>
       </Container>
-      {addmodalOpen && <AddStudyModal />}
       {postingmodalOpen && (
         <StudyPostingModal
           PostingCloseModal={PostingCloseModal}
