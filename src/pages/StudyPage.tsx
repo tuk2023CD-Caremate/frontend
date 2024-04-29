@@ -62,7 +62,8 @@ const StudyingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid green;
+  width: 1140px;
+  margin-top: 60px;
 `
 const Study = styled.div`
   display: flex;
@@ -74,34 +75,35 @@ const TimeRecodingWrapper = styled.div`
   align-items: center;
   width: 400px;
   height: 160px;
-  border: 1px solid red;
 `
 
 const TodayText = styled.div`
-  font-size: 36px;
+  font-size: 40px;
   font-weight: bold;
 `
 const TotalTime = styled.div`
-  font-size: 85px;
+  font-size: 90px;
   font-weight: bold;
 `
 
 const BtnWrapper = styled.div`
   display: flex;
+  justify-content: baseline;
+  width: 100%;
 `
 
 const WriteBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 60px;
+  width: 135px;
+  height: 55px;
   font-size: 28px;
   font-weight: bold;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  margin-right: 20px;
+  margin-left: 40px;
   cursor: pointer;
 `
 const StudyListWrapper = styled.div`
@@ -111,7 +113,7 @@ const StudyListWrapper = styled.div`
   width: 1140px;
   min-height: 450px;
   margin-top: 30px;
-  border: 1px solid purple;
+  border-top: 1px solid #bdbdbd;
 `
 
 const StudyList = styled.div`
@@ -256,10 +258,10 @@ function StudyPage() {
             <StudyingWrapper>
               <TimeRecodingWrapper>
                 <TodayText>2024. 04. 22</TodayText>
-                <TotalTime>00:00</TotalTime>
+                <TotalTime>03:12:20</TotalTime>
               </TimeRecodingWrapper>
               <BtnWrapper>
-                <WriteBtn onClick={PostingOpenModal}>작성</WriteBtn>
+                <WriteBtn onClick={PostingOpenModal}>+ 과목</WriteBtn>
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
