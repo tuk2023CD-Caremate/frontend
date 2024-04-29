@@ -12,7 +12,7 @@ import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart, IoIosText } from "react-icons/io"
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
 
 
 
@@ -547,7 +547,11 @@ function DetailQuestionPostPage() {
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                  <IoIosHeart color='#ff0000' size="30"/>
+                  {
+                  likeList.some(post => post.post_id === postData.post_id)
+                    ? <IoIosHeart color="#ff0000" size="30" />
+                    : <IoIosHeartEmpty color="#ff0000" size="30" />
+                  }
                   <Likecount>{postData.likeCount}</Likecount>
                   <IoIosText size="30"/>
                   <CommentCount>{postData.commentCount}</CommentCount>
