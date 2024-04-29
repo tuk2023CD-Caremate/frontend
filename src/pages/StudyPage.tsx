@@ -32,18 +32,41 @@ const Container = styled.div`
 const StudyWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 200px);
+  height: 870px;
   border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
+  border: 1px solid red;
 `
 
 const LeftWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 700px;
-  margin-top: 30px;
-  margin-right: 50px;
+  width: 780px;
+  border: 1px solid green;
+  padding: 30px;
+`
+
+
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 1140px;
+  padding: 30px;
+  border: 1px solid blue;
+`
+
+const StudyingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid green;
+`
+const Study = styled.div`
+  display: flex;
+  align-items: center;
 `
 const TimeRecodingWrapper = styled.div`
   display: flex;
@@ -51,6 +74,7 @@ const TimeRecodingWrapper = styled.div`
   align-items: center;
   width: 400px;
   height: 160px;
+  border: 1px solid red;
 `
 
 const TodayText = styled.div`
@@ -60,26 +84,6 @@ const TodayText = styled.div`
 const TotalTime = styled.div`
   font-size: 85px;
   font-weight: bold;
-`
-
-const RightWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 850px;
-  margin-top: 30px;
-`
-
-const StudyingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 800px;
-  margin-top: 80px;
-`
-const Study = styled.div`
-  display: flex;
-  align-items: center;
 `
 
 const BtnWrapper = styled.div`
@@ -104,12 +108,10 @@ const StudyListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 800px;
-  min-height: 550px;
+  width: 1140px;
+  min-height: 450px;
   margin-top: 30px;
-  border-left: 1px solid #bdbdbd;
-  border-right: 1px solid #bdbdbd;
-  border-top: 1px solid #bdbdbd;
+  border: 1px solid purple;
 `
 
 const StudyList = styled.div`
@@ -117,7 +119,6 @@ const StudyList = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 750px;
   height: 110px;
   border-bottom: 1px solid #bdbdbd;
 `
@@ -232,7 +233,6 @@ function StudyPage() {
         })
         setCalenderList(response.data.calenderList);
         console.log(response.data)
-        
       } catch (error) {
         alert('Error fetching study data:')
       }
@@ -250,34 +250,14 @@ function StudyPage() {
       <Container>
         <StudyWrapper>
           <LeftWrapper>
-            <TimeRecodingWrapper>
-              <TodayText>오늘 총 공부 시간</TodayText>
-              <TotalTime>00:00</TotalTime>
-            </TimeRecodingWrapper>
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
             <StudyingWrapper>
-              <Study>
-                <IconWrapper>
-                {isRunning ? 
-                <IoStopCircleSharp onClick={ClickHandler} size='80px' /> 
-                : <IoIosPlayCircle onClick={ClickHandler} size='80px' />}
-                </IconWrapper>
-                <AddStudy value={studyClass} onChange={(e) => setStudyClass(e.target.value)}> 
-                 <option disabled hidden>분야</option>
-                  {interestsList.map((item) => (
-                    <option value={item.value} key={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-                </AddStudy>
-              </Study>
-              <StudyingTime>
-                {`${('0' + Math.floor(time / 3600000)).slice(-2)}
-                    :${('0' + Math.floor((time / 60000) % 60)).slice(-2)}
-                    :${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`}
-              </StudyingTime>
+              <TimeRecodingWrapper>
+                <TodayText>2024. 04. 22</TodayText>
+                <TotalTime>00:00</TotalTime>
+              </TimeRecodingWrapper>
               <BtnWrapper>
                 <WriteBtn onClick={PostingOpenModal}>작성</WriteBtn>
               </BtnWrapper>
