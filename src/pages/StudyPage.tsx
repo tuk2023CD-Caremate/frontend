@@ -34,18 +34,17 @@ const StudyWrapper = styled.div`
   justify-content: center;
   width: calc(100vw - 300px);
   height: 870px;
-  border-left: 1px solid #bdbdbd;
-  border-right: 1px solid #bdbdbd;
-  border: 1px solid red;
+  
 `
 
 const LeftWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center; /* 중앙 정렬을 위한 추가 */
+  justify-content: center;
   width: 780px;
   padding: 30px;
-  border: 1px solid green;
+  border-left: 1px solid #bdbdbd;
+  border-right: 1px solid #bdbdbd;
 `
 
 
@@ -55,7 +54,7 @@ const RightWrapper = styled.div`
   flex-direction: column;
   width: 1140px;
   padding: 30px;
-  border: 1px solid blue;
+  border-right: 1px solid #bdbdbd;
 `
 
 const StudyingWrapper = styled.div`
