@@ -12,7 +12,7 @@ type Props = {
 };
 
 const StyledCalendar = styled(Calendar)`
-  width: 690px;
+  width: 600px;
   height: 620px;
   font-size: 35px;
   border-radius: 10px;
