@@ -7,6 +7,9 @@ import { useState } from 'react'
 
 dayjs.locale('ko'); 
 
+type Props = {
+  toggleStatisticsBar: () => void;
+};
 
 const StyledCalendar = styled(Calendar)`
   width: 690px;
@@ -71,24 +74,34 @@ const StyledCalendar = styled(Calendar)`
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-const  StudyCalendar = () => {
+const  StudyCalendar = ({toggleStatisticsBar} : Props) => {
   const today = new Date();
   const [date, setDate] = useState<Value>(today);
   
+  
   const handleDateChange = (newDate: Value) => {
-    setDate(newDate);
+    if (Array.isArray(newDate)) {
+      // 여러 날짜를 선택할 경우에 대한 처리
+      setDate(newDate[0]);
+    } else {
+      // 선택한 날짜를 업데이트합니다.
+      setDate(newDate);
+      toggleStatisticsBar();
+    }
   };
   
   return (
-        <StyledCalendar
-          value={date}
-          onChange={handleDateChange}
-          formatDay={(_locate,date) => dayjs(date).format("D")} // 일 제거 숫자만 보이게
-          formatMonthYear={(_locate,date) => dayjs(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
-          calendarType="gregory" // 일요일 부터 시작
-          next2Label={null} // +1년 & +10년 이동 버튼 숨기기
-          prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
-        />
+    <div>
+    <StyledCalendar
+    value={date}
+    onChange={handleDateChange}
+    formatDay={(_locate,date) => dayjs(date).format("D")} // 일 제거 숫자만 보이게
+    formatMonthYear={(_locate,date) => dayjs(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+    calendarType="gregory" // 일요일 부터 시작
+    next2Label={null} // +1년 & +10년 이동 버튼 숨기기
+    prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
+    />
+    </div>
   );
 }
 

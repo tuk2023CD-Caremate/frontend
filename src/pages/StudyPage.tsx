@@ -232,8 +232,9 @@ function StudyPage() {
       <Navbar2 />
       <Container>
         <StudyWrapper>
-          <LeftWrapper  onClick={handleOutsideClick}>
-            <Calendar />
+          <LeftWrapper>
+            <Calendar 
+             toggleStatisticsBar={toggleStatisticsBar} />
           </LeftWrapper>
           <RightWrapper>
           <StatisticsBar isOpen={isStatisticsBarOpen} />
@@ -244,7 +245,7 @@ function StudyPage() {
               </TimeRecodingWrapper>
               <BtnWrapper>
                 <WriteBtn onClick={PostingOpenModal}>+ 과목</WriteBtn>
-                <WriteBtn onClick={toggleStatisticsBar}>임시</WriteBtn>
+           
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
