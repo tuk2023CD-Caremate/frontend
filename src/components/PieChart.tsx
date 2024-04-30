@@ -2,7 +2,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 
-// Chart.js 및 필요한 플러그인을 등록합니다.
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const data = {
@@ -28,7 +27,6 @@ const options = {
   plugins: {
     datalabels: {
       formatter: (_value: any, context: any) => {
-        // 함수는 각 데이터 포인트에 해당하는 라벨을 반환합니다.
         return context.chart.data.labels[context.dataIndex];
       },
     },

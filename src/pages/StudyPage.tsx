@@ -197,6 +197,15 @@ function StudyPage() {
   const toggleStatisticsBar = () => {
     setIsStatisticsBarOpen(!isStatisticsBarOpen);
   };
+  
+  const handleOutsideClick = (event:any) => {
+    // 클릭한 요소가 StatisticsBar를 제외한 부분인지 확인
+    if (!event.target.closest('.statistics-bar')) {
+      // StatisticsBar를 숨김
+      setIsStatisticsBarOpen(false);
+    }
+  };
+
 
   //기록 전체조회
 
@@ -223,7 +232,7 @@ function StudyPage() {
       <Navbar2 />
       <Container>
         <StudyWrapper>
-          <LeftWrapper>
+          <LeftWrapper  onClick={handleOutsideClick}>
             <Calendar />
           </LeftWrapper>
           <RightWrapper>
