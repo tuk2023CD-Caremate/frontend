@@ -14,11 +14,6 @@ const data = {
         '#7AC0F2',
         '#D75983',
       ],
-      borderColor: [
-        '#7AC0F2',
-        '#D75983',
-      ],
-      borderWidth: 1,
     },
   ],
 };
