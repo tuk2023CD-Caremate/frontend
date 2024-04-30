@@ -81,10 +81,9 @@ const  StudyCalendar = ({toggleStatisticsBar} : Props) => {
   
   const handleDateChange = (newDate: Value) => {
     if (Array.isArray(newDate)) {
-      // 여러 날짜를 선택할 경우에 대한 처리
+  
       setDate(newDate[0]);
     } else {
-      // 선택한 날짜를 업데이트합니다.
       setDate(newDate);
       toggleStatisticsBar();
     }

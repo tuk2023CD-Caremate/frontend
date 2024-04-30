@@ -195,7 +195,7 @@ function StudyPage() {
   }
 
   const toggleStatisticsBar = () => {
-    setIsStatisticsBarOpen(!isStatisticsBarOpen);
+    setIsStatisticsBarOpen(true);
   };
   
   const handleOutsideClick = (event:any) => {
@@ -236,8 +236,8 @@ function StudyPage() {
             <Calendar 
              toggleStatisticsBar={toggleStatisticsBar} />
           </LeftWrapper>
-          <RightWrapper>
-          <StatisticsBar isOpen={isStatisticsBarOpen} />
+          <RightWrapper onClick={handleOutsideClick}>
+          <StatisticsBar isOpen={isStatisticsBarOpen}/>
             <StudyingWrapper>
               <TimeRecodingWrapper>
                 <TodayText>2024. 04. 22</TodayText>
@@ -245,7 +245,6 @@ function StudyPage() {
               </TimeRecodingWrapper>
               <BtnWrapper>
                 <WriteBtn onClick={PostingOpenModal}>+ 과목</WriteBtn>
-           
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
