@@ -4,7 +4,7 @@ import Navbar2 from '../components/Navbar2.tsx'
 import StatisticsBar from '../components/sidebar/Statisticsbar.tsx'
 //import { IoStopCircleSharp } from 'react-icons/io5'
 import { IoIosPlayCircle } from 'react-icons/io'
-import StudyPostingModal from '../components/StudyPostingModal.tsx'
+import AddStudyModal from '../components/AddStudyModal.tsx'
 import Calendar from '../components/StudyCalendar.tsx'
 import { useState, useEffect } from 'react'
 import { useApiUrlStore } from '../store/store.ts'
@@ -297,7 +297,7 @@ function StudyPage() {
         </StudyWrapper>
       </Container>
       {postingmodalOpen && (
-        <StudyPostingModal
+        <AddStudyModal
           PostingCloseModal={PostingCloseModal}
           studyClass={studyClass}
           startTime={startTime}

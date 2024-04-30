@@ -23,20 +23,13 @@ const Container = styled.div`
   backdrop-filter: blur(5px);
 `
 
-const Info = styled.div`
-  display: flex;
-  justify-content: baseline;
-  width: 430px;
-  margin-bottom: 30px;
-`
-
 const Modal = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 850px;
-  height: 550px;
+  width: 600px;
+  height: 300px;
   border-radius: 15px;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -49,11 +42,11 @@ const Title = styled.div`
   margin-bottom: 20px;
 `
 const Textarea = styled.textarea`
-  width: 700px;
-  height: 350px;
+  width: 500px;
+  height: 100px;
   font-size: 22px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 25px;
+  margin-bottom: 40px;
 `
 
 const BtnWrapper = styled.div`
@@ -105,7 +98,7 @@ function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime, 
     <div>
       <Container>
         <Modal>
-          <Title>오늘 스터디를 기록해보세요 </Title> <Info></Info>
+          <Title>추가할 과목을 작성해주세요 </Title> 
           <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
           <BtnWrapper>
             <Btn onClick={createStudy}>저장</Btn>
