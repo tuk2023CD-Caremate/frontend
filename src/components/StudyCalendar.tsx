@@ -44,25 +44,21 @@ const StyledCalendar = styled(Calendar)`
   }
 
   // 오늘 날짜 폰트 컬러
-  .react-calendar__tile--now,
-  .react-calendar__tile--now:hover {
+  .react-calendar__tile--now{
     background-color: white;
-    color: #650fa9;
-    font-weight: bolder;
+    color: #000000;
   }
 
-  //네비게이션 현재 월 스타일 적용
-  .react-calendar__tile--hasActive {
-    color: white;
-  }
 
   // 일 날짜 간격
   .react-calendar__tile {
     padding: 15px  0px 15px 0px;
   }
+  .react-calendar__tile:hover {
+    background-color: white;
+  }
 
   // 선택한 날짜 스타일 적용
-  .react-calendar__tile--now:hover,
   .react-calendar__tile:enabled:focus,
   .react-calendar__tile--active {
     background-color: #e8dcf2;
@@ -75,8 +71,7 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const  StudyCalendar = ({toggleStatisticsBar} : Props) => {
-  const today = new Date();
-  const [date, setDate] = useState<Value>(today);
+  const [date, setDate] = useState<Value>(null);
   
   
   const handleDateChange = (newDate: Value) => {
