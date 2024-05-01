@@ -6,7 +6,11 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const isAuthenticated = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return <></>
+  }
 
   // 사용자가 인증되지 않았다면 로그인 페이지로 리다이렉션
   if (!isAuthenticated) {

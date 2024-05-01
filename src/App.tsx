@@ -36,7 +36,7 @@ function App() {
         <Route path="/online/select" element={<SelectUserPage />} />
 
         <Route
-          path="/chat"
+          path="/chats"
           element={
             <ProtectedRoute>
               <ChatPage />
