@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useApiUrlStore } from '../store/store'
+// import { useApiUrlStore } from '../store/store'
 import ProfileIMG from '../assets/images/profile.png'
 import { FaCircle } from 'react-icons/fa6'
 import { RxDividerVertical } from 'react-icons/rx'
@@ -130,8 +130,8 @@ const MessageCount = styled.div`
 `
 
 function ChatList() {
-  const { apiUrl } = useApiUrlStore()
-  const statusText = '오프라인' // Example status, replace with actual status handling logic.
+  // const { apiUrl } = useApiUrlStore()
+  // const statusText = '오프라인' // Example status, replace with actual status handling logic.
 
   const chatData = [
     {
