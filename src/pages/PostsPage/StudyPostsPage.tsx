@@ -288,7 +288,11 @@ function StudyPostPage() {
     LikedPost()
   }, [])
 
- 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      searchpost();
+    }
+  };
 
   //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: PostsList[] }) => (
@@ -345,6 +349,7 @@ function StudyPostPage() {
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
+                  onKeyDown={handleKeyPress}
                 />
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
