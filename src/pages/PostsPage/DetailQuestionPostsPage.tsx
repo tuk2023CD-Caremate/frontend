@@ -516,6 +516,17 @@ function DetailQuestionPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
   
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
+    }
+  }
+
+  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+    if (event.key === 'Enter') {
+      updateComment(post_id, comment_id);
+    }
+  };
 
   return (
     <div>
@@ -593,6 +604,7 @@ function DetailQuestionPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
+                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
                     />
                   </div>
                 ) : (
@@ -603,7 +615,11 @@ function DetailQuestionPostPage() {
               </CommentWrapper>
             ))}
           <InputWrapper>
-            <Input type="text" placeholder="댓글을 입력하세요" value={content}  onChange={(e) => SetContent(e.target.value)}></Input>
+            <Input type="text"
+            placeholder="댓글을 입력하세요"
+            value={content}
+            onChange={(e) => SetContent(e.target.value)}
+            onKeyDown={handleKeyPress}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>

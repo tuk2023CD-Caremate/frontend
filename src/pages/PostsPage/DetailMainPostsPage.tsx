@@ -12,7 +12,7 @@ import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart,IoIosHeartEmpty, IoIosText } from 'react-icons/io'
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 
 const Container = styled.div`
   display: flex;
@@ -281,7 +281,6 @@ function DetailMainPostPage() {
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
 
-  
   //게시글 단건조회
   const getPost = async () => {
     try {
@@ -294,7 +293,6 @@ function DetailMainPostPage() {
       alert('Error while fetching post')
     }
   }
-
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -394,7 +392,6 @@ function DetailMainPostPage() {
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
   const { commentData, setCommentData } = useCommentDataStore()
-
 
   //댓글 조회
   const getComment = async () => {
@@ -502,6 +499,20 @@ function DetailMainPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
 
+  
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
+    }
+  }
+
+  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+    if (event.key === 'Enter') {
+      updateComment(post_id, comment_id);
+    }
+  };
+
+
   return (
     <div>
       <Header2 />
@@ -532,11 +543,11 @@ function DetailMainPostPage() {
             </Lower>
             <FooterWrapper>
               <DetailFooterWrapper>
-                {
-                  likeList.some(post => post.post_id === postData.post_id)
-                    ? <IoIosHeart color="#ff0000" size="30" />
-                    : <IoIosHeartEmpty color="#ff0000" size="30" />
-                }
+                {likeList.some((post) => post.post_id === postData.post_id) ? (
+                  <IoIosHeart color="#ff0000" size="30" />
+                ) : (
+                  <IoIosHeartEmpty color="#ff0000" size="30" />
+                )}
                 <Likecount>{postData.likeCount}</Likecount>
                 <IoIosText size="30" />
                 <CommentCount>{postData.commentCount}</CommentCount>
@@ -581,6 +592,7 @@ function DetailMainPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
+                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
                     />
                   </div>
                 ) : (
@@ -595,7 +607,8 @@ function DetailMainPostPage() {
               type="text"
               placeholder="댓글을 입력하세요"
               value={content}
-              onChange={(e) => SetContent(e.target.value)}></Input>
+              onChange={(e) => SetContent(e.target.value)}
+              onKeyDown={handleKeyPress}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>
