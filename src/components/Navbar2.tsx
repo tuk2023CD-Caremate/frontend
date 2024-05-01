@@ -12,30 +12,7 @@ const Container = styled.div`
   border-bottom: 1px solid #d8d8d8;
 `
 
-const Online = styled(Link)`
-  font-size: 22px;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: inherit;
-`
-const Post = styled(Link)`
-  font-size: 22px;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
-  text-decoration: none;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
-  color: inherit;
-`
-const StudyList = styled(Link)`
-  font-size: 22px;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: inherit;
-`
-const Mypage = styled(Link)`
+const Navigator = styled(Link)`
   font-size: 22px;
   padding: 20px 40px 20px 40px;
   border-radius: 15px;
@@ -51,7 +28,7 @@ export default function Navbar2() {
 
   return (
     <Container>
-      <Online
+      <Navigator
         to="/online"
         style={{
           backgroundColor: location.pathname.includes('/online') ? '#E8DCF2' : 'inherit',
@@ -59,8 +36,8 @@ export default function Navbar2() {
           fontWeight: location.pathname.includes('/online') ? 'bold' : 'inherit',
         }}>
         온라인 매칭
-      </Online>
-      <Post
+      </Navigator>
+      <Navigator
         to="/posts"
         style={{
           backgroundColor: isPost ? '#E8DCF2' : 'inherit',
@@ -68,8 +45,8 @@ export default function Navbar2() {
           fontWeight: isPost ? 'bold' : 'inherit',
         }}>
         게시판
-      </Post>
-      <StudyList
+      </Navigator>
+      <Navigator
         to="/calender"
         style={{
           backgroundColor: location.pathname === '/calender' ? '#E8DCF2' : 'inherit',
@@ -77,8 +54,17 @@ export default function Navbar2() {
           fontWeight: location.pathname === '/calender' ? 'bold' : 'inherit',
         }}>
         스터디 기록
-      </StudyList>
-      <Mypage
+      </Navigator>
+      <Navigator
+        to="/chats"
+        style={{
+          backgroundColor: location.pathname.includes('/chats') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/chats') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/chats') ? 'bold' : 'inherit',
+        }}>
+        채팅
+      </Navigator>
+      <Navigator
         to="/mypage"
         style={{
           backgroundColor: isMypage ? '#E8DCF2' : 'inherit',
@@ -86,7 +72,7 @@ export default function Navbar2() {
           fontWeight: isMypage ? 'bold' : 'inherit',
         }}>
         마이 페이지
-      </Mypage>
+      </Navigator>
     </Container>
   )
 }

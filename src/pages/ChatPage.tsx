@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const Text = styled.div`
   display: flex;
-  width: 1280px;
+  width: 1099px;
   margin: 0 auto;
   font-size: 50px;
   font-weight: bold;
