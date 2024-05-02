@@ -7,7 +7,7 @@ import Navbar2 from '../../components/Navbar2'
 // import FindLoadingModal from '../../components/FindLoadingModal'
 // import MatchingLoadingModal from '../../components/MatchingLoadingModal'
 import axios from 'axios'
-import { useApiUrlStore } from '../../store/store'
+import { useApiUrlStore, useIsAiBasedStore } from '../../store/store'
 import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
@@ -75,6 +75,15 @@ const InputContent = styled.textarea`
   font-size: 28px;
   resize: none;
 `
+
+const BtnWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+  height: 70px;
+  margin: 60px;
+`
 const StartMatchingBtn = styled.button`
   display: flex;
   justify-content: center;
@@ -86,7 +95,7 @@ const StartMatchingBtn = styled.button`
   height: 70px;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 60px;
+  margin: 20px;
 `
 
 interface Option {
@@ -95,6 +104,7 @@ interface Option {
 
 function StartPage() {
   const { apiUrl } = useApiUrlStore()
+  const { setIsAiBased } = useIsAiBasedStore()
 
   const navigate = useNavigate()
 
@@ -136,29 +146,30 @@ function StartPage() {
     setContent(event.target.value)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (useAi: boolean) => {
+    setIsAiBased(useAi) // AI 사용 여부 설정
     const access = localStorage.getItem('accessToken')
     if (access) {
       try {
         const response = await axios.post(
           `${apiUrl}/question`,
           {
-            title: title,
-            content: content,
-            specificField: specificField,
+            title,
+            content,
+            specificField,
             interests: selectedOption,
           },
           {
             headers: { Authorization: `Bearer ${access}` },
           },
         )
-        alert('Question created')
+        alert('질문이 생성되었습니다.')
         navigate('/online/select', { state: response.data.id })
       } catch (error) {
-        console.error('Error creating question:', error)
+        console.error('질문 생성 중 오류 발생:', error)
       }
     } else {
-      console.error('Access token not found.')
+      console.error('액세스 토큰이 없습니다.')
     }
   }
 
@@ -184,7 +195,12 @@ function StartPage() {
             placeholder="제목 ex)mysql spring 연동"
             onChange={handleSpecificFieldChange}></InputTitle>
           <InputContent placeholder="내용" onChange={handleContentChange}></InputContent>
-          <StartMatchingBtn onClick={handleSubmit}>멘토 찾기</StartMatchingBtn>
+          <BtnWrap>
+            <StartMatchingBtn onClick={() => handleSubmit(false)}>멘토 찾기</StartMatchingBtn>
+            <StartMatchingBtn onClick={() => handleSubmit(true)}>
+              AI 기반 멘토 찾기
+            </StartMatchingBtn>
+          </BtnWrap>
         </StartWrap>
         {/* <SelectUserModal /> */}
         {/* <ConfirmMatchingModal /> */}
@@ -196,3 +212,6 @@ function StartPage() {
 }
 
 export default StartPage
+function useIsAiBasedlStore(): { setIsAiBased: any } {
+  throw new Error('Function not implemented.')
+}
