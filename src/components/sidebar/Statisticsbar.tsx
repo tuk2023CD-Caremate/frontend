@@ -2,10 +2,19 @@ import styled from 'styled-components'
 import { CgLoadbar } from "react-icons/cg";
 import PieChart from '../PieChart.tsx'
 import dayjs from 'dayjs';
+import { useState } from 'react'
 
 interface StatisticsBarProps {
     isOpen: boolean;
     selectedDate: Date | null;
+  }
+
+  interface calenderList {
+    id: number
+    studyName: string
+    entiretime : string
+    starttime : string
+    endtime : string
   }
 
 
@@ -58,14 +67,14 @@ const GrapWrapper = styled.div`
 display: flex;
 flex-direction: column;
 justify-content: center;
-width: 30%;
+width: 60%;
 height: 100%;
 margin-left: 50px;
 `
 const ListWrapper = styled.div`
 display: flex;
 flex-direction: column;
-width: 70%;
+width: 40%;
 margin-right: 50px;
 `
 const List = styled.div`
@@ -73,25 +82,26 @@ width: 100%;
 display: flex;
 justify-content: space-between;
 `
-const Tag = styled.div`
-width: 40%;
-display: flex;
-margin-left: 30px;;
-`
-const Name = styled.div`
-font-size: 30px;
-font-weight: bold;
-`
+
 const Time = styled.div`
 font-size: 30px;
 font-weight: bold;
+margin-left: 40px;
 `
 const PerCent = styled.div`
 font-size: 30px;
 font-weight: bold;
+margin-left: 40px;
 `
 
 export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
+
+    const [calenderList, setCalenderList] = useState<calenderList[]>([
+        { id: 1, studyName: '졸작', entiretime: '01:10:00',starttime: '00:00',endtime: '00:00'},
+        { id: 2, studyName: '학교 과제', entiretime: '00:32:52', starttime: '00:00',endtime: '00:00'},
+        { id: 3, studyName: '코딩테스트', entiretime: '00:25:40', starttime: '00:00',endtime: '00:00'},
+        { id: 4, studyName: '온라인 강의', entiretime: '02:33:04', starttime: '00:00',endtime: '00:00'}
+      ])
     
     return (
         <Container isOpen={isOpen} selectedDate={selectedDate}>
@@ -104,30 +114,15 @@ export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps
                 </UpperWrapper>
                 <MainWrapper>
                     <GrapWrapper>
-                        <PieChart/>
+                        <PieChart calenderList={calenderList}/>
                     </GrapWrapper>
-                    <ListWrapper>
-                        <List>
-                            <Tag>
-                                <div style={{ transform: 'rotate(90deg)' }}>
-                                <CgLoadbar size="50" color='#7AC0F2'/>
-                                </div>
-                                <Name>코딩 테스트</Name>
-                            </Tag>
-                           
-                            <Time>01:02:17</Time>
+                    <ListWrapper >
+                    {calenderList.map((calender)=> ( 
+                        <List key={calender.id}>
+                            <Time>{calender.entiretime}</Time>
                             <PerCent>58%</PerCent>
                          </List>
-                         <List>
-                            <Tag>
-                                <div style={{ transform: 'rotate(90deg)' }}>
-                                <CgLoadbar size="50" color='#D75983'/>
-                                </div>
-                                <Name>프로젝트</Name>
-                            </Tag>
-                            <Time>01:19:10</Time>
-                            <PerCent>42%</PerCent>
-                        </List>
+                        ))}
                         </ListWrapper>
                 </MainWrapper>
         </Container>

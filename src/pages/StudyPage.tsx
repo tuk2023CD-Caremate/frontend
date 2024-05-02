@@ -164,12 +164,12 @@ function StudyPage() {
   const { apiUrl } = useApiUrlStore()
   const [isStatisticsBarOpen, setIsStatisticsBarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  const [calenderList, setCalenderList] = useState<calenderList[]>([
-    { id: 1, studyName: '졸작', entiretime: '00:00',starttime: '00:00',endtime: '00:00'},
-    { id: 2, studyName: '학교 과제', entiretime: '00:00', starttime: '00:00',endtime: '00:00'},
-    { id: 3, studyName: '코딩테스트', entiretime: '00:00', starttime: '00:00',endtime: '00:00'},
-    { id: 4, studyName: '온라인 강의', entiretime: '00:00', starttime: '00:00',endtime: '00:00'}
+  const [calenderList, setCalenderList] = useState<calenderList[]>([])
+  const [List, setList] = useState<calenderList[]>([
+    { id: 1, studyName: '졸작', entiretime: '01:10:00',starttime: '00:00',endtime: '00:00'},
+    { id: 2, studyName: '학교 과제', entiretime: '00:32:52', starttime: '00:00',endtime: '00:00'},
+    { id: 3, studyName: '코딩테스트', entiretime: '00:25:40', starttime: '00:00',endtime: '00:00'},
+    { id: 4, studyName: '온라인 강의', entiretime: '02:33:0', starttime: '00:00',endtime: '00:00'}
   ])
 
   const ClickHandler = (id : number) => {
@@ -228,7 +228,7 @@ function StudyPage() {
   };
 
 
-  {/*
+  
   //기록 전체조회
 
   const getStudy = async () => {
@@ -247,7 +247,7 @@ function StudyPage() {
   useEffect(() => {
     getStudy()
   }, [])
-*/}
+
 
 
   return (
@@ -273,8 +273,8 @@ function StudyPage() {
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
-              {Array.isArray(calenderList) &&
-                calenderList.map((calender) => (
+              {Array.isArray(List) &&
+                List.map((calender) => (
                   <StudyList key={calender.id}>
                     <ListInfoWrapper>
                       <IconWrapper>
