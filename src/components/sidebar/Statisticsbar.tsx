@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import { CgLoadbar } from "react-icons/cg";
 import PieChart from '../PieChart.tsx'
+import dayjs from 'dayjs';
 
 interface StatisticsBarProps {
     isOpen: boolean;
+    selectedDate: Date | null;
   }
+
 
 const Container = styled.div<StatisticsBarProps>`
 display: flex;
@@ -88,13 +91,13 @@ font-size: 30px;
 font-weight: bold;
 `
 
-export default function StatisticsBar({ isOpen }: StatisticsBarProps) {
+export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
     
     return (
-        <Container isOpen={isOpen}>
+        <Container isOpen={isOpen} selectedDate={selectedDate}>
             <UpperWrapper>
                 <TimeRecodingWrapper>
-                    <TodayDate>2024. 04. 22</TodayDate>
+                    <TodayDate>{dayjs(selectedDate).format("YYYY.MM.DD")}</TodayDate>
                     <TodayText>총 학습 시간</TodayText>
                     <TotalTime>03:12:20</TotalTime>
                 </TimeRecodingWrapper>

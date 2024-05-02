@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Header2 from '../components/Header2.tsx'
 import Navbar2 from '../components/Navbar2.tsx'
 import StatisticsBar from '../components/sidebar/Statisticsbar.tsx'
-//import { IoStopCircleSharp } from 'react-icons/io5'
+import { IoStopCircleSharp } from 'react-icons/io5'
 import { IoIosPlayCircle } from 'react-icons/io'
 import AddStudyModal from '../components/AddStudyModal.tsx'
 import Calendar from '../components/StudyCalendar.tsx'
@@ -16,11 +16,10 @@ dayjs.locale('ko')
 
 interface calenderList {
   id: number
-  content: string
-  studyClass: string
-  startTime: string
-  endTime: string
-  entireTime: string
+  studyName: string
+  entiretime : string
+  starttime : string
+  endtime : string
 }
 
 const Container = styled.div`
@@ -151,9 +150,9 @@ const StudyingTime = styled.div`
 
 function StudyPage() {
   //스탑워치
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState<{ [key: number]: number }>({});
   const [isRunning, setIsRunning] = useState(false)
-  const [interval, setIntervalId] = useState<number | undefined>(undefined)
+  const [interval, setIntervalId] = useState<{ [key: number]: number }>({})
 
   //모달창
   const [postingmodalOpen, setPostingModalOpen] = useState(false)
@@ -163,50 +162,73 @@ function StudyPage() {
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const { apiUrl } = useApiUrlStore()
-  const [calenderList, setCalenderList] = useState<calenderList[]>([])
   const [isStatisticsBarOpen, setIsStatisticsBarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const ClickHandler = () => {
+  const [calenderList, setCalenderList] = useState<calenderList[]>([
+    { id: 1, studyName: '졸작', entiretime: '00:00',starttime: '00:00',endtime: '00:00'},
+    { id: 2, studyName: '학교 과제', entiretime: '00:00', starttime: '00:00',endtime: '00:00'},
+    { id: 3, studyName: '코딩테스트', entiretime: '00:00', starttime: '00:00',endtime: '00:00'},
+    { id: 4, studyName: '온라인 강의', entiretime: '00:00', starttime: '00:00',endtime: '00:00'}
+  ])
+
+  const ClickHandler = (id : number) => {
+    
     //시간 형식 변환
     const startTime = dayjs().format('YYYY-MM-DD HH:mm')
     const endTime = dayjs().format('YYYY-MM-DD HH:mm')
 
     if (!isRunning) {
-      //setCurrentIcon(<IoStopCircleSharp />); // 멈춤버튼 이미지로 변경
       setStartTime(startTime) // 현재 시간을 startTime으로 설정
 
       const interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1000)
-      }, 1000)
-      setIntervalId(interval) // interval 변수 업데이트
+        setTime((prevTime) => ({
+          ...prevTime,
+          [id]: (prevTime[id] || 0) + 1000
+        }));
+      }, 1000);
+
+      setIntervalId((prevIntervalIds) => ({
+        ...prevIntervalIds,
+        [id]: interval
+      })); 
       setIsRunning(true)
+      
     } else {
-      //setCurrentIcon(<IoIosPlayCircle />); // 재생버튼 이미지 변경
-      clearInterval(interval)
+      clearInterval(interval[id]);
       setIsRunning(false)
       setEndTime(endTime) //endTime업데이트
     }
   }
+
+
+
   const PostingOpenModal = () => {
     setPostingModalOpen(true)
   }
+
   const PostingCloseModal = () => {
     setPostingModalOpen(false)
   }
 
+  const handleDateChange = (newDate: Date| null) => {
+    setSelectedDate(newDate);
+  };
+
   const toggleStatisticsBar = () => {
     setIsStatisticsBarOpen(true);
   };
+
+  const handleOutsideClick = (event: any) => {
+    const isOutsideStatisticsBar = !event.target.closest('.statistics-bar');
   
-  const handleOutsideClick = (event:any) => {
-    // 클릭한 요소가 StatisticsBar를 제외한 부분인지 확인
-    if (!event.target.closest('.statistics-bar')) {
-      // StatisticsBar를 숨김
+    if (isOutsideStatisticsBar || (selectedDate && selectedDate === new Date() && isStatisticsBarOpen)) {
       setIsStatisticsBarOpen(false);
     }
   };
 
 
+  {/*
   //기록 전체조회
 
   const getStudy = async () => {
@@ -225,6 +247,8 @@ function StudyPage() {
   useEffect(() => {
     getStudy()
   }, [])
+*/}
+
 
   return (
     <div>
@@ -234,10 +258,11 @@ function StudyPage() {
         <StudyWrapper>
           <LeftWrapper>
             <Calendar 
-             toggleStatisticsBar={toggleStatisticsBar} />
+             toggleStatisticsBar={toggleStatisticsBar}
+             onDateChange={handleDateChange} />
           </LeftWrapper>
           <RightWrapper onClick={handleOutsideClick}>
-          <StatisticsBar isOpen={isStatisticsBarOpen}/>
+          <StatisticsBar isOpen={isStatisticsBarOpen} selectedDate={selectedDate}/>
             <StudyingWrapper>
               <TimeRecodingWrapper>
                 <TodayText>2024. 04. 22</TodayText>
@@ -248,50 +273,22 @@ function StudyPage() {
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
-              {/*{Array.isArray(calenderList) &&
+              {Array.isArray(calenderList) &&
                 calenderList.map((calender) => (
                   <StudyList key={calender.id}>
                     <ListInfoWrapper>
-                      <StudyName onClick={AddOpenModal} to={`/calender/${calender.id}`}>
-                        {interestsList.find((item) => item.value === calender.studyClass)?.name}
-                      </StudyName>
-                      <StudyingTime>{calender.entireTime}</StudyingTime>
+                      <IconWrapper>
+                        {isRunning ? <IoStopCircleSharp color="#650FA9" size="50" onClick={()=>ClickHandler(calender.id)}/>
+                        : <IoIosPlayCircle color="#650FA9" size="50" onClick={()=>ClickHandler(calender.id)}/>
+                        }
+                        <StudyName>{calender.studyName}</StudyName>
+                      </IconWrapper>
+                      <StudyingTime>
+                      {`${('0'+ Math.floor((time[calender.id] || 0) / 3600000)).slice(-2)}:${('0' + Math.floor(((time[calender.id] || 0) / 60000) % 60)).slice(-2)}:${('0' + Math.floor(((time[calender.id] || 0) / 1000) % 60)).slice(-2)}`}
+                      </StudyingTime>
                     </ListInfoWrapper>
                   </StudyList>
-                ))}*/}
-              <StudyList>
-                <ListInfoWrapper>
-                  <IconWrapper>
-                    <IoIosPlayCircle color="#650FA9" size="50" onClick={ClickHandler}/>
-                    <StudyName>코딩테스트</StudyName>
-                  </IconWrapper>
-                  {/* <StudyingTime>
-                  {`${('0'+ Math.floor(time / 3600000)).slice(-2)}:${('0' + Math.floor((time / 60000) % 60)).slice(-2)}:${('0' + Math.floor((time / 1000) % 60)).slice(-2)}`}
-                  </StudyingTime>*/}
-                  <StudyingTime>00:00:00</StudyingTime>
-                </ListInfoWrapper>
-                <ListInfoWrapper>
-                  <IconWrapper>
-                    <IoIosPlayCircle color="#650FA9" size="50" />
-                    <StudyName>학교 과제</StudyName>
-                  </IconWrapper>
-                  <StudyingTime>02:00:00</StudyingTime>
-                </ListInfoWrapper>
-                <ListInfoWrapper>
-                  <IconWrapper>
-                    <IoIosPlayCircle color="#650FA9" size="50" />
-                    <StudyName>프로젝트</StudyName>
-                  </IconWrapper>
-                  <StudyingTime>00:12:20</StudyingTime>
-                </ListInfoWrapper>
-                <ListInfoWrapper>
-                  <IconWrapper>
-                    <IoIosPlayCircle color="#650FA9" size="50" />
-                    <StudyName>온라인 강의</StudyName>
-                  </IconWrapper>
-                  <StudyingTime>00:00:00</StudyingTime>
-                </ListInfoWrapper>
-              </StudyList>
+                ))}
             </StudyListWrapper>
           </RightWrapper>
         </StudyWrapper>

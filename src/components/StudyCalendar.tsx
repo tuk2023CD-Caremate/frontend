@@ -9,6 +9,7 @@ dayjs.locale('ko');
 
 type Props = {
   toggleStatisticsBar: () => void;
+  onDateChange: (newDate: Date | null) => void;
 };
 
 const StyledCalendar = styled(Calendar)`
@@ -70,18 +71,18 @@ const StyledCalendar = styled(Calendar)`
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-const  StudyCalendar = ({toggleStatisticsBar} : Props) => {
+const  StudyCalendar = ({toggleStatisticsBar, onDateChange} : Props) => {
   const [date, setDate] = useState<Value>(null);
-  
   
   const handleDateChange = (newDate: Value) => {
     if (Array.isArray(newDate)) {
-  
       setDate(newDate[0]);
+      onDateChange(newDate[0]);
     } else {
       setDate(newDate);
-      toggleStatisticsBar();
+      onDateChange(newDate); 
     }
+    toggleStatisticsBar(); 
   };
   
   return (
