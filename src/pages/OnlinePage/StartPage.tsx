@@ -32,33 +32,40 @@ const StartWrap = styled.div`
 const Title = styled.div`
   font-size: 48px;
   font-weight: bold;
-  margin: 80px;
+  margin: 60px;
 `
 
 const SelectInterest = styled.select`
   border: solid 1px black;
-  width: 400px;
+  width: 600px;
   height: 70px;
   font-size: 28px;
-  margin: 20px;
+  margin: 10px;
   border-radius: 10px;
   padding: 10px;
 `
-const InputTitle = styled.input`
-  margin: 20px;
+
+const InputSpecificField = styled.input`
+  margin: 10px;
   border: solid 1px black;
   width: 600px;
   height: 70px;
   border-radius: 10px;
   padding: 10px;
   font-size: 28px;
-  ::placeholder {
-    color: BDBDBD; /* placeholder 텍스트 색상 설정 */
-    font-style: italic; /* placeholder 텍스트 스타일 설정 */
-  }
 `
 
-const InputContent = styled.input`
+const InputTitle = styled.input`
+  margin: 10px;
+  border: solid 1px black;
+  width: 600px;
+  height: 70px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 28px;
+`
+
+const InputContent = styled.textarea`
   margin: 10px;
   border: solid 1px black;
   width: 600px;
@@ -66,10 +73,7 @@ const InputContent = styled.input`
   border-radius: 10px;
   padding: 10px;
   font-size: 28px;
-  ::placeholder {
-    color: BDBDBD; /* placeholder 텍스트 색상 설정 */
-    font-style: italic; /* placeholder 텍스트 스타일 설정 */
-  }
+  resize: none;
 `
 const StartMatchingBtn = styled.button`
   display: flex;
@@ -78,11 +82,11 @@ const StartMatchingBtn = styled.button`
   border-radius: 20px;
   font-size: 32px;
   font-weight: bold;
-  width: 320px;
-  height: 80px;
+  width: 240px;
+  height: 70px;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 120px;
+  margin: 60px;
 `
 
 interface Option {
@@ -119,11 +123,15 @@ function StartPage() {
     setSelectedOption(event.target.value)
   }
 
+  const handleSpecificFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value)
+  }
+
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
   }
 
-  const handleContentChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
   }
 
@@ -158,7 +166,7 @@ function StartPage() {
       <Navbar2 />
       <Container>
         <StartWrap>
-          <Title>질문에 맞는 멘토들을 추천 해드릴게요</Title>
+          <Title>질문에 맞는 멘토들을 추천해 드릴게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
@@ -167,11 +175,14 @@ function StartPage() {
               </option>
             ))}
           </SelectInterest>
-          <InputTitle placeholder="제목을 적어주세요" onChange={handleTitleChange}></InputTitle>
-          <InputContent
-            placeholder="내용을 적어주세요"
-            onChange={handleContentChange}></InputContent>
-          <StartMatchingBtn onClick={handleSubmit}>온라인 매칭 시작하기</StartMatchingBtn>
+          <InputSpecificField
+            placeholder="상세분야 ex)백엔드 JPA DB"
+            onChange={handleTitleChange}></InputSpecificField>
+          <InputTitle
+            placeholder="제목 ex)mysql spring 연동"
+            onChange={handleSpecificFieldChange}></InputTitle>
+          <InputContent placeholder="내용" onChange={handleContentChange}></InputContent>
+          <StartMatchingBtn onClick={handleSubmit}>멘토 찾기</StartMatchingBtn>
         </StartWrap>
         {/* <SelectUserModal /> */}
         {/* <ConfirmMatchingModal /> */}
