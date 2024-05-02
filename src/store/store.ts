@@ -166,3 +166,14 @@ export const useReviewListStore = create<ReviewListState>((set) => ({
   reviewList: [],
   setReviewList: (reviewList) => set({ reviewList }),
 }))
+
+/* 멘토 찾기 구분 */
+interface IsAiBasedState {
+  isAiBased: boolean
+  setIsAiBased: (isAiBased: boolean) => void
+}
+
+export const useIsAiBasedStore = create<IsAiBasedState>((set) => ({
+  isAiBased: false,
+  setIsAiBased: (isAiBased: boolean) => set({ isAiBased }),
+}))
