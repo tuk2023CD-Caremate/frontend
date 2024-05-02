@@ -101,6 +101,7 @@ function StartPage() {
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [specificField, setSpecificField] = useState<string>('')
   const [options] = useState<Option[]>([
     {
       label: 'PROGRAMMING',
@@ -124,7 +125,7 @@ function StartPage() {
   }
 
   const handleSpecificFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value)
+    setSpecificField(event.target.value)
   }
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -144,6 +145,7 @@ function StartPage() {
           {
             title: title,
             content: content,
+            specificField: specificField,
             interests: selectedOption,
           },
           {

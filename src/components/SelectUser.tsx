@@ -155,15 +155,33 @@ function SelectUser(id: any) {
   const parsedObject = JSON.parse(decodedValue)
   const question_id = parsedObject.id
 
-  // 멘토 리스트 조회
+  // // 멘토 리스트 조회
+  // const getUserList = async () => {
+  //   const access = localStorage.getItem('accessToken')
+  //   if (access) {
+  //     try {
+  //       const response = await axios.get(`${apiUrl}/matching/${question_id}`, {
+  //         headers: { Authorization: `Bearer ${access}` },
+  //       })
+  //       setUserList(response.data.memberList)
+  //       console.log('Success ', response.data)
+  //     } catch (error) {
+  //       console.error('Error ', error)
+  //     }
+  //   } else {
+  //     console.error('Access token not found.')
+  //   }
+  // }
+
+  // 멘토 리스트 조회(KMP)
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
     if (access) {
       try {
-        const response = await axios.get(`${apiUrl}/matching/${question_id}`, {
+        const response = await axios.get(`${apiUrl}/matching/keyword/${question_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setUserList(response.data.memberList)
+        setUserList(response.data)
         console.log('Success ', response.data)
       } catch (error) {
         console.error('Error ', error)
