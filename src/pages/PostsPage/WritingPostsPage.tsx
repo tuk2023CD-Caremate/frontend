@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import Header2 from '../../components/Header2.tsx'
 import { useNavigate } from 'react-router-dom'
 import { useApiUrlStore } from '../../store/store.ts'
 import axios from 'axios'
@@ -7,13 +8,17 @@ import axios from 'axios'
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 100px 30px 100px;
 `
 
 const AllWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 400px);
+  justify-content: center;
+  width: calc(100% - 600px);
+  height: 950px;
+  border-left: 1px solid #D8D8D8;
+  border-right: 1px solid #D8D8D8;
+  padding: 0 100px 0 100px;
 `
 
 const Upper = styled.div`
@@ -48,6 +53,7 @@ const SerchWrapper = styled.div`
   justify-content: baseline;
   align-items: center;
   padding: 10px;
+  margin: 15px 0 15px 0;
 `
 const InterestsSelect = styled.select`
   width: 165px;
@@ -55,17 +61,20 @@ const InterestsSelect = styled.select`
   text-align: center;
   margin-right: 80px;
   font-size: 28px;
-  border-radius: 5px;
+  font-weight: bolder;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+  color: #650fa9;
 `
 const Input = styled.input`
   width: 700px;
   height: 65px;
   text-indent: 20px;
-  margin-right: 80px;
   font-size: 24px;
   font-weight: bold;
-  border-radius: 5px;
-
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
   &::placeholder {
     color: #bdbdbd;
   }
@@ -75,23 +84,32 @@ const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  margin-left: 10px;
 `
 const PostTitle = styled.input`
-  height: 105px;
-  font-size: 64px;
+  height: 103px;
+  font-size: 44px;
   font-weight: bold;
-  text-indent: 20px;
   border: 1px solid #d8d8d8;
+  text-indent: 25px;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const PostContent = styled.textarea`
   font-size: 28px;
-  height: 500px;
+  height: 517px;
   border: 1px solid #d8d8d8;
+  resize: none;
+  padding: 25px;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const FooterWrapper = styled.div`
   display: flex;
   justify-content: end;
-  margin-top: 40px;
+  margin-top: 20px;
 `
 const PostBtn = styled.button`
   font-size: 28px;
@@ -99,7 +117,9 @@ const PostBtn = styled.button`
   height: 60px;
   margin-left: 20px;
   border-radius: 10px;
-  border: 1px solid #bdbdbd;
+  background-color: #ECECEC;
+  color:#787878;
+  font-weight: bolder;
   &.post {
     color: #fff;
     background-color: #650fa9;
@@ -116,7 +136,7 @@ const interestsList = [
 export default function WritingPostPage() {
   const [title, SetTitle] = useState('')
   const [content, SetContent] = useState('')
-  const [interests, SetInterests] = useState('분야')
+  const [interests, SetInterests] = useState('관심분야')
   const [category, SetCategory] = useState('')
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
@@ -154,6 +174,7 @@ export default function WritingPostPage() {
 
   return (
     <div>
+      <Header2/>
       <Container>
         <AllWrapper>
           <Upper>
@@ -185,7 +206,7 @@ export default function WritingPostPage() {
             </ButtonWrapper>
             <SerchWrapper>
               <InterestsSelect value={interests} onChange={(e) => SetInterests(e.target.value)}>
-                <option disabled hidden>분야</option>
+                <option disabled hidden>관심분야</option>
                 {interestsList.map((item) => (
                   <option value={item.value} key={item.name}>
                     {item.name}
@@ -203,7 +224,7 @@ export default function WritingPostPage() {
               onChange={(e) => SetTitle(e.target.value)}
             />
             <PostContent
-              placeholder="게시글 내용을 입력하세요"
+              placeholder="게시글 내용을 적어주세요"
               value={content}
               onChange={(e) => SetContent(e.target.value)}
             />

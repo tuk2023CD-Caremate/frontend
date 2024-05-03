@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import { IoMdStar, IoMdHeartEmpty, IoIosContacts } from 'react-icons/io'
-import { useApiUrlStore, useReviewListStore, useUserListStore } from '../store/store'
+import {
+  useApiUrlStore,
+  useIsAiBasedStore,
+  useReviewListStore,
+  useUserListStore,
+} from '../store/store'
 import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
@@ -12,9 +17,9 @@ const Container = styled.div`
   justify-content: center;
   width: 1280px;
   height: 360px;
-  border: 3px solid #d8d8d8;
+  border: 2px solid #d8d8d8;
   &:hover {
-    border: 3px solid #650fa9;
+    border: 2px solid #650fa9;
   }
   margin-top: 15px;
   margin-bottom: 15px;
@@ -144,6 +149,7 @@ function SelectUser(id: any) {
   const { apiUrl } = useApiUrlStore()
   const { userList, setUserList } = useUserListStore()
   const { setReviewList } = useReviewListStore()
+  const { isAiBased } = useIsAiBasedStore()
   const [clickedUsername, setClickedUsername] = useState<string>() // 클릭한 유저 정보
 
   const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({}) // 각 유저의 클릭 여부 상태
@@ -155,15 +161,35 @@ function SelectUser(id: any) {
   const parsedObject = JSON.parse(decodedValue)
   const question_id = parsedObject.id
 
-  // 멘토 리스트 조회
+  // // 멘토 리스트 조회
+  // const getUserList = async () => {
+  //   const access = localStorage.getItem('accessToken')
+  //   if (access) {
+  //     try {
+  //       const response = await axios.get(`${apiUrl}/matching/${question_id}`, {
+  //         headers: { Authorization: `Bearer ${access}` },
+  //       })
+  //       setUserList(response.data.memberList)
+  //       console.log('Success ', response.data)
+  //     } catch (error) {
+  //       console.error('Error ', error)
+  //     }
+  //   } else {
+  //     console.error('Access token not found.')
+  //   }
+  // }
+
+  // 멘토 리스트 조회(KMP, AI)
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
+    const urlPath = isAiBased ? '/matching/keyword/ai/' : '/matching/keyword/'
+
     if (access) {
       try {
-        const response = await axios.get(`${apiUrl}/matching/${question_id}`, {
+        const response = await axios.get(`${apiUrl}${urlPath}${question_id}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        setUserList(response.data.memberList)
+        setUserList(response.data)
         console.log('Success ', response.data)
       } catch (error) {
         console.error('Error ', error)
@@ -323,3 +349,6 @@ function SelectUser(id: any) {
 }
 
 export default SelectUser
+function useIsAiBasedlStore(): { isAiBased: any } {
+  throw new Error('Function not implemented.')
+}

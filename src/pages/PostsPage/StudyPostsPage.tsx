@@ -1,14 +1,19 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore, usePostListStore,useFilterListStore, PostsList } from '../../store/store.ts'
+import { 
+  useApiUrlStore, 
+  usePostListStore,
+  useFilterListStore,
+  PostsList,
+  useLikeDataStore,
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
-import { IoIosHeart, IoIosText } from "react-icons/io"
-
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
 
 
 const Container = styled.div`
@@ -135,6 +140,17 @@ const FooterWrapper = styled.div`
   margin-top: 20px;
   align-items: center;
 `
+
+const LikedIcon = styled(IoIosHeart)<{recruitmentStatus: boolean}>`
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 25px;
+`
+
+const UnLikedIcon = styled(IoIosHeartEmpty)<{recruitmentStatus: boolean}>`
+ color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 25px;
+`
+
 const Likecount = styled.div`
   font-size: 28px;
   font-weight: bolder;
@@ -152,14 +168,11 @@ const Divider = styled.img`
   width: 2px;
   height: 20px;
 `
-const DateCreated = styled.div`
+const Detail = styled.div<{recruitmentStatus: boolean}>`
   font-size: 28px;
-  color: #9b9b9b;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
 `
-const Writer = styled.div`
-  font-size: 28px;
-  color: #9b9b9b;
-`
+
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'COMMENT', name: '댓글 순' },
@@ -177,7 +190,9 @@ function StudyPostPage() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
+  const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
+  const [isliked, setIsLiked] = useState(false)
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -249,6 +264,36 @@ function StudyPostPage() {
     }
   }
 
+  
+  //좋아요 누른 게시글인지 확인
+  const LikedPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user/post/heart`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setLikedList(response.data)
+      
+      const isLiked = likeList.some((likedPost) => {
+        return postsList.some((post) => post.post_id === likedPost.post_id)
+      })
+      setIsLiked(isLiked)
+  
+    } catch (error) {
+      alert('Error while liking post')
+    }
+  }
+
+  useEffect(() => {
+    LikedPost()
+  }, [])
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      searchpost();
+    }
+  };
+
   //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
@@ -262,14 +307,18 @@ function StudyPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-              <IoIosHeart color='#ff0000' size="25"/>
+            {isliked ? (
+            <LikedIcon recruitmentStatus={post.recruitmentStatus}/>
+            ) : (
+             <UnLikedIcon recruitmentStatus={post.recruitmentStatus}/>
+            )}
               <Likecount >{post.likeCount}</Likecount>
               <IoIosText size="25"/>
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
-              <DateCreated>{post.createdAt}</DateCreated>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.createdAt}</Detail>
               <Divider src={DividerImg} />
-              <Writer>{post.nickname}</Writer>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.nickname}</Detail>
             </FooterWrapper>
           </StudyPosts>
         ))}
@@ -300,6 +349,7 @@ function StudyPostPage() {
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
+                  onKeyDown={handleKeyPress}
                 />
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>

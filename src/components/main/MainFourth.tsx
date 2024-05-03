@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import onboard_text_5 from '../../assets/images/onboard_text_5.png'
 import onboard_text_6 from '../../assets/images/onboard_text_6.png'
 import onboard_img_3 from '../../assets/images/onboard_img_3.png'
-import useOnScreen from './useOnScreen.ts'
+import useOnScreen from '../utils/useOnScreen.ts'
 
 interface OnboardProps {
   isVisible?: boolean

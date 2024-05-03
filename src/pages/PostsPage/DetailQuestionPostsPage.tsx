@@ -12,7 +12,7 @@ import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart, IoIosText } from "react-icons/io"
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
 
 
 
@@ -516,6 +516,17 @@ function DetailQuestionPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
   
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
+    }
+  }
+
+  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+    if (event.key === 'Enter') {
+      updateComment(post_id, comment_id);
+    }
+  };
 
   return (
     <div>
@@ -547,7 +558,11 @@ function DetailQuestionPostPage() {
               </Lower>
               <FooterWrapper>
                 <DetailFooterWrapper>
-                  <IoIosHeart color='#ff0000' size="30"/>
+                  {
+                  likeList.some(post => post.post_id === postData.post_id)
+                    ? <IoIosHeart color="#ff0000" size="30" />
+                    : <IoIosHeartEmpty color="#ff0000" size="30" />
+                  }
                   <Likecount>{postData.likeCount}</Likecount>
                   <IoIosText size="30"/>
                   <CommentCount>{postData.commentCount}</CommentCount>
@@ -589,6 +604,7 @@ function DetailQuestionPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
+                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
                     />
                   </div>
                 ) : (
@@ -599,7 +615,11 @@ function DetailQuestionPostPage() {
               </CommentWrapper>
             ))}
           <InputWrapper>
-            <Input type="text" placeholder="댓글을 입력하세요" value={content}  onChange={(e) => SetContent(e.target.value)}></Input>
+            <Input type="text"
+            placeholder="댓글을 입력하세요"
+            value={content}
+            onChange={(e) => SetContent(e.target.value)}
+            onKeyDown={handleKeyPress}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>

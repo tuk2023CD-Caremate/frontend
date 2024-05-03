@@ -1,13 +1,19 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useApiUrlStore, usePostListStore,useFilterListStore, PostsList } from '../../store/store.ts'
+import { 
+  useApiUrlStore, 
+  usePostListStore,
+  useFilterListStore, 
+  PostsList,
+  useLikeDataStore,
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
-import { IoIosHeart, IoIosText } from "react-icons/io"
+import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
 
 
 
@@ -178,7 +184,9 @@ function MainPostPage() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
+  const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
+  const [isliked, setIsLiked] = useState(false)
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -250,6 +258,37 @@ function MainPostPage() {
     }
   }
 
+
+  //좋아요 누른 게시글인지 확인
+  const LikedPost = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user/post/heart`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setLikedList(response.data)
+      
+      const isliked = likeList.some((likedPost) => {
+        return postsList.some((post) => post.post_id === likedPost.post_id)
+      })
+      setIsLiked(isliked)
+  
+    } catch (error) {
+      alert('Error while liking post')
+    }
+  }
+
+  useEffect(() => {
+    LikedPost()
+  }, [])
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      searchpost();
+    }
+  };
+
+  
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
       {posts 
@@ -259,7 +298,11 @@ function MainPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-              <IoIosHeart color='#ff0000' size="30"/>
+              {isliked ? (
+              <IoIosHeart color="#ff0000" size="25" />
+              ) : (
+              <IoIosHeartEmpty color="#ff0000" size="25" />
+              )}
               <Likecount>{post.likeCount}</Likecount>
               <IoIosText size="30"/>
               <CommentCount>{post.commentCount}</CommentCount>
@@ -299,6 +342,7 @@ function MainPostPage() {
                   value={searchKeyword}
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
+                  onKeyDown={handleKeyPress}
                 />
                 <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
