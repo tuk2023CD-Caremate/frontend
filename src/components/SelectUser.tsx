@@ -349,6 +349,3 @@ function SelectUser(id: any) {
 }
 
 export default SelectUser
-function useIsAiBasedlStore(): { isAiBased: any } {
-  throw new Error('Function not implemented.')
-}
