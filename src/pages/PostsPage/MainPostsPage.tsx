@@ -14,7 +14,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
-
+import SkeletonUI from '../../components/SkeletonUI.tsx'
 
 
 const Container = styled.div`
@@ -360,6 +360,7 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
+          <SkeletonUI/>
           <Post posts={isClicked ? filterList : postsList} />
         </FreePostsWrapper>
       </Container>
