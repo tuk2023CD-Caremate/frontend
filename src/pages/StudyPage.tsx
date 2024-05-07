@@ -6,9 +6,7 @@ import { IoStopCircleSharp, IoPencil } from 'react-icons/io5'
 import { IoIosPlayCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
 import AddStudyModal from '../components/AddStudyModal.tsx'
 import Calendar from '../components/StudyCalendar.tsx'
-import { useState, useEffect } from 'react'
-import { useApiUrlStore } from '../store/store.ts'
-import axios from 'axios'
+import { useState} from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 dayjs.locale('ko')
@@ -22,28 +20,21 @@ interface calenderList {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-`
-const StudyWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 70%;
-  height: 870px;
+  height: calc(100vh - 220px);
 `
 const LeftWrapper = styled.div`
   display: flex;
+  flex: 2;
   align-items: center;
   justify-content: center;
-  width: 40%;
   padding: 30px;
-  border-left: 1px solid #bdbdbd;
   border-right: 1px solid #bdbdbd;
 `
 const RightWrapper = styled.div`
   display: flex;
+   flex: 3;
   align-items: center;
   flex-direction: column;
-  width: 60%;
-  border-right: 1px solid #bdbdbd;
 `
 const StudyingWrapper = styled.div`
   display: flex;
@@ -126,6 +117,16 @@ const StudyName = styled.div`
   font-weight: bold;
   margin-left: 20px;
 `
+
+const DetailWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 80px;
+  margin-left: 50px;
+`
+
 const StudyingTime = styled.div`
   display: flex;
   align-items: center;
@@ -154,8 +155,9 @@ function StudyPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [clickedIconId, setClickedIconId] = useState<number | null>(null); 
 
+
   //const [calenderList, setCalenderList] = useState<calenderList[]>([])
-  const [List, setList] = useState<calenderList[]>([
+  const [List, _setList] = useState<calenderList[]>([
     { id: 1, studyClass: '졸작', entiretime: '01:10:00', starttime: '00:00', endtime: '00:00' },
     { id: 2, studyClass: '학교 과제', entiretime: '00:32:52', starttime: '00:00', endtime: '00:00'},
     { id: 3, studyClass: '코딩테스트', entiretime: '00:25:40', starttime: '00:00', endtime: '00:00'},
@@ -186,21 +188,24 @@ function StudyPage() {
       setClickedIconId(null);
     }
   }
+
   const PostingOpenModal = () => {
     setPostingModalOpen(true)
   }
   const PostingCloseModal = () => {
     setPostingModalOpen(false)
   }
+
   const handleDateChange = (newDate: Date | null) => {
     //사용자가 선택한 날짜 === 현재 저장되어 있는 날짜(선택기준 이전날짜)
     if (newDate && newDate.getTime() === selectedDate?.getTime()) {
-      setIsStatisticsBarOpen(false);
+      setIsStatisticsBarOpen(!isStatisticsBarOpen)
     } else {
-      setSelectedDate(newDate);
-      setIsStatisticsBarOpen(true);  
+      setSelectedDate(newDate)
+      setIsStatisticsBarOpen(true)
     }
   }
+
   const toggleStatisticsBar = () => {
     setIsStatisticsBarOpen(isStatisticsBarOpen)
   }
@@ -265,7 +270,6 @@ function StudyPage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <StudyWrapper>
           <LeftWrapper>
             <Calendar toggleStatisticsBar={toggleStatisticsBar} onDateChange={handleDateChange} />
           </LeftWrapper>
@@ -300,31 +304,32 @@ function StudyPage() {
                         )}
                         <StudyName>{study.studyClass}</StudyName>
                       </IconWrapper>
-                      <StudyingTime>
-                        {`${('0' + Math.floor((time[study.id] || 0) / 3600000)).slice(-2)}:${(
-                          '0' + Math.floor(((time[study.id] || 0) / 60000) % 60)
-                        ).slice(-2)}:${(
-                          '0' + Math.floor(((time[study.id] || 0) / 1000) % 60)
-                        ).slice(-2)}`}
-                      </StudyingTime>
-                      <SideIconWrapper>
-                        <IoPencil
-                          size="30"
-                          style={{ marginBottom: '10px' }}
-                          onClick={PostingOpenModal}
-                        />
-                        <IoIosRemoveCircleOutline
-                          size="30"
-                          style={{ marginTop: '10px' }}
-                          //onClick={() => deletedStudy(study.id)}
-                        />
-                      </SideIconWrapper>
+                      <DetailWrapper>
+                        <StudyingTime>
+                          {`${('0' + Math.floor((time[study.id] || 0) / 3600000)).slice(-2)}:${(
+                            '0' + Math.floor(((time[study.id] || 0) / 60000) % 60)
+                          ).slice(-2)}:${(
+                            '0' + Math.floor(((time[study.id] || 0) / 1000) % 60)
+                          ).slice(-2)}`}
+                        </StudyingTime>
+                        <SideIconWrapper>
+                          <IoPencil
+                            size="30"
+                            style={{ marginBottom: '10px' }}
+                            onClick={PostingOpenModal}
+                          />
+                          <IoIosRemoveCircleOutline
+                            size="30"
+                            style={{ marginTop: '10px' }}
+                            //onClick={() => deletedStudy(study.id)}
+                          />
+                        </SideIconWrapper>
+                      </DetailWrapper>
                     </ListInfoWrapper>
                   </StudyList>
                 ))}
             </StudyListWrapper>
           </RightWrapper>
-        </StudyWrapper>
       </Container>
       {postingmodalOpen && (
         <AddStudyModal

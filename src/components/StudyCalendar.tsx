@@ -10,7 +10,7 @@ type Props = {
   onDateChange: (newDate: Date | null) => void;
 };
 const StyledCalendar = styled(Calendar)`
-  width: 600px;
+  width: 690px;
   height: 620px;
   font-size: 35px;
   border-radius: 10px;
@@ -55,6 +55,8 @@ const StyledCalendar = styled(Calendar)`
     color: #650fa9;
     font-weight: bold;
   }
+
+
 `
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -64,9 +66,9 @@ const  StudyCalendar = ({onDateChange} : Props) => {
   const handleDateChange = (newDate: Value) => {
     const clickedDate = Array.isArray(newDate) ? newDate[0] : newDate;
     setDate(newDate);    
- 
     onDateChange(clickedDate);         
   };
+
   
   return (
     <div>

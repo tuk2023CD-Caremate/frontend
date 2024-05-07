@@ -2,6 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { useApiUrlStore } from '../store/store'
 import axios from 'axios'
+
 type Prop = {
   PostingCloseModal: () => void
   //studyClass: string
@@ -62,7 +63,7 @@ const Btn = styled.div`
   font-size: 18px;
   cursor: pointer;
 `
-function AddStudyModal({ PostingCloseModal,  startTime, endTime }: Prop) {
+function AddStudyModal({ PostingCloseModal, startTime, endTime }: Prop) {
   const [studyname, setStudyname]=useState('')
   const { apiUrl } = useApiUrlStore()
   const createStudy = async () => {

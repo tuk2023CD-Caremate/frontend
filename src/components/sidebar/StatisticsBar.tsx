@@ -19,11 +19,12 @@ display: flex;
 flex-direction: column;
 align-items: center;
   position: fixed;
-  right: ${({ isOpen }) => (isOpen ? '15%' : '-42%')}; // isOpen 상태에 따라 오른쪽에서 나오거나 숨김
-  width: 42%;
+  right: ${({ isOpen }) => (isOpen ? '0' : '-60%')}; // isOpen 상태에 따라 오른쪽에서 나오거나 숨김
+  width: 59%;
   height: 870px;
   background-color: #F7F7F7;
   transition: right 0.3s ease; // 슬라이딩 효과를 위한 transition 설정
+
 `
 const UpperWrapper = styled.div`
 display: flex;
@@ -56,22 +57,22 @@ const MainWrapper = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-width: 100%;
+width: 80%;
 height: 60%;
 `
 const GrapWrapper = styled.div`
 display: flex;
 flex-direction: column;
 justify-content: center;
-width: 60%;
+flex: 3;
 height: 100%;
-margin-left: 50px;
+margin-left: 80px;
 `
 const ListWrapper = styled.div`
 display: flex;
 flex-direction: column;
-width: 40%;
-margin-right: 50px;
+flex: 2;
+margin-right: 80px;
 `
 const List = styled.div`
 width: 100%;
@@ -90,7 +91,7 @@ margin-left: 40px;
 `
 export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
   
-  const [calenderList, setCalenderList] = useState<calenderList[]>([
+  const [calenderList, _setCalenderList] = useState<calenderList[]>([
     { id: 1, studyClass: '졸작', entiretime: '01:52:40',starttime: '00:00',endtime: '00:00', percent: '29%'},
     { id: 2, studyClass: '학교 과제', entiretime: '00:16:42', starttime: '00:00',endtime: '00:00', percent: '4%'},
     { id: 3, studyClass: '코딩테스트', entiretime: '03:11:03', starttime: '00:00',endtime: '00:00', percent: '49%'},
