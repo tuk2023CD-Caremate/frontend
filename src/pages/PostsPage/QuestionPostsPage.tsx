@@ -14,6 +14,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import SkeletonUI from '../../components/SkeletonUI.tsx'
 
 
 const Container = styled.div`
@@ -188,6 +189,7 @@ function QuestionPostPage() {
   const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
   const [isliked, setIsLiked] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
@@ -212,6 +214,7 @@ function QuestionPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
+    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/posts`, {
@@ -363,7 +366,8 @@ function QuestionPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          <Post posts={isClicked ? filterList : postsList} />
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
+          : <SkeletonUI count={isClicked ? filterList.length : postsList.length} />}
         </QuestionPostsWrapper>
       </Container>
     </div>

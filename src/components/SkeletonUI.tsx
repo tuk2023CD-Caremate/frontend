@@ -1,14 +1,26 @@
-import styled, {keyframes} from "styled-components";
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
+// Skeleton 애니메이션 키프레임
 const loadingAnimation = keyframes`
- 0% {
-			transform: translateX(0%);
-		}
-    50%,
-		100% {
-			transform: translate(100%);
-		}
-`
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+// 애니메이션 적용
+const SkeletonItem = styled.span<{ width: string }>`
+  display: block;
+  height: 35px;
+  background: linear-gradient(90deg, #e8e8e8, #f5f5f5, #e8e8e8);
+  background-size: 200% 100%;
+  animation: ${loadingAnimation} 2s infinite;
+  width: ${props => props.width};
+  border-radius: 4px;
+`;
 
 const SkeletonWrapper = styled.div`
 display: flex;
@@ -19,51 +31,42 @@ border: 1px solid #d8d8d8;
 padding: 20px 0px 0px 20px;
 `
 
-const SkeletonItem = styled.div<{width : string}>`
-width: 50%;
-height: 100%;
-background: linear-gradient(to right, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%);
-animation: ${loadingAnimation} 2s infinite;
-`
-
 const SkeletonTitle = styled.div`
-width: 180px;
-height: 50px;
-background-color: #e8e8e8;
-background-size: 200% 100%;
+width: 200px;
+`;
 
-`
 const SkeletonContent = styled.div`
-width: 300px;
-height: 35px;
-margin-top: 20px;
-background-color: #e8e8e8;
-background-size: 200% 100%;
-`
+  width: 350px;
+  margin-top: 30px;
+`;
+
 const SkeletonFooter = styled.div`
-width: 400px;
-height: 35px;
-margin-top: 20px;
-background-color: #e8e8e8;
-background-size: 200% 100%;
-`
+width: 450px;
+  margin-top: 20px;
+
+`;
 
 
 
-function SkeletonUI () {
-    return (
-        <SkeletonWrapper>
-          <SkeletonTitle>
-            <SkeletonItem width="180px"/>
-          </SkeletonTitle>
-          <SkeletonContent>
-             <SkeletonItem width="300px"/>
-          </SkeletonContent>
-            <SkeletonFooter>
-             <SkeletonItem width="400px"/>
-           </SkeletonFooter>
-        </SkeletonWrapper>
-    )
+// 스켈레톤 UI 컴포넌트
+function SkeletonUI({ count }: { count: number }) {
+  const skeletons = [];
+  for (let i = 0; i < count; i++) {
+    skeletons.push(
+      <SkeletonWrapper key={i}>
+        <SkeletonTitle>
+          <SkeletonItem width="100%"></SkeletonItem>
+        </SkeletonTitle>
+        <SkeletonContent>
+          <SkeletonItem width="100%"></SkeletonItem>
+        </SkeletonContent>
+        <SkeletonFooter>
+          <SkeletonItem width="100%"></SkeletonItem>
+        </SkeletonFooter>
+      </SkeletonWrapper>
+    );
+  }
+  return <>{skeletons}</>;
 }
 
-export default SkeletonUI
+export default SkeletonUI;
