@@ -14,7 +14,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
-import SkeletonUI from '../../components/SkeletonUI.tsx'
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 
 const Container = styled.div`
