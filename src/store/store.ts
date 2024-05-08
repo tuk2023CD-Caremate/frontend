@@ -177,3 +177,21 @@ export const useIsAiBasedStore = create<IsAiBasedState>((set) => ({
   isAiBased: false,
   setIsAiBased: (isAiBased: boolean) => set({ isAiBased }),
 }))
+
+/* 스터디기록 리스트 
+interface StudyListState {
+  studyList: StudyList[]
+  setStudyList: (studyList: StudyList[]) => void
+}
+export interface StudyList {
+  id: number
+  content : string
+  entiretime : string
+  starttime : string
+  endtime : string
+}
+export const useStudyListState = create<StudyListState>((set) => ({
+  studyList: [],
+  setStudyList: (studyList) => set({ studyList }),
+}))
+*/
