@@ -22,7 +22,6 @@ import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
 import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
-import AddStudyPage from './pages/AddStudyPage'
 import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
@@ -108,7 +107,6 @@ function App() {
         <Route path="posts/:post_id" element={<DetailMainPostsPage />} />
 
         <Route path="/calender" element={<StudyPage />} />
-        <Route path="/calender/:calender_id" element={<AddStudyPage />} />
 
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
