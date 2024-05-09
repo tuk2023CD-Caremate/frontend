@@ -218,6 +218,10 @@ function StudyPostPage() {
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을 해주세요.');
+        return;
+      }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
