@@ -356,7 +356,7 @@ function MainPostPage() {
             </SearchWrapper>
           </Upper>
           {loading ? <Post posts={isClicked ? filterList : postsList} /> 
-          : <SkeletonUI count={isClicked ? filterList.length : postsList.length} />}
+          : <SkeletonUI/>}
         </FreePostsWrapper>
       </Container>
     </div>

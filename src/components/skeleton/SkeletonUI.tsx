@@ -49,9 +49,9 @@ width: 450px;
 
 
 // 스켈레톤 UI 컴포넌트
-function SkeletonUI({ count }: { count: number }) {
+function SkeletonUI() {
   const skeletons = [];
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < 5; i++) {
     skeletons.push(
       <SkeletonWrapper key={i}>
         <SkeletonTitle>

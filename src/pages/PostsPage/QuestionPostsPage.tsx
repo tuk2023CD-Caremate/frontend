@@ -367,7 +367,7 @@ function QuestionPostPage() {
             </SearchWrapper>
           </Upper>
           {loading ? <Post posts={isClicked ? filterList : postsList} /> 
-          : <SkeletonUI count={isClicked ? filterList.length : postsList.length} />}
+          : <SkeletonUI/>}
         </QuestionPostsWrapper>
       </Container>
     </div>
