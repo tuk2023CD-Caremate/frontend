@@ -13,6 +13,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 
 const Container = styled.div`
@@ -190,8 +191,8 @@ function StudyPostPage() {
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
-
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -215,6 +216,7 @@ function StudyPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
+    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -371,7 +373,8 @@ function StudyPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          <Post posts={isClicked ? filterList : postsList} />
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
+          : <SkeletonUI/>}
         </StudyPostsWrapper>
       </Container>
     </div>

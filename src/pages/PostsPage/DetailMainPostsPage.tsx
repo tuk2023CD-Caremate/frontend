@@ -13,6 +13,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
+import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -280,6 +281,7 @@ function DetailMainPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
+  const [loading, setLoading] = useState(true)
 
   //게시글 단건조회
   const getPost = async () => {
@@ -289,10 +291,12 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
+      setLoading(false)
     } catch (error) {
       alert('Error while fetching post')
     }
   }
+
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -522,25 +526,31 @@ function DetailMainPostPage() {
         <PostWrapper>
           <PageTitle>자유게시판</PageTitle>
           <MainPostWrapper>
-            <Upper>
-              <UserWrapper>
-                <Profile src={ProfileImg} />
-                <NameWrapper>
-                  <Nickname>{postData.nickname}</Nickname>
-                  <Time>{postData.createdAt}</Time>
-                </NameWrapper>
-              </UserWrapper>
-              {nickname === postData.nickname ? (
-                <ButtonWrapper>
-                  <Modify onClick={handlePostEdit}>수정</Modify>
-                  <Delete onClick={deletePost}>삭제</Delete>
-                </ButtonWrapper>
-              ) : null}
-            </Upper>
-            <Lower>
-              <Title>{postData.title}</Title>
-              <Context>{postData.content}</Context>
-            </Lower>
+          {loading ? (
+          <Skeleton/>
+            ) : (
+              <>
+                <Upper>
+                  <UserWrapper>
+                    <Profile src={ProfileImg} />
+                    <NameWrapper>
+                      <Nickname>{postData.nickname}</Nickname>
+                      <Time>{postData.createdAt}</Time>
+                    </NameWrapper>
+                  </UserWrapper>
+                  {nickname === postData.nickname ? (
+                    <ButtonWrapper>
+                      <Modify onClick={handlePostEdit}>수정</Modify>
+                      <Delete onClick={deletePost}>삭제</Delete>
+                    </ButtonWrapper>
+                  ) : null}
+                </Upper>
+                <Lower>
+                  <Title>{postData.title}</Title>
+                  <Context>{postData.content}</Context>
+                </Lower>
+                </>
+            )}
             <FooterWrapper>
               <DetailFooterWrapper>
                 {likeList.some((post) => post.post_id === postData.post_id) ? (

@@ -13,6 +13,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
 
 
 
@@ -284,6 +285,7 @@ function DetailQuestionPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() 
+  const [loading, setLoading] = useState(true)
 
 
 
@@ -295,6 +297,7 @@ function DetailQuestionPostPage() {
       headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
+      setLoading(false)
     } catch (error) {
       alert('Error while fetching post')
     }
@@ -537,25 +540,31 @@ function DetailQuestionPostPage() {
         <PostWrapper>
           <PageTitle>질문게시판</PageTitle>
             <MainPostWrapper>
-              <Upper>
-                <UserWrapper>
-                  <Profile src={ProfileImg} />
-                  <NameWrapper>
-                    <Nickname>{postData.nickname}</Nickname>
-                    <Time>{postData.createdAt}</Time>
-                  </NameWrapper>
-                </UserWrapper>
-                {nickname ===postData.nickname ?
-              <ButtonWrapper>
-                <Modify onClick={handlePostEdit}>수정</Modify>
-                <Delete onClick={deletePost}>삭제</Delete>
-              </ButtonWrapper> :
-              null}
-              </Upper>
-              <Lower>
-                <Title>{postData.title}</Title>
-                <Context>{postData.content}</Context>
-              </Lower>
+            {loading ? (
+            <Skeleton/>
+              ) : (
+                <>
+                  <Upper>
+                    <UserWrapper>
+                      <Profile src={ProfileImg} />
+                      <NameWrapper>
+                        <Nickname>{postData.nickname}</Nickname>
+                        <Time>{postData.createdAt}</Time>
+                      </NameWrapper>
+                    </UserWrapper>
+                    {nickname === postData.nickname ? (
+                      <ButtonWrapper>
+                        <Modify onClick={handlePostEdit}>수정</Modify>
+                        <Delete onClick={deletePost}>삭제</Delete>
+                      </ButtonWrapper>
+                    ) : null}
+                  </Upper>
+                  <Lower>
+                    <Title>{postData.title}</Title>
+                    <Context>{postData.content}</Context>
+                  </Lower>
+                  </>
+              )}
               <FooterWrapper>
                 <DetailFooterWrapper>
                   {
