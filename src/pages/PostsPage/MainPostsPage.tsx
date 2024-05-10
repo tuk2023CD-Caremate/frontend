@@ -6,8 +6,7 @@ import {
   usePostListStore,
   useFilterListStore,
   PostsList,
-  useLikeDataStore,
-} from '../../store/store.ts'
+ } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -181,12 +180,12 @@ function MainPostPage() {
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const { filterList, setFilterList } = useFilterListStore()
-  const { postsList, setPostList } = usePostListStore()
-  const { likeList, setLikedList } = useLikeDataStore()
-  const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState(false)
   const [loading, setLoading] = useState(false)
+  const {filterList, setFilterList}= useFilterListStore()
+  const {postsList, setPostList} = usePostListStore()
+  const [isClicked, setIsClicked] = useState(false)
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
+
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
@@ -211,6 +210,10 @@ function MainPostPage() {
     setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을해주세요.');
+        return;
+      }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -264,12 +267,14 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedList(response.data)
+  
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
+      const newLikedMap: { [postId: string]: boolean } = {};
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true;
+      });
+      setIsLiked(newLikedMap);
 
-      const isliked = likeList.some((likedPost) => {
-        return postsList.some((post) => post.post_id === likedPost.post_id)
-      })
-      setIsLiked(isliked)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -290,24 +295,24 @@ function MainPostPage() {
       {posts
         .filter((post) => post.category === 'FREE')
         .map((post) => (
-            <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
-              <Title>{post.title}</Title>
-              <Context>{post.content}</Context>
-              <FooterWrapper>
-                {isliked ? (
-                  <IoIosHeart color="#ff0000" size="25" />
-                ) : (
-                  <IoIosHeartEmpty color="#ff0000" size="25" />
-                )}
-                <Likecount>{post.likeCount}</Likecount>
-                <IoIosText size="30" />
-                <CommentCount>{post.commentCount}</CommentCount>
-                <Divider src={DividerImg} />
-                <DateCreated>{post.createdAt}</DateCreated>
-                <Divider src={DividerImg} />
-                <Writer>{post.nickname}</Writer>
-              </FooterWrapper>
-            </MainPosts>
+          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+            <Title>{post.title}</Title>
+            <Context>{post.content}</Context>
+            <FooterWrapper>
+            {isliked[post.post_id] ? (
+                <IoIosHeart color="#ff0000" size="25" />
+              ) : (
+                <IoIosHeartEmpty color="#ff0000" size="25" />
+              )}
+              <Likecount>{post.likeCount}</Likecount>
+              <IoIosText size="30"/>
+              <CommentCount>{post.commentCount}</CommentCount>
+              <Divider src={DividerImg} />
+              <DateCreated>{post.createdAt}</DateCreated>
+              <Divider src={DividerImg} />
+              <Writer>{post.nickname}</Writer>
+            </FooterWrapper>
+          </MainPosts>
         ))}
     </>
   )

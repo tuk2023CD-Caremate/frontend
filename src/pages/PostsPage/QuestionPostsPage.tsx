@@ -6,7 +6,6 @@ import {
   usePostListStore,
   useFilterListStore, 
   PostsList,
-  useLikeDataStore,
  } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -186,10 +185,10 @@ function QuestionPostPage() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
-  const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
+  
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
@@ -217,6 +216,10 @@ function QuestionPostPage() {
     setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을 해주세요.');
+        return;
+      }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -273,12 +276,13 @@ function QuestionPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedList(response.data)
-      
-      const isliked = likeList.some((likedPost) => {
-        return postsList.some((post) => post.post_id === likedPost.post_id)
-      })
-      setIsLiked(isliked)
+
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
+      const newLikedMap: { [postId: string]: boolean } = {};
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true;
+      });
+      setIsLiked(newLikedMap);
   
     } catch (error) {
       alert('Error while liking post')
@@ -306,8 +310,8 @@ function QuestionPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-             {isliked ? (
-             <IoIosHeart color="#ff0000" size="25" />
+             {isliked[post.post_id] ? (
+               <IoIosHeart color="#ff0000" size="25" />
               ) : (
               <IoIosHeartEmpty color="#ff0000" size="25" />
               )}
