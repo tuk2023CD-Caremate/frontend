@@ -27,6 +27,7 @@ import SelectUserPage from './pages/OnlinePage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
 import { useApiUrlStore } from './store/store'
+import ChatRoomPage from './pages/ChatRoomPage'
 
 const CustomToastContainer = styled(ToastContainer)`
   .Toastify__toast {
@@ -92,6 +93,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chats/room"
+          element={
+            <ProtectedRoute>
+              <ChatRoomPage />
             </ProtectedRoute>
           }
         />

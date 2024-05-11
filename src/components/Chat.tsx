@@ -9,10 +9,10 @@ import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 
 interface Content {
-  type: string
-  roomId: string
+  // type: string
+  chatRoomId: string
   sender: string
-  message: string
+  content: string
 }
 
 interface MessagesProps {
@@ -151,7 +151,7 @@ function Chat() {
   const [nickname, setNickname] = useState<string>('')
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
-  const [roomId, setRoomId] = useState<string>()
+  // const [roomId, setRoomId] = useState<string>()
 
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
@@ -171,30 +171,30 @@ function Chat() {
     } catch (error) {}
   }
 
-  // 채팅방 생성 api
-  async function createChatroom() {
-    // const access = localStorage.getItem('accessToken')
+  // // 채팅방 생성 api
+  // async function createChatroom() {
+  //   // const access = localStorage.getItem('accessToken')
 
-    try {
-      if (nickname == '') {
-        await getNickname()
-      }
-      // const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
-      const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
-        // headers: { Authorization: `Bearer ${access}` },
-      })
-      setRoomId(response.data.roomId)
-      console.log('채팅방 id:', roomId)
-      console.log(`채팅방 name: ${response.data.name}`)
-    } catch (error) {
-      console.error(error)
-      console.log('에러')
-    }
-  }
+  //   try {
+  //     if (nickname == '') {
+  //       await getNickname()
+  //     }
+  //     // const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
+  //     const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
+  //       // headers: { Authorization: `Bearer ${access}` },
+  //     })
+  //     setRoomId(response.data.roomId)
+  //     console.log('채팅방 id:', roomId)
+  //     console.log(`채팅방 name: ${response.data.name}`)
+  //   } catch (error) {
+  //     console.error(error)
+  //     console.log('에러')
+  //   }
+  // }
   useEffect(() => {
     const fetchData = async () => {
       await getNickname()
-      await createChatroom()
+      // await createChatroom()
     }
 
     fetchData()
@@ -206,16 +206,25 @@ function Chat() {
     }
   }, [])
 
+  // useEffect(() => {
+  //   if (roomId) {
+  //     initializeChat()
+  //   }
+  // }, [roomId])
+
   useEffect(() => {
-    if (roomId) {
-      initializeChat()
-    }
-  }, [roomId])
+    initializeChat()
+  }, [])
 
   const initializeChat = async () => {
+    const access = localStorage.getItem('accessToken')
+
     try {
       const stomp = new Client({
-        brokerURL: 'ws://study-mate.kro.kr:8080/ws/chat',
+        brokerURL: 'ws://studymate154.com:8080/ws/chat',
+        connectHeaders: {
+          Authorization: `Bearer ${access}`,
+        },
         debug: (str: string) => {
           console.log(str)
         },
@@ -230,12 +239,19 @@ function Chat() {
       // WebSocket 연결이 열렸을 때의 처리 코드
       stomp.onConnect = () => {
         console.log('WebSocket 연결이 열렸습니다.')
-        const subscriptionDestination = `/sub/chat/room/1234`
+        const subscriptionDestination = `/sub/chat/room/11`
 
         stomp.subscribe(subscriptionDestination, (message) => {
           try {
+            // const Message = message.body
+            // console.log('*****메시지왔어요*****')
+            // console.log(Message)
+            // // setMessages((prevMessages) => [...prevMessages, Message])
+
+            console.log('메세지프레임 : ', message)
+            console.log('메세지프레임.body : ', message.body)
             const parsedMessage = JSON.parse(message.body)
-            console.log(parsedMessage)
+            console.log('parsedMessage : ', parsedMessage)
             console.log('*****메시지왔어요*****')
             setMessages((prevMessages) => [...prevMessages, parsedMessage])
           } catch (error) {
@@ -250,13 +266,13 @@ function Chat() {
   }
 
   const sendMessage = (messageContent: string, nickname: string) => {
-    const destination = '/pub/chat/message/1234'
+    const destination = '/pub/chat/message/11'
 
     const newMessage: Content = {
-      type: 'TALK',
-      roomId: '1234',
+      // type: 'TALK',
+      chatRoomId: '11',
       sender: nickname,
-      message: messageContent,
+      content: messageContent,
     }
 
     if (stompClient && stompClient.connected) {
@@ -336,7 +352,7 @@ function Chat() {
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
               <Messages sender={message.sender} nickname={nickname || ''}>
-                {message.message}
+                {message.content}
               </Messages>
               <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
             </MessageContainer>
