@@ -33,9 +33,9 @@ interface MessageContainerProps {
 
 const Container = styled.div`
   width: 1530px;
-  height: calc(100vh - 170px);
+  height: calc(100vh - 280px);
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   border-left: 2px solid #d8d8d8;
   border-right: 2px solid #d8d8d8;
   display: flex;
@@ -45,8 +45,8 @@ const Container = styled.div`
 `
 
 const ChatWrap = styled.div`
-  height: 800px;
   width: 1530px;
+  height: calc(100vh - 200px);
   overflow-y: auto; /* 내용이 넘칠 때만 스크롤 표시 */
 `
 
@@ -116,14 +116,14 @@ const SendButton = styled.button`
 `
 const BtnWrap = styled.div`
   display: flex;
-  margin-left: auto;
-  margin-right: 10px;
+  width: 100%;
+  justify-content: right;
+  border-bottom: 2px solid #d8d8d8;
 `
 
 const ZoomLoginBtn = styled.button`
   width: 120px;
   height: 70px;
-  margin: 10px;
   border-radius: 20px;
   font-size: large;
   font-weight: bold;
@@ -131,11 +131,12 @@ const ZoomLoginBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
+  margin: 0 10px 20px 10px;
 `
 const CreateMeetingBtn = styled.button`
   width: 120px;
   height: 70px;
-  margin: 10px;
+
   border-radius: 20px;
   font-size: x-large;
   font-weight: bold;
@@ -143,6 +144,7 @@ const CreateMeetingBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
+  margin: 0 10px 20px 10px;
 `
 
 function Chat() {

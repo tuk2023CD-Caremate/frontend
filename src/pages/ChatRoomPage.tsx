@@ -5,21 +5,11 @@ import Chat from '../components/Chat.tsx'
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 280px);
   width: 1280px;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;
-`
-
-const Text = styled.div`
-  display: flex;
-  width: 1099px;
-  margin: 0 auto;
-  font-size: 50px;
-  font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 15px;
 `
 
 function ChatRoomPage() {
