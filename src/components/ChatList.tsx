@@ -7,6 +7,7 @@ import { RxDividerVertical } from 'react-icons/rx'
 import { useApiUrlStore, useChatListStore } from '../store/store'
 import axios from 'axios'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -175,34 +176,36 @@ function ChatList() {
         </NoChatList>
       ) : (
         chatList.map((chat) => (
-          <Container key={chat.chatRoomId}>
-            <MainWrap>
-              <ImgWrap>
-                <ProfileImg src={ProfileIMG} alt="프로필 이미지" />
-              </ImgWrap>
-              <InfoWrap>
-                <Top>
-                  <NameWrap>
-                    <Name>{chat.members[0].name}</Name>
-                    <NickName>{chat.members[0].nickname}</NickName>
-                  </NameWrap>
-                  <StatusWrap>
-                    <FaCircle color={chat.members[0].login ? '#2DC260' : '#9b9b9b'} />
-                    <Status>{chat.members[0].login ? '온라인' : '오프라인'}</Status>
-                  </StatusWrap>
-                </Top>
-                <Bottom>
-                  <Interest>{chat.members[0].interests[0]}</Interest>
-                  <RxDividerVertical color="#9b9b9b" size={28} />
-                  <Detail>{chat.members[0].expertiseField}</Detail>
-                </Bottom>
-              </InfoWrap>
-            </MainWrap>
-            {/* <FooterWrap>
+          <Link to={`/chats/room/${chat.chatRoomId}`} key={chat.chatRoomId}>
+            <Container key={chat.chatRoomId}>
+              <MainWrap>
+                <ImgWrap>
+                  <ProfileImg src={ProfileIMG} alt="프로필 이미지" />
+                </ImgWrap>
+                <InfoWrap>
+                  <Top>
+                    <NameWrap>
+                      <Name>{chat.members[0].name}</Name>
+                      <NickName>{chat.members[0].nickname}</NickName>
+                    </NameWrap>
+                    <StatusWrap>
+                      <FaCircle color={chat.members[0].login ? '#2DC260' : '#9b9b9b'} />
+                      <Status>{chat.members[0].login ? '온라인' : '오프라인'}</Status>
+                    </StatusWrap>
+                  </Top>
+                  <Bottom>
+                    <Interest>{chat.members[0].interests[0]}</Interest>
+                    <RxDividerVertical color="#9b9b9b" size={28} />
+                    <Detail>{chat.members[0].expertiseField}</Detail>
+                  </Bottom>
+                </InfoWrap>
+              </MainWrap>
+              {/* <FooterWrap>
             <ChatContent>{chat.lastMessage}</ChatContent>
             <MessageCount>{chat.messageCount}</MessageCount>
           </FooterWrap> */}
-          </Container>
+            </Container>
+          </Link>
         ))
       )}
     </div>

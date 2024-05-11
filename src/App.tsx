@@ -96,9 +96,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
-          path="/chats/room"
+          path="/chats/room/:chatRoomId"
           element={
             <ProtectedRoute>
               <ChatRoomPage />

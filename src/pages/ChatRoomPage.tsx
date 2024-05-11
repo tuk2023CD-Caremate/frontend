@@ -2,6 +2,12 @@ import Header2 from '../components/Header2.tsx'
 import { styled } from 'styled-components'
 import Navbar2 from '../components/Navbar2.tsx'
 import Chat from '../components/Chat.tsx'
+import { useParams } from 'react-router-dom'
+
+interface RouteParams {
+  [key: string]: string | undefined
+  chatRoomId?: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -13,12 +19,18 @@ const Container = styled.div`
 `
 
 function ChatRoomPage() {
+  const { chatRoomId } = useParams<RouteParams>()
+
+  if (!chatRoomId) {
+    return <div>채팅방 ID가 제공되지 않았습니다.</div>
+  }
+
   return (
     <div>
       <Header2 />
       <Navbar2 />
       <Container>
-        <Chat />
+        <Chat chatRoomId={chatRoomId} />
       </Container>
     </div>
   )

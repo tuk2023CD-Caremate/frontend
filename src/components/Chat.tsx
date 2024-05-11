@@ -8,6 +8,10 @@ import { useApiUrlStore } from '../store/store'
 import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 
+interface ChatProps {
+  chatRoomId: string
+}
+
 interface Content {
   // type: string
   chatRoomId: string
@@ -147,7 +151,7 @@ const CreateMeetingBtn = styled.button`
   margin: 0 10px 20px 10px;
 `
 
-function Chat() {
+function Chat({ chatRoomId }: ChatProps) {
   const { apiUrl } = useApiUrlStore()
 
   const [nickname, setNickname] = useState<string>('')
@@ -213,7 +217,7 @@ function Chat() {
 
       stomp.onConnect = () => {
         console.log('WebSocket 연결이 열렸습니다.')
-        const subscriptionDestination = `/sub/chat/room/11`
+        const subscriptionDestination = `/sub/chat/room/${chatRoomId}`
 
         stomp.subscribe(subscriptionDestination, (message) => {
           try {
@@ -235,10 +239,9 @@ function Chat() {
   }
 
   const sendMessage = (messageContent: string, nickname: string) => {
-    const destination = '/pub/chat/message/11'
-
+    const destination = `/pub/chat/message/${chatRoomId}`
     const newMessage: Content = {
-      chatRoomId: '11',
+      chatRoomId: chatRoomId,
       sender: nickname,
       content: messageContent,
     }
