@@ -567,9 +567,12 @@ function DetailStudyPostPage() {
                   </UserWrapper>
                   {nickname === postData.nickname ? (
                     <ButtonWrapper>
-                      <Modify onClick={handlePostEdit}>수정</Modify>
-                      <Delete onClick={deletePost}>삭제</Delete>
-                    </ButtonWrapper>
+                    <Modify onClick={handleCompleted}>
+                      {postData.recruitmentStatus ? '모집완료' : '모집중'}
+                    </Modify>
+                    <Modify onClick={handlePostEdit}>수정</Modify>
+                    <Delete onClick={deletePost}>삭제</Delete>
+                  </ButtonWrapper>
                   ) : null}
                 </Upper>
                 <Lower>
