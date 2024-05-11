@@ -171,30 +171,9 @@ function Chat() {
     } catch (error) {}
   }
 
-  // // 채팅방 생성 api
-  // async function createChatroom() {
-  //   // const access = localStorage.getItem('accessToken')
-
-  //   try {
-  //     if (nickname == '') {
-  //       await getNickname()
-  //     }
-  //     // const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
-  //     const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
-  //       // headers: { Authorization: `Bearer ${access}` },
-  //     })
-  //     setRoomId(response.data.roomId)
-  //     console.log('채팅방 id:', roomId)
-  //     console.log(`채팅방 name: ${response.data.name}`)
-  //   } catch (error) {
-  //     console.error(error)
-  //     console.log('에러')
-  //   }
-  // }
   useEffect(() => {
     const fetchData = async () => {
       await getNickname()
-      // await createChatroom()
     }
 
     fetchData()
@@ -205,12 +184,6 @@ function Chat() {
       }
     }
   }, [])
-
-  // useEffect(() => {
-  //   if (roomId) {
-  //     initializeChat()
-  //   }
-  // }, [roomId])
 
   useEffect(() => {
     initializeChat()
@@ -236,18 +209,12 @@ function Chat() {
 
       stomp.activate()
 
-      // WebSocket 연결이 열렸을 때의 처리 코드
       stomp.onConnect = () => {
         console.log('WebSocket 연결이 열렸습니다.')
         const subscriptionDestination = `/sub/chat/room/11`
 
         stomp.subscribe(subscriptionDestination, (message) => {
           try {
-            // const Message = message.body
-            // console.log('*****메시지왔어요*****')
-            // console.log(Message)
-            // // setMessages((prevMessages) => [...prevMessages, Message])
-
             console.log('메세지프레임 : ', message)
             console.log('메세지프레임.body : ', message.body)
             const parsedMessage = JSON.parse(message.body)
@@ -269,7 +236,6 @@ function Chat() {
     const destination = '/pub/chat/message/11'
 
     const newMessage: Content = {
-      // type: 'TALK',
       chatRoomId: '11',
       sender: nickname,
       content: messageContent,
@@ -281,8 +247,6 @@ function Chat() {
         body: JSON.stringify(newMessage),
       })
     }
-
-    // setMessages([...messages, newMessage])
     setInputMessage('')
   }
 
@@ -320,9 +284,7 @@ function Chat() {
   const handleZoomLogin = async () => {
     try {
       getAuth()
-    } catch (error) {
-      // 에러 처리
-    }
+    } catch (error) {}
   }
 
   const handleCreatMeeting = async () => {
