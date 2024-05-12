@@ -3,10 +3,13 @@ import { styled } from 'styled-components'
 import Navbar2 from '../components/Navbar2.tsx'
 import Chat from '../components/Chat.tsx'
 import { useParams } from 'react-router-dom'
+import { useReviewModalStore } from '../store/store.ts'
+import CreateReviewModal from './OnlinePage/CreateReviewModal.tsx'
 
 interface RouteParams {
   [key: string]: string | undefined
   chatRoomId?: string
+  mentorId?: string
 }
 
 const Container = styled.div`
@@ -19,7 +22,17 @@ const Container = styled.div`
 `
 
 function ChatRoomPage() {
-  const { chatRoomId } = useParams<RouteParams>()
+  const { chatRoomId, mentorId } = useParams<RouteParams>()
+
+  const { isReviewModalOpen, setIsReviewModalOpen } = useReviewModalStore()
+
+  const openModal = () => {
+    setIsReviewModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsReviewModalOpen(false)
+  }
 
   if (!chatRoomId) {
     return <div>채팅방 ID가 제공되지 않았습니다.</div>
@@ -30,7 +43,8 @@ function ChatRoomPage() {
       <Header2 />
       <Navbar2 />
       <Container>
-        <Chat chatRoomId={chatRoomId} />
+        <Chat onOpen={openModal} chatRoomId={chatRoomId} />
+        <CreateReviewModal isOpen={isReviewModalOpen} onClose={closeModal} mentorId={mentorId} />
       </Container>
     </div>
   )
