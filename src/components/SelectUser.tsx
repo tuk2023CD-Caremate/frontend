@@ -12,6 +12,10 @@ import { useEffect, useState } from 'react'
 import ReviewModal from './ReviewModal'
 import { useNavigate } from 'react-router-dom'
 
+interface TruncatedContentProps {
+  expanded: boolean
+}
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -92,6 +96,21 @@ const Content = styled.div`
   font-weight: bold;
   margin: 5px;
 `
+
+const TruncatedContent = styled.div<TruncatedContentProps>`
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${(props) => (props.expanded ? 'none' : '3')};
+  max-height: ${(props) => (props.expanded ? 'none' : '3.6em')};
+  cursor: pointer;
+`
+
 const Detail = styled.div`
   display: flex;
   font-size: 20px;
@@ -155,6 +174,7 @@ function SelectUser(id: any) {
 
   const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({}) // 각 유저의 클릭 여부 상태
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({})
 
   const navigate = useNavigate()
 
@@ -271,6 +291,14 @@ function SelectUser(id: any) {
     setIsModalOpen(false)
   }
 
+  // 텍스트 확장/축소를 토글하는 함수
+  const toggleExpand = (id: number) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id], // 현재 상태를 반전
+    }))
+  }
+
   return (
     <div>
       {userList.map((user) => (
@@ -312,7 +340,11 @@ function SelectUser(id: any) {
                 <Content>{user.blogUrl}</Content>
               </Section>
               <Section>
-                <Content>{user.publicRelations}</Content>
+                <TruncatedContent
+                  onClick={() => toggleExpand(user.id)}
+                  expanded={expandedDescriptions[user.id]}>
+                  {user.publicRelations}
+                </TruncatedContent>
               </Section>
             </InfoWrap>
           </LeftWrap>
