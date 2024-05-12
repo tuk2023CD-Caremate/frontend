@@ -178,6 +178,33 @@ export const useIsAiBasedStore = create<IsAiBasedState>((set) => ({
   setIsAiBased: (isAiBased: boolean) => set({ isAiBased }),
 }))
 
+
+/* 채팅 리스트 */
+interface ChatRoomMember {
+  id: number
+  name: string
+  nickname: string
+  expertiseField: string
+  interests: string[]
+  login: boolean
+}
+
+interface ChatRoom {
+  chatRoomId: number
+  chatRoomName: string
+  members: ChatRoomMember[]
+}
+
+interface ChatListState {
+  chatList: ChatRoom[]
+  setChatList: (chatList: ChatRoom[]) => void
+}
+
+export const useChatListStore = create<ChatListState>((set) => ({
+  chatList: [],
+  setChatList: (chatList) => set({ chatList }),
+}))
+
 /* 스터디기록 리스트 
 interface StudyListState {
   studyList: StudyList[]

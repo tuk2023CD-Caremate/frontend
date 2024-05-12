@@ -8,11 +8,15 @@ import { useApiUrlStore } from '../store/store'
 import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 
+interface ChatProps {
+  chatRoomId: string
+}
+
 interface Content {
-  type: string
-  roomId: string
+  // type: string
+  chatRoomId: string
   sender: string
-  message: string
+  content: string
 }
 
 interface MessagesProps {
@@ -33,9 +37,9 @@ interface MessageContainerProps {
 
 const Container = styled.div`
   width: 1530px;
-  height: calc(100vh - 170px);
+  height: calc(100vh - 280px);
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   border-left: 2px solid #d8d8d8;
   border-right: 2px solid #d8d8d8;
   display: flex;
@@ -45,8 +49,8 @@ const Container = styled.div`
 `
 
 const ChatWrap = styled.div`
-  height: 800px;
   width: 1530px;
+  height: calc(100vh - 200px);
   overflow-y: auto; /* 내용이 넘칠 때만 스크롤 표시 */
 `
 
@@ -116,14 +120,14 @@ const SendButton = styled.button`
 `
 const BtnWrap = styled.div`
   display: flex;
-  margin-left: auto;
-  margin-right: 10px;
+  width: 100%;
+  justify-content: right;
+  border-bottom: 2px solid #d8d8d8;
 `
 
 const ZoomLoginBtn = styled.button`
   width: 120px;
   height: 70px;
-  margin: 10px;
   border-radius: 20px;
   font-size: large;
   font-weight: bold;
@@ -131,11 +135,12 @@ const ZoomLoginBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
+  margin: 0 10px 20px 10px;
 `
 const CreateMeetingBtn = styled.button`
   width: 120px;
   height: 70px;
-  margin: 10px;
+
   border-radius: 20px;
   font-size: x-large;
   font-weight: bold;
@@ -143,15 +148,16 @@ const CreateMeetingBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
+  margin: 0 10px 20px 10px;
 `
 
-function Chat() {
+function Chat({ chatRoomId }: ChatProps) {
   const { apiUrl } = useApiUrlStore()
 
   const [nickname, setNickname] = useState<string>('')
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
-  const [roomId, setRoomId] = useState<string>()
+  // const [roomId, setRoomId] = useState<string>()
 
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
@@ -171,30 +177,9 @@ function Chat() {
     } catch (error) {}
   }
 
-  // 채팅방 생성 api
-  async function createChatroom() {
-    // const access = localStorage.getItem('accessToken')
-
-    try {
-      if (nickname == '') {
-        await getNickname()
-      }
-      // const randomName = Math.floor(Math.random() * 1000000).toString() // 랜덤 번호 생성
-      const response = await axios.post(`${apiUrl}/chat/room?name=1234`, {
-        // headers: { Authorization: `Bearer ${access}` },
-      })
-      setRoomId(response.data.roomId)
-      console.log('채팅방 id:', roomId)
-      console.log(`채팅방 name: ${response.data.name}`)
-    } catch (error) {
-      console.error(error)
-      console.log('에러')
-    }
-  }
   useEffect(() => {
     const fetchData = async () => {
       await getNickname()
-      await createChatroom()
     }
 
     fetchData()
@@ -207,15 +192,18 @@ function Chat() {
   }, [])
 
   useEffect(() => {
-    if (roomId) {
-      initializeChat()
-    }
-  }, [roomId])
+    initializeChat()
+  }, [])
 
   const initializeChat = async () => {
+    const access = localStorage.getItem('accessToken')
+
     try {
       const stomp = new Client({
-        brokerURL: 'ws://study-mate.kro.kr:8080/ws/chat',
+        brokerURL: 'ws://studymate154.com:8080/ws/chat',
+        connectHeaders: {
+          Authorization: `Bearer ${access}`,
+        },
         debug: (str: string) => {
           console.log(str)
         },
@@ -227,15 +215,16 @@ function Chat() {
 
       stomp.activate()
 
-      // WebSocket 연결이 열렸을 때의 처리 코드
       stomp.onConnect = () => {
         console.log('WebSocket 연결이 열렸습니다.')
-        const subscriptionDestination = `/sub/chat/room/1234`
+        const subscriptionDestination = `/sub/chat/room/${chatRoomId}`
 
         stomp.subscribe(subscriptionDestination, (message) => {
           try {
+            console.log('메세지프레임 : ', message)
+            console.log('메세지프레임.body : ', message.body)
             const parsedMessage = JSON.parse(message.body)
-            console.log(parsedMessage)
+            console.log('parsedMessage : ', parsedMessage)
             console.log('*****메시지왔어요*****')
             setMessages((prevMessages) => [...prevMessages, parsedMessage])
           } catch (error) {
@@ -250,13 +239,11 @@ function Chat() {
   }
 
   const sendMessage = (messageContent: string, nickname: string) => {
-    const destination = '/pub/chat/message/1234'
-
+    const destination = `/pub/chat/message/${chatRoomId}`
     const newMessage: Content = {
-      type: 'TALK',
-      roomId: '1234',
+      chatRoomId: chatRoomId,
       sender: nickname,
-      message: messageContent,
+      content: messageContent,
     }
 
     if (stompClient && stompClient.connected) {
@@ -265,8 +252,6 @@ function Chat() {
         body: JSON.stringify(newMessage),
       })
     }
-
-    // setMessages([...messages, newMessage])
     setInputMessage('')
   }
 
@@ -280,7 +265,7 @@ function Chat() {
   const getAuth = async () => {
     try {
       window.open(
-        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2Fstudy-mate.kro.kr%3A8080%2Fapi%2Fmeeting%2FzoomApi',
+        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2F3.36.177.42%2Fapi%2Fmeeting%2FzoomApi',
       )
     } catch (error) {}
   }
@@ -304,9 +289,7 @@ function Chat() {
   const handleZoomLogin = async () => {
     try {
       getAuth()
-    } catch (error) {
-      // 에러 처리
-    }
+    } catch (error) {}
   }
 
   const handleCreatMeeting = async () => {
@@ -336,7 +319,7 @@ function Chat() {
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
               <Messages sender={message.sender} nickname={nickname || ''}>
-                {message.message}
+                {message.content}
               </Messages>
               <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
             </MessageContainer>

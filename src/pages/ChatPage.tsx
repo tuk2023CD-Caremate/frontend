@@ -13,25 +13,13 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const Text = styled.div`
-  display: flex;
-  width: 1099px;
-  margin: 0 auto;
-  font-size: 50px;
-  font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 15px;
-`
-
 function ChatPage() {
   return (
     <div>
       <Header2 />
       <Navbar2 />
-      <Text>채팅</Text>
       <Container>
         <ChatList />
-        {/* <Chat /> */}
       </Container>
     </div>
   )

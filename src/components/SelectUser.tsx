@@ -10,6 +10,7 @@ import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
 import ReviewModal from './ReviewModal'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -155,6 +156,8 @@ function SelectUser(id: any) {
   const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({}) // 각 유저의 클릭 여부 상태
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const navigate = useNavigate()
+
   // 질문 폼 정보 디코딩
   const encodedValue = JSON.stringify(id)
   const decodedValue = decodeURIComponent(encodedValue)
@@ -224,6 +227,7 @@ function SelectUser(id: any) {
   const handleRequestMatching = (mentorId: number) => {
     onRequestMatching(mentorId)
     alert('요청되었습니다.')
+    navigate('/chats')
     // 매칭 요청이 성공했을 때의 추가적인 로직
   }
 
