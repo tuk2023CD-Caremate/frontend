@@ -1,21 +1,19 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { 
-  useApiUrlStore, 
+import {
+  useApiUrlStore,
   usePostListStore,
-  useFilterListStore, 
+  useFilterListStore,
   PostsList,
-  useLikeDataStore,
  } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
-import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
-
-
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -182,11 +180,11 @@ function MainPostPage() {
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [loading, setLoading] = useState(false)
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
-  const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState(false)
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -196,11 +194,10 @@ function MainPostPage() {
   //게시글 정렬
   const OnSortpostData = () => {
     const sortList = postsList.slice(0).sort((a, b) => {
-      
-      if (sortOption === 'LIKE') {//좋아요 순 option을 선택했을 경우
+      if (sortOption === 'LIKE') {
+        //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } 
-      else if (sortOption === 'COMMENT') {
+      } else if (sortOption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -210,8 +207,13 @@ function MainPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
+    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을해주세요.');
+        return;
+      }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -244,20 +246,19 @@ function MainPostPage() {
     }
   }
 
-
   //게시글 필터링
   const OnFilter = (interests: string) => {
-    if (isClicked && filterOption==interests) { // 이미 선택된 버튼인지 확인
+    if (isClicked && filterOption == interests) {
+      // 이미 선택된 버튼인지 확인
       setIsClicked(false) // 이미 선택된 버튼을 다시 눌렀을 때 전체 조회로 변경
       setFilterList([])
     } else {
       setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-      const filterPost = postsList.filter((post) => post.interests === interests); // 복사된 값에서 filter
+      const filterPost = postsList.filter((post) => post.interests === interests) // 복사된 값에서 filter
       setFilterList(filterPost)
-      setFilterOption(interests) 
+      setFilterOption(interests)
     }
   }
-
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -266,13 +267,14 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedList(response.data)
-      
-      const isliked = likeList.some((likedPost) => {
-        return postsList.some((post) => post.post_id === likedPost.post_id)
-      })
-      setIsLiked(isliked)
   
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
+      const newLikedMap: { [postId: string]: boolean } = {};
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true;
+      });
+      setIsLiked(newLikedMap);
+
     } catch (error) {
       alert('Error while liking post')
     }
@@ -284,24 +286,23 @@ function MainPostPage() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      searchpost();
+      searchpost()
     }
-  };
+  }
 
-  
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
-      {posts 
+      {posts
         .filter((post) => post.category === 'FREE')
         .map((post) => (
           <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-              {isliked ? (
-              <IoIosHeart color="#ff0000" size="25" />
+            {isliked[post.post_id] ? (
+                <IoIosHeart color="#ff0000" size="25" />
               ) : (
-              <IoIosHeartEmpty color="#ff0000" size="25" />
+                <IoIosHeartEmpty color="#ff0000" size="25" />
               )}
               <Likecount>{post.likeCount}</Likecount>
               <IoIosText size="30"/>
@@ -314,8 +315,7 @@ function MainPostPage() {
           </MainPosts>
         ))}
     </>
-  );
-  
+  )
 
   return (
     <div>
@@ -360,7 +360,8 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          <Post posts={isClicked ? filterList : postsList} />
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
+          : <SkeletonUI/>}
         </FreePostsWrapper>
       </Container>
     </div>

@@ -6,7 +6,6 @@ import {
   usePostListStore,
   useFilterListStore,
   PostsList,
-  useLikeDataStore,
  } from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
@@ -14,6 +13,7 @@ import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 
 const Container = styled.div`
@@ -190,9 +190,9 @@ function StudyPostPage() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const {filterList, setFilterList}= useFilterListStore()
   const {postsList, setPostList} = usePostListStore()
-  const { likeList, setLikedList } = useLikeDataStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
 
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -216,8 +216,13 @@ function StudyPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
+    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을 해주세요.');
+        return;
+      }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -272,13 +277,14 @@ function StudyPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLikedList(response.data)
+    
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
+      const newLikedMap: { [postId: string]: boolean } = {};
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true;
+      });
+      setIsLiked(newLikedMap);
       
-      const isLiked = likeList.some((likedPost) => {
-        return postsList.some((post) => post.post_id === likedPost.post_id)
-      })
-      setIsLiked(isLiked)
-  
     } catch (error) {
       alert('Error while liking post')
     }
@@ -307,7 +313,7 @@ function StudyPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-            {isliked ? (
+            {isliked[post.post_id] ? (
             <LikedIcon recruitmentStatus={post.recruitmentStatus}/>
             ) : (
              <UnLikedIcon recruitmentStatus={post.recruitmentStatus}/>
@@ -367,7 +373,8 @@ function StudyPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          <Post posts={isClicked ? filterList : postsList} />
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
+          : <SkeletonUI/>}
         </StudyPostsWrapper>
       </Container>
     </div>
