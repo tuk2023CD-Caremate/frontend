@@ -10,6 +10,7 @@ import { Client } from '@stomp/stompjs'
 
 interface ChatProps {
   chatRoomId: string
+  onOpen: () => void
 }
 
 interface Content {
@@ -151,7 +152,21 @@ const CreateMeetingBtn = styled.button`
   margin: 0 10px 20px 10px;
 `
 
-function Chat({ chatRoomId }: ChatProps) {
+const CreateReviewBtn = styled.button`
+  width: 120px;
+  height: 70px;
+
+  border-radius: 20px;
+  font-size: x-large;
+  font-weight: bold;
+  border: none;
+  background-color: #e8dcf2;
+  color: #650fa9;
+  cursor: pointer;
+  margin: 0 10px 20px 10px;
+`
+
+function Chat({ chatRoomId, onOpen }: ChatProps) {
   const { apiUrl } = useApiUrlStore()
 
   const [nickname, setNickname] = useState<string>('')
@@ -314,6 +329,7 @@ function Chat({ chatRoomId }: ChatProps) {
         <BtnWrap>
           <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
           <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
+          <CreateReviewBtn onClick={onOpen}>리뷰 작성</CreateReviewBtn>
         </BtnWrap>
         <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (

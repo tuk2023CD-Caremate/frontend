@@ -178,7 +178,6 @@ export const useIsAiBasedStore = create<IsAiBasedState>((set) => ({
   setIsAiBased: (isAiBased: boolean) => set({ isAiBased }),
 }))
 
-
 /* 채팅 리스트 */
 interface ChatRoomMember {
   id: number
@@ -203,6 +202,17 @@ interface ChatListState {
 export const useChatListStore = create<ChatListState>((set) => ({
   chatList: [],
   setChatList: (chatList) => set({ chatList }),
+}))
+
+/* 리뷰 모달창 */
+interface IsReviewModalOpenState {
+  isReviewModalOpen: boolean
+  setIsReviewModalOpen: (isOpen: boolean) => void
+}
+
+export const useReviewModalStore = create<IsReviewModalOpenState>((set) => ({
+  isReviewModalOpen: false,
+  setIsReviewModalOpen: (isOpen: boolean) => set({ isReviewModalOpen: isOpen }),
 }))
 
 /* 스터디기록 리스트 
