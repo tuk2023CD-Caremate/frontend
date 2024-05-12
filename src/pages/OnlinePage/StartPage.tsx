@@ -212,6 +212,3 @@ function StartPage() {
 }
 
 export default StartPage
-function useIsAiBasedlStore(): { setIsAiBased: any } {
-  throw new Error('Function not implemented.')
-}
