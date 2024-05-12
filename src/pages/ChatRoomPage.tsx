@@ -9,6 +9,7 @@ import CreateReviewModal from './OnlinePage/CreateReviewModal.tsx'
 interface RouteParams {
   [key: string]: string | undefined
   chatRoomId?: string
+  mentorId?: string
 }
 
 const Container = styled.div`
@@ -21,7 +22,7 @@ const Container = styled.div`
 `
 
 function ChatRoomPage() {
-  const { chatRoomId } = useParams<RouteParams>()
+  const { chatRoomId, mentorId } = useParams<RouteParams>()
 
   const { isReviewModalOpen, setIsReviewModalOpen } = useReviewModalStore()
 
@@ -43,7 +44,7 @@ function ChatRoomPage() {
       <Navbar2 />
       <Container>
         <Chat onOpen={openModal} chatRoomId={chatRoomId} />
-        <CreateReviewModal isOpen={isReviewModalOpen} onClose={closeModal} />
+        <CreateReviewModal isOpen={isReviewModalOpen} onClose={closeModal} mentorId={mentorId} />
       </Container>
     </div>
   )

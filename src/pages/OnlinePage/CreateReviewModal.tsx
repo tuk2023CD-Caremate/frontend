@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import { PiStar, PiStarFill } from 'react-icons/pi'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
+import { useApiUrlStore } from '../../store/store'
 
 interface ReviewModalProps {
   isOpen: boolean
   onClose: () => void
+  mentorId?: string
 }
 
 const Header = styled.div`
@@ -143,13 +146,15 @@ const CancelBtn = styled.button`
   margin: 30px 20px 0px 20px;
 `
 
-function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
+function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {
+  const { apiUrl } = useApiUrlStore()
+
   const [postData, setPostData] = useState({
     title: '',
     content: '',
     rating: 0,
-    isResolved: false,
-    isLiked: false,
+    isSolved: false,
+    heart: false,
   })
 
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -162,6 +167,22 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
 
   const handleBooleanChange = (name: any, value: any) => {
     setPostData((prev: any) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      await axios.post(`${apiUrl}/review/${mentorId}`, postData, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      alert('리뷰를 작성하였습니다.')
+      console.log(postData)
+      console.log(mentorId)
+    } catch (error) {
+      alert('error')
+      console.log(mentorId)
+      console.log(postData)
+    }
   }
 
   return (
@@ -208,13 +229,13 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
           <Text>문제가 해결 되셨나요 ?</Text>
           <ButtonWrap>
             <Button
-              isActive={postData.isResolved}
-              onClick={() => handleBooleanChange('isResolved', true)}>
+              isActive={postData.isSolved}
+              onClick={() => handleBooleanChange('isSolved', true)}>
               해결 됬어요
             </Button>
             <Button
-              isActive={!postData.isResolved}
-              onClick={() => handleBooleanChange('isResolved', false)}>
+              isActive={!postData.isSolved}
+              onClick={() => handleBooleanChange('isSolved', false)}>
               해결 못했어요
             </Button>
           </ButtonWrap>
@@ -222,14 +243,10 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <LikeWrap>
           <Text>매칭이 맘에 들었나요 ?</Text>
           <ButtonWrap>
-            <Button
-              isActive={postData.isLiked}
-              onClick={() => handleBooleanChange('isLiked', true)}>
+            <Button isActive={postData.heart} onClick={() => handleBooleanChange('heart', true)}>
               네
             </Button>
-            <Button
-              isActive={!postData.isLiked}
-              onClick={() => handleBooleanChange('isLiked', false)}>
+            <Button isActive={!postData.heart} onClick={() => handleBooleanChange('heart', false)}>
               아니요
             </Button>
           </ButtonWrap>
@@ -237,7 +254,7 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <InputTitle name="title" placeholder="제목을 적어주세요" onChange={handleInputChange} />
         <InputContent name="content" placeholder="내용을 적어주세요" onChange={handleInputChange} />
         <ConfirmWrap>
-          <RegisterBtn>등록</RegisterBtn>
+          <RegisterBtn onClick={handleSubmit}>등록</RegisterBtn>
           <CancelBtn onClick={onClose}>취소</CancelBtn>
         </ConfirmWrap>
       </MainWrap>

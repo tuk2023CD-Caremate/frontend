@@ -176,7 +176,7 @@ function ChatList() {
         </NoChatList>
       ) : (
         chatList.map((chat) => (
-          <Link to={`/chats/room/${chat.chatRoomId}`} key={chat.chatRoomId}>
+          <Link to={`/chats/room/${chat.chatRoomId}/${chat.members[0].id}`} key={chat.chatRoomId}>
             <Container key={chat.chatRoomId}>
               <MainWrap>
                 <ImgWrap>
