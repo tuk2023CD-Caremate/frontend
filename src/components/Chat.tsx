@@ -215,7 +215,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
 
     try {
       const stomp = new Client({
-        brokerURL: 'ws://studymate154.com:8080/ws/chat',
+        brokerURL: 'wss://studymate154.com/ws/chat',
         connectHeaders: {
           Authorization: `Bearer ${access}`,
         },
