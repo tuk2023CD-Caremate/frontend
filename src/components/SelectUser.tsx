@@ -222,12 +222,12 @@ function SelectUser(id: any) {
     }
   }
 
-  // 매칭 요청
+  // 카카오 알림톡 매칭 요청
   const onRequestMatching = async (mentorId: number) => {
     const access = localStorage.getItem('accessToken')
     if (access) {
       try {
-        const response = await axios.get(`${apiUrl}/matching/${question_id}/${mentorId}`, {
+        const response = await axios.get(`${apiUrl}/matching/kakao/${question_id}/${mentorId}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
         console.log('매칭요청발송')
