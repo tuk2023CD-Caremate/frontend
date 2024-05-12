@@ -1,25 +1,24 @@
-import { useState } from 'react';
+import { useState, } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import { CalenderList} from '../store/store'
 ChartJS.register(ArcElement, Tooltip, Legend);
-interface CalenderItem {
-  id: number;
-  studyClass: string;
-  entiretime: string;
-  starttime: string;
-  endtime : string;
-}
+
+
 interface PieChartProps {
-  calenderList: CalenderItem[];
+  calenderList: CalenderList[];
 }
 const timeToSeconds = (time:string) : number => {
   const [hours, minutes, seconds] = time.split(':').map(Number);
   return hours * 3600 + minutes * 60 + seconds;
 };
 const PieChart = ({ calenderList }: PieChartProps) => {
-   const labels = calenderList.map(item => item.studyClass);
-   const totalSeconds = calenderList.reduce((total, item) => total + timeToSeconds(item.entiretime), 0);
-   const percentages= calenderList.map(item => (timeToSeconds(item.entiretime) / totalSeconds) * 100);
+  const [percentage, setPercentage] = useState<number[]>([]);
+
+   const labels = calenderList.map(item => item.subjectName);
+   const totalSeconds = calenderList.reduce((total, item) => total + timeToSeconds(item.entireTime), 0);
+   const percentages= calenderList.map(item => (timeToSeconds(item.entireTime) / totalSeconds) * 100);
+   console.log(percentages)
  
    const [chartData] = useState({
     labels: labels,
@@ -56,6 +55,8 @@ const PieChart = ({ calenderList }: PieChartProps) => {
       },
     },
   };
+
+
   return (
     <Pie data={chartData} options={options} />
   );

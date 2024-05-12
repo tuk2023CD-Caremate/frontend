@@ -1,19 +1,15 @@
 import styled from 'styled-components'
 import PieChart from '../PieChart.tsx'
 import dayjs from 'dayjs';
-import { useState } from 'react'
+import { useEffect } from 'react'
+import axios from 'axios';
+import {useApiUrlStore, useCalenderListState} from '../../store/store.ts'
+
 interface StatisticsBarProps {
     isOpen: boolean;
     selectedDate: Date | null;
   }
-  interface calenderList {
-    id: number
-    studyClass: string
-    entiretime : string
-    starttime : string
-    endtime : string
-    percent: string
-  }
+
 const Container = styled.div<StatisticsBarProps>`
 display: flex;
 flex-direction: column;
@@ -91,17 +87,35 @@ margin-left: 40px;
 `
 export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
   
-  const [calenderList, _setCalenderList] = useState<calenderList[]>([
-    { id: 1, studyClass: '졸작', entiretime: '01:52:40',starttime: '00:00',endtime: '00:00', percent: '29%'},
-    { id: 2, studyClass: '학교 과제', entiretime: '00:16:42', starttime: '00:00',endtime: '00:00', percent: '4%'},
-    { id: 3, studyClass: '코딩테스트', entiretime: '03:11:03', starttime: '00:00',endtime: '00:00', percent: '49%'},
-    { id: 4, studyClass: '온라인 강의', entiretime: '01:06:15', starttime: '00:00',endtime: '00:00', percent: '17%'}
-  ])
+  const {calenderList, setCalenderList} = useCalenderListState()
+  const {apiUrl} = useApiUrlStore()
+
+    //기록 전체조회
+    const getStudy = async () => {
+      try {
+        const access = localStorage.getItem('accessToken')
+        if (!access) {
+          window.alert('로그인을 해주세요')
+        } else {
+          const response = await axios.get(`${apiUrl}/calender`, {
+            headers: { Authorization: `Bearer ${access}` },
+          })
+          setCalenderList(response.data.calenderList)
+          console.log(response.data)
+        }
+      } catch (error) {
+        alert('Error fetching study data:')
+      }
+    }
+    useEffect(() => {
+      getStudy()
+    }, [])
+
 
   const TotalEntireTime = () => {
     let totalSeconds = 0;
     calenderList.forEach(study => {
-        const [hours, minutes, seconds] = study.entiretime.split(':').map(Number);
+        const [hours, minutes, seconds] = study.entireTime.split(':').map(Number);
         totalSeconds += hours * 3600 + minutes * 60 + seconds;
     });
     const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${('0' + Math.floor((totalSeconds % 3600) / 60)).slice(-2)}:${('0' + (totalSeconds % 60)).slice(-2)}`;
@@ -124,8 +138,7 @@ export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps
                     <ListWrapper >
                      {calenderList.map((study)=> ( 
                         <List key={study.id}>
-                            <Time>{study.entiretime}</Time>
-                            <PerCent>{study.percent}</PerCent>
+                            <Time>{study.entireTime}</Time>
                          </List>
                         ))}
                         </ListWrapper>

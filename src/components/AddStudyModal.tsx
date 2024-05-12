@@ -5,11 +5,9 @@ import axios from 'axios'
 
 type Prop = {
   PostingCloseModal: () => void
-  //studyClass: string
-  startTime: string
-  endTime: string
-  //getStudy: () => void
+  getSubject: () => void
 }
+
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -63,24 +61,25 @@ const Btn = styled.div`
   font-size: 18px;
   cursor: pointer;
 `
-function AddStudyModal({ PostingCloseModal, startTime, endTime }: Prop) {
-  const [studyname, setStudyname]=useState('')
+function AddStudyModal({ PostingCloseModal, getSubject }: Prop) {
+  const [subjectName, setSubjectName]=useState('')
   const { apiUrl } = useApiUrlStore()
-  const createStudy = async () => {
-    const calenderList = {
-      //studyClass: studyClass,
-      startTime: startTime,
-      endTime: endTime,
+
+ //과목 생성
+  const createSubject = async () => {
+    const subject = {
+      subjectName : subjectName
     }
+
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`${apiUrl}/calender`, calenderList, {
+      const response = await axios.post(`${apiUrl}/subject`, subject, {
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('완료되었습니다.')
-      //getStudy()
+      getSubject()
       PostingCloseModal()
-      setStudyname(studyname)
+      setSubjectName(subjectName)
       console.log(response.data)
     } catch (error) {
       alert('입력값이 비어있습니다. 확인해주세요.')
@@ -108,9 +107,10 @@ function AddStudyModal({ PostingCloseModal, startTime, endTime }: Prop) {
       <Container>
         <Modal>
           <Title>추가할 과목을 작성해주세요 </Title> 
-          <Textarea value={studyname}  />
+          <Textarea value={subjectName}
+          onChange={(e) => setSubjectName(e.target.value)}/>
           <BtnWrapper>
-            <Btn onClick={createStudy}>저장</Btn>
+            <Btn onClick={createSubject}>저장</Btn>
             <Btn onClick={PostingCloseModal}>취소</Btn>
           </BtnWrapper>
         </Modal>

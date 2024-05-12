@@ -6,17 +6,14 @@ import { IoStopCircleSharp, IoPencil } from 'react-icons/io5'
 import { IoIosPlayCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
 import AddStudyModal from '../components/AddStudyModal.tsx'
 import Calendar from '../components/StudyCalendar.tsx'
-import { useState} from 'react'
+import { useState, useEffect} from 'react'
+import { useApiUrlStore, useSubjectListState, useCalenderListState } from '../store/store'
+import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 dayjs.locale('ko')
-interface calenderList {
-  id: number
-  studyClass: string
-  entiretime: string
-  starttime: string
-  endtime: string
-}
+
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -145,36 +142,37 @@ function StudyPage() {
   const [time, setTime] = useState<{ [key: number]: number }>({})
   const [isRunning, setIsRunning] = useState(false)
   const [interval, setIntervalId] = useState<{ [key: number]: number }>({})
+
   //모달창
   const [postingmodalOpen, setPostingModalOpen] = useState(false)
+
   //props
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  //const { apiUrl } = useApiUrlStore()
+  const { apiUrl } = useApiUrlStore()
   const [isStatisticsBarOpen, setIsStatisticsBarOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [clickedIconId, setClickedIconId] = useState<number | null>(null); 
+  const {subjectList, setSubjectList} = useSubjectListState() 
+  const {calenderList, setCalenderList} = useCalenderListState() 
 
 
-  //const [calenderList, setCalenderList] = useState<calenderList[]>([])
-  const [List, _setList] = useState<calenderList[]>([
-    { id: 1, studyClass: '졸작', entiretime: '01:10:00', starttime: '00:00', endtime: '00:00' },
-    { id: 2, studyClass: '학교 과제', entiretime: '00:32:52', starttime: '00:00', endtime: '00:00'},
-    { id: 3, studyClass: '코딩테스트', entiretime: '00:25:40', starttime: '00:00', endtime: '00:00'},
-    { id: 4, studyClass: '온라인 강의', entiretime: '02:33:0', starttime: '00:00', endtime: '00:00'},
-  ])
   const ClickHandler = (id: number) => {
     //시간 형식 변환
-    const startTime = dayjs().format('YYYY-MM-DD HH:mm')
-    const endTime = dayjs().format('YYYY-MM-DD HH:mm')
+    const startTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+
+
     if (!isRunning) {
       setStartTime(startTime) // 현재 시간을 startTime으로 설정
+      console.log(startTime)
+
       const interval = setInterval(() => {
         setTime((prevTime) => ({
           ...prevTime,
           [id]: (prevTime[id] || 0) + 1000,
         }))
-      }, 1000)
+      }, 1000);
+
       setIntervalId((prevIntervalIds) => ({
         ...prevIntervalIds,
         [id]: interval,
@@ -184,7 +182,9 @@ function StudyPage() {
     } else {
       clearInterval(interval[id])
       setIsRunning(false)
+      const endTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
       setEndTime(endTime) //endTime업데이트
+      console.log(endTime)
       setClickedIconId(null);
     }
   }
@@ -218,14 +218,73 @@ function StudyPage() {
 
   const TotalEntireTime = () => {
     let totalSeconds = 0;
-    List.forEach(study => {
-        const [hours, minutes, seconds] = study.entiretime.split(':').map(Number);
+    calenderList.forEach(study => {
+        const [hours, minutes, seconds] = study.entireTime.split(':').map(Number);
         totalSeconds += hours * 3600 + minutes * 60 + seconds;
     });
     const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${('0' + Math.floor((totalSeconds % 3600) / 60)).slice(-2)}:${('0' + (totalSeconds % 60)).slice(-2)}`;
     return formattedTotalTime;
 };
-  
+
+
+   //과목 전체조회
+   const getSubject = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을 해주세요')
+      } else {
+        const response = await axios.get(`${apiUrl}/subject`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setSubjectList(response.data.subjectList)
+      }
+    } catch (error) {
+      alert('Error fetching study data:')
+    }
+  }
+  useEffect(() => {
+    getSubject()
+  }, [])
+
+
+    //과목 삭제조회
+    const deletedSubject = async(subject_id: number) => {
+      if (window.confirm('과목을 삭제할까요?')) {
+        try {
+          const access = localStorage.getItem('accessToken')
+          const response = await axios.delete(`${apiUrl}/subject/${subject_id}`, {
+            headers: { Authorization: `Bearer ${access}` },
+          })
+          setSubjectList(response.data.subjectList)
+        } catch (error) {
+          alert('Error fetching study data:')
+        }
+      }
+      getSubject()
+    }
+
+
+     //스터디기록 생성
+  const createStudy = async (subject_id : number) => {
+    const study = {
+      startTime : startTime,
+      endTime: endTime
+    }
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post(`${apiUrl}/calender/${subject_id}`, study, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      alert('완료되었습니다.')
+      setCalenderList(response.data.calenderList)
+      TotalEntireTime()
+      console.log(response.data.calenderList)
+    } catch (error) {
+      alert('입력값이 비어있습니다. 확인해주세요.')
+    }
+  }
+
 {/*
   //기록 전체조회
   const getStudy = async () => {
@@ -247,24 +306,9 @@ function StudyPage() {
   useEffect(() => {
     getStudy()
   }, [])
-  
-  //기록 삭제조회
-  const deletedStudy = async (calender_id: number) => {
-    if (window.confirm('과목을 삭제할까요?')) {
-      try {
-        const access = localStorage.getItem('accessToken')
-        const response = await axios.delete(`${apiUrl}/calender/${calender_id}`, {
-          headers: { Authorization: `Bearer ${access}` },
-        })
-        setCalenderList(response.data.calenderList)
-        console.log(response.data)
-      } catch (error) {
-        alert('Error fetching study data:')
-      }
-    }
-    getStudy()
-  }
 */}
+  
+
   return (
     <div>
       <Header2 />
@@ -285,31 +329,37 @@ function StudyPage() {
               </BtnWrapper>
             </StudyingWrapper>
             <StudyListWrapper>
-                {List.map((study) => (
-                  <StudyList key={study.id}>
+              {Array.isArray(subjectList)&&
+                subjectList.map((subject) => (
+                  <StudyList key={subject.id}>
                     <ListInfoWrapper>
                       <IconWrapper>
-                        {isRunning && clickedIconId === study.id  ? (
+                        {isRunning && clickedIconId === subject.id  ? (
                           <IoStopCircleSharp
                             color="#650FA9"
                             size="50"
-                            onClick={() => ClickHandler(study.id)}
+                            onClick={() => {
+                              ClickHandler(subject.id)
+                              createStudy(subject.id); 
+                            }}
                           />
                         ) : (
                           <IoIosPlayCircle
                             color="#650FA9"
                             size="50"
-                            onClick={() => ClickHandler(study.id)}
+                            onClick={() => 
+                              ClickHandler(subject.id)
+                            }
                           />
                         )}
-                        <StudyName>{study.studyClass}</StudyName>
+                        <StudyName>{subject.subjectName}</StudyName>
                       </IconWrapper>
                       <DetailWrapper>
                         <StudyingTime>
-                          {`${('0' + Math.floor((time[study.id] || 0) / 3600000)).slice(-2)}:${(
-                            '0' + Math.floor(((time[study.id] || 0) / 60000) % 60)
+                          {`${('0' + Math.floor((time[subject.id] || 0) / 3600000)).slice(-2)}:${(
+                            '0' + Math.floor(((time[subject.id] || 0) / 60000) % 60)
                           ).slice(-2)}:${(
-                            '0' + Math.floor(((time[study.id] || 0) / 1000) % 60)
+                            '0' + Math.floor(((time[subject.id] || 0) / 1000) % 60)
                           ).slice(-2)}`}
                         </StudyingTime>
                         <SideIconWrapper>
@@ -321,7 +371,7 @@ function StudyPage() {
                           <IoIosRemoveCircleOutline
                             size="30"
                             style={{ marginTop: '10px' }}
-                            //onClick={() => deletedStudy(study.id)}
+                            onClick={() => deletedSubject(subject.id)}
                           />
                         </SideIconWrapper>
                       </DetailWrapper>
@@ -334,10 +384,7 @@ function StudyPage() {
       {postingmodalOpen && (
         <AddStudyModal
           PostingCloseModal={PostingCloseModal}
-          //studyClass={studyClass}
-          startTime={startTime}
-          endTime={endTime}
-          //getStudy={getStudy}
+          getSubject={getSubject}
         />
       )}
     </div>

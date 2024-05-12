@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://studymate154.com/api',
-  // apiUrl: 'http://studymate154.com:8080/api',
+  // apiUrl: 'https://studymate154.com/api',
+   apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
@@ -205,20 +205,37 @@ export const useChatListStore = create<ChatListState>((set) => ({
   setChatList: (chatList) => set({ chatList }),
 }))
 
-/* 스터디기록 리스트 
-interface StudyListState {
-  studyList: StudyList[]
-  setStudyList: (studyList: StudyList[]) => void
+
+/*과목리스트*/
+interface SubjectListState {
+  subjectList: SubjectList[]
+  setSubjectList: (subjectList: SubjectList[]) => void
 }
-export interface StudyList {
+export interface SubjectList {
   id: number
-  content : string
-  entiretime : string
-  starttime : string
-  endtime : string
+  subjectName : string
 }
-export const useStudyListState = create<StudyListState>((set) => ({
-  studyList: [],
-  setStudyList: (studyList) => set({ studyList }),
+export const useSubjectListState = create<SubjectListState>((set) => ({
+  subjectList: [],
+  setSubjectList: (subjectList) => set({ subjectList }),
 }))
-*/
+
+
+/*스터디기록 리스트*/
+interface CalenderListState {
+  calenderList: CalenderList[]
+  setCalenderList: (calenderList: CalenderList[]) => void
+}
+export interface CalenderList {
+  id: number
+  subjectName : string
+  entireTime : string
+  startTime : string
+  endTime : string
+}
+export const useCalenderListState = create<CalenderListState>((set) => ({
+  calenderList: [],
+  setCalenderList: (calenderList) => set({ calenderList }),
+}))
+
+
