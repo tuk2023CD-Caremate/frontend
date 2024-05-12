@@ -50,6 +50,8 @@ interface UserList {
   starAverage: number
   solved: number
   matchingCount: number
+  reviewCount: number
+  login: boolean
 }
 
 export const useUserListStore = create<UserListState>((set) => ({

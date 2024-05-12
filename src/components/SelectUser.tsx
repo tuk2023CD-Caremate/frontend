@@ -329,7 +329,7 @@ function SelectUser(id: any) {
                       handleGetReviewList(user.id)
                       setClickedUsername(user.name)
                     }}>
-                    리뷰 {13}
+                    리뷰 {user.reviewCount}
                   </Review>
                 </Section>
               </ReputationWrap>
