@@ -144,30 +144,24 @@ const CancelBtn = styled.button`
 `
 
 function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
-  const [rating, setRating] = useState<number>(0)
-  const [isResolved, setIsResolved] = useState<boolean | null>(null)
-  const [isLiked, setIsLiked] = useState<boolean | null>(null)
+  const [postData, setPostData] = useState({
+    title: '',
+    content: '',
+    rating: 0,
+    isResolved: false,
+    isLiked: false,
+  })
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value)
+  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target
+    setPostData((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }))
   }
 
-  const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value)
-  }
-
-  const handleRating = (index: number) => {
-    setRating(index)
-  }
-
-  const handleResolved = (resolved: boolean) => {
-    setIsResolved(resolved)
-  }
-
-  const handleLiked = (liked: boolean) => {
-    setIsLiked(liked)
+  const handleBooleanChange = (name: any, value: any) => {
+    setPostData((prev: any) => ({ ...prev, [name]: value }))
   }
 
   return (
@@ -198,12 +192,12 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
           <Text>평점을 남겨주세요 !</Text>
           <StarWrap>
             {[...Array(5)].map((_, index) =>
-              index < rating ? (
-                <StarIcon key={index} onClick={() => handleRating(index + 1)}>
+              index < postData.rating ? (
+                <StarIcon key={index} onClick={() => handleBooleanChange('rating', index + 1)}>
                   <PiStarFill size={36} />
                 </StarIcon>
               ) : (
-                <StarIcon key={index} onClick={() => handleRating(index + 1)}>
+                <StarIcon key={index} onClick={() => handleBooleanChange('rating', index + 1)}>
                   <PiStar size={36} />
                 </StarIcon>
               ),
@@ -213,10 +207,14 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <SolvedWrap>
           <Text>문제가 해결 되셨나요 ?</Text>
           <ButtonWrap>
-            <Button isActive={isResolved === true} onClick={() => handleResolved(true)}>
+            <Button
+              isActive={postData.isResolved}
+              onClick={() => handleBooleanChange('isResolved', true)}>
               해결 됬어요
             </Button>
-            <Button isActive={isResolved === false} onClick={() => handleResolved(false)}>
+            <Button
+              isActive={!postData.isResolved}
+              onClick={() => handleBooleanChange('isResolved', false)}>
               해결 못했어요
             </Button>
           </ButtonWrap>
@@ -224,16 +222,20 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <LikeWrap>
           <Text>매칭이 맘에 들었나요 ?</Text>
           <ButtonWrap>
-            <Button isActive={isLiked === true} onClick={() => handleLiked(true)}>
+            <Button
+              isActive={postData.isLiked}
+              onClick={() => handleBooleanChange('isLiked', true)}>
               네
             </Button>
-            <Button isActive={isLiked === false} onClick={() => handleLiked(false)}>
+            <Button
+              isActive={!postData.isLiked}
+              onClick={() => handleBooleanChange('isLiked', false)}>
               아니요
             </Button>
           </ButtonWrap>
         </LikeWrap>
-        <InputTitle placeholder="제목을 적어주세요" onChange={handleTitleChange}></InputTitle>
-        <InputContent placeholder="내용을 적어주세요" onChange={handleContentChange}></InputContent>
+        <InputTitle name="title" placeholder="제목을 적어주세요" onChange={handleInputChange} />
+        <InputContent name="content" placeholder="내용을 적어주세요" onChange={handleInputChange} />
         <ConfirmWrap>
           <RegisterBtn>등록</RegisterBtn>
           <CancelBtn onClick={onClose}>취소</CancelBtn>
