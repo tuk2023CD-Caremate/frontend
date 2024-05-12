@@ -33,18 +33,23 @@ const Text = styled.div`
   color: #666666;
 `
 
-const Button = styled.button`
+const Button = styled.button<{ isActive?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
   width: 150px;
-  border: solid 1.5px #650fa9;
-  border-radius: 10px;
   height: 40px;
   font-size: 24px;
   color: #650fa9;
   margin-left: 40px;
+  border-radius: 10px;
+  border: solid 1.5px #650fa9;
+  background-color: ${(props) => (props.isActive ? '#e8dcf2' : 'transparent')};
+
+  &:hover {
+    background-color: #dcd6eb;
+  }
 `
 
 const RateWrap = styled.div`
@@ -56,6 +61,11 @@ const RateWrap = styled.div`
 `
 const StarWrap = styled.div`
   display: flex;
+`
+
+const StarIcon = styled.div`
+  cursor: pointer;
+  margin: 10px;
 `
 
 const SolvedWrap = styled.div`
@@ -136,6 +146,9 @@ const CancelBtn = styled.button`
 function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [rating, setRating] = useState<number>(0)
+  const [isResolved, setIsResolved] = useState<boolean | null>(null)
+  const [isLiked, setIsLiked] = useState<boolean | null>(null)
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
@@ -143,6 +156,18 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
 
   const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
+  }
+
+  const handleRating = (index: number) => {
+    setRating(index)
+  }
+
+  const handleResolved = (resolved: boolean) => {
+    setIsResolved(resolved)
+  }
+
+  const handleLiked = (liked: boolean) => {
+    setIsLiked(liked)
   }
 
   return (
@@ -172,26 +197,39 @@ function CreateReviewModal({ isOpen, onClose }: ReviewModalProps) {
         <RateWrap>
           <Text>평점을 남겨주세요 !</Text>
           <StarWrap>
-            <PiStar size={36} style={{ margin: '10px' }} />
-            <PiStar size={36} style={{ margin: '10px' }} />
-            <PiStar size={36} style={{ margin: '10px' }} />
-            <PiStar size={36} style={{ margin: '10px' }} />
-            <PiStar size={36} style={{ margin: '10px' }} />
+            {[...Array(5)].map((_, index) =>
+              index < rating ? (
+                <StarIcon key={index} onClick={() => handleRating(index + 1)}>
+                  <PiStarFill size={36} />
+                </StarIcon>
+              ) : (
+                <StarIcon key={index} onClick={() => handleRating(index + 1)}>
+                  <PiStar size={36} />
+                </StarIcon>
+              ),
+            )}
           </StarWrap>
-          {/* <PiStarFill /> */}
         </RateWrap>
         <SolvedWrap>
           <Text>문제가 해결 되셨나요 ?</Text>
           <ButtonWrap>
-            <Button>해결 됬어요</Button>
-            <Button>해결 못했어요</Button>
+            <Button isActive={isResolved === true} onClick={() => handleResolved(true)}>
+              해결 됬어요
+            </Button>
+            <Button isActive={isResolved === false} onClick={() => handleResolved(false)}>
+              해결 못했어요
+            </Button>
           </ButtonWrap>
         </SolvedWrap>
         <LikeWrap>
           <Text>매칭이 맘에 들었나요 ?</Text>
           <ButtonWrap>
-            <Button>네</Button>
-            <Button>아니요</Button>
+            <Button isActive={isLiked === true} onClick={() => handleLiked(true)}>
+              네
+            </Button>
+            <Button isActive={isLiked === false} onClick={() => handleLiked(false)}>
+              아니요
+            </Button>
           </ButtonWrap>
         </LikeWrap>
         <InputTitle placeholder="제목을 적어주세요" onChange={handleTitleChange}></InputTitle>
