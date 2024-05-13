@@ -100,6 +100,7 @@ const StartMatchingBtn = styled.button`
 
 interface Option {
   label: string
+  value: string
 }
 
 function StartPage() {
@@ -114,19 +115,24 @@ function StartPage() {
   const [specificField, setSpecificField] = useState<string>('')
   const [options] = useState<Option[]>([
     {
-      label: 'PROGRAMMING',
+      label: '웹/앱개발',
+      value: 'WEBAPP',
     },
     {
-      label: 'MATH',
+      label: '서버/네트워크',
+      value: 'SERVER',
     },
     {
-      label: 'ENGLISH',
+      label: 'AI/IoT',
+      value: 'AI',
     },
     {
-      label: 'ComputerSience',
+      label: '데이터 개발',
+      value: 'DATA',
     },
     {
-      label: 'Algorithm',
+      label: '정보보안',
+      value: 'SECURITY',
     },
   ])
 
@@ -183,7 +189,7 @@ function StartPage() {
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
-              <option key={option.label} value={option.label}>
+              <option key={option.label} value={option.value}>
                 {option.label}
               </option>
             ))}
