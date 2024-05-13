@@ -14,7 +14,6 @@ import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
-import { AlertIcon } from '@chakra-ui/react'
 
 const Container = styled.div`
   display: flex;
