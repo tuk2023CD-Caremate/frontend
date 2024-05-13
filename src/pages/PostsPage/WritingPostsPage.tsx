@@ -16,8 +16,8 @@ const AllWrapper = styled.div`
   justify-content: center;
   width: calc(100% - 600px);
   height: 950px;
-  border-left: 1px solid #D8D8D8;
-  border-right: 1px solid #D8D8D8;
+  border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
   padding: 0 100px 0 100px;
 `
 
@@ -117,8 +117,8 @@ const PostBtn = styled.button`
   height: 60px;
   margin-left: 20px;
   border-radius: 10px;
-  background-color: #ECECEC;
-  color:#787878;
+  background-color: #ececec;
+  color: #787878;
   font-weight: bolder;
   &.post {
     color: #fff;
@@ -126,11 +126,11 @@ const PostBtn = styled.button`
   }
 `
 const interestsList = [
-  { value: 'KOREAN', name: '국어' },
-  { value: 'MATH', name: '수학' },
-  { value: 'ENGLISH', name: '영어' },
-  { value: 'SCIENCE', name: '과학' },
-  { value: 'PROGRAMMING', name: '코딩' },
+  { value: 'WEBAPP', name: '웹/앱개발' },
+  { value: 'SERVER', name: '서버/네트워크' },
+  { value: 'AI', name: 'AI/IoT' },
+  { value: 'DATA', name: '데이터 개발' },
+  { value: 'SECURITY', name: '정보보안' },
 ]
 
 export default function WritingPostPage() {
@@ -174,7 +174,7 @@ export default function WritingPostPage() {
 
   return (
     <div>
-      <Header2/>
+      <Header2 />
       <Container>
         <AllWrapper>
           <Upper>
@@ -206,7 +206,9 @@ export default function WritingPostPage() {
             </ButtonWrapper>
             <SerchWrapper>
               <InterestsSelect value={interests} onChange={(e) => SetInterests(e.target.value)}>
-                <option disabled hidden>관심분야</option>
+                <option disabled hidden>
+                  관심분야
+                </option>
                 {interestsList.map((item) => (
                   <option value={item.value} key={item.name}>
                     {item.name}
