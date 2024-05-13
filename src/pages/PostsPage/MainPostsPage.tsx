@@ -6,7 +6,7 @@ import {
   usePostListStore,
   useFilterListStore,
   PostsList,
- } from '../../store/store.ts'
+} from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
@@ -14,6 +14,7 @@ import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
+import { AlertIcon } from '@chakra-ui/react'
 
 const Container = styled.div`
   display: flex;
@@ -39,11 +40,11 @@ const BtnWrapper = styled.div`
   padding-bottom: 10px;
 `
 const Btn = styled.button<{ active: boolean }>`
-  width: 124px;
+  width: 150px;
   height: 48px;
   border-radius: 10px;
   border: none;
-  font-size: 24px;
+  font-size: 22px;
   margin-right: 36px;
   background-color: ${({ active }) => (active ? '#E8DCF2' : '#e8e8e8')};
   color: ${({ active }) => (active ? '#650FA9' : '#bdbdbd')};
@@ -168,11 +169,11 @@ const Sortoption = [
 ]
 
 const interestLabels: { [key: string]: string } = {
-  KOREAN: '국어',
-  MATH: '수학',
-  ENGLISH: '영어',
-  SCIENCE: '과학',
-  PROGRAMMING: '코딩',
+  WEBAPP: '웹/앱개발',
+  SERVER: '서버/네트워크',
+  AI: 'AI/IoT',
+  DATA: '데이터 개발',
+  SECURITY: '정보보안',
 }
 
 function MainPostPage() {
@@ -181,11 +182,10 @@ function MainPostPage() {
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
   const [loading, setLoading] = useState(false)
-  const {filterList, setFilterList}= useFilterListStore()
-  const {postsList, setPostList} = usePostListStore()
+  const { filterList, setFilterList } = useFilterListStore()
+  const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
-
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({})
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
@@ -211,8 +211,8 @@ function MainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
-        window.alert('로그인을해주세요.');
-        return;
+        window.alert('로그인을해주세요.')
+        return
       }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
@@ -267,14 +267,13 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-  
-      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
-      const newLikedMap: { [postId: string]: boolean } = {};
-      likedPostIds.forEach((postId: string) => {
-        newLikedMap[postId] = true;
-      });
-      setIsLiked(newLikedMap);
 
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id)
+      const newLikedMap: { [postId: string]: boolean } = {}
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true
+      })
+      setIsLiked(newLikedMap)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -299,13 +298,13 @@ function MainPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-            {isliked[post.post_id] ? (
+              {isliked[post.post_id] ? (
                 <IoIosHeart color="#ff0000" size="25" />
               ) : (
                 <IoIosHeartEmpty color="#ff0000" size="25" />
               )}
               <Likecount>{post.likeCount}</Likecount>
-              <IoIosText size="30"/>
+              <IoIosText size="30" />
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
               <DateCreated>{post.createdAt}</DateCreated>
@@ -360,8 +359,7 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
-          : <SkeletonUI/>}
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> : <SkeletonUI />}
         </FreePostsWrapper>
       </Container>
     </div>
