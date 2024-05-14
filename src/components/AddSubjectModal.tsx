@@ -61,14 +61,14 @@ const Btn = styled.div`
   font-size: 18px;
   cursor: pointer;
 `
-function AddStudyModal({ PostingCloseModal, getSubject }: Prop) {
-  const [subjectName, setSubjectName]=useState('')
+function AddSubjectModal({ PostingCloseModal, getSubject }: Prop) {
+  const [subjectName, setSubjectName] = useState('')
   const { apiUrl } = useApiUrlStore()
 
- //과목 생성
+  //과목 생성
   const createSubject = async () => {
     const subject = {
-      subjectName : subjectName
+      subjectName: subjectName,
     }
 
     try {
@@ -85,7 +85,8 @@ function AddStudyModal({ PostingCloseModal, getSubject }: Prop) {
       alert('입력값이 비어있습니다. 확인해주세요.')
     }
   }
-{/*
+  {
+    /*
    //기록 수정조회
    const updateStudy = async () => {
     getStudy()
@@ -101,14 +102,14 @@ function AddStudyModal({ PostingCloseModal, getSubject }: Prop) {
     alert('Error fetching study data:')
   }
 }
-*/}
+*/
+  }
   return (
     <div>
       <Container>
         <Modal>
-          <Title>추가할 과목을 작성해주세요 </Title> 
-          <Textarea value={subjectName}
-          onChange={(e) => setSubjectName(e.target.value)}/>
+          <Title>추가할 과목을 입력하세요</Title>
+          <Textarea value={subjectName} onChange={(e) => setSubjectName(e.target.value)} />
           <BtnWrapper>
             <Btn onClick={createSubject}>저장</Btn>
             <Btn onClick={PostingCloseModal}>취소</Btn>
@@ -118,4 +119,4 @@ function AddStudyModal({ PostingCloseModal, getSubject }: Prop) {
     </div>
   )
 }
-export default AddStudyModal
+export default AddSubjectModal
