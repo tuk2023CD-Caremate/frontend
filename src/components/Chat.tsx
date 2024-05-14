@@ -58,7 +58,7 @@ const ChatWrap = styled.div`
 const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.sender !== props.nickname ? 'flex-start' : 'flex-start')};
+  justify-content: ${(props) => (props.sender === props.nickname ? 'flex-end' : 'flex-start')};
 `
 
 // const Time = styled.span`
@@ -86,7 +86,7 @@ const Messages = styled.div<MessagesProps>`
   color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 16px;
   font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '20px' : 'auto')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '10px' : 'auto')};
 `
 
 const InputWrap = styled.div`
@@ -334,10 +334,15 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
         <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
+              {message.sender !== nickname && (
+                <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              )}
               <Messages sender={message.sender} nickname={nickname || ''}>
                 {message.content}
               </Messages>
-              <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              {message.sender === nickname && (
+                <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              )}
             </MessageContainer>
           ))}
         </ChatWrap>
