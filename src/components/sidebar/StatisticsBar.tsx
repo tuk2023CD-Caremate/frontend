@@ -1,96 +1,102 @@
 import styled from 'styled-components'
 import PieChart from '../PieChart.tsx'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
-import axios from 'axios';
-import {useApiUrlStore, useCalenderListState} from '../../store/store.ts'
+import axios from 'axios'
+import { useApiUrlStore, useCalenderListState } from '../../store/store.ts'
 
 interface StatisticsBarProps {
-    isOpen: boolean;
-    selectedDate: Date | null;
-  }
+  isOpen: boolean
+  selectedDate: Date | null
+}
 
 const Container = styled.div<StatisticsBarProps>`
-display: flex;
-flex-direction: column;
-align-items: center;
-  position: fixed;
-  right: ${({ isOpen }) => (isOpen ? '0' : '-60%')}; // isOpen 상태에 따라 오른쪽에서 나오거나 숨김
-  width: 59%;
-  height: 870px;
-  background-color: #F7F7F7;
-  transition: right 0.3s ease; // 슬라이딩 효과를 위한 transition 설정
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7;
+  transition: right 0.3s ease;
 `
 const UpperWrapper = styled.div`
-display: flex;
-justify-content: center;
-width: 100%;
-height: 40%;
+  display: flex;
+  justify-content: center;
 `
 const TimeRecodingWrapper = styled.div`
-display: flex;
-flex-direction:column;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const TodayDate = styled.div`
-font-size: 40px;
-font-weight: bold;
-margin-top: 60px;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 20px;
 `
 const TodayText = styled.div`
-font-size: 50px;
-font-weight: bolder;
-color: #650FA9;
-margin-top: 50px;
+  font-size: 40px;
+  font-weight: bolder;
+  color: #650fa9;
 `
 const TotalTime = styled.div`
-font-size: 80px;
-font-weight: bolder;
+  font-size: 60px;
+  font-weight: bolder;
 `
 const MainWrapper = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-width: 80%;
-height: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 const GrapWrapper = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-flex: 3;
-height: 100%;
-margin-left: 80px;
+  display: flex;
+  flex: 3; // flex-grow 값을 조정하여 차트 영역을 늘립니다.
+  align-items: center;
+  margin-top: -20px;
+  margin-left: 20px;
+  justify-content: center;
+  width: 100%;
+  /* PieChart 컴포넌트를 감싸고 있는 부모 컴포넌트에 적용 */
+  min-height: 300px;
+  min-width: 300px;
 `
 const ListWrapper = styled.div`
-display: flex;
-flex-direction: column;
-flex: 2;
-margin-right: 80px;
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 20px;
 `
 const List = styled.div`
-width: 100%;
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `
+const Name = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 40px;
+  width: 180px;
+`
+
 const Time = styled.div`
-font-size: 30px;
-font-weight: bold;
-margin-left: 40px;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 40px;
 `
 const PerCent = styled.div`
-font-size: 30px;
-font-weight: bold;
-margin-left: 40px;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 40px;
 `
-export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
-  
-  const {calenderList, setCalenderList} = useCalenderListState()
-  const {apiUrl} = useApiUrlStore()
 
-    //기록 전체조회
+export default function StatisticsBar({ isOpen, selectedDate }: StatisticsBarProps) {
+  const { calenderList, setCalenderList } = useCalenderListState()
+  const { apiUrl } = useApiUrlStore()
+
+  useEffect(() => {
     const getStudy = async () => {
       try {
         const access = localStorage.getItem('accessToken')
@@ -101,49 +107,54 @@ export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps
             headers: { Authorization: `Bearer ${access}` },
           })
           setCalenderList(response.data.calenderList)
-          console.log(response.data)
+          console.log(calenderList)
         }
       } catch (error) {
         alert('Error fetching study data:')
       }
     }
-    useEffect(() => {
-      getStudy()
-    }, [])
+    getStudy()
+  }, [])
 
-
-  const TotalEntireTime = () => {
-    let totalSeconds = 0;
-    calenderList.forEach(study => {
-        const [hours, minutes, seconds] = study.entireTime.split(':').map(Number);
-        totalSeconds += hours * 3600 + minutes * 60 + seconds;
-    });
-    const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${('0' + Math.floor((totalSeconds % 3600) / 60)).slice(-2)}:${('0' + (totalSeconds % 60)).slice(-2)}`;
-    return formattedTotalTime;
-};
-  
-    return (
-        <Container isOpen={isOpen} selectedDate={selectedDate}>
-            <UpperWrapper>
-                <TimeRecodingWrapper>
-                    <TodayDate>{dayjs(selectedDate).format("YYYY.MM.DD")}</TodayDate>
-                    <TodayText>총 학습 시간</TodayText>
-                    <TotalTime>{TotalEntireTime()}</TotalTime>
-                </TimeRecodingWrapper>
-                </UpperWrapper>
-                <MainWrapper>
-                    <GrapWrapper>
-                        <PieChart calenderList={calenderList}/>
-                    </GrapWrapper>
-                    <ListWrapper >
-                     {calenderList.map((study)=> ( 
-                        <List key={study.id}>
-                            <Time>{study.entireTime}</Time>
-                         </List>
-                        ))}
-                        </ListWrapper>
-                </MainWrapper>
-        </Container>
-    )
+  const timeToSeconds = (time: string) => {
+    const [hours, minutes, seconds] = time.split(':').map(Number)
+    return hours * 3600 + minutes * 60 + seconds
   }
-  
+
+  const totalSeconds = calenderList.reduce(
+    (total, item) => total + timeToSeconds(item.entireTime),
+    0,
+  )
+
+  const percentages = calenderList.map((item) => ({
+    subjectName: item.subjectName,
+    entireTime: item.entireTime,
+    percentage: (timeToSeconds(item.entireTime) / totalSeconds) * 100,
+  }))
+
+  return (
+    <Container isOpen={isOpen} selectedDate={selectedDate}>
+      <UpperWrapper>
+        <TimeRecodingWrapper>
+          <TodayDate>{dayjs(selectedDate).format('YYYY.MM.DD')}</TodayDate>
+          <TodayText>총 학습 시간</TodayText>
+          <TotalTime>{totalSeconds}</TotalTime>
+        </TimeRecodingWrapper>
+      </UpperWrapper>
+      <MainWrapper>
+        <GrapWrapper>
+          <PieChart calenderList={calenderList} />
+        </GrapWrapper>
+        <ListWrapper>
+          {percentages.map((study, index) => (
+            <List key={index}>
+              <Name>{study.subjectName}</Name>
+              <Time>{study.entireTime}</Time>
+              <PerCent>{study.percentage.toFixed(2)}%</PerCent>
+            </List>
+          ))}
+        </ListWrapper>
+      </MainWrapper>
+    </Container>
+  )
+}

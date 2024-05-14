@@ -32,6 +32,7 @@ const RightWrapper = styled.div`
   flex: 3;
   align-items: center;
   flex-direction: column;
+  position: relative;
 `
 const StudyingWrapper = styled.div`
   display: flex;
