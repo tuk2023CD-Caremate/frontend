@@ -131,6 +131,10 @@ const Title = styled.div`
 const Context = styled.div`
   font-size: 28px;
   margin-top: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
 `
 
 const FooterWrapper = styled.div`
