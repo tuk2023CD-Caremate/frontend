@@ -121,8 +121,8 @@ const FooterWrap = styled.div`
 //   font-size: 26px;
 // `
 
-const MessageCount = styled.div`
-  display: flex;
+const MessageCount = styled.div<{ count: number }>`
+  display: ${(props) => (props.count > 0 ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   background-color: red;
@@ -202,7 +202,10 @@ function ChatList() {
               </MainWrap>
               <FooterWrap>
                 {/* <ChatContent>{chat.lastMessage}</ChatContent> */}
-                <MessageCount>{chat.unreadMessageCount}</MessageCount>
+
+                <MessageCount count={chat.unreadMessageCount}>
+                  {chat.unreadMessageCount}
+                </MessageCount>
               </FooterWrap>
             </Container>
           </Link>
