@@ -136,11 +136,26 @@ const partList = [
 ]
 
 const interestsList = [
-  { value: 'PROGRAMMING', name: 'PROGRAMMING' },
-  { value: 'KOREAN', name: 'KOREAN' },
-  { value: 'MATH', name: 'MATH' },
-  { value: 'ENGLISH', name: 'ENGLISH' },
-  { value: 'SCIENCE', name: 'SCIENCE' },
+  {
+    name: '웹/앱개발',
+    value: 'WEBAPP',
+  },
+  {
+    name: '서버/네트워크',
+    value: 'SERVER',
+  },
+  {
+    name: 'AI/IoT',
+    value: 'AI',
+  },
+  {
+    name: '데이터 개발',
+    value: 'DATA',
+  },
+  {
+    name: '정보보안',
+    value: 'SECURITY',
+  },
 ]
 
 export default function SignUp() {
