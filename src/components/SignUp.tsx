@@ -47,6 +47,17 @@ const SignUpInput = styled.input`
   font-size: 20px;
 `
 
+const SignUpInput2 = styled.input`
+  text-indent: 20px;
+  width: 140px;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  margin: 10px;
+  font-size: 20px;
+`
+
 const PhoneWrap = styled.div`
   display: flex;
   width: 300px;
@@ -168,7 +179,8 @@ export default function SignUp() {
     password: '',
     password2: '',
     tel: '',
-    interests: 'PROGRAMMING',
+    interests: 'WEBAPP',
+    expertiseField: '',
     part: 'MENTOR',
     blogurl: '',
     PR: '',
@@ -198,7 +210,9 @@ export default function SignUp() {
       !formData.name ||
       !formData.nickname ||
       !formData.tel ||
-      !formData.job
+      !formData.job ||
+      !formData.interests ||
+      !formData.expertiseField
     ) {
       alert('필수 정보를 입력해주세요.')
       return
@@ -215,6 +229,7 @@ export default function SignUp() {
       email: formData.email,
       tel: formData.tel,
       interests: formData.interests,
+      expertiseField: formData.expertiseField,
       part: formData.part,
       blogUrl: formData.blogurl,
       publicRelations: formData.PR,
@@ -294,22 +309,20 @@ export default function SignUp() {
         <SignUpWrapper>
           <SignUpH2>Sign up to StudyMate</SignUpH2>
           <InputWrap>
-            <SignUpInput
+            <SignUpInput2
               type="text"
               placeholder="이름"
               name="name"
               value={formData.name}
               onChange={handleChange}
             />
-            <SignUpInput
+            <SignUpInput2
               type="text"
               placeholder="닉네임"
               name="nickname"
               value={formData.nickname}
               onChange={handleChange}
             />
-          </InputWrap>
-          <InputWrap>
             <SignUpInput
               type="text"
               placeholder="이메일"
@@ -317,6 +330,9 @@ export default function SignUp() {
               value={formData.email}
               onChange={handleChange}
             />
+          </InputWrap>
+
+          <InputWrap>
             <SignUpInput
               type="text"
               placeholder="직업"
@@ -324,7 +340,15 @@ export default function SignUp() {
               value={formData.job}
               onChange={handleChange}
             />
+            <SignUpInput
+              type="text"
+              placeholder="전문분야 (백엔드 서버 인프라)"
+              name="expertiseField"
+              value={formData.expertiseField}
+              onChange={handleChange}
+            />
           </InputWrap>
+
           <InputWrap>
             <SignUpInput
               type="password"
