@@ -160,14 +160,14 @@ function StudyPage() {
   const { calenderList, setCalenderList } = useCalenderListState()
 
   const ClickHandler = (id: number) => {
-    //시간 형식 변환
-    const startTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
-
     if (!isRunning) {
-      setStartTime(startTime) // 현재 시간을 startTime으로 설정
-      console.log(startTime)
+      const startTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+      setStartTime(startTime)
+      setIsRunning(true)
+      setClickedIconId(id)
 
-      const interval = setInterval(() => {
+      // 인터벌 생성 및 시작
+      const newInterval = setInterval(() => {
         setTime((prevTime) => ({
           ...prevTime,
           [id]: (prevTime[id] || 0) + 1000,
@@ -176,18 +176,26 @@ function StudyPage() {
 
       setIntervalId((prevIntervalIds) => ({
         ...prevIntervalIds,
-        [id]: interval,
+        [id]: newInterval,
       }))
-      setIsRunning(true)
-      setClickedIconId(id)
-    } else {
+    } else if (clickedIconId === id) {
+      // 스탑워치 종료
       clearInterval(interval[id])
       setIsRunning(false)
       const endTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
-      setEndTime(endTime) //endTime업데이트
-      console.log(endTime)
+      setEndTime(endTime)
+
+      // 인터벌 ID 정리 및 상태 초기화
+      setIntervalId((prevIntervalIds) => ({
+        ...prevIntervalIds,
+        [id]: 0,
+      }))
       setClickedIconId(null)
+
+      // 서버에 스터디 세션 기록 보내기
+      createStudy(id, startTime, endTime)
     }
+    console.log(endTime)
   }
 
   const PostingOpenModal = () => {
@@ -227,9 +235,25 @@ function StudyPage() {
 
   const TotalEntireTime = () => {
     let totalSeconds = 0
+    if (!calenderList) {
+      console.error('calenderList is undefined')
+      return '00:00:00'
+    }
     calenderList.forEach((study) => {
-      const [hours, minutes, seconds] = study.entireTime.split(':').map(Number)
-      totalSeconds += hours * 3600 + minutes * 60 + seconds
+      // 시간 문자열이 올바른 형식인지 확인: "HH:MM:SS"
+      const parts = study.entireTime.split(':')
+      if (parts.length === 3) {
+        const hours = parseInt(parts[0], 10)
+        const minutes = parseInt(parts[1], 10)
+        const seconds = parseInt(parts[2], 10)
+        if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
+          totalSeconds += hours * 3600 + minutes * 60 + seconds
+        } else {
+          console.error('Invalid time data:', study.entireTime)
+        }
+      } else {
+        console.error('Incorrect time format:', study.entireTime)
+      }
     })
     const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${(
       '0' + Math.floor((totalSeconds % 3600) / 60)
@@ -273,23 +297,22 @@ function StudyPage() {
     getSubject()
   }
 
-  //스터디기록 생성
-  const createStudy = async (subject_id: number) => {
+  const createStudy = async (subject_id: number, start: string, end: string) => {
     const study = {
-      startTime: startTime,
-      endTime: endTime,
+      startTime: start,
+      endTime: end,
     }
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(`${apiUrl}/calender/${subject_id}`, study, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      alert('완료되었습니다.')
-      setCalenderList(response.data.calenderList)
-      TotalEntireTime()
-      console.log(response.data.calenderList)
+      alert('스터디 기록이 완료되었습니다.')
+      // setCalenderList(response.data.calenderList)
+      // console.log('Updated calenderList:', response.data.calenderList)
     } catch (error) {
-      alert('입력값이 비어있습니다. 확인해주세요.')
+      console.error('스터디 기록 생성 중 오류가 발생했습니다:', error)
+      alert('스터디 기록 생성 중 오류가 발생했습니다.')
     }
   }
 
@@ -349,7 +372,6 @@ function StudyPage() {
                           size="50"
                           onClick={() => {
                             ClickHandler(subject.id)
-                            createStudy(subject.id)
                           }}
                         />
                       ) : (
