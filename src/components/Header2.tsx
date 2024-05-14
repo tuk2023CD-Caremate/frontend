@@ -80,8 +80,24 @@ export default function Header2() {
     getNickname()
   }, [])
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const refresh = localStorage.getItem('refreshToken')
+
+      if (!access || !refresh) {
+        console.error('Access token or refresh token not found in localStorage')
+        return
+      }
+      const response = await axios.post(`${apiUrl}/logout`, {
+        accessToken: access,
+        refreshToken: refresh,
+      })
+      console.log(response.data)
+    } catch (error) {}
+
     localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
     navigate('/')
   }
 
