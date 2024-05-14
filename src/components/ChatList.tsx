@@ -202,7 +202,6 @@ function ChatList() {
               </MainWrap>
               <FooterWrap>
                 {/* <ChatContent>{chat.lastMessage}</ChatContent> */}
-
                 <MessageCount count={chat.unreadMessageCount}>
                   {chat.unreadMessageCount}
                 </MessageCount>
