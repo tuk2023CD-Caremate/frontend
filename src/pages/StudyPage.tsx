@@ -11,6 +11,7 @@ import { useApiUrlStore, useSubjectListState, useCalenderListState } from '../st
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
+import ModifySubjectModal from '../components/ModifySubjectModal.tsx'
 dayjs.locale('ko')
 
 const Container = styled.div`
@@ -142,9 +143,12 @@ function StudyPage() {
   const [isRunning, setIsRunning] = useState(false)
   const [interval, setIntervalId] = useState<{ [key: number]: number }>({})
 
-  //모달창
+  //추가 모달창
   const [postingmodalOpen, setPostingModalOpen] = useState(false)
 
+  //수정 모달창
+  const [modifymodalOpen, setModifyModalOpen] = useState(false)
+  const [modifySubjectId, setModifySubjectId] = useState<number>(0)
   //props
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
@@ -191,6 +195,14 @@ function StudyPage() {
   }
   const PostingCloseModal = () => {
     setPostingModalOpen(false)
+  }
+
+  const ModifyOpenModal = (subjectId: number) => {
+    setModifySubjectId(subjectId)
+    setModifyModalOpen(true)
+  }
+  const ModifyCloseModal = () => {
+    setModifyModalOpen(false)
   }
 
   const handleDateChange = (newDate: Date | null) => {
@@ -245,7 +257,7 @@ function StudyPage() {
     getSubject()
   }, [])
 
-  //과목 삭제조회
+  //과목 삭제
   const deletedSubject = async (subject_id: number) => {
     if (window.confirm('과목을 삭제할까요?')) {
       try {
@@ -361,7 +373,7 @@ function StudyPage() {
                         <IoPencil
                           size="30"
                           style={{ marginBottom: '10px' }}
-                          onClick={PostingOpenModal}
+                          onClick={() => ModifyOpenModal(subject.id)}
                         />
                         <IoIosRemoveCircleOutline
                           size="30"
@@ -376,8 +388,16 @@ function StudyPage() {
           </StudyListWrapper>
         </RightWrapper>
       </Container>
+
       {postingmodalOpen && (
         <AddSubjectModal PostingCloseModal={PostingCloseModal} getSubject={getSubject} />
+      )}
+      {modifymodalOpen && (
+        <ModifySubjectModal
+          ModifyCloseModal={ModifyCloseModal}
+          getSubject={getSubject}
+          subject_id={modifySubjectId}
+        />
       )}
     </div>
   )
