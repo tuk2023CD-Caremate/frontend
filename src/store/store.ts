@@ -194,6 +194,7 @@ interface ChatRoom {
   chatRoomId: number
   chatRoomName: string
   members: ChatRoomMember[]
+  unreadMessageCount: number
 }
 
 interface ChatListState {

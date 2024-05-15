@@ -109,11 +109,11 @@ const Status = styled.div`
   margin-left: 10px;
 `
 
-// const FooterWrap = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   width: 1050px;
-// `
+const FooterWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 1050px;
+`
 
 // const ChatContent = styled.div`
 //   display: flex;
@@ -121,18 +121,18 @@ const Status = styled.div`
 //   font-size: 26px;
 // `
 
-// const MessageCount = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: red;
-//   width: 52px;
-//   height: 38px;
-//   border-radius: 30px;
-//   color: #fff;
-//   font-weight: bold;
-//   font-size: 24px;
-// `
+const MessageCount = styled.div<{ count: number }>`
+  display: ${(props) => (props.count > 0 ? 'flex' : 'none')};
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  width: 52px;
+  height: 38px;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+`
 
 const NoChatList = styled.div`
   display: flex;
@@ -200,10 +200,12 @@ function ChatList() {
                   </Bottom>
                 </InfoWrap>
               </MainWrap>
-              {/* <FooterWrap>
-            <ChatContent>{chat.lastMessage}</ChatContent>
-            <MessageCount>{chat.messageCount}</MessageCount>
-          </FooterWrap> */}
+              <FooterWrap>
+                {/* <ChatContent>{chat.lastMessage}</ChatContent> */}
+                <MessageCount count={chat.unreadMessageCount}>
+                  {chat.unreadMessageCount}
+                </MessageCount>
+              </FooterWrap>
             </Container>
           </Link>
         ))

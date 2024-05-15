@@ -231,7 +231,7 @@ function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {
             <Button
               isActive={postData.isSolved}
               onClick={() => handleBooleanChange('isSolved', true)}>
-              해결 됬어요
+              해결 되었어요
             </Button>
             <Button
               isActive={!postData.isSolved}
