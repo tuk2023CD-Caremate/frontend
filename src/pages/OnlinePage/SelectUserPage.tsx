@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Header2 from '../../components/Header2'
-import Navbar2 from '../../components/Navbar2'
+import Header from '../../components/Header'
+import Navbar from '../../components/Navbar'
 import { useLocation } from 'react-router-dom'
 import SelectUser from '../../components/SelectUser'
 import { useUserListStore } from '../../store/store'
@@ -31,8 +31,8 @@ function SelectUserPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Text>나에게 필요한 {userList.length}명의 멘토 리스트</Text>
       <Container>
         <SelectUser id={IdInfo} />

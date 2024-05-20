@@ -20,7 +20,7 @@ const Navigator = styled(Link)`
   color: inherit;
 `
 
-export default function Navbar2() {
+export default function Navbar() {
   const location = useLocation()
 
   const isMypage = location.pathname.includes('/mypage')

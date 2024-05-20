@@ -1,20 +1,19 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { 
+import {
   useApiUrlStore,
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
- } from '../../store/store.ts'
+} from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
-
 
 const Container = styled.div`
   display: flex;
@@ -283,9 +282,8 @@ function DetailStudyPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
-  const { postData, setPostData } = usePostStore() 
+  const { postData, setPostData } = usePostStore()
   const [loading, setLoading] = useState(true)
-
 
   //게시글 단건조회
   const getPost = async () => {
@@ -300,7 +298,6 @@ function DetailStudyPostPage() {
       alert('Error while fetching post')
     }
   }
-
 
   //게시글 모집완료&수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -349,20 +346,22 @@ function DetailStudyPostPage() {
     content: postData.content,
     category: postData.category,
     interests: postData.interests,
-    recruitmentStatus: postData.recruitmentStatus
+    recruitmentStatus: postData.recruitmentStatus,
   }
 
   const handleCompleted = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.put(`${apiUrl}/posts/${post_id}`,
-      { ...postData, recruitmentStatus: !completed.recruitmentStatus },
-      {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-    
+      const response = await axios.put(
+        `${apiUrl}/posts/${post_id}`,
+        { ...postData, recruitmentStatus: !completed.recruitmentStatus },
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+
       setPostData(response.data)
- 
+
       navigate('/posts/study')
     } catch (error) {
       alert('Error while updating post')
@@ -437,8 +436,6 @@ function DetailStudyPostPage() {
     } catch (error) {}
   }
 
- 
-
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
     try {
@@ -477,7 +474,6 @@ function DetailStudyPostPage() {
       SetContent('')
     }
   }
-
 
   //댓글 삭제
   const deleteCommet = async (post_id: number, comment_id: number) => {
@@ -530,31 +526,33 @@ function DetailStudyPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
 
-
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
     }
   }
 
-  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+  const handleEditKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    post_id: number,
+    comment_id: number,
+  ) => {
     if (event.key === 'Enter') {
-      updateComment(post_id, comment_id);
+      updateComment(post_id, comment_id)
     }
-  };
-
+  }
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <PostWrapper>
           <PageTitle>스터디게시판</PageTitle>
           <MainPostWrapper>
-          {loading ? (
-          <Skeleton/>
+            {loading ? (
+              <Skeleton />
             ) : (
               <>
                 <Upper>
@@ -567,29 +565,29 @@ function DetailStudyPostPage() {
                   </UserWrapper>
                   {nickname === postData.nickname ? (
                     <ButtonWrapper>
-                    <Modify onClick={handleCompleted}>
-                      {postData.recruitmentStatus ? '모집완료' : '모집중'}
-                    </Modify>
-                    <Modify onClick={handlePostEdit}>수정</Modify>
-                    <Delete onClick={deletePost}>삭제</Delete>
-                  </ButtonWrapper>
+                      <Modify onClick={handleCompleted}>
+                        {postData.recruitmentStatus ? '모집완료' : '모집중'}
+                      </Modify>
+                      <Modify onClick={handlePostEdit}>수정</Modify>
+                      <Delete onClick={deletePost}>삭제</Delete>
+                    </ButtonWrapper>
                   ) : null}
                 </Upper>
                 <Lower>
                   <Title>{postData.title}</Title>
                   <Context>{postData.content}</Context>
                 </Lower>
-                </>
+              </>
             )}
             <FooterWrapper>
               <DetailFooterWrapper>
-                {
-                  likeList.some(post => post.post_id === postData.post_id)
-                  ? <IoIosHeart color="#ff0000" size="30" />
-                  : <IoIosHeartEmpty color="#ff0000" size="30" />
-                }
+                {likeList.some((post) => post.post_id === postData.post_id) ? (
+                  <IoIosHeart color="#ff0000" size="30" />
+                ) : (
+                  <IoIosHeartEmpty color="#ff0000" size="30" />
+                )}
                 <Likecount>{postData.likeCount}</Likecount>
-                <IoIosText size="30"/>
+                <IoIosText size="30" />
                 <CommentCount>{postData.commentCount}</CommentCount>
               </DetailFooterWrapper>
               <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
@@ -632,7 +630,9 @@ function DetailStudyPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
-                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
+                      onKeyDown={(e) =>
+                        handleEditKeyPress(e, postData.post_id, comments.comment_id)
+                      }
                     />
                   </div>
                 ) : (

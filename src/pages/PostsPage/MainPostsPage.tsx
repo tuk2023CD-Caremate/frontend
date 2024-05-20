@@ -8,8 +8,8 @@ import {
   PostsList,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
@@ -321,8 +321,8 @@ function MainPostPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <FreePostsWrapper>

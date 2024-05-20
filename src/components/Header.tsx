@@ -55,7 +55,7 @@ const SignOut = styled.div`
   cursor: pointer;
 `
 
-export default function Header2() {
+export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')

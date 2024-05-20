@@ -1,6 +1,6 @@
-import Header2 from '../../components/Header2.tsx'
+import Header from '../../components/Header.tsx'
 import Userbar from '../../components/sidebar/Userbar.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
+import Navbar from '../../components/Navbar.tsx'
 import CommentImg from '../../assets/images/comment.png'
 
 import styled from 'styled-components'
@@ -52,8 +52,8 @@ function NotificationPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <Userbar />
         <NotificationWrapper>
