@@ -170,7 +170,7 @@ function StartPage() {
           },
         )
         alert('질문이 생성되었습니다.')
-        navigate('/online/select', { state: response.data.id })
+        navigate('/matching/select', { state: response.data.id })
       } catch (error) {
         console.error('질문 생성 중 오류 발생:', error)
       }

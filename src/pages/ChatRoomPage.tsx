@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar.tsx'
 import Chat from '../components/Chat.tsx'
 import { useParams } from 'react-router-dom'
 import { useReviewModalStore } from '../store/store.ts'
-import CreateReviewModal from './OnlinePage/CreateReviewModal.tsx'
+import CreateReviewModal from './MatchingPage/CreateReviewModal.tsx'
 
 interface RouteParams {
   [key: string]: string | undefined

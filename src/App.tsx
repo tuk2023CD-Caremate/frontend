@@ -11,7 +11,7 @@ import SignUpPage from './pages/SignUpPage'
 import MainPostsPage from './pages/PostsPage/MainPostsPage'
 import StudyPostsPage from './pages/PostsPage/StudyPostsPage'
 import ProfilePage from './pages/Mypage/ProfilePage'
-import StartPage from './pages/OnlinePage/StartPage'
+import StartPage from './pages/MatchingPage/StartPage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
@@ -22,7 +22,7 @@ import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
 import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
 import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
-import SelectUserPage from './pages/OnlinePage/SelectUserPage'
+import SelectUserPage from './pages/MatchingPage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
 import { useApiUrlStore } from './store/store'
@@ -84,8 +84,8 @@ function App() {
 
         {/* <Route path="/offline" element={<OfflinePage />} /> */}
 
-        <Route path="/online" element={<StartPage />} />
-        <Route path="/online/select" element={<SelectUserPage />} />
+        <Route path="/matching" element={<StartPage />} />
+        <Route path="/matching/select" element={<SelectUserPage />} />
 
         <Route
           path="/chats"

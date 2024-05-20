@@ -29,11 +29,11 @@ export default function Navbar() {
   return (
     <Container>
       <Navigator
-        to="/online"
+        to="/matching"
         style={{
-          backgroundColor: location.pathname.includes('/online') ? '#E8DCF2' : 'inherit',
-          color: location.pathname.includes('/online') ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname.includes('/online') ? 'bold' : 'inherit',
+          backgroundColor: location.pathname.includes('/matching') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/matching') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/matching') ? 'bold' : 'inherit',
         }}>
         온라인 매칭
       </Navigator>
