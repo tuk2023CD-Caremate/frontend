@@ -15,7 +15,7 @@ import StartPage from './pages/MatchingPage/StartPage'
 import NotificationPage from './pages/Mypage/NotificationPage'
 import MyPostPage from './pages/Mypage/MyPostPage'
 import MatingListPage from './pages/Mypage/MatingListPage'
-import ChatPage from './pages/ChatPage'
+import ChatPage from './pages/chat/ChatPage'
 import QuestionPostsPage from './pages/PostsPage/QuestionPostsPage'
 import WritingPostsPage from './pages/PostsPage/WritingPostsPage'
 import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
@@ -26,7 +26,7 @@ import SelectUserPage from './pages/MatchingPage/SelectUserPage'
 import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
 import { useApiUrlStore } from './store/store'
-import ChatRoomPage from './pages/ChatRoomPage'
+import ChatRoomPage from './pages/chat/ChatRoomPage'
 
 const CustomToastContainer = styled(ToastContainer)`
   .Toastify__toast {

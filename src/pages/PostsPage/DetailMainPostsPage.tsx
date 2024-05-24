@@ -10,7 +10,7 @@ import {
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 // import photoImg from '../assets/images/photo.png'
 import profileImg from '../assets/images/profile.png'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore } from '../../store/store'
 import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 

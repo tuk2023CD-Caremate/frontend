@@ -1,8 +1,7 @@
-import Header from '../components/Header.tsx'
+import Header from '../../components/Header.tsx'
 import { styled } from 'styled-components'
-// import Chat from '../components/Chat.tsx'
-import Navbar from '../components/Navbar.tsx'
-import ChatList from '../components/ChatList.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import ChatList from '../../components/chat/ChatList.tsx'
 
 const Container = styled.div`
   display: flex;
