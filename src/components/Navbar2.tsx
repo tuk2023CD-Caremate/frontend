@@ -5,17 +5,17 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 109px;
-  padding-left: 350px;
-  padding-right: 350px;
+  height: 7rem;
+  padding-left: 22rem;
+  padding-right: 22rem;
   border-top: 1px solid #d8d8d8;
   border-bottom: 1px solid #d8d8d8;
 `
 
 const Navigator = styled(Link)`
-  font-size: 22px;
-  padding: 20px 40px 20px 40px;
-  border-radius: 15px;
+  font-size: 1.4rem;
+  padding: 1.25rem 2.5rem 1.25rem 2.5rem;
+  border-radius: 1rem;
   text-decoration: none;
   color: inherit;
 `

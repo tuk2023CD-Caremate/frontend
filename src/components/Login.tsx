@@ -15,45 +15,45 @@ const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 700px;
-  height: 800px;
-  padding: 40px;
-  border-radius: 20px;
+  width: 43.75rem;
+  height: 50rem;
+  padding: 2.5rem;
+  border-radius: 1.25rem;
   border: 1px solid var(--Gray-03, #bdbdbd);
 `
 
 const LoginH2 = styled.h2`
-  width: 500px;
-  height: 40px;
+  width: 75%;
+  height: 10%;
   color: #650fa9;
-  font-size: 46px;
+  font-size: 3rem;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 3rem;
 `
 
 const LoginInput = styled.input`
-  text-indent: 20px;
-  width: 600px;
-  height: 70px;
+  text-indent: 1.25rem;
+  width: 85%;
+  height: 10%;
   box-sizing: border-box;
   background-color: #f8f8f8;
-  border-radius: 10px;
-  margin: 10px;
-  font-size: 20px;
+  border-radius: 0.625rem;
+  margin: 0.625rem;
+  font-size: 1.25rem;
 `
 
 const LoginButton = styled.button`
-  width: 600px;
-  height: 70px;
-  border-radius: 10px;
+  width: 85%;
+  height: 10%;
+  border-radius: 0.625rem;
   border: 1px solid var(--Gray-03, #bdbdbd);
   background: var(--bdbdbd, #650fa9);
   color: var(--White, #fff);
   text-align: center;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
   &:active {
     background: #490e76;
   }
@@ -61,16 +61,16 @@ const LoginButton = styled.button`
 
 const FindMore = styled.p`
   width: 100%;
-  height: 17px;
-  margin-top: 10px;
+  height: 1rem;
+  margin-top: 0.625rem;
   text-align: center;
 `
 
 const FindIt = styled.a`
-  font-size: 20px;
-  font-weight: 600;
-  padding-left: 14px;
-  padding-right: 14px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding-left: 1rem;
+  padding-right: 1rem;
   color: #bdbdbd;
   text-decoration: none;
   &:hover,
@@ -81,8 +81,8 @@ const FindIt = styled.a`
 
 const LoginH4 = styled.div`
   margin-top: 60px;
-  margin-bottom: 20px;
-  height: 20px;
+  margin-bottom: 1.25rem;
+  height: 1.25rem;
   text-align: center;
   font-size: 24px;
   font-weight: bold;
@@ -90,14 +90,14 @@ const LoginH4 = styled.div`
 `
 
 const KakaoSubmit = styled.img`
-  border-radius: 5px;
-  width: 280px;
-  margin: 10px;
+  border-radius: 0.4rem;
+  width: 45%;
+  margin: 0.625rem;
 `
 const GoogleSubmit = styled.img`
-  border-radius: 5px;
-  width: 280px;
-  margin: 10px;
+  border-radius: 0.4rem;
+  width: 45%;
+  margin: 0.625rem;
 `
 
 export default function Login() {
