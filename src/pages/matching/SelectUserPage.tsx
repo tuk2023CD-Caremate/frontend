@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'
 import { useLocation } from 'react-router-dom'
-import SelectUser from '../../components/SelectUser'
+import SelectUser from '../../components/matching/SelectUser'
 import { useUserListStore } from '../../store/store'
 
 const Container = styled.div`

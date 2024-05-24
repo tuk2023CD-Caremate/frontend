@@ -5,7 +5,7 @@ import {
   useIsAiBasedStore,
   useReviewListStore,
   useUserListStore,
-} from '../store/store'
+} from '../../store/store'
 import axios from 'axios'
 import ProfileIMG from '../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
