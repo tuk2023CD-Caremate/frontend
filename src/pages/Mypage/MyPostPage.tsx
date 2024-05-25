@@ -7,87 +7,85 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 
 const MyPostWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(100% - 400px);
+  width: calc(100% - 25rem);
 `
 
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  width: calc(100% - 100px);
-  height: 100px;
-  padding-left: 20px;
+  width: calc(100% - 6.25rem);
+  height: 6.25rem;
+  padding-left: 1.25rem;
   border: 1px solid #d8d8d8;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 `
 
 const MyPost = styled.div`
   display: flex;
-  padding: 20px 0px 0px 20px;
-  width: calc(100% - 100px);
-  height: 255px;
+  padding: 1.5rem 0px 0px 1.5rem;
+  width: calc(100% - 6.25rem);
+  height: 16rem;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
 
 const BoardType = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #086ab5;
-  margin: 10px;
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin: 10px;
+  margin-top: 0.625rem;
 `
 
 const Context = styled.div`
-  font-size: 28px;
-  margin: 10px;
-  margin-top: 20px;
+  font-size: 1.5rem;
+  margin: 0.625rem;
+  margin-top: 1.25rem;
 `
 
 const FooterWrap = styled.div`
   display: flex;
-  margin: 10px;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   align-items: center;
 `
 
 const CommentImage = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
 `
 
 const Comment = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   font-weight: bold;
 `
 
 const Divider = styled.img`
   width: 2px;
-  height: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  height: 1.25rem;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 `
 const Writer = styled.div`
-  font-size: 28px;
-  color: #9b9b9b;
+  font-size: 1.5rem;
+  color: #9b9b9b;;
 `
 
 const DateCreated = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   color: #9b9b9b;
 `
 
