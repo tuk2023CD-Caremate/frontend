@@ -1,60 +1,61 @@
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { 
+import {
   useApiUrlStore,
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
- } from '../../store/store.ts'
+} from '../../store/store.ts'
 import axios from 'axios'
 import Header2 from '../../components/Header2.tsx'
 import Navbar2 from '../../components/Navbar2.tsx'
 import PostsBar from '../../components/sidebar/Postsbar'
 import ProfileImg from '../../assets/images/profile.png'
-import { IoIosHeart, IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
-
-
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(100% - 400px);
+  width: calc(100% - 25rem);
   border-left: 1px solid #d8d8d8;
 `
 
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
-  height: 95px;
-  width: calc(100% - 100px);
-  padding-left: 20px;
+  height: 6rem;
+  width: calc(100% - 6.25rem);
+  padding-left: 1.25rem;
   border: 1px solid #d8d8d8;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 1.5rem;
 `
 
 const MainPostWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 370px;
-  padding-left: 20px;
-  width: calc(100% - 100px);
-  border: 1px solid #d8d8d8;
+  height: 23rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  width: calc(100% - 6.25rem);
+  border: 1px solid #e8e8e8;
 `
 const Upper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - 100px);
-  padding: 10px;
+  width: 100%;
+  flex: 4;
+  padding: 0.625rem;
+  margin-top: 0.625rem;
 `
 
 const UserWrapper = styled.div`
@@ -63,17 +64,17 @@ const UserWrapper = styled.div`
 `
 
 const Profile = styled.img`
-  width: 110px;
-  height: 110px;
+  width: 7rem;
+  height: 7rem;
 `
 
 const Time = styled.div`
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #bdbdbd;
 `
 
 const Nickname = styled.div`
-  font-size: 32px;
+  font-size: 2rem;
 `
 
 const NameWrapper = styled.div`
@@ -90,12 +91,12 @@ const Modify = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   border: 1px solid #d8d8d8;
-  width: 100px;
-  height: 50px;
-  font-size: 20px;
-  margin-right: 20px;
+  width: 6.25rem;
+  height: 3rem;
+  font-size: 1.25rem;
+  margin-right: 1.25rem;
   cursor: pointer;
 `
 
@@ -103,71 +104,72 @@ const Delete = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   border: 1px solid #d8d8d8;
-  width: 100px;
-  height: 50px;
-  font-size: 20px;
+  width: 6.25rem;
+  height: 3rem;
+  font-size: 1.25rem;
   cursor: pointer;
 `
 
 const Lower = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 100px);
-  height: 200px;
-  padding-left: 40px;
+  width: 100%;
+  flex: 4;
+  padding-left: 2.5rem;
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 `
 
 const Context = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
 `
 
 const FooterWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 100px);
-  margin-bottom: 10px;
-  padding-left: 40px;
+  width: 100%;
+  flex: 2;
+  margin-bottom: 0.625rem;
+  padding-left: 2.5rem;
 `
 const DetailFooterWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 `
 const Likecount = styled.div`
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bolder;
-  margin-left: 5px;
-  margin-right: 20px;
+  margin-left: 0.5rem;
+  margin-right: 0.625rem;
 `
 const CommentCount = styled.div`
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bolder;
-  margin-left: 5px;
+  margin-left: 0.5rem;
 `
 const LikeBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   border: 1px solid #d8d8d8;
-  width: 80px;
-  height: 40px;
-  font-size: 18px;
+  width: 5rem;
+  height: 2.5rem;
+  font-size: 1rem;
   cursor: pointer;
 `
 const CommentWrapper = styled.div`
   display: flex;
-  padding-left: 20px;
-  width: calc(100% - 100px);
-  height: 160px;
+  padding-left: 1.25rem;
+  width: calc(100% - 6.25rem);
+  height: 10rem;
   border: 1px solid #d8d8d8;
   flex-direction: column;
   justify-content: center;
@@ -175,90 +177,89 @@ const CommentWrapper = styled.div`
 const CommentUpper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 100px);
+  width: 95%;
 `
 const CommentUserWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 300px;
+  width: 18rem;
 `
 
 const CommentProfile = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 4.5rem;
+  height: 4.5rem;
 `
 
 const CommentNickname = styled.div`
-  font-size: 24px;
+  font-size: 1.5rem;
 `
-
 const CommentTime = styled.div`
-  font-size: 18px;
-color: #bdbdbd;
+  font-size: 1rem;
+  color: #bdbdbd;
 `
 
 const CommentDelete = styled.div`
-display: flex;
-align-items:center;
-font-size: 18px;
-font-weight:bold;
-color: #bdbdbd;
-cursor: pointer;
-padding: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #bdbdbd;
+  cursor: pointer;
+  padding: 0.5rem;
 `
-
 const Editinput = styled.input`
-  width: calc(100% - 140px);
-  padding-left: 20px;
-  margin-left: 45px;
-  margin-bottom: 5px;
-  font-size: 24px;
+  width: calc(100% - 11rem);
+  padding-left: 1.25rem;
+  margin-left: 4rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
   border: 1px solid;
 `
 const EditBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 40px;
+  width: 4rem;
+  height: 2.5rem;
   border: 1px solid #d8d8d8;
-  border-radius: 10px;
+  border-radius: 0.5rem;
+  font-weight: bold;
   cursor: pointer;
 `
 
 const CommentUpdate = styled.div`
-display: flex;
-align-items:center;
-font-size: 18px;
-font-weight:bold;
-color: #bdbdbd;
-cursor: pointer;
-padding: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #bdbdbd;
+  cursor: pointer;
+  padding: 0.5rem;
 `
 
 const Comment = styled.div`
-  width: calc(100% - 100px);
-  padding-left: 20px;
-  margin-left: 45px;
-  margin-bottom: 5px;
-  font-size: 24px;
+  width: 95%;
+  padding-left: 1.5rem;
+  margin-left: 3rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 `
-
 const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 100px);
-  height: 70px;
+  width: calc(100% - 6.25rem);
+  height: 4.5rem;
   border: 1px solid #d8d8d8;
+  margin-bottom: 2rem;
 `
 
 const Input = styled.input`
-text-indent: 20px;
+  text-indent: 1.25rem;
   background-color: #f8f8f8;
-  width: calc(100% - 100px);
-  font-size: 24px;
+  width: 100%;
+  font-size: 1.5rem;
   border: none;
-  
+
   &::placeholder {
     color: #bdbdbd;
   }
@@ -268,10 +269,10 @@ const Send = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 110px;
-  height: 70px;
+  width: 7rem;
+  height: 4.5rem;
   border: 1px solid #d8d8d8;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bolder;
   color: #650fa9;
   background-color: rgba(220, 196, 239, 0.3);
@@ -279,22 +280,20 @@ const Send = styled.div`
 `
 
 function DetailQuestionPostPage() {
-  const {post_id} = useParams();
-  const navigate = useNavigate();
+  const { post_id } = useParams()
+  const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
-  const { postData, setPostData } = usePostStore() 
+  const { postData, setPostData } = usePostStore()
   const [loading, setLoading] = useState(true)
-
-
 
   //게시글 단건조회
   const getPost = async () => {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
+        headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
       setLoading(false)
@@ -302,8 +301,6 @@ function DetailQuestionPostPage() {
       alert('Error while fetching post')
     }
   }
-
-
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -323,30 +320,29 @@ function DetailQuestionPostPage() {
     getNickname()
   }, [])
 
-
   //게시글 삭제
-  const deletePost = async() =>{
-    if(window.confirm('게시글을 삭제할까요?')){
+  const deletePost = async () => {
+    if (window.confirm('게시글을 삭제할까요?')) {
       try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
-      headers: { Authorization: `Bearer ${access}` },
-      })
-      console.log(response.data)
-    } catch (error) {
-      alert('Error while delete post')
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.delete(`${apiUrl}/posts/${post_id}`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        console.log(response.data)
+      } catch (error) {
+        alert('Error while delete post')
+      }
+      navigate('/posts/questions')
     }
-    navigate('/posts/questions')
-    } 
   }
 
-    //게시글 수정
-    const handlePostEdit =() =>{
-      if (window.confirm('게시글을 수정할까요?')) {
-        navigate('/posts/update/'+post_id)
-      }
+  //게시글 수정
+  const handlePostEdit = () => {
+    if (window.confirm('게시글을 수정할까요?')) {
+      navigate('/posts/update/' + post_id)
     }
-  
+  }
+
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
     try {
@@ -359,18 +355,18 @@ function DetailQuestionPostPage() {
       alert('Error while liking post')
     }
   }
-  
+
   useEffect(() => {
     LikedPost()
   }, [])
-  
+
   //게시글 좋아요
   const onLikeBtn = async (postId: number) => {
     const access = localStorage.getItem('accessToken')
     try {
       const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
       console.log(isPostLiked)
-      
+
       if (!isPostLiked) {
         //없을 경우
         const response = await axios.post(
@@ -399,19 +395,16 @@ function DetailQuestionPostPage() {
     }
   }
 
-
-
   //댓글CRUD
-  const [content, SetContent]=useState('')
+  const [content, SetContent] = useState('')
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
   const { commentData, setCommentData } = useCommentDataStore()
-  
 
-//댓글 조회
-  const getComment = async() => {
+  //댓글 조회
+  const getComment = async () => {
     try {
-    const access = localStorage.getItem('accessToken')
+      const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}/posts/${post_id}/comments`, {
         headers: { Authorization: `Bearer ${access}` },
       })
@@ -420,8 +413,6 @@ function DetailQuestionPostPage() {
       alert('Error while fetching comment')
     }
   }
-
-
 
   //댓글 수정 &삭제 버튼 작성자만 보이게
   const getcommentNickname = async () => {
@@ -441,54 +432,51 @@ function DetailQuestionPostPage() {
     getcommentNickname()
   }, [])
 
-  
-//댓글생성
-  const createComment = async() =>{
+  //댓글생성
+  const createComment = async () => {
     const comment = {
       content: content,
     }
-  
-    if(content != ''){
+
+    if (content != '') {
       try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`,comment, {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-      setCommentData([...commentData, response.data])
-      const updateCommentCount = postData.commentCount + 1
-      setPostData({ ...postData, commentCount: updateCommentCount })
-      getComment()
-    } catch (error) {
-      alert('Error while creating comment')
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.post(`${apiUrl}/posts/${post_id}/comments`, comment, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setCommentData([...commentData, response.data])
+        const updateCommentCount = postData.commentCount + 1
+        setPostData({ ...postData, commentCount: updateCommentCount })
+        getComment()
+      } catch (error) {
+        alert('Error while creating comment')
+      }
     }
-    }SetContent('')
+    SetContent('')
   }
- 
 
-
-//댓글 삭제
-  const deleteCommet = async(post_id: number, comment_id: number) =>{
-    if(window.confirm('댓글을 삭제할까요?')){
+  //댓글 삭제
+  const deleteCommet = async (post_id: number, comment_id: number) => {
+    if (window.confirm('댓글을 삭제할까요?')) {
       try {
         const access = localStorage.getItem('accessToken')
         const response = await axios.delete(`${apiUrl}/posts/${post_id}/comments/${comment_id}`, {
-        headers: { Authorization: `Bearer ${access}` },
+          headers: { Authorization: `Bearer ${access}` },
         })
         console.log(response.data)
         const updateCommentCount = postData.commentCount - 1
         setPostData({ ...postData, commentCount: updateCommentCount })
         getComment()
-      }catch (error) {
+      } catch (error) {
         alert('Error while delete comment')
       }
     }
   }
 
-  
   //댓글수정
   const [isediting, setIsEditing] = useState(0) //수정할 comment_id 초기화
 
-  const handleEdit = (comment_id:number) => {
+  const handleEdit = (comment_id: number) => {
     setIsEditing(comment_id) //comment_id와 일치하는 댓글만 버튼 변경
     setEditContent('')
   }
@@ -500,36 +488,41 @@ function DetailQuestionPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `${apiUrl}/posts/${post_id}/comments/${comment_id}`, editcomment,
+        `${apiUrl}/posts/${post_id}/comments/${comment_id}`,
+        editcomment,
         {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      const updatedComments = commentData.map(comment => {
-        if(comment.comment_id === comment_id) {
-          return response.data;
-        } 
-        return comment;
-      });
-      setCommentData(updatedComments);
+      const updatedComments = commentData.map((comment) => {
+        if (comment.comment_id === comment_id) {
+          return response.data
+        }
+        return comment
+      })
+      setCommentData(updatedComments)
       getComment()
     } catch (error) {
       alert('Error while updating comment')
     }
     setIsEditing(0) //comment_id 초기화
   }
-  
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
     }
   }
 
-  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+  const handleEditKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    post_id: number,
+    comment_id: number,
+  ) => {
     if (event.key === 'Enter') {
-      updateComment(post_id, comment_id);
+      updateComment(post_id, comment_id)
     }
-  };
+  }
 
   return (
     <div>
@@ -539,72 +532,75 @@ function DetailQuestionPostPage() {
         <PostsBar />
         <PostWrapper>
           <PageTitle>질문게시판</PageTitle>
-            <MainPostWrapper>
+          <MainPostWrapper>
             {loading ? (
-            <Skeleton/>
-              ) : (
-                <>
-                  <Upper>
-                    <UserWrapper>
-                      <Profile src={ProfileImg} />
-                      <NameWrapper>
-                        <Nickname>{postData.nickname}</Nickname>
-                        <Time>{postData.createdAt}</Time>
-                      </NameWrapper>
-                    </UserWrapper>
-                    {nickname === postData.nickname ? (
-                      <ButtonWrapper>
-                        <Modify onClick={handlePostEdit}>수정</Modify>
-                        <Delete onClick={deletePost}>삭제</Delete>
-                      </ButtonWrapper>
-                    ) : null}
-                  </Upper>
-                  <Lower>
-                    <Title>{postData.title}</Title>
-                    <Context>{postData.content}</Context>
-                  </Lower>
-                  </>
-              )}
-              <FooterWrapper>
-                <DetailFooterWrapper>
-                  {
-                  likeList.some(post => post.post_id === postData.post_id)
-                    ? <IoIosHeart color="#ff0000" size="30" />
-                    : <IoIosHeartEmpty color="#ff0000" size="30" />
-                  }
-                  <Likecount>{postData.likeCount}</Likecount>
-                  <IoIosText size="30"/>
-                  <CommentCount>{postData.commentCount}</CommentCount>
-                </DetailFooterWrapper>
-               <LikeBtn onClick={()=>onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
-              </FooterWrapper>
-            </MainPostWrapper>
-            {Array.isArray(commentData) && 
+              <Skeleton />
+            ) : (
+              <>
+                <Upper>
+                  <UserWrapper>
+                    <Profile src={ProfileImg} />
+                    <NameWrapper>
+                      <Nickname>{postData.nickname}</Nickname>
+                      <Time>{postData.createdAt}</Time>
+                    </NameWrapper>
+                  </UserWrapper>
+                  {nickname === postData.nickname ? (
+                    <ButtonWrapper>
+                      <Modify onClick={handlePostEdit}>수정</Modify>
+                      <Delete onClick={deletePost}>삭제</Delete>
+                    </ButtonWrapper>
+                  ) : null}
+                </Upper>
+                <Lower>
+                  <Title>{postData.title}</Title>
+                  <Context>{postData.content}</Context>
+                </Lower>
+              </>
+            )}
+            <FooterWrapper>
+              <DetailFooterWrapper>
+                {likeList.some((post) => post.post_id === postData.post_id) ? (
+                  <IoIosHeart color="#ff0000" size="30" />
+                ) : (
+                  <IoIosHeartEmpty color="#ff0000" size="30" />
+                )}
+                <Likecount>{postData.likeCount}</Likecount>
+                <IoIosText size="30" />
+                <CommentCount>{postData.commentCount}</CommentCount>
+              </DetailFooterWrapper>
+              <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
+            </FooterWrapper>
+          </MainPostWrapper>
+          {Array.isArray(commentData) &&
             commentData.map((comments) => (
-            <CommentWrapper key={comments.comment_id}>
-              <CommentUpper>
-                <CommentUserWrapper>
-                  <CommentProfile src={ProfileImg} />
-                  <NameWrapper>
-                    <CommentNickname>{comments.nickname}</CommentNickname>
-                    <CommentTime>{comments.createdAt}</CommentTime>
-                  </NameWrapper>
-                </CommentUserWrapper>
-                {commentnickname === comments.nickname ?
-                <ButtonWrapper>
-                    <CommentDelete
-                      onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
-                      삭제
-                    </CommentDelete>
-                    {isediting === comments.comment_id ?  (
-                      <EditBtn onClick={() => updateComment(postData.post_id, comments.comment_id)}>
-                        완료
-                      </EditBtn>
-                    ) : (
-                      <CommentUpdate onClick={()=>handleEdit(comments.comment_id)}>수정</CommentUpdate>
-                    )}
-                  </ButtonWrapper>
-                  : null}
+              <CommentWrapper key={comments.comment_id}>
+                <CommentUpper>
+                  <CommentUserWrapper>
+                    <CommentProfile src={ProfileImg} />
+                    <NameWrapper>
+                      <CommentNickname>{comments.nickname}</CommentNickname>
+                      <CommentTime>{comments.createdAt}</CommentTime>
+                    </NameWrapper>
+                  </CommentUserWrapper>
+                  {commentnickname === comments.nickname ? (
+                    <ButtonWrapper>
+                      <CommentDelete
+                        onClick={() => deleteCommet(postData.post_id, comments.comment_id)}>
+                        삭제
+                      </CommentDelete>
+                      {isediting === comments.comment_id ? (
+                        <EditBtn
+                          onClick={() => updateComment(postData.post_id, comments.comment_id)}>
+                          완료
+                        </EditBtn>
+                      ) : (
+                        <CommentUpdate onClick={() => handleEdit(comments.comment_id)}>
+                          수정
+                        </CommentUpdate>
+                      )}
+                    </ButtonWrapper>
+                  ) : null}
                 </CommentUpper>
                 {isediting === comments.comment_id ? (
                   <div>
@@ -613,7 +609,9 @@ function DetailQuestionPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
-                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
+                      onKeyDown={(e) =>
+                        handleEditKeyPress(e, postData.post_id, comments.comment_id)
+                      }
                     />
                   </div>
                 ) : (
@@ -624,11 +622,12 @@ function DetailQuestionPostPage() {
               </CommentWrapper>
             ))}
           <InputWrapper>
-            <Input type="text"
-            placeholder="댓글을 입력하세요"
-            value={content}
-            onChange={(e) => SetContent(e.target.value)}
-            onKeyDown={handleKeyPress}></Input>
+            <Input
+              type="text"
+              placeholder="댓글을 입력하세요"
+              value={content}
+              onChange={(e) => SetContent(e.target.value)}
+              onKeyDown={handleKeyPress}></Input>
             <Send onClick={createComment}>작성</Send>
           </InputWrapper>
         </PostWrapper>
