@@ -20,15 +20,15 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1280px;
-  height: 360px;
+  width: 80rem;
+  height: 22.5rem;
   border: 2px solid #d8d8d8;
   &:hover {
     border: 2px solid #650fa9;
   }
-  margin-top: 15px;
-  margin-bottom: 15px;
-  padding: 20px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
 `
 
 const LeftWrap = styled.div`
@@ -36,7 +36,7 @@ const LeftWrap = styled.div`
   width: 100%;
   height: 100%;
   flex: 3;
-  margin-right: 50px;
+  margin-right: 3rem;
 `
 
 const ImgWrap = styled.div`
@@ -45,9 +45,9 @@ const ImgWrap = styled.div`
 `
 
 const ProfileImg = styled.img`
-  width: 160px;
-  height: 160px;
-  margin-top: 20px;
+  width: 10rem;
+  height: 10rem;
+  margin-top: 1.25rem;
 `
 
 const InfoWrap = styled.div`
@@ -62,45 +62,45 @@ const Section = styled.div`
 `
 const BigTitle = styled.div`
   display: flex;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
 `
 
 const BigContent = styled.div`
   display: flex;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
 `
 
 const Review = styled.div`
   display: flex;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
   text-decoration: underline;
   cursor: pointer;
 `
 
 const Title = styled.div`
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
 `
 
 const Content = styled.div`
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
 `
 
 const TruncatedContent = styled.div<TruncatedContentProps>`
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.2;
@@ -113,9 +113,9 @@ const TruncatedContent = styled.div<TruncatedContentProps>`
 
 const Detail = styled.div`
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
   cursor: pointer;
 `
 
@@ -130,7 +130,7 @@ const RightWrap = styled.div`
 `
 
 const Upper = styled.div`
-  width: 440px;
+  width: 27.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -146,7 +146,7 @@ const LikeWrap = styled.div`
 `
 
 const Lower = styled.div`
-  width: 440px;
+  width: 27.5rem;
   display: flex;
 `
 
@@ -154,15 +154,15 @@ const RequestBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
-  font-size: 32px;
+  border-radius: 0.625rem;
+  font-size: 2rem;
   font-weight: bold;
   width: inherit;
-  height: 60px;
+  height: 3.75rem;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 `
 
 function SelectUser(id: any) {

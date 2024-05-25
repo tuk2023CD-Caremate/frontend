@@ -2,26 +2,26 @@ import styled, { keyframes } from 'styled-components'
 import LoadingImg from '../assets/images/loading.png'
 
 const Container = styled.div`
-  width: 900px;
-  height: 600px;
-  border-radius: 15px;
+  width: 56.25rem;
+  height: 37.5rem;
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
 `
 
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 `
 
 const Text = styled.div`
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 100px;
+  margin-bottom: 6.25rem;
   color: #666666;
 `
 
@@ -35,7 +35,7 @@ const rotate = keyframes`
 `
 
 const Loading = styled.img`
-  margin-bottom: 100px;
+  margin-bottom: 6.25rem;
   animation: ${rotate} 2.5s linear infinite;
 `
 

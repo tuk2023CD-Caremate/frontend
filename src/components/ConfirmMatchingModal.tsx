@@ -2,28 +2,28 @@ import styled from 'styled-components'
 import UserImg from '../assets/images/profile.png'
 
 const Container = styled.div`
-  width: 900px;
-  height: 600px;
-  border-radius: 15px;
+  width: 56.25rem;
+  height: 37.5rem;
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 50px;
+  margin-bottom: 3rem;
 `
 
 const SelectWrap = styled.div`
   display: flex;
   border-top: 1px solid #d8d8d8;
   border-bottom: 1px solid #d8d8d8;
-  width: 750px;
-  height: 270px;
+  width: 46.8rem;
+  height: 16.8rem;
   flex-direction: column;
 `
 const UserWrap = styled.div`
@@ -33,33 +33,33 @@ const UserWrap = styled.div`
 const UserImage = styled.img``
 
 const UserRole = styled.div`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bold;
-  margin: 5px;
+  margin: 0.5rem;
 `
 const UserNickname = styled.div`
-  font-size: 28px;
-  margin: 5px;
+  font-size: 1.75rem;
+  margin: 0.5rem;
 `
 const UserInterests = styled.div`
-  font-size: 22px;
-  margin: 5px;
+  font-size: 1.3rem;
+  margin: 0.5rem;
   font-weight: bold;
   color: #650fa9;
-  margin-left: 20px;
+  margin-left: 1.25rem;
 `
 
 const DetailWrap = styled.div``
 
 const Detail = styled.div`
-  font-size: 24px;
-  margin-left: 20px;
+  font-size: 1.5rem;
+  margin-left: 1.25rem;
 `
 
 const ConfirmWrap = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 3rem;
 `
 
 const AcceptBtn = styled.button`
@@ -67,13 +67,13 @@ const AcceptBtn = styled.button`
   align-items: center;
   background-color: #e8dcf2;
   color: #650fa9;
-  width: 100px;
-  height: 50px;
+  width: 6.25rem;
+  height: 3rem;
   justify-content: center;
-  border-radius: 10px;
-  font-size: 20px;
+  border-radius: 0.625rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const RefuseBtn = styled.button`
@@ -81,13 +81,13 @@ const RefuseBtn = styled.button`
   align-items: center;
   background-color: #e8dcf2;
   color: #650fa9;
-  width: 100px;
-  height: 50px;
+  width: 6.25rem;
+  height: 3rem;
   justify-content: center;
-  border-radius: 10px;
-  font-size: 20px;
+  border-radius: 0.625rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 function ConfirmMatchingModal() {

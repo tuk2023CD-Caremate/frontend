@@ -13,11 +13,11 @@ interface ReviewModalProps {
 
 const Header = styled.div`
   display: flex;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
   margin: 0 auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 0.625rem;
+  margin-bottom: 1.25rem;
 `
 
 const MainWrap = styled.div`
@@ -31,7 +31,7 @@ const MainWrap = styled.div`
 `
 
 const Text = styled.div`
-  font-size: 26px;
+  font-size: 1.6rem;
   font-weight: bold;
   color: #666666;
 `
@@ -41,12 +41,12 @@ const Button = styled.button<{ isActive?: boolean }>`
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  width: 150px;
-  height: 40px;
-  font-size: 24px;
+  width: 10rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
   color: #650fa9;
-  margin-left: 40px;
-  border-radius: 10px;
+  margin-left: 2.5rem;
+  border-radius: 0.625rem;
   border: solid 1.5px #650fa9;
   background-color: ${(props) => (props.isActive ? '#e8dcf2' : 'transparent')};
 
@@ -57,10 +57,10 @@ const Button = styled.button<{ isActive?: boolean }>`
 
 const RateWrap = styled.div`
   display: flex;
-  width: 700px;
+  width: 43.75rem;
   justify-content: space-between;
   align-items: center;
-  margin: 20px;
+  margin: 1.25rem;
 `
 const StarWrap = styled.div`
   display: flex;
@@ -68,47 +68,48 @@ const StarWrap = styled.div`
 
 const StarIcon = styled.div`
   cursor: pointer;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const SolvedWrap = styled.div`
   display: flex;
-  width: 700px;
+  width: 43.75rem;
   justify-content: space-between;
   align-items: center;
-  margin: 20px;
+  margin: 1.25rem;
 `
+
 const ButtonWrap = styled.div`
   display: flex;
 `
 
 const LikeWrap = styled.div`
   display: flex;
-  width: 700px;
+  width: 43.75rem;
   justify-content: space-between;
   align-items: center;
-  margin: 20px;
+  margin: 1.25rem;
 `
 
 const InputTitle = styled.input`
-  margin-top: 40px;
-  margin: 20px;
-  width: 700px;
-  height: 60px;
+  margin-top: 2.5rem;
+  margin: 1.25rem;
+  width: 43.75rem;
+  height: 3.75rem;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
-  padding: 10px;
-  font-size: 20px;
+  padding: 0.625rem;
+  font-size: 1.25rem;
   background-color: #f6f6f6;
 `
 
 const InputContent = styled.textarea`
-  width: 700px;
-  height: 200px;
+  width: 43.75rem;
+  height: 12.5rem;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
-  padding: 10px;
-  font-size: 20px;
+  padding: 0.625rem;
+  font-size: 1.25rem;
   background-color: #f6f6f6;
   resize: none;
 `
@@ -121,14 +122,14 @@ const RegisterBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;
-  font-size: 28px;
+  border-radius: 1rem;
+  font-size: 1.75rem;
   font-weight: bold;
-  width: 110px;
-  height: 60px;
+  width: 6.8rem;
+  height: 3.75rem;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 30px 20px 0px 20px;
+  margin: 3.75rem 20px 0px 20px;
 `
 
 const CancelBtn = styled.button`
@@ -143,7 +144,7 @@ const CancelBtn = styled.button`
   background-color: #ffffff;
   border: solid 1px #bdbdbd;
   color: #000000;
-  margin: 30px 20px 0px 20px;
+  margin: 30px 1.25rem 0 1.25rem;
 `
 
 function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {

@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 14rem);
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -30,49 +30,49 @@ const StartWrap = styled.div`
 `
 
 const Title = styled.div`
-  font-size: 48px;
+  font-size: 3rem;
   font-weight: bold;
-  margin: 60px;
+  margin: 3.75rem;
 `
 
 const SelectInterest = styled.select`
   border: solid 1px black;
-  width: 600px;
-  height: 70px;
-  font-size: 28px;
-  margin: 10px;
-  border-radius: 10px;
-  padding: 10px;
+  width: 37.5rem;
+  height: 4.3rem;
+  font-size: 1.75rem;
+  margin: 0.625rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
 `
 
 const InputSpecificField = styled.input`
-  margin: 10px;
+  margin: 0.625rem;
   border: solid 1px black;
-  width: 600px;
-  height: 70px;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 28px;
+  width: 37.5rem;
+  height: 4.3rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+  font-size: 1.75rem;
 `
 
 const InputTitle = styled.input`
-  margin: 10px;
+  margin: 0.625rem;
   border: solid 1px black;
-  width: 600px;
-  height: 70px;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 28px;
+  width: 37.5rem;
+  height: 4.3rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+  font-size: 1.75rem;
 `
 
 const InputContent = styled.textarea`
-  margin: 10px;
+  margin: 0.625rem;
   border: solid 1px black;
-  width: 600px;
-  height: 200px;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 28px;
+  width: 37.5rem;
+  height: 12.5rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+  font-size: 1.75rem;
   resize: none;
 `
 
@@ -80,22 +80,22 @@ const BtnWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 600px;
-  height: 70px;
-  margin: 60px;
+  width: 37.5rem;
+  height: 4.3rem;
+  margin: 3.75rem;
 `
 const StartMatchingBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
-  font-size: 32px;
+  border-radius: 1.25rem;
+  font-size: 1.75rem;
   font-weight: bold;
-  width: 240px;
-  height: 70px;
+  width: 15rem;
+  height: 4.3rem;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 20px;
+  margin: 1.25rem;
 `
 
 interface Option {
