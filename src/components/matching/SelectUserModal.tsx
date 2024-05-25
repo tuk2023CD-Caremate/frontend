@@ -10,7 +10,7 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
-import { useApiUrlStore, useUserListStore } from '../store/store'
+import { useApiUrlStore, useUserListStore } from '../../store/store'
 import axios from 'axios'
 
 const Container = styled.div`

@@ -1,60 +1,78 @@
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
+import { Link, useLocation } from 'react-router-dom'
 
-const GlobalStyle = createGlobalStyle`
-* {
-  margin: 0;
-  padding: 0;
-}
-body {
-    background-color: #fff;
-  }
-`
-const FrameContainer = styled.nav`
-  background-color: #fff;
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #e8e8e8;
+const Container = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  position: sticky;
-  top: 0;
+  height: 109px;
+  padding-left: 350px;
+  padding-right: 350px;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
 `
 
-const TextGroup = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-const NavbarClick = styled.a`
-  color: #000;
-  font-size: 14px;
-  font-weight: normal;
-  white-space: nowrap;
-  margin-left: 10%;
-  margin-right: 10%;
-  &:hover,
-  &:active {
-    font-weight: bold;
-    color: #650fa9;
-    background-color: rgba(220, 196, 239, 0.3); /* #dcc4ef의 60% 투명한 버전 */
-    border-radius: 3px;
-  }
+const Navigator = styled(Link)`
+  font-size: 22px;
+  padding: 20px 40px 20px 40px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: inherit;
 `
 
 export default function Navbar() {
+  const location = useLocation()
+
+  const isMypage = location.pathname.includes('/mypage')
+  const isPost = location.pathname.includes('/posts')
+
   return (
-    <>
-      <GlobalStyle />
-      <FrameContainer>
-        <TextGroup>
-          <NavbarClick href="/offline">오프라인 매칭</NavbarClick>
-          <NavbarClick href="/online">온라인 매칭</NavbarClick>
-          <NavbarClick href="/post">게시판</NavbarClick>
-          <NavbarClick href="/study">스터디 기록</NavbarClick>
-          <NavbarClick href="/mypage">마이페이지</NavbarClick>
-        </TextGroup>
-      </FrameContainer>
-    </>
+    <Container>
+      <Navigator
+        to="/matching"
+        style={{
+          backgroundColor: location.pathname.includes('/matching') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/matching') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/matching') ? 'bold' : 'inherit',
+        }}>
+        온라인 매칭
+      </Navigator>
+      <Navigator
+        to="/posts"
+        style={{
+          backgroundColor: isPost ? '#E8DCF2' : 'inherit',
+          color: isPost ? '#650FA9' : 'inherit',
+          fontWeight: isPost ? 'bold' : 'inherit',
+        }}>
+        게시판
+      </Navigator>
+      <Navigator
+        to="/calender"
+        style={{
+          backgroundColor: location.pathname === '/calender' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/calender' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/calender' ? 'bold' : 'inherit',
+        }}>
+        스터디 기록
+      </Navigator>
+      <Navigator
+        to="/chats"
+        style={{
+          backgroundColor: location.pathname.includes('/chats') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/chats') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/chats') ? 'bold' : 'inherit',
+        }}>
+        채팅
+      </Navigator>
+      <Navigator
+        to="/mypage"
+        style={{
+          backgroundColor: isMypage ? '#E8DCF2' : 'inherit',
+          color: isMypage ? '#650FA9' : 'inherit',
+          fontWeight: isMypage ? 'bold' : 'inherit',
+        }}>
+        마이 페이지
+      </Navigator>
+    </Container>
   )
 }
