@@ -46,7 +46,7 @@ const WriteDate = styled.div`
 const StarWrap = styled.div`
   display: flex;
   margin: 1rem;
-  margin-left: 0px;
+  margin-left: 0rem;
 `
 
 const Title = styled.div`

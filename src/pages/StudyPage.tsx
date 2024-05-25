@@ -10,6 +10,7 @@ import { useState} from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 dayjs.locale('ko')
+
 interface calenderList {
   id: number
   studyClass: string
@@ -69,7 +70,7 @@ const WriteBtn = styled.div`
   align-items: center;
   width: 8.5rem;
   height: 3.5rem;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bolder;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);

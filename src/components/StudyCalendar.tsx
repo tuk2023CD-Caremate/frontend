@@ -43,7 +43,7 @@ const StyledCalendar = styled(Calendar)`
   }
   // 일 날짜 간격
   .react-calendar__tile {
-    padding: 1rem  0px 1rem 0px;
+    padding: 1rem  0rem 1rem 0rem;
   }
   .react-calendar__tile:hover {
     background-color: white;

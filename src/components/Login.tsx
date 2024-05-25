@@ -80,11 +80,11 @@ const FindIt = styled.a`
 `
 
 const LoginH4 = styled.div`
-  margin-top: 60px;
+  margin-top: 3.75rem;
   margin-bottom: 1.25rem;
   height: 1.25rem;
   text-align: center;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #bdbdbd;
 `

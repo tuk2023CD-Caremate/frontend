@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.5rem);
 `
 const Modal = styled.div`
   position: absolute;
@@ -28,8 +28,8 @@ const Modal = styled.div`
   flex-direction: column;
   width: 37rem;
   height: 19rem;
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 const Title = styled.div`

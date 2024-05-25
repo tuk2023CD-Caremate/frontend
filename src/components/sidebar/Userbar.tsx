@@ -20,7 +20,7 @@ const Profile = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 1.25rem 0px 1.25rem 2.5rem;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
 const Notification = styled(Link)`
@@ -30,7 +30,7 @@ const Notification = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 1.25rem 0px 1.25rem 2.5rem;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
 
@@ -41,7 +41,7 @@ const MyPost = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 1.25rem 0px 1.25rem 2.5rem;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
 
@@ -52,7 +52,7 @@ const MatchingList = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 1.25rem 0px 1.25rem 2.5rem;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
 

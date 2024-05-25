@@ -129,22 +129,22 @@ const RegisterBtn = styled.button`
   height: 3.75rem;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 3.75rem 20px 0px 20px;
+  margin: 3.75rem 1.25rem 0rem 1.25rem;
 `
 
 const CancelBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;
-  font-size: 28px;
+  border-radius: 1rem;
+  font-size: 1.75rem;
   font-weight: bold;
-  width: 110px;
-  height: 60px;
+  width: 6.8rem;
+  height: 3.75rem;
   background-color: #ffffff;
   border: solid 1px #bdbdbd;
   color: #000000;
-  margin: 30px 1.25rem 0 1.25rem;
+  margin: 1.8rem 1.25rem 0rem 1.25rem;
 `
 
 function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {

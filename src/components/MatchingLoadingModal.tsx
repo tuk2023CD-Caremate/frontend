@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0px 0px 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
 `
 
 const Title = styled.div`

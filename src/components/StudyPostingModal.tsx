@@ -20,7 +20,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.5rem);
 `
 
 const Info = styled.div`
@@ -38,15 +38,15 @@ const Modal = styled.div`
   width: 53rem;
   height: 34rem;
   border-radius: 1rem;
-  box-shadow: 0px 0px 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
   width: 700px;

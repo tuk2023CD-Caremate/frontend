@@ -31,7 +31,7 @@ const PageTitle = styled.div`
 
 const MyPost = styled.div`
   display: flex;
-  padding: 1.5rem 0px 0px 1.5rem;
+  padding: 1.5rem 0rem 0rem 1.5rem;
   width: calc(100% - 6.25rem);
   height: 16rem;
   border: 1px solid #d8d8d8;

@@ -5,17 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useApiUrlStore, usePostStore } from '../../store/store.ts'
 import axios from 'axios'
 
-interface PostsData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-}
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +19,7 @@ const AllWrapper = styled.div`
   height: calc(100vh - 10rem);
   border-left: 1px solid #d8d8d8;
   border-right: 1px solid #d8d8d8;
-  padding: 0 6.25rem 0 6.25rem;
+  padding: 0rem 6.25rem 0rem 6.25rem;
 `
 
 const Upper = styled.div`

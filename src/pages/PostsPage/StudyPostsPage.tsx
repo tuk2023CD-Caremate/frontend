@@ -55,7 +55,7 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding:  1.25rem 1.25rem 1.25rem  0;
+  padding:  1.25rem 1.25rem 1.25rem  0rem;
   margin-bottom: 1.25rem;
 `
 const SideWrapper = styled.div`
@@ -115,8 +115,8 @@ const WriteButton = styled.button`
 const StudyPosts = styled(Link)<{recruitmentStatus: boolean}>`
   display: flex;
   height: 12.5rem;
-  padding: 1.25rem 0 0 1.25rem;
-  width: calc(100% - 100px);
+  padding: 1.25rem 0rem 0rem 1.25rem;
+  width: calc(100% - 6.25rem);
   border: 1px solid #d8d8d8;
   flex-direction: column;
   justify-content: center;
@@ -166,7 +166,7 @@ const CommentCount = styled.div`
   margin-left: 0.5rem;
 `
 const Divider = styled.img`
-  margin: 0 1.25rem 0  1.25rem;
+  margin: 0rem 1.25rem 0rem  1.25rem;
   width: 2px;
   height: 1.25rem;
 `

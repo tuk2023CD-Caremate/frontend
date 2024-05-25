@@ -136,7 +136,7 @@ const ZoomLoginBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
-  margin: 0 10px 1.25rem 0.625rem;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 const CreateMeetingBtn = styled.button`
   width: 7.5rem;
@@ -148,7 +148,7 @@ const CreateMeetingBtn = styled.button`
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
-  margin: 0 10px 1.25rem 0.625rem;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 
 const CreateReviewBtn = styled.button`
@@ -161,7 +161,7 @@ const CreateReviewBtn = styled.button`
   background-color: #e8dcf2;
   color: #650fa9;
   cursor: pointer;
-  margin: 0 10px 1.25rem 0.625rem;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 
 function Chat({ chatRoomId, onOpen }: ChatProps) {

@@ -20,7 +20,7 @@ const NavLink = styled(Link)<{ isActive: boolean }>`
   text-decoration: none;
   color: inherit;
   padding: 1.25rem 0 1.25rem 2.5rem;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background-color: ${({ isActive }) => (isActive ? '#E8DCF2' : 'inherit')};
   color: ${({ isActive }) => (isActive ? '#650FA9' : 'inherit')};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'inherit')};
