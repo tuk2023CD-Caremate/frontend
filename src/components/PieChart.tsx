@@ -7,12 +7,13 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 interface PieChartProps {
   calenderList: CalenderList[]
 }
+
 const timeToSeconds = (time: string): number => {
   const [hours, minutes, seconds] = time.split(':').map(Number)
   return hours * 3600 + minutes * 60 + seconds
 }
+
 const PieChart = ({ calenderList }: PieChartProps) => {
-  const [percentage, setPercentage] = useState<number[]>([])
 
   const labels = calenderList.map((item) => item.subjectName)
   const totalSeconds = calenderList.reduce(
@@ -22,7 +23,7 @@ const PieChart = ({ calenderList }: PieChartProps) => {
   const percentages = calenderList.map(
     (item) => (timeToSeconds(item.entireTime) / totalSeconds) * 100,
   )
-  console.log(percentages)
+  console.log(calenderList)
 
   const [chartData] = useState({
     labels: labels,

@@ -196,7 +196,6 @@ function StudyPage() {
       // 서버에 스터디 세션 기록 보내기
       createStudy(id, startTime, endTime)
     }
-    console.log(endTime)
   }
 
   const PostingOpenModal = () => {
@@ -226,6 +225,7 @@ function StudyPage() {
 
   const toggleStatisticsBar = () => {
     setIsStatisticsBarOpen(isStatisticsBarOpen)
+  
   }
   const handleBarClose = (event: any) => {
     const isOutsideStatisticsBar = !event.target.closest('.statistics-bar')
@@ -236,11 +236,18 @@ function StudyPage() {
 
   const TotalEntireTime = () => {
     let totalSeconds = 0
+    const today = dayjs().format('YYYY-MM-DD')
+
     if (!calenderList) {
       console.error('calenderList is undefined')
       return '00:00:00'
     }
-    calenderList.forEach((study) => {
+
+    const todayCalenderList = calenderList.filter(study => 
+      dayjs(study.startTime).format('YYYY-MM-DD') === today
+    )
+
+    todayCalenderList.forEach((study) => {
       // 시간 문자열이 올바른 형식인지 확인: "HH:MM:SS"
       const parts = study.entireTime.split(':')
       if (parts.length === 3) {
@@ -254,8 +261,8 @@ function StudyPage() {
         }
       } else {
         console.error('Incorrect time format:', study.entireTime)
-      }
-    })
+      }})
+      
     const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${(
       '0' + Math.floor((totalSeconds % 3600) / 60)
     ).slice(-2)}:${('0' + (totalSeconds % 60)).slice(-2)}`
@@ -282,6 +289,7 @@ function StudyPage() {
     getSubject()
   }, [])
 
+
   //과목 삭제
   const deletedSubject = async (subject_id: number) => {
     if (window.confirm('과목을 삭제할까요?')) {
@@ -298,6 +306,8 @@ function StudyPage() {
     getSubject()
   }
 
+
+  //스터디 기록 생성
   const createStudy = async (subject_id: number, start: string, end: string) => {
     const study = {
       startTime: start,
@@ -309,38 +319,14 @@ function StudyPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('스터디 기록이 완료되었습니다.')
-      // setCalenderList(response.data.calenderList)
-      // console.log('Updated calenderList:', response.data.calenderList)
+      setCalenderList([...calenderList, response.data])
+      console.log('Updated calenderList:', calenderList)
     } catch (error) {
       console.error('스터디 기록 생성 중 오류가 발생했습니다:', error)
       alert('스터디 기록 생성 중 오류가 발생했습니다.')
     }
   }
 
-  {
-    /*
-  //기록 전체조회
-  const getStudy = async () => {
-    try {
-      const access = localStorage.getItem('accessToken')
-      if (!access) {
-        window.alert('로그인을 해주세요')
-      } else {
-        const response = await axios.get(`${apiUrl}/calender`, {
-          headers: { Authorization: `Bearer ${access}` },
-        })
-        setCalenderList(response.data.calenderList)
-        console.log(response.data)
-      }
-    } catch (error) {
-      alert('Error fetching study data:')
-    }
-  }
-  useEffect(() => {
-    getStudy()
-  }, [])
-*/
-  }
 
   return (
     <div>
@@ -351,7 +337,7 @@ function StudyPage() {
           <Calendar toggleStatisticsBar={toggleStatisticsBar} onDateChange={handleDateChange} />
         </LeftWrapper>
         <RightWrapper onClick={handleBarClose}>
-          <StatisticsBar isOpen={isStatisticsBarOpen} selectedDate={selectedDate} />
+          <StatisticsBar isOpen={isStatisticsBarOpen} selectedDate={selectedDate}/>
           <StudyingWrapper>
             <TimeRecodingWrapper>
               <TodayText>{dayjs().format('YYYY. MM. DD')}</TodayText>

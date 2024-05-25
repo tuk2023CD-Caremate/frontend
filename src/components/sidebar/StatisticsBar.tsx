@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import PieChart from '../PieChart.tsx'
 import dayjs from 'dayjs'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useApiUrlStore, useCalenderListState } from '../../store/store.ts'
+import { CalenderList, useApiUrlStore, useCalenderListState } from '../../store/store.ts'
 
 interface StatisticsBarProps {
   isOpen: boolean
@@ -14,51 +14,64 @@ const Container = styled.div<StatisticsBarProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 0;
-  right: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
-  width: 100%;
+  position: fixed;
+  right: ${({ isOpen }) => (isOpen ? '0' : '-100%')}; // isOpen 상태에 따라 오른쪽에서 나오거나 숨김
+  width: 59%;
   height: 100%;
-  background-color: #f7f7f7;
-  transition: right 0.3s ease;
+  background-color: #F7F7F7;
+  transition: right 0.3s ease; // 슬라이딩 효과를 위한 transition 설정
 `
+
 const UpperWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+display: flex;
+justify-content: center;
 `
+
 const TimeRecodingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 `
+
 const TodayDate = styled.div`
-  font-size: 40px;
-  font-weight: bold;
-  margin: 20px;
+font-size: 2.5rem;
+font-weight: bold;
+margin-top: 4rem;
 `
 const TodayText = styled.div`
-  font-size: 40px;
-  font-weight: bolder;
-  color: #650fa9;
+font-size: 3rem;
+font-weight: bolder;
+color: #650FA9;
+margin-top: 3rem;
 `
 const TotalTime = styled.div`
-  font-size: 60px;
-  font-weight: bolder;
+font-size: 5rem;
+font-weight: bolder;
 `
+
+const Name = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 40px;
+  width: 180px;
+`
+
 const MainWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 50px;
 `
+
 const GrapWrapper = styled.div`
   display: flex;
   flex: 3; // flex-grow 값을 조정하여 차트 영역을 늘립니다.
   align-items: center;
-  margin-top: -20px;
   margin-left: 20px;
   justify-content: center;
   width: 100%;
+  height: 100%;
   /* PieChart 컴포넌트를 감싸고 있는 부모 컴포넌트에 적용 */
   min-height: 300px;
   min-width: 300px;
@@ -70,63 +83,85 @@ const ListWrapper = styled.div`
   justify-content: center;
   margin-right: 20px;
 `
+
 const List = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-const Name = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  margin-left: 40px;
-  width: 180px;
+display: flex;
+justify-content: space-between;
 `
 
 const Time = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  margin-left: 40px;
+font-size: 2rem;
+font-weight: bold;
+margin-left: 2.5rem;
 `
+
 const PerCent = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  margin-left: 40px;
+width: 10rem;
+font-size: 2rem;
+font-weight: bold;
+margin-left: 2.5rem;;
 `
 
-export default function StatisticsBar({ isOpen, selectedDate }: StatisticsBarProps) {
+export default function StatisticsBar({ isOpen, selectedDate}: StatisticsBarProps) {
   const { calenderList, setCalenderList } = useCalenderListState()
+  const [filteredCalenderList, setFilteredCalenderList] = useState<CalenderList[]>([]);
   const { apiUrl } = useApiUrlStore()
-
-  useEffect(() => {
-    const getStudy = async () => {
-      try {
-        const access = localStorage.getItem('accessToken')
-        if (!access) {
-          window.alert('로그인을 해주세요')
-        } else {
-          const response = await axios.get(`${apiUrl}/calender`, {
-            headers: { Authorization: `Bearer ${access}` },
-          })
-          setCalenderList(response.data.calenderList)
-          console.log(calenderList)
-        }
-      } catch (error) {
-        alert('Error fetching study data:')
+  
+  //스터디 기록 조회
+  const getStudy = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을 해주세요')
+      } else {
+        const response = await axios.get(`${apiUrl}/calender`, {
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setCalenderList(response.data.calenderList)
       }
+    } catch (error) {
+      alert('Error fetching study data:')
     }
+  }
+  useEffect(() => {
     getStudy()
   }, [])
+  
+  //선택한 날짜와 같은 날짜의 리스트 조회
+  useEffect(() => {
+    if (selectedDate) {
+      const filteredList = calenderList.filter(item =>
+        dayjs(item.startTime).format('YYYY-MM-DD') === dayjs(selectedDate).format('YYYY-MM-DD')
+      );
+      setFilteredCalenderList(filteredList);
+    }
+  }, [calenderList, selectedDate]);
+ 
+    
 
   const timeToSeconds = (time: string) => {
     const [hours, minutes, seconds] = time.split(':').map(Number)
     return hours * 3600 + minutes * 60 + seconds
   }
 
-  const totalSeconds = calenderList.reduce(
+  const totalSeconds = filteredCalenderList.reduce(
     (total, item) => total + timeToSeconds(item.entireTime),
     0,
   )
 
-  const percentages = calenderList.map((item) => ({
+  const formatTime = (totalSeconds: number): string => {
+    const hours: number = Math.floor(totalSeconds / 3600);
+    const minutes: number = Math.floor((totalSeconds % 3600) / 60);
+    const seconds: number = totalSeconds % 60;
+  
+    // 시, 분, 초를 두 자리 문자열로 포매팅하는 내부 함수
+    const pad = (num: number): string => (num < 10 ? '0' + num : num.toString());
+  
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  }
+  
+
+  const percentages = filteredCalenderList.map((item) => ({
     subjectName: item.subjectName,
     entireTime: item.entireTime,
     percentage: (timeToSeconds(item.entireTime) / totalSeconds) * 100,
@@ -138,12 +173,12 @@ export default function StatisticsBar({ isOpen, selectedDate }: StatisticsBarPro
         <TimeRecodingWrapper>
           <TodayDate>{dayjs(selectedDate).format('YYYY.MM.DD')}</TodayDate>
           <TodayText>총 학습 시간</TodayText>
-          <TotalTime>{totalSeconds}</TotalTime>
+          <TotalTime>{formatTime(totalSeconds)}</TotalTime>
         </TimeRecodingWrapper>
       </UpperWrapper>
       <MainWrapper>
         <GrapWrapper>
-          <PieChart calenderList={calenderList} />
+          <PieChart calenderList={filteredCalenderList}/>
         </GrapWrapper>
         <ListWrapper>
           {percentages.map((study, index) => (
