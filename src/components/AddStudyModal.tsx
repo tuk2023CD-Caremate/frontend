@@ -26,41 +26,41 @@ const Modal = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 600px;
-  height: 300px;
+  width: 37rem;
+  height: 19rem;
   border-radius: 15px;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
-  width: 500px;
-  height: 100px;
-  font-size: 22px;
+  width: 31rem;
+  height: 8rem;
+  font-size: 1.2rem;
   border: 1px solid #dbdbdb;
-  margin-bottom: 40px;
+  margin-bottom: 1rem;
   resize: none;
 `
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 12.5rem;
 `
 const Btn = styled.div`
-  width: 80px;
-  height: 40px;
+  width: 5rem;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
-  border-radius: 5px;
-  font-size: 18px;
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
   cursor: pointer;
 `
 function AddStudyModal({ PostingCloseModal, startTime, endTime }: Prop) {

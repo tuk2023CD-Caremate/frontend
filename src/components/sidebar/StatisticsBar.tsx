@@ -21,7 +21,7 @@ align-items: center;
   position: fixed;
   right: ${({ isOpen }) => (isOpen ? '0' : '-60%')}; // isOpen 상태에 따라 오른쪽에서 나오거나 숨김
   width: 59%;
-  height: 870px;
+  height: 54rem;
   background-color: #F7F7F7;
   transition: right 0.3s ease; // 슬라이딩 효과를 위한 transition 설정
 
@@ -39,18 +39,18 @@ justify-content: center;
 align-items: center;
 `
 const TodayDate = styled.div`
-font-size: 40px;
+font-size: 2.5rem;
 font-weight: bold;
-margin-top: 60px;
+margin-top: 4rem;
 `
 const TodayText = styled.div`
-font-size: 50px;
+font-size: 3rem;
 font-weight: bolder;
 color: #650FA9;
-margin-top: 50px;
+margin-top: 3rem;
 `
 const TotalTime = styled.div`
-font-size: 80px;
+font-size: 5rem;
 font-weight: bolder;
 `
 const MainWrapper = styled.div`
@@ -66,13 +66,13 @@ flex-direction: column;
 justify-content: center;
 flex: 3;
 height: 100%;
-margin-left: 80px;
+margin-left: 5rem;
 `
 const ListWrapper = styled.div`
 display: flex;
 flex-direction: column;
 flex: 2;
-margin-right: 80px;
+margin-right: 5rem;
 `
 const List = styled.div`
 width: 100%;
@@ -80,14 +80,14 @@ display: flex;
 justify-content: space-between;
 `
 const Time = styled.div`
-font-size: 30px;
+font-size: 2rem;
 font-weight: bold;
-margin-left: 40px;
+margin-left: 2.5rem;
 `
 const PerCent = styled.div`
-font-size: 30px;
+font-size: 2rem;
 font-weight: bold;
-margin-left: 40px;
+margin-left: 2.5rem;
 `
 export default function StatisticsBar({ isOpen,selectedDate}: StatisticsBarProps) {
   

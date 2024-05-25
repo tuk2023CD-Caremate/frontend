@@ -26,8 +26,8 @@ const Container = styled.div`
 const Info = styled.div`
   display: flex;
   justify-content: baseline;
-  width: 430px;
-  margin-bottom: 30px;
+  width: 27rem;
+  margin-bottom: 2rem;
 `
 
 const Modal = styled.div`
@@ -35,15 +35,15 @@ const Modal = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 850px;
-  height: 550px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  width: 53rem;
+  height: 34rem;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 20px;
