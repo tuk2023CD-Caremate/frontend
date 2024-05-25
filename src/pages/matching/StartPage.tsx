@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
-import Header2 from '../../components/Header2'
-import Navbar2 from '../../components/Navbar2'
+import Header from '../../components/Header'
+import Navbar from '../../components/Navbar'
 // import SelectUserModal from '../../components/SelectUserModal'
 // import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
 // import FindLoadingModal from '../../components/FindLoadingModal'
@@ -170,7 +170,7 @@ function StartPage() {
           },
         )
         alert('질문이 생성되었습니다.')
-        navigate('/online/select', { state: response.data.id })
+        navigate('/matching/select', { state: response.data.id })
       } catch (error) {
         console.error('질문 생성 중 오류 발생:', error)
       }
@@ -181,8 +181,8 @@ function StartPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <StartWrap>
           <Title>질문에 맞는 멘토들을 추천해 드릴게요</Title>

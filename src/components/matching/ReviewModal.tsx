@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import { IoMdStar, IoMdClose, IoMdStarOutline } from 'react-icons/io'
-import { useReviewListStore } from '../store/store'
+import { useReviewListStore } from '../../store/store'
 
 interface ReviewModalProps {
   isOpen: boolean

@@ -8,9 +8,9 @@ import {
   useCommentDataStore,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
@@ -279,13 +279,13 @@ const Send = styled.div`
   cursor: pointer;
 `
 
-function DetailQuestionPostPage() {
+function DetailMainPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
-  const { postData, setPostData } = usePostStore()
+  const { postData, setPostData } = usePostStore() //게시글 객체
   const [loading, setLoading] = useState(true)
 
   //게시글 단건조회
@@ -332,7 +332,7 @@ function DetailQuestionPostPage() {
       } catch (error) {
         alert('Error while delete post')
       }
-      navigate('/posts/questions')
+      navigate('/posts')
     }
   }
 
@@ -365,10 +365,10 @@ function DetailQuestionPostPage() {
     const access = localStorage.getItem('accessToken')
     try {
       const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
-      console.log(isPostLiked)
 
       if (!isPostLiked) {
         //없을 경우
+
         const response = await axios.post(
           `${apiUrl}/post/heart/${postId}`, //좋아요 생성
           {},
@@ -437,7 +437,6 @@ function DetailQuestionPostPage() {
     const comment = {
       content: content,
     }
-
     if (content != '') {
       try {
         const access = localStorage.getItem('accessToken')
@@ -451,8 +450,8 @@ function DetailQuestionPostPage() {
       } catch (error) {
         alert('Error while creating comment')
       }
+      SetContent('')
     }
-    SetContent('')
   }
 
   //댓글 삭제
@@ -526,12 +525,12 @@ function DetailQuestionPostPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <PostWrapper>
-          <PageTitle>질문게시판</PageTitle>
+          <PageTitle>자유게시판</PageTitle>
           <MainPostWrapper>
             {loading ? (
               <Skeleton />
@@ -635,4 +634,4 @@ function DetailQuestionPostPage() {
     </div>
   )
 }
-export default DetailQuestionPostPage
+export default DetailMainPostPage

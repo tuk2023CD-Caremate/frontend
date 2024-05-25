@@ -8,9 +8,9 @@ import {
   useCommentDataStore,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
@@ -279,13 +279,13 @@ const Send = styled.div`
   cursor: pointer;
 `
 
-function DetailMainPostPage() {
+function DetailQuestionPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate()
   const { apiUrl } = useApiUrlStore()
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
-  const { postData, setPostData } = usePostStore() //게시글 객체
+  const { postData, setPostData } = usePostStore()
   const [loading, setLoading] = useState(true)
 
   //게시글 단건조회
@@ -301,7 +301,6 @@ function DetailMainPostPage() {
       alert('Error while fetching post')
     }
   }
-
 
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
@@ -333,7 +332,7 @@ function DetailMainPostPage() {
       } catch (error) {
         alert('Error while delete post')
       }
-      navigate('/posts')
+      navigate('/posts/questions')
     }
   }
 
@@ -366,10 +365,10 @@ function DetailMainPostPage() {
     const access = localStorage.getItem('accessToken')
     try {
       const isPostLiked = likeList.some((post) => post.post_id === postId) //좋아요 누른 게시글인지 조회
+      console.log(isPostLiked)
 
       if (!isPostLiked) {
         //없을 경우
-
         const response = await axios.post(
           `${apiUrl}/post/heart/${postId}`, //좋아요 생성
           {},
@@ -438,6 +437,7 @@ function DetailMainPostPage() {
     const comment = {
       content: content,
     }
+
     if (content != '') {
       try {
         const access = localStorage.getItem('accessToken')
@@ -451,8 +451,8 @@ function DetailMainPostPage() {
       } catch (error) {
         alert('Error while creating comment')
       }
-      SetContent('')
     }
+    SetContent('')
   }
 
   //댓글 삭제
@@ -508,31 +508,33 @@ function DetailMainPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
 
-  
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
     }
   }
 
-  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+  const handleEditKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    post_id: number,
+    comment_id: number,
+  ) => {
     if (event.key === 'Enter') {
-      updateComment(post_id, comment_id);
+      updateComment(post_id, comment_id)
     }
-  };
-
+  }
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <PostWrapper>
-          <PageTitle>자유게시판</PageTitle>
+          <PageTitle>질문게시판</PageTitle>
           <MainPostWrapper>
-          {loading ? (
-          <Skeleton/>
+            {loading ? (
+              <Skeleton />
             ) : (
               <>
                 <Upper>
@@ -554,7 +556,7 @@ function DetailMainPostPage() {
                   <Title>{postData.title}</Title>
                   <Context>{postData.content}</Context>
                 </Lower>
-                </>
+              </>
             )}
             <FooterWrapper>
               <DetailFooterWrapper>
@@ -607,7 +609,9 @@ function DetailMainPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
-                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
+                      onKeyDown={(e) =>
+                        handleEditKeyPress(e, postData.post_id, comments.comment_id)
+                      }
                     />
                   </div>
                 ) : (
@@ -631,4 +635,4 @@ function DetailMainPostPage() {
     </div>
   )
 }
-export default DetailMainPostPage
+export default DetailQuestionPostPage

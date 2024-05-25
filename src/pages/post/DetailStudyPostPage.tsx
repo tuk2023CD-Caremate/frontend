@@ -8,9 +8,9 @@ import {
   useCommentDataStore,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
@@ -547,8 +547,8 @@ function DetailStudyPostPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <PostWrapper>

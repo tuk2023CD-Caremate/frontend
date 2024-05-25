@@ -1,16 +1,16 @@
-import Header2 from '../../components/Header2.tsx'
+import Header from '../../components/Header.tsx'
 import Userbar from '../../components/sidebar/Userbar.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import DividerImg from '../../assets/images/divider1.png'
-import CommentImg from '../../assets/images/comment2.png'
+import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
+import DividerImg from '../../assets/images/divider1.png'
+import CommentImg from '../../assets/images/people.png'
 
 const Container = styled.div`
   display: flex;
   margin-top: 3rem;
 `
 
-const MyPostWrapper = styled.div`
+const MatchingListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,9 +50,10 @@ const Title = styled.div`
   margin-top: 0.625rem;
 `
 
-const Context = styled.div`
+const Tag = styled.div`
   font-size: 1.5rem;
-  margin: 0.625rem;
+  font-weight: bold;
+  color: #650fa9;
   margin-top: 1.25rem;
 `
 
@@ -62,13 +63,13 @@ const FooterWrap = styled.div`
   align-items: center;
 `
 
-const CommentImage = styled.img`
+const PeopleImage = styled.img`
   width: 2rem;
   height: 2rem;
   margin-right: 0.5rem;
 `
 
-const Comment = styled.div`
+const People = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
 `
@@ -79,9 +80,9 @@ const Divider = styled.img`
   margin-left: 1.25rem;
   margin-right: 1.25rem;
 `
-const Writer = styled.div`
+const Participation = styled.div`
   font-size: 1.5rem;
-  color: #9b9b9b;;
+  color: #9b9b9b;
 `
 
 const DateCreated = styled.div`
@@ -89,60 +90,60 @@ const DateCreated = styled.div`
   color: #9b9b9b;
 `
 
-function MyPostPage() {
-  const posts = [
+function MatchingListPage() {
+  const lists = [
     {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
+      matchingType: '온라인 매칭',
+      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
+      tag: '#맥북 #mac #초기세팅',
+      peopleCount: 3,
       dateCreated: '01/06',
-      writer: '틀니개',
+      participations: '정우혁 멘토',
     },
     {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
+      matchingType: '온라인 매칭',
+      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
+      tag: '#맥북 #mac #초기세팅',
+      peopleCount: 3,
       dateCreated: '01/06',
-      writer: '틀니개',
+      participations: '정우혁 멘토',
     },
     {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
+      matchingType: '온라인 매칭',
+      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
+      tag: '#맥북 #mac #초기세팅',
+      peopleCount: 3,
       dateCreated: '01/06',
-      writer: '틀니개',
+      participations: '정우혁 멘토',
     },
   ]
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <Userbar />
-        <MyPostWrapper>
-          <PageTitle>내가 쓴 글</PageTitle>
-          {posts.map((post, index) => (
+        <MatchingListWrapper>
+          <PageTitle>매칭 기록</PageTitle>
+          {lists.map((list, index) => (
             <MyPost key={index}>
-              <BoardType>{post.boardType}</BoardType>
-              <Title>{post.title}</Title>
-              <Context>{post.context}</Context>
+              <BoardType>{list.matchingType}</BoardType>
+              <Title>{list.title}</Title>
+              <Tag>{list.tag}</Tag>
               <FooterWrap>
-                <CommentImage src={CommentImg} />
-                <Comment>{post.commentCount}</Comment>
+                <PeopleImage src={CommentImg} />
+                <People>{list.peopleCount}</People>
                 <Divider src={DividerImg} />
-                <DateCreated>{post.dateCreated}</DateCreated>
+                <DateCreated>{list.dateCreated}</DateCreated>
                 <Divider src={DividerImg} />
-                <Writer>{post.writer}</Writer>
+                <Participation>{list.participations}</Participation>
               </FooterWrap>
             </MyPost>
           ))}
-        </MyPostWrapper>
+        </MatchingListWrapper>
       </Container>
     </div>
   )
 }
 
-export default MyPostPage
+export default MatchingListPage

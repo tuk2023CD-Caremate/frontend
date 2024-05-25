@@ -14,18 +14,18 @@ const Wrap = styled.div`
   justify-content: center;
   width: 100vw;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 `
 
 const PlaystoreBtn = styled.button`
-  margin: 30px;
-  border-radius: 15px;
-  width: 260px;
-  height: 70px;
+  margin: 1.8rem;
+  border-radius: 1rem;
+  width: 16.25rem;
+  height: 4.375rem;
   background-color: #650fa9;
   color: #ffffff;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 1.8rem;
   text-align: center;
   opacity: 0.7;
   transition: opacity 0.2s;
@@ -34,14 +34,14 @@ const PlaystoreBtn = styled.button`
   }
 `
 const StartBtn = styled.button`
-  margin: 30px;
-  border-radius: 15px;
-  width: 260px;
-  height: 70px;
+  margin: 1.8rem;
+  border-radius: 1rem;
+  width: 16.25rem;
+  height: 4.375rem;
   background-color: #650fa9;
   color: #ffffff;
   font-weight: bold;
-  font-size: 38px;
+  font-size: 2.3rem;
   text-align: center;
   opacity: 0.7;
   transition: opacity 0.2s;

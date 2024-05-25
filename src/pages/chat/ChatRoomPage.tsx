@@ -1,10 +1,10 @@
-import Header2 from '../components/Header2.tsx'
+import Header from '../../components/Header.tsx'
 import { styled } from 'styled-components'
-import Navbar2 from '../components/Navbar2.tsx'
-import Chat from '../components/Chat.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import Chat from '../../components/chat/Chat.tsx'
 import { useParams } from 'react-router-dom'
-import { useReviewModalStore } from '../store/store.ts'
-import CreateReviewModal from './OnlinePage/CreateReviewModal.tsx'
+import { useReviewModalStore } from '../../store/store.ts'
+import CreateReviewModal from '../../components/chat/CreateReviewModal.tsx'
 
 interface RouteParams {
   [key: string]: string | undefined
@@ -40,8 +40,8 @@ function ChatRoomPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <Chat onOpen={openModal} chatRoomId={chatRoomId} />
         <CreateReviewModal isOpen={isReviewModalOpen} onClose={closeModal} mentorId={mentorId} />

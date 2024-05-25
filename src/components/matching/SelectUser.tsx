@@ -5,9 +5,9 @@ import {
   useIsAiBasedStore,
   useReviewListStore,
   useUserListStore,
-} from '../store/store'
+} from '../../store/store'
 import axios from 'axios'
-import ProfileIMG from '../assets/images/김영한.png'
+import ProfileIMG from '../../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
 import ReviewModal from './ReviewModal'
 import { useNavigate } from 'react-router-dom'

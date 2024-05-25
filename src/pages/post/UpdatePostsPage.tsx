@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import Header2 from '../../components/Header2.tsx'
+import Header from '../../components/Header.tsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useApiUrlStore, usePostStore } from '../../store/store.ts'
 import axios from 'axios'
@@ -202,7 +202,7 @@ function UpdatePostPage() {
 
   return (
     <div>
-    <Header2/>
+    <Header/>
       <Container>
         <AllWrapper>
           <Upper>

@@ -1,20 +1,19 @@
 import styled from 'styled-components'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { 
-  useApiUrlStore, 
+import {
+  useApiUrlStore,
   usePostListStore,
-  useFilterListStore, 
+  useFilterListStore,
   PostsList,
- } from '../../store/store.ts'
+} from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
-import { IoIosHeart,IoIosHeartEmpty, IoIosText } from "react-icons/io"
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
-
 
 const Container = styled.div`
   display: flex;
@@ -40,7 +39,7 @@ const BtnWrapper = styled.div`
   padding-bottom: 0.625rem;
 `
 const Btn = styled.button<{ active: boolean }>`
-  width: 7.75rem;
+  width: 10rem;
   height: 3rem;
   border-radius: 0.625rem;
   border: none;
@@ -172,40 +171,36 @@ const Sortoption = [
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
-const interestLabels:  { [key: string]: string}= {
+const interestLabels: { [key: string]: string } = {
   KOREAN: '국어',
   MATH: '수학',
   ENGLISH: '영어',
   SCIENCE: '과학',
-  PROGRAMMING: '코딩'
-};
+  PROGRAMMING: '코딩',
+}
 
 function QuestionPostPage() {
-
   const { apiUrl } = useApiUrlStore()
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const {filterList, setFilterList}= useFilterListStore()
-  const {postsList, setPostList} = usePostListStore()
+  const { filterList, setFilterList } = useFilterListStore()
+  const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
-  
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({})
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
   }
 
-    
-   //게시글 정렬
-   const OnSortpostData = () => {
+  //게시글 정렬
+  const OnSortpostData = () => {
     const sortList = postsList.slice(0).sort((a, b) => {
-
-      if (sortOption === 'LIKE') {//좋아요 순 option을 선택했을 경우
+      if (sortOption === 'LIKE') {
+        //좋아요 순 option을 선택했을 경우
         return b.likeCount - a.likeCount
-      } 
-      else if (sortOption === 'COMMENT') {
+      } else if (sortOption === 'COMMENT') {
         return b.commentCount - a.commentCount
       }
       return 0
@@ -213,15 +208,14 @@ function QuestionPostPage() {
     setPostList(sortList)
   }
 
-
   //게시글 전체조회
   const getPost = async () => {
     setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
-        window.alert('로그인을 해주세요.');
-        return;
+        window.alert('로그인을 해주세요.')
+        return
       }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
@@ -236,41 +230,37 @@ function QuestionPostPage() {
     getPost()
   }, [])
 
-
-
-     //게시글 검색
-     const searchpost = async ()=> {
-       if(searchKeyword !==''){
-         try {
-           const access = localStorage.getItem('accessToken')
-           const response = await axios.get(`${apiUrl}/posts/search`, {
-             params: {keyword : searchKeyword},
-             headers: { Authorization: `Bearer ${access}` },
-           })
-           setPostList(response.data)
-         } catch (error) {
-          alert('Error while searching keyword')
-         }
-       } else if(searchKeyword ==''){
-         alert("검색어를 입력해주세요")
-         getPost(); 
-       }}
-
-
-  //게시글 필터링
-  const OnFilter = (interests: string) => {
-    if (isClicked && filterOption==interests) {
- 
-      setIsClicked(false) 
-      setFilterList([])
-    } else {
-      setIsClicked(true) 
-      const filterPost = postsList.filter((post) => post.interests === interests); // 복사된 값에서 filter
-      setFilterList(filterPost)
-      setFilterOption(interests) 
+  //게시글 검색
+  const searchpost = async () => {
+    if (searchKeyword !== '') {
+      try {
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(`${apiUrl}/posts/search`, {
+          params: { keyword: searchKeyword },
+          headers: { Authorization: `Bearer ${access}` },
+        })
+        setPostList(response.data)
+      } catch (error) {
+        alert('Error while searching keyword')
+      }
+    } else if (searchKeyword == '') {
+      alert('검색어를 입력해주세요')
+      getPost()
     }
   }
 
+  //게시글 필터링
+  const OnFilter = (interests: string) => {
+    if (isClicked && filterOption == interests) {
+      setIsClicked(false)
+      setFilterList([])
+    } else {
+      setIsClicked(true)
+      const filterPost = postsList.filter((post) => post.interests === interests) // 복사된 값에서 filter
+      setFilterList(filterPost)
+      setFilterOption(interests)
+    }
+  }
 
   //좋아요 누른 게시글인지 확인
   const LikedPost = async () => {
@@ -280,13 +270,12 @@ function QuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
 
-      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
-      const newLikedMap: { [postId: string]: boolean } = {};
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id)
+      const newLikedMap: { [postId: string]: boolean } = {}
       likedPostIds.forEach((postId: string) => {
-        newLikedMap[postId] = true;
-      });
-      setIsLiked(newLikedMap);
-  
+        newLikedMap[postId] = true
+      })
+      setIsLiked(newLikedMap)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -298,11 +287,10 @@ function QuestionPostPage() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      searchpost();
+      searchpost()
     }
-  };
+  }
 
-  
   //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
@@ -313,13 +301,13 @@ function QuestionPostPage() {
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-             {isliked[post.post_id] ? (
-               <IoIosHeart color="#ff0000" size="25" />
+              {isliked[post.post_id] ? (
+                <IoIosHeart color="#ff0000" size="25" />
               ) : (
-              <IoIosHeartEmpty color="#ff0000" size="25" />
+                <IoIosHeartEmpty color="#ff0000" size="25" />
               )}
               <Likecount>{post.likeCount}</Likecount>
-              <IoIosText size="30"/>
+              <IoIosText size="30" />
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
               <DateCreated>{post.createdAt}</DateCreated>
@@ -333,31 +321,32 @@ function QuestionPostPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <QuestionPostsWrapper>
           <Upper>
-          <BtnWrapper>
-            {Object.keys(interestLabels).map(interest => (
-            <Btn
-              key={interest}
-              active={isClicked && filterList.some(post => post.interests === interest)}
-              onClick={() => OnFilter(interest)}>
-                {interestLabels[interest]}
-              </Btn>
+            <BtnWrapper>
+              {Object.keys(interestLabels).map((interest) => (
+                <Btn
+                  key={interest}
+                  active={isClicked && filterList.some((post) => post.interests === interest)}
+                  onClick={() => OnFilter(interest)}>
+                  {interestLabels[interest]}
+                </Btn>
               ))}
-          </BtnWrapper>
+            </BtnWrapper>
             <SearchWrapper>
               <Search>
-              <Input type="text"
-              value={searchKeyword}
-              onChange={(e)=>setSearchKeyword(e.target.value)}
-              placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
-              onKeyDown={handleKeyPress}
-              />
-              <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
+                <Input
+                  type="text"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
+                  onKeyDown={handleKeyPress}
+                />
+                <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
               </Search>
               <SideWrapper>
                 <SelectBox value={sortOption} onChange={OnListtHandler} onClick={OnSortpostData}>
@@ -373,8 +362,7 @@ function QuestionPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
-          : <SkeletonUI/>}
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> : <SkeletonUI />}
         </QuestionPostsWrapper>
       </Container>
     </div>

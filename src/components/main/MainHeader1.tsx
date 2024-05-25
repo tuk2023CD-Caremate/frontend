@@ -12,9 +12,9 @@ const Wrap = styled.div`
   justify-content: space-between;
   width: 100vw;
   align-items: center;
-  height: 109px;
-  padding-left: 140px;
-  padding-right: 140px;
+  height: 7rem;
+  padding-left: 8.75rem;
+  padding-right: 8.75rem;
 `
 
 const Logo = styled.img`
@@ -32,14 +32,14 @@ const Btn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background-color: #ffffff;
   border: solid 1px #bdbdbd;
-  width: 120px;
-  height: 50px;
-  font-size: 20px;
+  width: 7.5rem;
+  height: 3rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 30px;
+  margin: 2rem;
   cursor: pointer;
 `
 

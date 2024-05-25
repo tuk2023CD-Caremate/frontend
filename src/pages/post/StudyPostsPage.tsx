@@ -8,9 +8,9 @@ import {
   PostsList,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
@@ -19,7 +19,7 @@ const Container = styled.div`
   display: flex;
   margin-top: 3rem;
 `
-const FreePostsWrapper = styled.div`
+const StudyPostsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,7 +111,7 @@ const WriteButton = styled.button`
   cursor: pointer;
 `
 
-const MainPosts = styled(Link)`
+const StudyPosts = styled(Link)<{ recruitmentStatus: boolean }>`
   display: flex;
   height: 12.5rem;
   padding: 1.25rem 0rem 0rem 1.25rem;
@@ -120,7 +120,7 @@ const MainPosts = styled(Link)`
   flex-direction: column;
   justify-content: center;
   text-decoration: none;
-  color: black;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#000000' : '#e8e8e8')};
 `
 
 const Title = styled.div`
@@ -142,52 +142,60 @@ const FooterWrapper = styled.div`
   margin-top: 1.25rem;
   align-items: center;
 `
+
+const LikedIcon = styled(IoIosHeart)<{ recruitmentStatus: boolean }>`
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 1.5rem;
+`
+
+const UnLikedIcon = styled(IoIosHeartEmpty)<{ recruitmentStatus: boolean }>`
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
+  font-size: 1.5rem;
+`
+
 const Likecount = styled.div`
   font-size: 1.75rem;
   font-weight: bolder;
   margin-right: 0.625rem;
   margin-left: 0.5rem;
 `
+
 const CommentCount = styled.div`
   font-size: 1.75rem;
   font-weight: bolder;
   margin-left: 0.5rem;
 `
+
 const Divider = styled.img`
   margin: 0rem 1.25rem 0rem  1.25rem;
   width: 2px;
   height: 1.25rem;
 `
-const DateCreated = styled.div`
+
+const Detail = styled.div<{ recruitmentStatus: boolean }>`
   font-size: 1.75rem;
-  color: #9b9b9b;
+  color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
 `
-const Writer = styled.div`
-  font-size: 1.75rem;
-  color: #9b9b9b;
-`
+
 const Sortoption = [
   { value: 'LIKE', name: '좋아요 순' },
   { value: 'COMMENT', name: '댓글 순' },
 ]
 
-const interestLabels: { [key: string]: string } = {
-  WEBAPP: '웹/앱개발',
-  SERVER: '서버/네트워크',
-  AI: 'AI/IoT',
-  DATA: '데이터 개발',
-  SECURITY: '정보보안',
+const recruitmentStatusLabels: { [key: string]: string } = {
+  false: '모집완료',
+  true: '모집중',
 }
 
-function MainPostPage() {
+function StudyPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const [loading, setLoading] = useState(false)
   const { filterList, setFilterList } = useFilterListStore()
   const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({})
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -214,7 +222,7 @@ function MainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
-        window.alert('로그인을해주세요.')
+        window.alert('로그인을 해주세요.')
         return
       }
       const response = await axios.get(`${apiUrl}/posts`, {
@@ -245,21 +253,20 @@ function MainPostPage() {
       }
     } else if (searchKeyword == '') {
       alert('검색어를 입력해주세요')
-      getPost() //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+      getPost()
     }
   }
 
   //게시글 필터링
-  const OnFilter = (interests: string) => {
-    if (isClicked && filterOption == interests) {
-      // 이미 선택된 버튼인지 확인
-      setIsClicked(false) // 이미 선택된 버튼을 다시 눌렀을 때 전체 조회로 변경
+  const OnFilter = (recruitmentStatus: boolean) => {
+    if (isClicked && filterOption === recruitmentStatus.toString()) {
+      setIsClicked(false)
       setFilterList([])
     } else {
       setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
-      const filterPost = postsList.filter((post) => post.interests === interests) // 복사된 값에서 filter
+      const filterPost = postsList.filter((post) => post.recruitmentStatus === recruitmentStatus)
       setFilterList(filterPost)
-      setFilterOption(interests)
+      setFilterOption(recruitmentStatus.toString())
     }
   }
 
@@ -292,48 +299,54 @@ function MainPostPage() {
     }
   }
 
+  //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
       {posts
-        .filter((post) => post.category === 'FREE')
+        .filter((post) => post.category === 'STUDY')
         .map((post) => (
-          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+          <StudyPosts
+            key={post.post_id}
+            to={`/posts/study/${post.post_id}`}
+            recruitmentStatus={post.recruitmentStatus}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
               {isliked[post.post_id] ? (
-                <IoIosHeart color="#ff0000" size="25" />
+                <LikedIcon recruitmentStatus={post.recruitmentStatus} />
               ) : (
-                <IoIosHeartEmpty color="#ff0000" size="25" />
+                <UnLikedIcon recruitmentStatus={post.recruitmentStatus} />
               )}
               <Likecount>{post.likeCount}</Likecount>
-              <IoIosText size="30" />
+              <IoIosText size="25" />
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
-              <DateCreated>{post.createdAt}</DateCreated>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.createdAt}</Detail>
               <Divider src={DividerImg} />
-              <Writer>{post.nickname}</Writer>
+              <Detail recruitmentStatus={post.recruitmentStatus}>{post.nickname}</Detail>
             </FooterWrapper>
-          </MainPosts>
+          </StudyPosts>
         ))}
     </>
   )
-
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
-        <FreePostsWrapper>
+        <StudyPostsWrapper>
           <Upper>
             <BtnWrapper>
-              {Object.keys(interestLabels).map((interest) => (
+              {Object.keys(recruitmentStatusLabels).map((status) => (
                 <Btn
-                  key={interest}
-                  active={isClicked && filterList.some((post) => post.interests === interest)}
-                  onClick={() => OnFilter(interest)}>
-                  {interestLabels[interest]}
+                  key={status}
+                  active={
+                    isClicked &&
+                    filterList.some((post) => post.recruitmentStatus === (status === 'true'))
+                  }
+                  onClick={() => OnFilter(status === 'true')}>
+                  {recruitmentStatusLabels[status]}
                 </Btn>
               ))}
             </BtnWrapper>
@@ -357,15 +370,16 @@ function MainPostPage() {
                   ))}
                 </SelectBox>
                 <Link to="/posts/write">
-                  <WriteButton>글쓰기</WriteButton>
+                  <WriteButton> 글쓰기</WriteButton>
                 </Link>
               </SideWrapper>
             </SearchWrapper>
           </Upper>
           {loading ? <Post posts={isClicked ? filterList : postsList} /> : <SkeletonUI />}
-        </FreePostsWrapper>
+        </StudyPostsWrapper>
       </Container>
     </div>
   )
 }
-export default MainPostPage
+
+export default StudyPostPage

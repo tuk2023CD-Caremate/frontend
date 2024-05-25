@@ -24,24 +24,24 @@ const SkeletonItem = styled.span<{ width: string }>`
 const SkeletonWrapper = styled.div`
 display: flex;
 flex-direction: column;
-width: calc(100% - 100px);
-height: 200px;
+width: calc(100% - 6.25rem);
+height: 12.5rem;
 border: 1px solid #d8d8d8;
-padding: 20px 0px 0px 20px;
+padding: 1.25rem 0rem 0rem 1.25rem;
 `
 
 const SkeletonTitle = styled.div`
-width: 200px;
+width: 12.5rem;
 `;
 
 const SkeletonContent = styled.div`
-  width: 350px;
-  margin-top: 30px;
+  width: 21.8rem;
+  margin-top: 1.8rem;
 `;
 
 const SkeletonFooter = styled.div`
-width: 450px;
-  margin-top: 20px;
+width: 28rem;
+  margin-top: 1.25rem;
 
 `;
 
