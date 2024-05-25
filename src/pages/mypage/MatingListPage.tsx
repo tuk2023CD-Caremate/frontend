@@ -1,6 +1,6 @@
-import Header2 from '../../components/Header2.tsx'
+import Header from '../../components/Header.tsx'
 import Userbar from '../../components/sidebar/Userbar.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
+import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
 import CommentImg from '../../assets/images/people.png'
@@ -122,8 +122,8 @@ function MatchingListPage() {
   ]
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <Userbar />
         <MatchingListWrapper>

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Header2 from '../components/Header2.tsx'
-import Navbar2 from '../components/Navbar2.tsx'
+import Header from '../components/Header.tsx'
+import Navbar from '../components/Navbar.tsx'
 import StatisticsBar from '../components/sidebar/StatisticsBar.tsx'
 import { IoStopCircleSharp, IoPencil } from 'react-icons/io5'
 import { IoIosPlayCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
@@ -344,8 +344,8 @@ function StudyPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <LeftWrapper>
           <Calendar toggleStatisticsBar={toggleStatisticsBar} onDateChange={handleDateChange} />

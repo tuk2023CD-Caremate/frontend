@@ -50,6 +50,8 @@ interface UserList {
   starAverage: number
   solved: number
   matchingCount: number
+  reviewCount: number
+  login: boolean
 }
 
 export const useUserListStore = create<UserListState>((set) => ({
@@ -178,7 +180,6 @@ export const useIsAiBasedStore = create<IsAiBasedState>((set) => ({
   setIsAiBased: (isAiBased: boolean) => set({ isAiBased }),
 }))
 
-
 /* 채팅 리스트 */
 interface ChatRoomMember {
   id: number
@@ -193,6 +194,7 @@ interface ChatRoom {
   chatRoomId: number
   chatRoomName: string
   members: ChatRoomMember[]
+  unreadMessageCount: number
 }
 
 interface ChatListState {
@@ -218,6 +220,18 @@ export interface SubjectList {
 export const useSubjectListState = create<SubjectListState>((set) => ({
   subjectList: [],
   setSubjectList: (subjectList) => set({ subjectList }),
+}))
+
+
+/* 리뷰 모달창 */
+interface IsReviewModalOpenState {
+  isReviewModalOpen: boolean
+  setIsReviewModalOpen: (isOpen: boolean) => void
+}
+
+export const useReviewModalStore = create<IsReviewModalOpenState>((set) => ({
+  isReviewModalOpen: false,
+  setIsReviewModalOpen: (isOpen: boolean) => set({ isReviewModalOpen: isOpen }),
 }))
 
 

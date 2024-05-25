@@ -8,9 +8,9 @@ import {
   useCommentDataStore,
 } from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
@@ -297,7 +297,6 @@ function DetailMainPostPage() {
     }
   }
 
-
   //게시글 수정&삭제 버튼이 작성자에게만 보이도록
   const getNickname = async () => {
     try {
@@ -503,31 +502,33 @@ function DetailMainPostPage() {
     setIsEditing(0) //comment_id 초기화
   }
 
-  
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       createComment() // Enter 키를 누르면 댓글 생성 함수를 호출합니다.
     }
   }
 
-  const handleEditKeyPress = (event: React.KeyboardEvent<HTMLInputElement>, post_id: number, comment_id: number) => {
+  const handleEditKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    post_id: number,
+    comment_id: number,
+  ) => {
     if (event.key === 'Enter') {
-      updateComment(post_id, comment_id);
+      updateComment(post_id, comment_id)
     }
-  };
-
+  }
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
         <PostWrapper>
           <PageTitle>자유게시판</PageTitle>
           <MainPostWrapper>
-          {loading ? (
-          <Skeleton/>
+            {loading ? (
+              <Skeleton />
             ) : (
               <>
                 <Upper>
@@ -549,7 +550,7 @@ function DetailMainPostPage() {
                   <Title>{postData.title}</Title>
                   <Context>{postData.content}</Context>
                 </Lower>
-                </>
+              </>
             )}
             <FooterWrapper>
               <DetailFooterWrapper>
@@ -602,7 +603,9 @@ function DetailMainPostPage() {
                       value={editcontent}
                       onChange={(e) => setEditContent(e.target.value)}
                       placeholder={comments.content}
-                      onKeyDown={(e) => handleEditKeyPress(e, postData.post_id, comments.comment_id)}
+                      onKeyDown={(e) =>
+                        handleEditKeyPress(e, postData.post_id, comments.comment_id)
+                      }
                     />
                   </div>
                 ) : (

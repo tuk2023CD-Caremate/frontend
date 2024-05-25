@@ -6,11 +6,11 @@ import {
   usePostListStore,
   useFilterListStore,
   PostsList,
- } from '../../store/store.ts'
+} from '../../store/store.ts'
 import axios from 'axios'
-import Header2 from '../../components/Header2.tsx'
-import Navbar2 from '../../components/Navbar2.tsx'
-import PostsBar from '../../components/sidebar/Postsbar'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
@@ -19,7 +19,7 @@ const Container = styled.div`
   display: flex;
   margin-top: 100px;
 `
-const FreePostsWrapper = styled.div`
+const QuestionPostsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,8 +53,8 @@ const SearchWrapper = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px 10px 10px 0;
+  justify-content: space-between;
   margin-bottom: 10px;
 `
 const SideWrapper = styled.div`
@@ -111,7 +111,7 @@ const WriteButton = styled.button`
   cursor: pointer;
 `
 
-const MainPosts = styled(Link)`
+const QuestionPosts = styled(Link)`
   display: flex;
   height: 200px;
   padding: 20px 0px 0px 20px;
@@ -130,6 +130,7 @@ const Title = styled.div`
 
 const Context = styled.div`
   font-size: 28px;
+  font-weight: normal;
   margin-top: 30px;
 `
 
@@ -175,17 +176,16 @@ const interestLabels: { [key: string]: string } = {
   PROGRAMMING: '코딩',
 }
 
-function MainPostPage() {
+function QuestionPostPage() {
   const { apiUrl } = useApiUrlStore()
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const {filterList, setFilterList}= useFilterListStore()
-  const {postsList, setPostList} = usePostListStore()
+  const { filterList, setFilterList } = useFilterListStore()
+  const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
-  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({});
-
+  const [loading, setLoading] = useState(false)
+  const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({})
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSortOption(e.target.value)
@@ -211,8 +211,8 @@ function MainPostPage() {
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
-        window.alert('로그인을해주세요.');
-        return;
+        window.alert('로그인을 해주세요.')
+        return
       }
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
@@ -242,18 +242,17 @@ function MainPostPage() {
       }
     } else if (searchKeyword == '') {
       alert('검색어를 입력해주세요')
-      getPost() //검색어 입력 안했을 경우 전체게시물 불러오기 >> 이미 검색한 이후 다른 단어로 검색해도 게시글이 출력될 수 있게
+      getPost()
     }
   }
 
   //게시글 필터링
   const OnFilter = (interests: string) => {
     if (isClicked && filterOption == interests) {
-      // 이미 선택된 버튼인지 확인
-      setIsClicked(false) // 이미 선택된 버튼을 다시 눌렀을 때 전체 조회로 변경
+      setIsClicked(false)
       setFilterList([])
     } else {
-      setIsClicked(true) // true로 변경하여 filterPost를 map하게 함
+      setIsClicked(true)
       const filterPost = postsList.filter((post) => post.interests === interests) // 복사된 값에서 filter
       setFilterList(filterPost)
       setFilterOption(interests)
@@ -267,14 +266,13 @@ function MainPostPage() {
       const response = await axios.get(`${apiUrl}/user/post/heart`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-  
-      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id);
-      const newLikedMap: { [postId: string]: boolean } = {};
-      likedPostIds.forEach((postId: string) => {
-        newLikedMap[postId] = true;
-      });
-      setIsLiked(newLikedMap);
 
+      const likedPostIds = response.data.map((likedPost: any) => likedPost.post_id)
+      const newLikedMap: { [postId: string]: boolean } = {}
+      likedPostIds.forEach((postId: string) => {
+        newLikedMap[postId] = true
+      })
+      setIsLiked(newLikedMap)
     } catch (error) {
       alert('Error while liking post')
     }
@@ -290,40 +288,41 @@ function MainPostPage() {
     }
   }
 
+  //중복 코드 컴포넌트화
   const Post = ({ posts }: { posts: PostsList[] }) => (
     <>
       {posts
-        .filter((post) => post.category === 'FREE')
+        .filter((post) => post.category === 'QUESTION')
         .map((post) => (
-          <MainPosts key={post.post_id} to={`/posts/${post.post_id}`}>
+          <QuestionPosts key={post.post_id} to={`/posts/questions/${post.post_id}`}>
             <Title>{post.title}</Title>
             <Context>{post.content}</Context>
             <FooterWrapper>
-            {isliked[post.post_id] ? (
+              {isliked[post.post_id] ? (
                 <IoIosHeart color="#ff0000" size="25" />
               ) : (
                 <IoIosHeartEmpty color="#ff0000" size="25" />
               )}
               <Likecount>{post.likeCount}</Likecount>
-              <IoIosText size="30"/>
+              <IoIosText size="30" />
               <CommentCount>{post.commentCount}</CommentCount>
               <Divider src={DividerImg} />
               <DateCreated>{post.createdAt}</DateCreated>
               <Divider src={DividerImg} />
               <Writer>{post.nickname}</Writer>
             </FooterWrapper>
-          </MainPosts>
+          </QuestionPosts>
         ))}
     </>
   )
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <PostsBar />
-        <FreePostsWrapper>
+        <QuestionPostsWrapper>
           <Upper>
             <BtnWrapper>
               {Object.keys(interestLabels).map((interest) => (
@@ -360,11 +359,11 @@ function MainPostPage() {
               </SideWrapper>
             </SearchWrapper>
           </Upper>
-          {loading ? <Post posts={isClicked ? filterList : postsList} /> 
-          : <SkeletonUI/>}
-        </FreePostsWrapper>
+          {loading ? <Post posts={isClicked ? filterList : postsList} /> : <SkeletonUI />}
+        </QuestionPostsWrapper>
       </Container>
     </div>
   )
 }
-export default MainPostPage
+
+export default QuestionPostPage

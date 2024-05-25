@@ -2,18 +2,19 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
-import profileImg from '../assets/images/profile.png'
+import profileImg from '../../assets/images/profile.png'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore } from '../../store/store'
 import Stomp from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 
 interface ChatProps {
   chatRoomId: string
+  onOpen: () => void
 }
 
 interface Content {
-  // type: string
+  type: string
   chatRoomId: string
   sender: string
   content: string
@@ -57,7 +58,7 @@ const ChatWrap = styled.div`
 const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.sender !== props.nickname ? 'flex-start' : 'flex-start')};
+  justify-content: ${(props) => (props.sender === props.nickname ? 'flex-end' : 'flex-start')};
 `
 
 // const Time = styled.span`
@@ -85,7 +86,7 @@ const Messages = styled.div<MessagesProps>`
   color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 16px;
   font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '20px' : 'auto')};
+  margin-left: ${(props) => (props.sender !== props.nickname ? '10px' : 'auto')};
 `
 
 const InputWrap = styled.div`
@@ -151,13 +152,26 @@ const CreateMeetingBtn = styled.button`
   margin: 0 10px 20px 10px;
 `
 
-function Chat({ chatRoomId }: ChatProps) {
+const CreateReviewBtn = styled.button`
+  width: 120px;
+  height: 70px;
+
+  border-radius: 20px;
+  font-size: x-large;
+  font-weight: bold;
+  border: none;
+  background-color: #e8dcf2;
+  color: #650fa9;
+  cursor: pointer;
+  margin: 0 10px 20px 10px;
+`
+
+function Chat({ chatRoomId, onOpen }: ChatProps) {
   const { apiUrl } = useApiUrlStore()
 
   const [nickname, setNickname] = useState<string>('')
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
-  // const [roomId, setRoomId] = useState<string>()
 
   const [messages, setMessages] = useState<Content[]>([])
   const [inputMessage, setInputMessage] = useState('')
@@ -198,49 +212,42 @@ function Chat({ chatRoomId }: ChatProps) {
   const initializeChat = async () => {
     const access = localStorage.getItem('accessToken')
 
-    try {
-      const stomp = new Client({
-        brokerURL: 'ws://studymate154.com:8080/ws/chat',
-        connectHeaders: {
-          Authorization: `Bearer ${access}`,
-        },
-        debug: (str: string) => {
-          console.log(str)
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+    const stomp = new Client({
+      brokerURL: 'wss://studymate154.com/ws/chat',
+      connectHeaders: {
+        Authorization: `Bearer ${access}`,
+      },
+      debug: (str: string) => {
+        console.log(str)
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+    })
+    setStompClient(stomp)
+
+    stomp.activate()
+
+    stomp.onConnect = async () => {
+      console.log('WebSocket 연결이 열렸습니다.')
+
+      const subscriptionDestination = `/sub/chat/room/${chatRoomId}`
+
+      stomp.subscribe(subscriptionDestination, (message) => {
+        try {
+          const parsedMessage = JSON.parse(message.body)
+          setMessages((prevMessages) => [...prevMessages, parsedMessage])
+        } catch (error) {
+          console.error('오류가 발생했습니다:', error)
+        }
       })
-      setStompClient(stomp)
-
-      stomp.activate()
-
-      stomp.onConnect = () => {
-        console.log('WebSocket 연결이 열렸습니다.')
-        const subscriptionDestination = `/sub/chat/room/${chatRoomId}`
-
-        stomp.subscribe(subscriptionDestination, (message) => {
-          try {
-            console.log('메세지프레임 : ', message)
-            console.log('메세지프레임.body : ', message.body)
-            const parsedMessage = JSON.parse(message.body)
-            console.log('parsedMessage : ', parsedMessage)
-            console.log('*****메시지왔어요*****')
-            setMessages((prevMessages) => [...prevMessages, parsedMessage])
-          } catch (error) {
-            console.error('오류가 발생했습니다:', error)
-            console.log('**********')
-          }
-        })
-      }
-    } catch (error) {
-      console.error('채팅 룸 생성 중 오류가 발생했습니다:', error)
     }
   }
 
-  const sendMessage = (messageContent: string, nickname: string) => {
+  const sendMessage = (messageContent: string, nickname: string, messageType: string) => {
     const destination = `/pub/chat/message/${chatRoomId}`
     const newMessage: Content = {
+      type: messageType,
       chatRoomId: chatRoomId,
       sender: nickname,
       content: messageContent,
@@ -253,6 +260,8 @@ function Chat({ chatRoomId }: ChatProps) {
       })
     }
     setInputMessage('')
+
+    console.log('dasdasdsa')
   }
 
   // 메세지 입력시 스크롤 아래로 이동
@@ -276,7 +285,7 @@ function Chat({ chatRoomId }: ChatProps) {
       const joinUrl = response.data.join_url
       window.open(response.data.start_url)
       if (nickname) {
-        sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`, nickname)
+        sendMessage(`화상 미팅 참여 링크 : ${joinUrl}`, nickname, 'TALK')
       } else {
         console.error('Nickname이 없습니다.')
       }
@@ -301,7 +310,8 @@ function Chat({ chatRoomId }: ChatProps) {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       if (nickname) {
-        sendMessage(inputMessage, nickname)
+        sendMessage(inputMessage, nickname, 'TALK')
+        sendMessage('채팅방에 입장하였습니다.', nickname, 'ENTER')
       } else {
         console.error('Nickname이 없습니다.')
       }
@@ -314,14 +324,20 @@ function Chat({ chatRoomId }: ChatProps) {
         <BtnWrap>
           <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
           <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
+          <CreateReviewBtn onClick={onOpen}>리뷰 작성</CreateReviewBtn>
         </BtnWrap>
         <ChatWrap ref={chatRef}>
           {messages.map((message, index) => (
             <MessageContainer key={index} sender={message.sender} nickname={nickname || ''}>
+              {message.sender !== nickname && (
+                <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              )}
               <Messages sender={message.sender} nickname={nickname || ''}>
                 {message.content}
               </Messages>
-              <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              {message.sender === nickname && (
+                <Profile sender={message.sender} nickname={nickname || ''} src={profileImg} />
+              )}
             </MessageContainer>
           ))}
         </ChatWrap>
@@ -332,7 +348,7 @@ function Chat({ chatRoomId }: ChatProps) {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-          <SendButton onClick={() => sendMessage(inputMessage, nickname)}>전송</SendButton>
+          <SendButton onClick={() => sendMessage(inputMessage, nickname, 'TALK')}>전송</SendButton>
         </InputWrap>
       </Container>
     </div>

@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
-import Header2 from '../../components/Header2'
-import Navbar2 from '../../components/Navbar2'
+import Header from '../../components/Header'
+import Navbar from '../../components/Navbar'
 // import SelectUserModal from '../../components/SelectUserModal'
 // import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
 // import FindLoadingModal from '../../components/FindLoadingModal'
@@ -100,6 +100,7 @@ const StartMatchingBtn = styled.button`
 
 interface Option {
   label: string
+  value: string
 }
 
 function StartPage() {
@@ -114,19 +115,24 @@ function StartPage() {
   const [specificField, setSpecificField] = useState<string>('')
   const [options] = useState<Option[]>([
     {
-      label: 'PROGRAMMING',
+      label: '웹/앱개발',
+      value: 'WEBAPP',
     },
     {
-      label: 'MATH',
+      label: '서버/네트워크',
+      value: 'SERVER',
     },
     {
-      label: 'ENGLISH',
+      label: 'AI/IoT',
+      value: 'AI',
     },
     {
-      label: 'ComputerSience',
+      label: '데이터 개발',
+      value: 'DATA',
     },
     {
-      label: 'Algorithm',
+      label: '정보보안',
+      value: 'SECURITY',
     },
   ])
 
@@ -164,7 +170,7 @@ function StartPage() {
           },
         )
         alert('질문이 생성되었습니다.')
-        navigate('/online/select', { state: response.data.id })
+        navigate('/matching/select', { state: response.data.id })
       } catch (error) {
         console.error('질문 생성 중 오류 발생:', error)
       }
@@ -175,15 +181,15 @@ function StartPage() {
 
   return (
     <div>
-      <Header2 />
-      <Navbar2 />
+      <Header />
+      <Navbar />
       <Container>
         <StartWrap>
           <Title>질문에 맞는 멘토들을 추천해 드릴게요</Title>
           <SelectInterest value={selectedOption} onChange={handleOptionChange}>
             <option value="">관심분야를 선택하세요</option>
             {options.map((option) => (
-              <option key={option.label} value={option.label}>
+              <option key={option.label} value={option.value}>
                 {option.label}
               </option>
             ))}

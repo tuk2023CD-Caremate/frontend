@@ -8,25 +8,25 @@ import 'react-toastify/dist/ReactToastify.css'
 import MainPage from './pages/MainPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import MainPostsPage from './pages/PostsPage/MainPostsPage'
-import StudyPostsPage from './pages/PostsPage/StudyPostsPage'
-import ProfilePage from './pages/Mypage/ProfilePage'
-import StartPage from './pages/OnlinePage/StartPage'
-import NotificationPage from './pages/Mypage/NotificationPage'
-import MyPostPage from './pages/Mypage/MyPostPage'
-import MatingListPage from './pages/Mypage/MatingListPage'
-import ChatPage from './pages/ChatPage'
-import QuestionPostsPage from './pages/PostsPage/QuestionPostsPage'
-import WritingPostsPage from './pages/PostsPage/WritingPostsPage'
-import DetailMainPostsPage from './pages/PostsPage/DetailMainPostsPage'
-import DetailStudyPostsPage from './pages/PostsPage/DetailStudyPostPage'
-import DetailQuestionsPostsPage from './pages/PostsPage/DetailQuestionPostsPage'
+import MainPostsPage from './pages/post/MainPostsPage'
+import StudyPostsPage from './pages/post/StudyPostsPage'
+import ProfilePage from './pages/mypage/ProfilePage'
+import StartPage from './pages/matching/StartPage'
+import NotificationPage from './pages/mypage/NotificationPage'
+import MyPostPage from './pages/mypage/MyPostPage'
+import MatingListPage from './pages/mypage/MatingListPage'
+import ChatPage from './pages/chat/ChatPage'
+import QuestionPostsPage from './pages/post/QuestionPostsPage'
+import WritingPostsPage from './pages/post/WritingPostsPage'
+import DetailMainPostsPage from './pages/post/DetailMainPostsPage'
+import DetailStudyPostsPage from './pages/post/DetailStudyPostPage'
+import DetailQuestionsPostsPage from './pages/post/DetailQuestionPostsPage'
 import StudyPage from './pages/StudyPage'
-import SelectUserPage from './pages/OnlinePage/SelectUserPage'
-import UpdatePostsPage from './pages/PostsPage/UpdatePostsPage'
+import SelectUserPage from './pages/matching/SelectUserPage'
+import UpdatePostsPage from './pages/post/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
 import { useApiUrlStore } from './store/store'
-import ChatRoomPage from './pages/ChatRoomPage'
+import ChatRoomPage from './pages/chat/ChatRoomPage'
 
 const CustomToastContainer = styled(ToastContainer)`
   .Toastify__toast {
@@ -84,8 +84,8 @@ function App() {
 
         {/* <Route path="/offline" element={<OfflinePage />} /> */}
 
-        <Route path="/online" element={<StartPage />} />
-        <Route path="/online/select" element={<SelectUserPage />} />
+        <Route path="/matching" element={<StartPage />} />
+        <Route path="/matching/select" element={<SelectUserPage />} />
 
         <Route
           path="/chats"
@@ -96,7 +96,7 @@ function App() {
           }
         />
         <Route
-          path="/chats/room/:chatRoomId"
+          path="/chats/room/:chatRoomId/:mentorId"
           element={
             <ProtectedRoute>
               <ChatRoomPage />
