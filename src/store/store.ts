@@ -235,3 +235,45 @@ export const useStudyListState = create<StudyListState>((set) => ({
   setStudyList: (studyList) => set({ studyList }),
 }))
 */
+
+
+/* 상세 프로필 객체 데이터*/
+interface ProfileDataState {
+  profileData: ProfileData
+  setProfileData: (profileData: ProfileData) => void
+}
+
+export const useProfileDataStore = create<ProfileDataState>((set) => ({
+  profileData: {
+    name: '',
+    nickname: '',
+    part: '',
+    email: '',
+    tel: 0,
+    interests: '',
+    blogUrl: '',
+    publicRelations: '',
+    job: '',
+    heart: 0,
+    starAverage: 0,
+    solved: 0,
+    matchingCount: 0,
+  },
+  setProfileData: (profileData) => set({ profileData }),
+}))
+
+interface ProfileData {
+  name: string
+  nickname: string
+  part: string
+  email: string
+  tel: number
+  interests: string
+  blogUrl: string
+  publicRelations: string
+  job: string
+  heart: number
+  starAverage: number
+  solved: number
+  matchingCount: number
+}
