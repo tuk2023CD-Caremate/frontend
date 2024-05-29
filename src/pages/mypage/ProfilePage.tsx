@@ -4,8 +4,9 @@ import Navbar from '../../components/Navbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useApiUrlStore, useProfileDataStore } from '../../store/store.ts'
+import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const ProfileContent = styled.div`
   flex-direction: column;
   border: 1px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 1.25rem;
   width: 31.25rem;
   height: 40rem;
 `
@@ -73,7 +74,7 @@ const Role = styled.div`
 
 const Nickname = styled.div`
   font-size: 2.5rem;
-  margin-right: 10px;
+  margin-right: 1.25rem;
   font-weight: 400;
 `
 
@@ -111,7 +112,7 @@ const MatchingContent = styled.div`
 const Content = styled.div`
   display: flex;
   align-items: center;
-  margin: 1.25rem 1.25rem 0.625rem 1rem;
+  margin: 1.25rem 0rem 0.625rem 0rem;
 `
 const Category = styled.div`
   border-bottom: 1px solid #e8e8e8;
@@ -136,6 +137,7 @@ const Detail = styled.div`
 function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
+  const [loading, setLoading] = useState(true)
 
   const getProfile = async () => {
     try {
@@ -143,7 +145,7 @@ function ProfilePage() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-
+      setLoading(false)
       setProfileData(response.data)
     } catch (error) {}
   }
@@ -161,31 +163,37 @@ function ProfilePage() {
         <ProfileWrapper>
           <Upper>
             <ProfileContent>
-              <NameWrapper>
-                <Profile src={ProfileImg} />
-                <User>
-                  <Nickname>{profileData.nickname}</Nickname>
-                  <Role>{profileData.part}</Role>
-                </User>
-              </NameWrapper>
-              <InfoContent>
-                <Content>
-                  <Title>이름</Title>
-                  <Detail>{profileData.name}</Detail>
-                </Content>
-                <Content>
-                  <Title>전화번호</Title>
-                  <Detail>{profileData.tel}</Detail>
-                </Content>
-                <Content>
-                  <Title>PR</Title>
-                  <Detail>{profileData.publicRelations}</Detail>
-                </Content>
-                <Content>
-                  <Title>Blog</Title>
-                  <Detail>{profileData.blogUrl}</Detail>
-                </Content>
-              </InfoContent>
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <>
+                  <NameWrapper>
+                    <Profile src={ProfileImg} />
+                    <User>
+                      <Nickname>{profileData.nickname}</Nickname>
+                      <Role>{profileData.part}</Role>
+                    </User>
+                  </NameWrapper>
+                  <InfoContent>
+                    <Content>
+                      <Title>이름</Title>
+                      <Detail>{profileData.name}</Detail>
+                    </Content>
+                    <Content>
+                      <Title>전화번호</Title>
+                      <Detail>{profileData.tel}</Detail>
+                    </Content>
+                    <Content>
+                      <Title>PR</Title>
+                      <Detail>{profileData.publicRelations}</Detail>
+                    </Content>
+                    <Content>
+                      <Title>Blog</Title>
+                      <Detail>{profileData.blogUrl}</Detail>
+                    </Content>
+                  </InfoContent>
+                </>
+              )}
             </ProfileContent>
             <Lower>
               <ReviewContent>

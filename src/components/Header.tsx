@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useApiUrlStore } from '../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Skeleton from '../components/skeleton/HeaderSkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -59,6 +60,7 @@ export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
+  const [loading, setLoading] = useState(true)
 
   const getNickname = async () => {
     try {
@@ -71,6 +73,7 @@ export default function Header() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching nickname:', error)
     }
@@ -113,8 +116,14 @@ export default function Header() {
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
-        <Profile src={ProfileImg} />
-        <NickName>{nickname}</NickName>
+        {loading ? (
+          <Skeleton />
+        ) : (
+          <>
+            <Profile src={ProfileImg} />
+            <NickName>{nickname}</NickName>
+          </>
+        )}
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>
