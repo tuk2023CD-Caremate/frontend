@@ -13,7 +13,7 @@ const loadingAnimation = keyframes`
 // 애니메이션 적용
 const SkeletonItem = styled.span<{ width: string }>`
   display: block;
-  height: 35px;
+  height: 2rem;
   background: linear-gradient(90deg, #e8e8e8, #f5f5f5, #e8e8e8);
   background-size: 200% 100%;
   animation: ${loadingAnimation} 2s infinite;

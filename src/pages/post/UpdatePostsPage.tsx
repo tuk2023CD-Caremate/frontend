@@ -99,7 +99,7 @@ const PostContent = styled.textarea`
   flex: 8;
   border: 1px solid #d8d8d8;
   resize: none;
-  padding: 25px;
+  padding: 1.5rem;
   &::placeholder {
     color: #bdbdbd;
   }

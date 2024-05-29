@@ -78,25 +78,25 @@ function ReviewModal({ isOpen, onClose, userName }: ReviewModalProps) {
           alignItems: 'center',
         },
         content: {
-          width: '1200px',
-          maxHeight: '800px',
+          width: '75rem',
+          maxHeight: '50rem',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-          padding: '20px',
+          padding: '1.25rem',
         },
       }}>
       <IoMdClose
         onClick={onClose}
         style={{
           position: 'absolute',
-          top: '20px',
-          right: '20px',
+          top: '1.25rem',
+          right: '1.25rem',
           cursor: 'pointer',
-          width: '40px',
-          height: '40px',
-          marginBottom: '20px',
+          width: '2.5rem',
+          height: '2.5rem',
+          marginBottom: '1.25rem',
         }}
       />
       <Header>{userName}님의 리뷰</Header>

@@ -49,29 +49,29 @@ const Title = styled.div`
   margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
-  width: 700px;
-  height: 350px;
+  width: 43.75rem;
+  height: 47rem;
   font-size: 22px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
 `
 
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 12.5rem;
 `
 
 const Btn = styled.div`
-  width: 80px;
-  height: 40px;
+  width: 5rem;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 1rem;
   cursor: pointer;
 `
 

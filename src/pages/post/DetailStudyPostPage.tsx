@@ -201,7 +201,7 @@ const CommentTime = styled.div`
 const CommentDelete = styled.div`
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
   color: #bdbdbd;
   cursor: pointer;

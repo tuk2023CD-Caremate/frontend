@@ -18,7 +18,7 @@ const Wraper = styled.div`
 `
 const InfoWrap = styled.div`
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 400;
   color: #858585;
   text-align: center;

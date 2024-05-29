@@ -22,7 +22,7 @@ const Wrap = styled.div`
 `
 
 const Logo = styled.img`
-  width: 236px;
+  width: 15rem;
   cursor: pointer;
 `
 
