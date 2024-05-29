@@ -81,31 +81,12 @@ function ModifySubjectModal({ ModifyCloseModal, getSubject, subject_id }: Prop) 
       getSubject()
       ModifyCloseModal()
       setSubjectName(subjectName)
-      console.log(response.data)
     } catch (error) {
       console.log(subject_id)
       alert('입력값이 비어있습니다. 확인해주세요.')
     }
   }
-  {
-    /*
-   //기록 수정조회
-   const updateStudy = async () => {
-    getStudy()
-    try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/calender`, {
-        headers: { Authorization: `Bearer ${access}` },})
-        setStudyList(response.data.calenderList)
-      PostingCloseModal()
-      console.log(response.data)
-    }
-    catch (error) {
-    alert('Error fetching study data:')
-  }
-}
-*/
-  }
+ 
   return (
     <div>
       <Container>
