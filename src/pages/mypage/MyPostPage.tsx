@@ -2,11 +2,11 @@ import Header from '../../components/Header.tsx'
 import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
-import CommentImg from '../../assets/images/comment2.png'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useApiUrlStore, usePostListStore, useLoadingStore } from '../../store/store.ts'
+import { IoIosHeart, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
@@ -66,16 +66,17 @@ const FooterWrap = styled.div`
   margin: 0.625rem;
   align-items: center;
 `
-
-const CommentImage = styled.img`
-  width: 2rem;
-  height: 2rem;
-  margin-right: 5px;
+const Heart = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 0.625rem;
 `
 
 const Comment = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
+  margin-left: 5px;
 `
 
 const Divider = styled.img`
@@ -101,9 +102,8 @@ function MyPostPage() {
   const { postsList, setPostList } = usePostListStore()
   const [_nickname, setNickName] = useState<string>('')
 
-  //게시글 전체조회
+  //내가 작성한 게시글 전체조회
   const getPost = async (nickname: string) => {
-    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -117,7 +117,7 @@ function MyPostPage() {
       setLoading(true)
 
       const MyPosts = response.data.filter(
-        (post: { nickname: string }) => post.nickname === nickname,
+        (post: { nickname: string }) => post.nickname === nickname, //유저 nickname과 게시글 작성자 nickname이 일치하는 게시글
       )
       setPostList(MyPosts.reverse())
     } catch (error) {
@@ -131,7 +131,7 @@ function MyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickName(response.data.nickname)
-      await getPost(response.data.nickname)
+      await getPost(response.data.nickname) //nickname가져온 후 getpost
     } catch (error) {
       alert('Error while fetching post')
     }
@@ -164,7 +164,9 @@ function MyPostPage() {
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>
                 <FooterWrap>
-                  <CommentImage src={CommentImg} />
+                  <IoIosHeart size={28} color='ff0000'/>
+                  <Heart>{post.likeCount}</Heart>
+                  <IoIosText size={28}/>
                   <Comment>{post.commentCount}</Comment>
                   <Divider src={DividerImg} />
                   <DateCreated>{post.createdAt}</DateCreated>

@@ -106,9 +106,8 @@ function MatchingListPage() {
   const {questionList, setQuestionList } = useQuestionListStore()
   const [_nickname, setNickName] = useState<string>('')
 
-  //게시글 전체조회
+  //내가 작성한 질문 전체조회
   const getQuestion = async (nickname : string) => {
-    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -119,10 +118,11 @@ function MatchingListPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setQuestionList(response.data)
-
-      const MyQuestions = response.data.filter((post: { writer: string }) => post.writer === nickname)
-      setQuestionList(MyQuestions.reverse())
       setLoading(true)
+
+      const MyQuestions = response.data.filter((post: { writer: string }) => post.writer === nickname) //유저의 nickname 과 작성자의 wirter가 일치하는 질문
+      setQuestionList(MyQuestions.reverse())
+     
     } catch (error) {
       alert('Error while fetching post')
     }
@@ -134,7 +134,7 @@ function MatchingListPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickName(response.data.nickname)
-      await getQuestion(response.data.nickname)
+      await getQuestion(response.data.nickname) //nickname 가져온 후 getQuestion
     } catch (error) {
       alert('Error while fetching post')
     }
