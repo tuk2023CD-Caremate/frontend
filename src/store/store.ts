@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://studymate154.com/api',
-  // apiUrl: 'http://studymate154.com:8080/api',
+  // apiUrl: 'https://studymate154.com/api',
+   apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
@@ -207,6 +207,22 @@ export const useChatListStore = create<ChatListState>((set) => ({
   setChatList: (chatList) => set({ chatList }),
 }))
 
+
+/*과목리스트*/
+interface SubjectListState {
+  subjectList: SubjectList[]
+  setSubjectList: (subjectList: SubjectList[]) => void
+}
+export interface SubjectList {
+  id: number
+  subjectName : string
+}
+export const useSubjectListState = create<SubjectListState>((set) => ({
+  subjectList: [],
+  setSubjectList: (subjectList) => set({ subjectList }),
+}))
+
+
 /* 리뷰 모달창 */
 interface IsReviewModalOpenState {
   isReviewModalOpen: boolean
@@ -218,20 +234,22 @@ export const useReviewModalStore = create<IsReviewModalOpenState>((set) => ({
   setIsReviewModalOpen: (isOpen: boolean) => set({ isReviewModalOpen: isOpen }),
 }))
 
-/* 스터디기록 리스트 
-interface StudyListState {
-  studyList: StudyList[]
-  setStudyList: (studyList: StudyList[]) => void
+
+/*스터디기록 리스트*/
+interface CalenderListState {
+  calenderList: CalenderList[]
+  setCalenderList: (calenderList: CalenderList[]) => void
 }
-export interface StudyList {
+export interface CalenderList {
   id: number
-  content : string
-  entiretime : string
-  starttime : string
-  endtime : string
+  subjectName : string
+  entireTime : string
+  startTime : string
+  endTime : string
 }
-export const useStudyListState = create<StudyListState>((set) => ({
-  studyList: [],
-  setStudyList: (studyList) => set({ studyList }),
+export const useCalenderListState = create<CalenderListState>((set) => ({
+  calenderList: [],
+  setCalenderList: (calenderList) => set({ calenderList }),
 }))
-*/
+
+
