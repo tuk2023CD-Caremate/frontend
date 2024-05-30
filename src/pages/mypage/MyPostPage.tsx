@@ -4,6 +4,14 @@ import Navbar from '../../components/Navbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
 import CommentImg from '../../assets/images/comment2.png'
 import styled from 'styled-components'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import {
+  useApiUrlStore,
+  usePostListStore,
+  useLoadingStore
+} from '../../store/store.ts'
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -92,32 +100,49 @@ const DateCreated = styled.div`
 `
 
 function MyPostPage() {
-  const posts = [
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-  ]
+  const {apiUrl} = useApiUrlStore()
+  const {loading, setLoading} = useLoadingStore()
+  const {postsList, setPostList} = usePostListStore()
+  const [_nickname, setNickName] = useState<string>('')
+
+   //게시글 전체조회
+   const getPost = async (nickname : string) => {
+    setLoading(!loading)
+    try {
+      const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을해주세요.')
+        return
+      }
+      const response = await axios.get(`${apiUrl}/posts`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setPostList(response.data.reverse())
+      setLoading(false)
+      const MyPosts = response.data.filter((post: { nickname: string }) => post.nickname === nickname)
+      setPostList(MyPosts.reverse())
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickName(response.data.nickname)
+      await getPost(response.data.nickname)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
+
+
   return (
     <div>
       <Header />
@@ -125,22 +150,32 @@ function MyPostPage() {
       <Container>
         <Profilebar />
         <MyPostWrapper>
-          <PageTitle>내가 쓴 글</PageTitle>
-          {posts.map((post, index) => (
+          <PageTitle>내가 쓴 게시글</PageTitle>
+          {loading ? (
+            <SkeletonUI/>
+          ) : (
+            postsList.map((post, index) => (
             <MyPost key={index}>
-              <BoardType>{post.boardType}</BoardType>
+              <BoardType>
+                {post.category = 'FREE' ? '자유게시판'
+                :post.category = 'STUDY' ? '스터디 게시판'
+                :post.category = 'QUESTION' ? '질문게시판'
+                :'기타 게시판'
+                }
+              </BoardType>
               <Title>{post.title}</Title>
-              <Context>{post.context}</Context>
+              <Context>{post.content}</Context>
               <FooterWrap>
                 <CommentImage src={CommentImg} />
                 <Comment>{post.commentCount}</Comment>
                 <Divider src={DividerImg} />
-                <DateCreated>{post.dateCreated}</DateCreated>
+                <DateCreated>{post.createdAt}</DateCreated>
                 <Divider src={DividerImg} />
-                <Writer>{post.writer}</Writer>
+                <Writer>{post.nickname}</Writer>
               </FooterWrap>
             </MyPost>
-          ))}
+            ))
+          )}
         </MyPostWrapper>
       </Container>
     </div>
