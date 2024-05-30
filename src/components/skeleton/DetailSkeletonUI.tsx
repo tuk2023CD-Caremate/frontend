@@ -24,38 +24,38 @@ const SkeletonItem = styled.span<{ width: string, height: string }>`
 const SkeletonWrapper = styled.div`
 display: flex;
 flex-direction: column;
-width: 400px;
-height: 230px;
-padding: 20px 0px 0px 20px;
+width: 25rem;
+height: 14.3rem;
+padding: 1.25rem 0rem 0rem 1.25rem;
 `
 const SkeletonUpper = styled.div`
 display: flex;
 `;
 
 const SkeletonProfile = styled.div`
-border-radius: 50px;
+border-radius: 3rem;
 `;
 
 const SkeletonInfo = styled.div`
 display: flex;
 flex-direction: column;
-margin-left: 20px;
+margin-left: 1.25rem;
 `
 
 const SkeletonName = styled.div`
-margin-bottom: 10px;
+margin-bottom: 0.625rem;
 `;
 
 const SkeletonTime = styled.div`
-width: 450px;
+width: 28rem;
 `;
 
 const SkeletonTitle = styled.div`
-  margin-top: 30px;
+  margin-top: 1.8rem;
 `;
 
 const SkeletonContent = styled.div`
-margin-top: 10px;
+margin-top: 0.625rem;
 `;
 
 
@@ -68,22 +68,22 @@ function DetailSkeletonUI() {
     <SkeletonWrapper>
         <SkeletonUpper>
             <SkeletonProfile>
-                <SkeletonItem width="80px" height="80px"></SkeletonItem>
+                <SkeletonItem width="5rem" height="5rem"></SkeletonItem>
             </SkeletonProfile>
             <SkeletonInfo>
                 <SkeletonName>
-                    <SkeletonItem width="150px" height="40px"></SkeletonItem>
+                    <SkeletonItem width="9.3rem" height="2.5rem"></SkeletonItem>
                 </SkeletonName>
                 <SkeletonTime>
-                    <SkeletonItem width="70px" height="20px"></SkeletonItem>
+                    <SkeletonItem width="4.3rem" height="1.25rem"></SkeletonItem>
                 </SkeletonTime>
             </SkeletonInfo>
         </SkeletonUpper>
         <SkeletonTitle>
-          <SkeletonItem width="350px" height="40px"></SkeletonItem>
+          <SkeletonItem width="22rem" height="2.5rem"></SkeletonItem>
         </SkeletonTitle>
         <SkeletonContent>
-          <SkeletonItem width="300px" height="30px"></SkeletonItem>
+          <SkeletonItem width="18.75rem" height="1.8rem"></SkeletonItem>
         </SkeletonContent>
     </SkeletonWrapper>
   );

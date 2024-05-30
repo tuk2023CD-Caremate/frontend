@@ -16,13 +16,13 @@ const Wrap = styled.div`
   justify-content: space-between;
   width: 100vw;
   align-items: center;
-  height: 109px;
-  padding-left: 140px;
-  padding-right: 140px;
+  height: 7rem;
+  padding-left: 8.75rem;
+  padding-right: 8.75rem;
 `
 
 const Logo = styled.img`
-  width: 236px;
+  width: 15rem;
   cursor: pointer;
 `
 
@@ -33,31 +33,31 @@ const RightWrapper = styled.div`
 `
 
 const Profile = styled.img`
-  width: 100px;
+  width: 12.5rem;
 `
 
 const NickName = styled.div`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Sir = styled.div`
-  font-size: 20px;
-  margin: 5px;
+  font-size: 1.25rem;
+  margin: 0.5rem;
 `
 
 const SignOut = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background-color: #dcdcdc;
-  width: 120px;
-  height: 50px;
-  font-size: 20px;
-  font-weight: 500;
-  margin: 30px;
+  width: 7.5rem;
+  height: 3rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 2rem;
   cursor: pointer;
 `
 

@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
 import CommentImg from '../../assets/images/people.png'
+
 const Container = styled.div`
   display: flex;
   margin-top: 3rem;

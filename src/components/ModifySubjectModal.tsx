@@ -4,11 +4,9 @@ import { useApiUrlStore } from '../store/store'
 import axios from 'axios'
 
 type Prop = {
-  PostingCloseModal: () => void
-  studyClass: string
-  startTime: string
-  endTime: string
-  getStudy: () => void
+  ModifyCloseModal: () => void
+  getSubject: () => void
+  subject_id: number
 }
 
 const Container = styled.div`
@@ -22,26 +20,17 @@ const Container = styled.div`
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(0.5rem);
 `
-
-const Info = styled.div`
-  display: flex;
-  justify-content: baseline;
-  width: 27rem;
-  margin-bottom: 2rem;
-`
-
 const Modal = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 53rem;
-  height: 34rem;
+  width: 37.5rem;
+  height: 18.75rem;
   border-radius: 1rem;
   box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
-
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
@@ -49,20 +38,19 @@ const Title = styled.div`
   margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
-  width: 43.75rem;
-  height: 47rem;
-  font-size: 22px;
+  width: 31.25rem;
+  height: 6.25rem;
+  font-size: 1.3rem;
   border: 1px solid #dbdbdb;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  resize: none;
 `
-
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 12.5rem;
 `
-
 const Btn = styled.div`
   width: 5rem;
   height: 2.5rem;
@@ -74,47 +62,45 @@ const Btn = styled.div`
   font-size: 1rem;
   cursor: pointer;
 `
-
-function StudyPostingModal({ PostingCloseModal, studyClass, startTime, endTime, getStudy }: Prop) {
-  const [content, setContent] = useState('')
+function ModifySubjectModal({ ModifyCloseModal, getSubject, subject_id }: Prop) {
+  const [subjectName, setSubjectName] = useState('')
   const { apiUrl } = useApiUrlStore()
 
-
-  const createStudy = async () => {
-    const calenderList = {
-      content: content,
-      studyClass: studyClass,
-      startTime: startTime,
-      endTime: endTime,
+  //과목 수정
+  const modifySubject = async () => {
+    const subject = {
+      subjectName: subjectName,
     }
+
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`${apiUrl}/calender`, calenderList, {
+      const response = await axios.post(`${apiUrl}/subject/${subject_id}`, subject, {
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('완료되었습니다.')
-      getStudy()
-      PostingCloseModal()
+      getSubject()
+      ModifyCloseModal()
+      setSubjectName(subjectName)
       console.log(response.data)
     } catch (error) {
+      console.log(subject_id)
       alert('입력값이 비어있습니다. 확인해주세요.')
     }
   }
-
+ 
   return (
     <div>
       <Container>
         <Modal>
-          <Title>오늘 스터디를 기록해보세요 </Title> <Info></Info>
-          <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
+          <Title>수정할 과목명을 입력해주세요</Title>
+          <Textarea value={subjectName} onChange={(e) => setSubjectName(e.target.value)} />
           <BtnWrapper>
-            <Btn onClick={createStudy}>저장</Btn>
-            <Btn onClick={PostingCloseModal}>취소</Btn>
+            <Btn onClick={modifySubject}>수정</Btn>
+            <Btn onClick={ModifyCloseModal}>취소</Btn>
           </BtnWrapper>
         </Modal>
       </Container>
     </div>
   )
 }
-
-export default StudyPostingModal
+export default ModifySubjectModal

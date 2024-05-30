@@ -12,53 +12,53 @@ interface ReviewModalProps {
 
 const Header = styled.div`
   display: flex;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin: 20px;
-  margin-left: 70px;
+  margin: 1.25rem;
+  margin-left: 4.3rem;
 `
 
 const MainWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 1000px;
+  width: 62.5rem;
   margin: 0 auto;
   height: max-content;
   border-top: 2px solid #d8d8d8;
   border-bottom: 2px solid #d8d8d8;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 `
 
 const Writer = styled.div`
   display: flex;
-  font-size: 30px;
+  font-size: 1.8rem;
   font-weight: bold;
 `
 
 const WriteDate = styled.div`
   display: flex;
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #717171;
 `
 
 const StarWrap = styled.div`
   display: flex;
-  margin: 15px;
-  margin-left: 0px;
+  margin: 1rem;
+  margin-left: 0rem;
 `
 
 const Title = styled.div`
   display: flex;
-  font-size: 26px;
+  font-size: 1.6rem;
   font-weight: bold;
 `
 
 const Content = styled.div`
   display: flex;
-  font-size: 20px;
-  margin-top: 10px;
+  font-size: 1.25rem;
+  margin-top: 0.625rem;
 `
 
 function ReviewModal({ isOpen, onClose, userName }: ReviewModalProps) {
@@ -78,25 +78,25 @@ function ReviewModal({ isOpen, onClose, userName }: ReviewModalProps) {
           alignItems: 'center',
         },
         content: {
-          width: '1200px',
-          maxHeight: '800px',
+          width: '75rem',
+          maxHeight: '50rem',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-          padding: '20px',
+          padding: '1.25rem',
         },
       }}>
       <IoMdClose
         onClick={onClose}
         style={{
           position: 'absolute',
-          top: '20px',
-          right: '20px',
+          top: '1.25rem',
+          right: '1.25rem',
           cursor: 'pointer',
-          width: '40px',
-          height: '40px',
-          marginBottom: '20px',
+          width: '2.5rem',
+          height: '2.5rem',
+          marginBottom: '1.25rem',
         }}
       />
       <Header>{userName}님의 리뷰</Header>
