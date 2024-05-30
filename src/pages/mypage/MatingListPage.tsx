@@ -3,7 +3,15 @@ import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
-import CommentImg from '../../assets/images/people.png'
+import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import {
+  useApiUrlStore,
+  useQuestionListStore,
+  useLoadingStore
+} from '../../store/store.ts'
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +42,7 @@ const MyPost = styled.div`
   display: flex;
   padding: 1.25rem 0rem 0rem 1.25rem;
   width: calc(100% - 1.25rem);
-  height: 16rem;
+  height: 20rem;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
@@ -52,11 +60,16 @@ const Title = styled.div`
   margin: 0.625rem;
 `
 
+const Context = styled.div`
+  font-size: 1.5rem;
+  margin: 0 0.625rem 0.625rem 0.625rem;
+`
+
 const Tag = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: #650fa9;
-  margin: 0 0.625rem 0.625rem 0.625rem;
+  margin: 0.625rem;
 `
 
 const FooterWrap = styled.div`
@@ -65,14 +78,9 @@ const FooterWrap = styled.div`
   align-items: center;
 `
 
-const PeopleImage = styled.img`
-   width: 2rem;
-  height: 2rem;
-  margin-right: 5px;
-`
-
-const People = styled.div`
+const IsSolved = styled.div`
   font-size: 1.5rem;
+  color: #9b9b9b;
   font-weight: bold;
 `
 
@@ -93,32 +101,49 @@ const DateCreated = styled.div`
 `
 
 function MatchingListPage() {
-  const lists = [
-    {
-      matchingType: '온라인 매칭',
-      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
-      tag: '#맥북 #mac #초기세팅',
-      peopleCount: 3,
-      dateCreated: '01/06',
-      participations: '정우혁 멘토',
-    },
-    {
-      matchingType: '온라인 매칭',
-      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
-      tag: '#맥북 #mac #초기세팅',
-      peopleCount: 3,
-      dateCreated: '01/06',
-      participations: '정우혁 멘토',
-    },
-    {
-      matchingType: '온라인 매칭',
-      title: '맥북 초기 세팅 도와주실 분 찾습니다..',
-      tag: '#맥북 #mac #초기세팅',
-      peopleCount: 3,
-      dateCreated: '01/06',
-      participations: '정우혁 멘토',
-    },
-  ]
+  const {apiUrl} = useApiUrlStore()
+  const {loading, setLoading} = useLoadingStore()
+  const {questionList, setQuestionList } = useQuestionListStore()
+  const [_nickname, setNickName] = useState<string>('')
+
+  //게시글 전체조회
+  const getQuestion = async (nickname : string) => {
+    setLoading(!loading)
+    try {
+      const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을해주세요.')
+        return
+      }
+      const response = await axios.get(`${apiUrl}/question`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setQuestionList(response.data)
+
+      const MyQuestions = response.data.filter((post: { writer: string }) => post.writer === nickname)
+      setQuestionList(MyQuestions.reverse())
+      setLoading(true)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickName(response.data.nickname)
+      await getQuestion(response.data.nickname)
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
+
   return (
     <div>
       <Header />
@@ -126,22 +151,31 @@ function MatchingListPage() {
       <Container>
         <Profilebar />
         <MatchingListWrapper>
-          <PageTitle>매칭 기록</PageTitle>
-          {lists.map((list, index) => (
+          <PageTitle>내가 작성한 질문</PageTitle>
+          {loading ? (
+            questionList.map((list, index) => (
             <MyPost key={index}>
-              <BoardType>{list.matchingType}</BoardType>
+              <BoardType>{list.interests}</BoardType>
               <Title>{list.title}</Title>
-              <Tag>{list.tag}</Tag>
+              <Context>{list.content}</Context>
+              <Tag># {list.specificField}</Tag>
               <FooterWrap>
-                <PeopleImage src={CommentImg} />
-                <People>{list.peopleCount}</People>
+                <IsSolved>
+                  {list.isSolved ?
+                  <IoIosCheckmarkCircle size={32}/>
+                  : <IoIosCloseCircle size={32}/>
+                  }
+                </IsSolved>
+                <Divider src={DividerImg}/>
+                <DateCreated>{list.createAt}</DateCreated>
                 <Divider src={DividerImg} />
-                <DateCreated>{list.dateCreated}</DateCreated>
-                <Divider src={DividerImg} />
-                <Participation>{list.participations}</Participation>
+                <Participation>{list.writer}</Participation>
               </FooterWrap>
             </MyPost>
-          ))}
+            ))
+          ): (
+            <SkeletonUI/>
+          )}
         </MatchingListWrapper>
       </Container>
     </div>

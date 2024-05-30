@@ -6,11 +6,7 @@ import CommentImg from '../../assets/images/comment2.png'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import {
-  useApiUrlStore,
-  usePostListStore,
-  useLoadingStore
-} from '../../store/store.ts'
+import { useApiUrlStore, usePostListStore, useLoadingStore } from '../../store/store.ts'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
@@ -100,13 +96,13 @@ const DateCreated = styled.div`
 `
 
 function MyPostPage() {
-  const {apiUrl} = useApiUrlStore()
-  const {loading, setLoading} = useLoadingStore()
-  const {postsList, setPostList} = usePostListStore()
+  const { apiUrl } = useApiUrlStore()
+  const { loading, setLoading } = useLoadingStore()
+  const { postsList, setPostList } = usePostListStore()
   const [_nickname, setNickName] = useState<string>('')
 
-   //게시글 전체조회
-   const getPost = async (nickname : string) => {
+  //게시글 전체조회
+  const getPost = async (nickname: string) => {
     setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
@@ -117,9 +113,12 @@ function MyPostPage() {
       const response = await axios.get(`${apiUrl}/posts`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setPostList(response.data.reverse())
-      setLoading(false)
-      const MyPosts = response.data.filter((post: { nickname: string }) => post.nickname === nickname)
+      setPostList(response.data)
+      setLoading(true)
+
+      const MyPosts = response.data.filter(
+        (post: { nickname: string }) => post.nickname === nickname,
+      )
       setPostList(MyPosts.reverse())
     } catch (error) {
       alert('Error while fetching post')
@@ -142,7 +141,6 @@ function MyPostPage() {
     getNickname()
   }, [])
 
-
   return (
     <div>
       <Header />
@@ -150,31 +148,33 @@ function MyPostPage() {
       <Container>
         <Profilebar />
         <MyPostWrapper>
-          <PageTitle>내가 쓴 게시글</PageTitle>
+          <PageTitle>내가 작성한 게시글</PageTitle>
           {loading ? (
-            <SkeletonUI/>
-          ) : (
             postsList.map((post, index) => (
-            <MyPost key={index}>
-              <BoardType>
-                {post.category = 'FREE' ? '자유게시판'
-                :post.category = 'STUDY' ? '스터디 게시판'
-                :post.category = 'QUESTION' ? '질문게시판'
-                :'기타 게시판'
-                }
-              </BoardType>
-              <Title>{post.title}</Title>
-              <Context>{post.content}</Context>
-              <FooterWrap>
-                <CommentImage src={CommentImg} />
-                <Comment>{post.commentCount}</Comment>
-                <Divider src={DividerImg} />
-                <DateCreated>{post.createdAt}</DateCreated>
-                <Divider src={DividerImg} />
-                <Writer>{post.nickname}</Writer>
-              </FooterWrap>
-            </MyPost>
+              <MyPost key={index}>
+                <BoardType>
+                  {
+                    (post.category = 'FREE'
+                      ? '자유게시판'
+                      : (post.category = 'STUDY'
+                          ? '스터디 게시판'
+                          : (post.category = 'QUESTION' ? '질문게시판' : '기타 게시판')))
+                  }
+                </BoardType>
+                <Title>{post.title}</Title>
+                <Context>{post.content}</Context>
+                <FooterWrap>
+                  <CommentImage src={CommentImg} />
+                  <Comment>{post.commentCount}</Comment>
+                  <Divider src={DividerImg} />
+                  <DateCreated>{post.createdAt}</DateCreated>
+                  <Divider src={DividerImg} />
+                  <Writer>{post.nickname}</Writer>
+                </FooterWrap>
+              </MyPost>
             ))
+          ) : (
+            <SkeletonUI />
           )}
         </MyPostWrapper>
       </Container>

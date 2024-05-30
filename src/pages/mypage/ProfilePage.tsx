@@ -4,9 +4,9 @@ import Navbar from '../../components/Navbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import { useApiUrlStore, useProfileDataStore,useLoadingStore } from '../../store/store.ts'
-import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
+import SkeletonUI from '../../components/skeleton/MyPageSkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -145,7 +145,7 @@ function ProfilePage() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLoading(false)
+      setLoading(true)
       setProfileData(response.data)
     } catch (error) {}
   }
@@ -164,8 +164,6 @@ function ProfilePage() {
           <Upper>
             <ProfileContent>
               {loading ? (
-                <Skeleton />
-              ) : (
                 <>
                   <NameWrapper>
                     <Profile src={ProfileImg} />
@@ -193,6 +191,8 @@ function ProfilePage() {
                     </Content>
                   </InfoContent>
                 </>
+              ) : (
+                <SkeletonUI/>
               )}
             </ProfileContent>
             <Lower>

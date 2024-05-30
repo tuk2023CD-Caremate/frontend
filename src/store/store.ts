@@ -169,6 +169,29 @@ export const useReviewListStore = create<ReviewListState>((set) => ({
   setReviewList: (reviewList) => set({ reviewList }),
 }))
 
+/* 질문 리스트 */
+interface QuestionListState {
+  questionList: QuestionList[]
+  setQuestionList: (questionList: QuestionList[]) => void
+}
+
+interface QuestionList {
+  id: number
+  title: string
+  content: string
+  writer: string
+  specificField: string
+  interests: string
+  isSolved: boolean
+  createAt: string
+}
+
+export const useQuestionListStore = create<QuestionListState>((set) => ({
+  questionList: [],
+  setQuestionList: (questionList) => set({ questionList }),
+}))
+
+
 /* 멘토 찾기 구분 */
 interface IsAiBasedState {
   isAiBased: boolean
@@ -300,6 +323,6 @@ interface LoadingState {
 }
 
 export const useLoadingStore = create<LoadingState>((set) => ({
-  loading: true,
+  loading: false,
   setLoading: (loading: boolean) => set({ loading }),
 }))
