@@ -1,5 +1,5 @@
 import Header from '../../components/Header.tsx'
-import Userbar from '../../components/sidebar/Userbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import CommentImg from '../../assets/images/comment.png'
 
@@ -7,14 +7,15 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 
 const NotificationWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: calc(100% - 400px);
+  width: calc(100% - 25rem);
+  min-height: 48.75rem;
+  border-left: 1px solid #d8d8d8;
 `
 
 const Notification = styled.div`
@@ -22,21 +23,21 @@ const Notification = styled.div`
   align-items: center;
   background-color: #faf3ff;
   width: 100%;
-  height: 113px;
+  height: 7rem;
 `
 const Type = styled.img`
-  width: 60px;
-  margin: 40px;
+  width: 3.75rem;
+  margin: 2.5rem;
 `
 
 const PageName = styled.div`
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
 `
 
 const Context = styled.div`
-  font-size: 25px;
-  margin-left: 40px;
+  font-size: 1.5rem;
+  margin-left: 2.5rem;
 `
 function NotificationPage() {
   const notifications = [
@@ -47,7 +48,7 @@ function NotificationPage() {
     { id: 5, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
     { id: 6, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
     { id: 7, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
-    { id: 8, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
+   // { id: 8, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
   ]
 
   return (
@@ -55,7 +56,7 @@ function NotificationPage() {
       <Header />
       <Navbar />
       <Container>
-        <Userbar />
+        <Profilebar />
         <NotificationWrapper>
           {notifications.map((notification) => (
             <Notification key={notification.id}>

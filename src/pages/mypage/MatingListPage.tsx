@@ -1,95 +1,93 @@
 import Header from '../../components/Header.tsx'
-import Userbar from '../../components/sidebar/Userbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
 import CommentImg from '../../assets/images/people.png'
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 
 const MatchingListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: calc(100% - 400px);
+  width: calc(100% - 25rem);
+  min-height: 48.75rem;
+  border-left: 1px solid #d8d8d8;
 `
 
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  width: calc(100% - 100px);
-  height: 100px;
-  padding-left: 20px;
+  width: calc(100% - 6.25rem);
+  height: 6.25rem;
+  padding-left: 1.25rem;
   border: 1px solid #d8d8d8;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 `
 
 const MyPost = styled.div`
   display: flex;
-  padding: 20px 0px 0px 20px;
-
-  width: calc(100% - 100px);
-  height: 255px;
+  padding: 1.25rem 0rem 0rem 1.25rem;
+  width: calc(100% - 1.25rem);
+  height: 16rem;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
 
 const BoardType = styled.div`
-  font-size: 28px;
+ font-size: 1.75rem;
   font-weight: bold;
   color: #086ab5;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Tag = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #650fa9;
-  margin: 10px;
-  margin-top: 20px;
+  margin: 0 0.625rem 0.625rem 0.625rem;
 `
 
 const FooterWrap = styled.div`
-  display: flex;
-  margin: 10px;
-  margin-top: 20px;
+   display: flex;
+  margin: 0.625rem;
   align-items: center;
 `
 
 const PeopleImage = styled.img`
-  width: 30px;
-  height: 30px;
+   width: 2rem;
+  height: 2rem;
   margin-right: 5px;
 `
 
 const People = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   font-weight: bold;
 `
 
 const Divider = styled.img`
   width: 2px;
-  height: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  height: 1.25rem;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 `
 const Participation = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   color: #9b9b9b;
 `
 
 const DateCreated = styled.div`
-  font-size: 28px;
+  font-size: 1.5rem;
   color: #9b9b9b;
 `
 
@@ -125,7 +123,7 @@ function MatchingListPage() {
       <Header />
       <Navbar />
       <Container>
-        <Userbar />
+        <Profilebar />
         <MatchingListWrapper>
           <PageTitle>매칭 기록</PageTitle>
           {lists.map((list, index) => (

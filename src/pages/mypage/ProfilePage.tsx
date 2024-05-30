@@ -1,5 +1,5 @@
 import Header from '../../components/Header.tsx'
-import Userbar from '../../components/sidebar/Userbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
@@ -159,7 +159,7 @@ function ProfilePage() {
       <Header />
       <Navbar />
       <Container>
-        <Userbar />
+        <Profilebar />
         <ProfileWrapper>
           <Upper>
             <ProfileContent>
