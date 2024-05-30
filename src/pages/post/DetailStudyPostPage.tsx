@@ -6,6 +6,7 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
+  useLoadingStore
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
@@ -283,7 +284,7 @@ function DetailStudyPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore()
-  const [loading, setLoading] = useState(true)
+  const {loading, setLoading} = useLoadingStore()
 
   //게시글 단건조회
   const getPost = async () => {

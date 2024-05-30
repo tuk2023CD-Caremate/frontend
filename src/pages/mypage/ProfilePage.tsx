@@ -4,8 +4,8 @@ import Navbar from '../../components/Navbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { useApiUrlStore, useProfileDataStore } from '../../store/store.ts'
+import { useEffect} from 'react'
+import { useApiUrlStore, useProfileDataStore,useLoadingStore } from '../../store/store.ts'
 import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
 
 const Container = styled.div`
@@ -137,7 +137,7 @@ const Detail = styled.div`
 function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
-  const [loading, setLoading] = useState(true)
+  const {loading, setLoading} = useLoadingStore()
 
   const getProfile = async () => {
     try {

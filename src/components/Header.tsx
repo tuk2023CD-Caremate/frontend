@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import LogoImg from '../assets/images/StudyMate.svg'
 import ProfileImg from '../assets/images/profile.png'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore, useLoadingStore } from '../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Skeleton from '../components/skeleton/HeaderSkeletonUI.tsx'
@@ -60,7 +60,7 @@ export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
-  const [loading, setLoading] = useState(true)
+  const {loading, setLoading} = useLoadingStore()
 
   const getNickname = async () => {
     try {

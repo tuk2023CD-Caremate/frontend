@@ -277,3 +277,14 @@ interface ProfileData {
   solved: number
   matchingCount: number
 }
+
+/*스켈레톤 ui 로딩 state*/
+interface LoadingState {
+  loading: boolean
+  setLoading: (loading: boolean) => void
+}
+
+export const useLoadingStore = create<LoadingState>((set) => ({
+  loading: true,
+  setLoading: (loading: boolean) => set({ loading }),
+}))
