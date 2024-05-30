@@ -6,6 +6,7 @@ import {
   usePostListStore,
   useFilterListStore,
   PostsList,
+  useLoadingStore
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
@@ -184,7 +185,7 @@ function MainPostPage() {
   const [sortOption, setSortOption] = useState('')
   const [filterOption, setFilterOption] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const {loading, setLoading} = useLoadingStore()
   const { filterList, setFilterList } = useFilterListStore()
   const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)

@@ -1,5 +1,5 @@
 import Header from '../../components/Header.tsx'
-import Userbar from '../../components/sidebar/Userbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import CommentImg from '../../assets/images/comment.png'
 
@@ -13,8 +13,9 @@ const Container = styled.div`
 const NotificationWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: calc(100% - 25rem);
+  min-height: 48.75rem;
+  border-left: 1px solid #d8d8d8;
 `
 
 const Notification = styled.div`
@@ -25,7 +26,7 @@ const Notification = styled.div`
   height: 7rem;
 `
 const Type = styled.img`
-  width: 4rem;
+  width: 3.75rem;
   margin: 2.5rem;
 `
 
@@ -47,7 +48,7 @@ function NotificationPage() {
     { id: 5, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
     { id: 6, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
     { id: 7, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
-    { id: 8, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
+   // { id: 8, type: CommentImg, pageName: '게시판', context: '김선재 님이 댓글을 작성하였습니다.' },
   ]
 
   return (
@@ -55,7 +56,7 @@ function NotificationPage() {
       <Header />
       <Navbar />
       <Container>
-        <Userbar />
+        <Profilebar />
         <NotificationWrapper>
           {notifications.map((notification) => (
             <Notification key={notification.id}>

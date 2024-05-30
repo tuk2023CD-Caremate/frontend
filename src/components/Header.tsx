@@ -6,6 +6,7 @@ import { useApiUrlStore } from '../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -113,8 +114,8 @@ export default function Header() {
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
-        <Profile src={ProfileImg} />
-        <NickName>{nickname}</NickName>
+            <Profile src={ProfileImg} />
+            <NickName>{nickname}</NickName>
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>

@@ -1,5 +1,5 @@
 import Header from '../../components/Header.tsx'
-import Userbar from '../../components/sidebar/Userbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import styled from 'styled-components'
 import DividerImg from '../../assets/images/divider1.png'
@@ -13,8 +13,9 @@ const Container = styled.div`
 const MatchingListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: calc(100% - 25rem);
+  min-height: 48.75rem;
+  border-left: 1px solid #d8d8d8;
 `
 
 const PageTitle = styled.div`
@@ -31,42 +32,43 @@ const PageTitle = styled.div`
 
 const MyPost = styled.div`
   display: flex;
-  padding: 1.5rem 0rem 0rem 1.5rem;
-  width: calc(100% - 6.25rem);
+  padding: 1.25rem 0rem 0rem 1.25rem;
+  width: calc(100% - 1.25rem);
   height: 16rem;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
 
 const BoardType = styled.div`
-  font-size: 1.5rem;
+ font-size: 1.75rem;
   font-weight: bold;
   color: #086ab5;
+  margin: 0.625rem;
 `
 
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
-  margin-top: 0.625rem;
+  margin: 0.625rem;
 `
 
 const Tag = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: #650fa9;
-  margin-top: 1.25rem;
+  margin: 0 0.625rem 0.625rem 0.625rem;
 `
 
 const FooterWrap = styled.div`
-  display: flex;
-  margin-top: 1.25rem;
+   display: flex;
+  margin: 0.625rem;
   align-items: center;
 `
 
 const PeopleImage = styled.img`
-  width: 2rem;
+   width: 2rem;
   height: 2rem;
-  margin-right: 0.5rem;
+  margin-right: 5px;
 `
 
 const People = styled.div`
@@ -122,7 +124,7 @@ function MatchingListPage() {
       <Header />
       <Navbar />
       <Container>
-        <Userbar />
+        <Profilebar />
         <MatchingListWrapper>
           <PageTitle>매칭 기록</PageTitle>
           {lists.map((list, index) => (
