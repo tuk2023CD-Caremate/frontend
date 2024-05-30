@@ -37,10 +37,10 @@ interface MessageContainerProps {
 }
 
 const Container = styled.div`
-  width: 1530px;
-  height: calc(100vh - 280px);
-  margin-top: 20px;
-  margin-bottom: 20px;
+  width: 95.6rem;
+  height: calc(100vh - 17.5rem);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   border-left: 2px solid #d8d8d8;
   border-right: 2px solid #d8d8d8;
   display: flex;
@@ -50,8 +50,8 @@ const Container = styled.div`
 `
 
 const ChatWrap = styled.div`
-  width: 1530px;
-  height: calc(100vh - 200px);
+  width: 95.6rem;
+  height: calc(100vh - 12.5rem);
   overflow-y: auto; /* 내용이 넘칠 때만 스크롤 표시 */
 `
 
@@ -67,26 +67,26 @@ const MessageContainer = styled.div<MessageContainerProps>`
 // `
 
 const Profile = styled.img<ProfileProps>`
-  width: 100px;
-  height: 100px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '10px')};
-  margin-right: ${(props) => (props.sender !== props.nickname ? '10px' : '0')};
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '0.625rem')};
+  margin-right: ${(props) => (props.sender !== props.nickname ? '0.625rem' : '0')};
 `
 
 const Messages = styled.div<MessagesProps>`
   display: flex;
   max-width: 40%;
-  padding: 20px;
-  margin-right: 10px;
+  padding: 1.25rem;
+  margin-right: 0.625rem;
   height: auto;
   justify-content: center;
   align-items: center;
   background: ${(props) =>
     props.sender !== props.nickname ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
   color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
-  border-radius: 16px;
-  font-size: 26px;
-  margin-left: ${(props) => (props.sender !== props.nickname ? '10px' : 'auto')};
+  border-radius: 1rem;
+  font-size:1.6rem;
+  margin-left: ${(props) => (props.sender !== props.nickname ? '0.625rem' : 'auto')};
 `
 
 const InputWrap = styled.div`
@@ -97,21 +97,21 @@ const InputWrap = styled.div`
 `
 
 const InputField = styled.input`
-  height: 70px;
-  width: 1200px;
-  border-radius: 50px;
+  height: 4.375rem;
+  width:75rem;
+  border-radius: 3rem;
   border: none;
-  font-size: 20px;
+  font-size: 1.25rem;
   background-color: #f6f6f6;
-  padding-left: 30px;
+  padding-left: 1.8rem;
   font-size: x-large;
 `
 
 const SendButton = styled.button`
-  width: 120px;
-  height: 70px;
-  margin-left: 50px;
-  border-radius: 20px;
+  width: 7.5rem;
+  height: 4.375rem;
+  margin-left: 3rem;
+  border-radius: 1.25rem;
   font-size: x-large;
   font-weight: bold;
   border: none;
@@ -127,43 +127,41 @@ const BtnWrap = styled.div`
 `
 
 const ZoomLoginBtn = styled.button`
-  width: 120px;
-  height: 70px;
-  border-radius: 20px;
+  width: 7.5rem;
+  height: 4.375rem;
+  border-radius: 1.25rem;
   font-size: large;
   font-weight: bold;
   border: none;
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
-  margin: 0 10px 20px 10px;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 const CreateMeetingBtn = styled.button`
-  width: 120px;
-  height: 70px;
-
-  border-radius: 20px;
+  width: 7.5rem;
+  height: 4.375rem;
+  border-radius: 1.25rem;;
   font-size: x-large;
   font-weight: bold;
   border: none;
   background-color: #650fa9;
   color: #ffffff;
   cursor: pointer;
-  margin: 0 10px 20px 10px;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 
 const CreateReviewBtn = styled.button`
-  width: 120px;
-  height: 70px;
-
-  border-radius: 20px;
+  width: 7.5rem;
+  height: 4.375rem;
+  border-radius: 1.25rem;;
   font-size: x-large;
   font-weight: bold;
   border: none;
   background-color: #e8dcf2;
   color: #650fa9;
   cursor: pointer;
-  margin: 0 10px 20px 10px;
+  margin: 0rem 0.625rem 1.25rem 0.625rem;
 `
 
 function Chat({ chatRoomId, onOpen }: ChatProps) {

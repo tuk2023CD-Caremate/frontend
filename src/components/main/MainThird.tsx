@@ -25,11 +25,11 @@ const OnboardWrap = styled.div<OnboardProps>`
 `
 
 const Onboard1 = styled.img`
-  margin: 30px;
+  margin: 1.8rem;
 `
 
 const Onboard2 = styled.img`
-  margin: 30px;
+  margin: 1.8rem;
 `
 
 const ImgWrap = styled.div<OnboardProps>`

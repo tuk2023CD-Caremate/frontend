@@ -17,105 +17,105 @@ import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 const StudyPostsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(100% - 400px);
-  min-height: 780px;
+  width: calc(100% - 25rem);
+  min-height: 49rem;
   border-left: 1px solid #d8d8d8;
 `
 
 const Upper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 100px);
+  width: calc(100% - 6.25rem);
 `
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 10px;
+  padding-bottom: 0.625rem;
 `
 const Btn = styled.button<{ active: boolean }>`
-  width: 124px;
-  height: 48px;
-  border-radius: 10px;
+  width: 10rem;
+  height: 3rem;
+  border-radius: 0.625rem;
   border: none;
-  font-size: 24px;
-  margin-right: 36px;
+  font-size: 1.3rem;
+  margin-right: 2.25rem;
   background-color: ${({ active }) => (active ? '#E8DCF2' : '#e8e8e8')};
   color: ${({ active }) => (active ? '#650FA9' : '#bdbdbd')};
   font-weight: ${({ active }) => (active ? 'bolder' : 'normal')};
 `
 const SearchWrapper = styled.div`
-  height: 80px;
+  height: 5rem;
   display: flex;
   align-items: center;
-  padding: 10px 10px 10px 0;
   justify-content: space-between;
-  margin-bottom: 10px;
+  padding:  1.25rem 1.25rem 1.25rem  0rem;
+  margin-bottom: 1.25rem;
 `
 const SideWrapper = styled.div`
   display: flex;
 `
-
 const Search = styled.div`
   display: flex;
   align-items: center;
 `
 
 const Input = styled.input`
-  text-indent: 30px;
-  width: 760px;
-  height: 65px;
+  text-indent: 2rem;
+  width: 47rem;
+  height: 4rem;
   border: 1px solid #bdbdbd;
-  border-radius: 5px;
-  font-size: 24px;
-  margin-right: 30px;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  margin-right: 2rem;
 `
 
 const SerarchBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 50px;
-  border-radius: 5px;
+  width: 6rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  font-size: 20px;
+  font-size: 1.25rem;
   cursor: pointer;
 `
+
 const SelectBox = styled.select`
-  width: 140px;
-  height: 50px;
-  border-radius: 5px;
+  width: 8.75rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  font-size: 20px;
-  margin-right: 20px;
+  font-size: 1.25rem;
+  margin-right: 1.25rem;
   cursor: pointer;
   text-align: center;
 `
 
 const WriteButton = styled.button`
-  width: 120px;
-  height: 50px;
-  border-radius: 5px;
+  width: 7.5rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
   border: 0.5px solid #bdbdbd;
   background: #fff;
-  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  font-size: 20px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  font-size: 1.25rem;
   cursor: pointer;
 `
 
 const StudyPosts = styled(Link)<{ recruitmentStatus: boolean }>`
   display: flex;
-  height: 200px;
-  padding: 20px 0px 0px 20px;
-  width: calc(100% - 100px);
+  height: 12.5rem;
+  padding: 1.25rem 0rem 0rem 1.25rem;
+  width: calc(100% - 6.25rem);
   border: 1px solid #d8d8d8;
   flex-direction: column;
   justify-content: center;
@@ -124,51 +124,56 @@ const StudyPosts = styled(Link)<{ recruitmentStatus: boolean }>`
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
 `
 
 const Context = styled.div`
-  font-size: 28px;
-  font-weight: normal;
-  margin-top: 30px;
+  font-size: 1.75rem;
+  margin-top: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
 `
 
 const FooterWrapper = styled.div`
   display: flex;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   align-items: center;
 `
 
 const LikedIcon = styled(IoIosHeart)<{ recruitmentStatus: boolean }>`
   color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
-  font-size: 25px;
+  font-size: 1.5rem;
 `
 
 const UnLikedIcon = styled(IoIosHeartEmpty)<{ recruitmentStatus: boolean }>`
   color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#ff0000' : '#e8e8e8')};
-  font-size: 25px;
+  font-size: 1.5rem;
 `
 
 const Likecount = styled.div`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bolder;
-  margin-right: 10px;
-  margin-left: 5px;
+  margin-right: 0.625rem;
+  margin-left: 0.5rem;
 `
 
 const CommentCount = styled.div`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bolder;
-  margin-left: 5px;
+  margin-left: 0.5rem;
 `
+
 const Divider = styled.img`
-  margin: 0 20px 0 20px;
+  margin: 0rem 1.25rem 0rem  1.25rem;
   width: 2px;
-  height: 20px;
+  height: 1.25rem;
 `
+
 const Detail = styled.div<{ recruitmentStatus: boolean }>`
-  font-size: 28px;
+  font-size: 1.75rem;
   color: ${({ recruitmentStatus }) => (recruitmentStatus ? '#9b9b9b' : '#e8e8e8')};
 `
 

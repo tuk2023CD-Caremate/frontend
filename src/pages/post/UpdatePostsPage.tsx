@@ -1,31 +1,25 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import Header from '../../components/Header.tsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useApiUrlStore } from '../../store/store.ts'
+import { useApiUrlStore, usePostStore } from '../../store/store.ts'
 import axios from 'axios'
 
-interface PostsData {
-  post_id: number
-  title: string
-  content: string
-  nickname: string
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  interests: string
-  category: string
-}
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 100px 30px 100px;
+  margin-top: 3rem;
 `
 
 const AllWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 400px);
+  width: calc(100vw - 45rem);
+  height: calc(100vh - 10rem);
+  border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+  padding: 0rem 6.25rem 0rem 6.25rem;
 `
 
 const Upper = styled.div`
@@ -35,14 +29,13 @@ const Upper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: baseline;
-  padding: 10px;
+  padding: 1rem;
 `
 
 const SelectBtn = styled.button`
-  width: 250px;
-  height: 50px;
-  font-size: 32px;
+  width: 16rem;
+  height: 4rem;
+  font-size: 2rem;
   color: #bdbdbd;
   background-color: #fff;
   border: none;
@@ -57,27 +50,29 @@ const SelectBtn = styled.button`
 `
 const SerchWrapper = styled.div`
   display: flex;
-  justify-content: baseline;
   align-items: center;
-  padding: 10px;
+  padding: 1rem;;
 `
 const InterestsSelect = styled.select`
-  width: 165px;
-  height: 60px;
+  width: 10rem;
+  height: 4rem;
   text-align: center;
-  margin-right: 80px;
-  font-size: 28px;
-  border-radius: 5px;
+  margin-right: 5rem;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 0.625rem;
+  border: 1px solid #d8d8d8;
+  color: #650fa9;
 `
 const Input = styled.input`
-  width: 700px;
-  height: 65px;
-  text-indent: 20px;
-  margin-right: 80px;
-  font-size: 24px;
+  width: 43rem;
+  height: 4rem;
+  text-indent: 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  border-radius: 5px;
-
+  border-radius: 0.625rem;
+  border: 1px solid #d8d8d8;
   &::placeholder {
     color: #bdbdbd;
   }
@@ -86,32 +81,44 @@ const Input = styled.input`
 const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  height: 62.5rem;
+  padding: 1rem;
 `
 const PostTitle = styled.input`
-  height: 105px;
-  font-size: 64px;
+  flex:1;
+  font-size: 3rem;
   font-weight: bold;
-  text-indent: 20px;
   border: 1px solid #d8d8d8;
+  text-indent: 1.5rem;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const PostContent = styled.textarea`
-  font-size: 28px;
-  height: 500px;
+  font-size: 1.75rem;
+  flex: 8;
   border: 1px solid #d8d8d8;
+  resize: none;
+  padding: 1.5rem;
+  &::placeholder {
+    color: #bdbdbd;
+  }
 `
 const FooterWrapper = styled.div`
   display: flex;
+  flex: 1;
   justify-content: end;
-  margin-top: 40px;
+  margin-top: 2rem;
 `
 const PostBtn = styled.button`
-  font-size: 28px;
-  width: 150px;
-  height: 60px;
-  margin-left: 20px;
-  border-radius: 10px;
-  border: 1px solid #bdbdbd;
+  font-size: 1.75rem;
+  width: 10rem;
+  height: 4rem;
+  margin-left: 1.25rem;
+  border-radius: 0.625rem;
+  background-color: #ececec;
+  color: #787878;
+  font-weight: bolder;
   &.post {
     color: #fff;
     background-color: #650fa9;
@@ -126,23 +133,13 @@ const interestsList = [
 ]
 
 function UpdatePostPage() {
-  const [postsData, SetpostData] = useState<PostsData>({
-    post_id: 0,
-    title: '',
-    content: '',
-    nickname: '',
-    createdAt: Date.toString(),
-    likeCount: 0,
-    commentCount: 0,
-    interests: '',
-    category: '',
-  })
+  const {postData, setPostData} = usePostStore()
 
   //수정할 게시글 불러오기
-  const [title, SetTitle] = useState(postsData.title)
-  const [content, SetContent] = useState(postsData.content)
-  const [interests, SetInterests] = useState(postsData.interests)
-  const [category, SetCategory] = useState(postsData.category)
+  const [title, SetTitle] = useState(postData.title)
+  const [content, SetContent] = useState(postData.content)
+  const [interests, SetInterests] = useState(postData.interests)
+  const [category, SetCategory] = useState(postData.category)
   const { post_id } = useParams()
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
@@ -154,26 +151,26 @@ function UpdatePostPage() {
       const response = await axios.get(`${apiUrl}/posts/${post_id}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      SetpostData(response.data)
+      setPostData(response.data)
     }
     getPost();
   }, [])
 
   useEffect(()=>{
-    SetTitle(postsData.title)
-  }, [postsData.title]);
+    SetTitle(postData.title)
+  }, [postData.title]);
 
   useEffect(()=>{
-    SetContent(postsData.content)
-  }, [postsData.content]);
+    SetContent(postData.content)
+  }, [postData.content]);
 
   useEffect(()=>{
-    SetInterests(postsData.interests)
-  }, [postsData.interests]);
+    SetInterests(postData.interests)
+  }, [postData.interests]);
 
   useEffect(()=>{
-    SetCategory(postsData.category)
-  }, [postsData.category]);
+    SetCategory(postData.category)
+  }, [postData.category]);
 
   //게시글 수정
   const editcontent = {
@@ -193,9 +190,8 @@ function UpdatePostPage() {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      SetpostData(response.data)
+      setPostData(response.data)
       alert('수정되었습니다')
-      console.log(response.data)
       navigate('/posts')
     } catch (error) {}
   }
@@ -206,6 +202,7 @@ function UpdatePostPage() {
 
   return (
     <div>
+    <Header/>
       <Container>
         <AllWrapper>
           <Upper>
