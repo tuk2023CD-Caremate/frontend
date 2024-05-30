@@ -5,23 +5,22 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 400px;
-  height: 500px;
-
+  width: 25rem;
+  height: 31rem;
   display: flex;
   flex-direction: column;
 `
 
 const NavLink = styled(Link)<{ isActive: boolean }>`
-  width: 240px;
-  font-size: 25px;
+  width: 15rem;
+  font-size: 1.6rem;
   display: flex;
-  margin-top: 50px;
+  margin-top: 3rem;
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  padding: 1.25rem 0 1.25rem 2.5rem;
+  border-radius: 1.25rem;
   background-color: ${({ isActive }) => (isActive ? '#E8DCF2' : 'inherit')};
   color: ${({ isActive }) => (isActive ? '#650FA9' : 'inherit')};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'inherit')};

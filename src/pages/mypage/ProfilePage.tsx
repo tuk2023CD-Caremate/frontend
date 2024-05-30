@@ -25,7 +25,7 @@ interface ProfileData {
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 
 const ProfileWrapper = styled.div`

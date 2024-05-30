@@ -5,8 +5,8 @@ import ChatList from '../../components/chat/ChatList.tsx'
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 220px);
-  width: 1280px;
+  height: calc(100vh - 13.75rem);
+  width: 80rem;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;

@@ -5,56 +5,55 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 400px;
-  height: 780px;
+  width: 25rem;
+  height: 48rem;
   border-right: 1px solid #d8d8d8;
   display: flex;
   flex-direction: column;
 `
 
 const Profile = styled(Link)`
-  width: 240px;
-  font-size: 25px;
+  width: 15rem;
+  font-size: 1.5rem;
   display: flex;
-  margin-top: 50px;
+  margin-top: 3rem;
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
 `
 const Notification = styled(Link)`
-  width: 240px;
-  font-size: 25px;
+  width: 15rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
 `
 
 const MyPost = styled(Link)`
-  width: 240px;
-  font-size: 25px;
+  width: 15rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
 `
 
 const MatchingList = styled(Link)`
-  width: 240px;
-  font-size: 25px;
+  width: 15rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
   text-decoration: none;
   color: inherit;
-  padding: 20px 0px 20px 40px;
-  border-radius: 20px;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
 `
 
 export default function Userbar() {

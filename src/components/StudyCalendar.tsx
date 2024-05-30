@@ -10,17 +10,17 @@ type Props = {
   onDateChange: (newDate: Date | null) => void;
 };
 const StyledCalendar = styled(Calendar)`
-  width: 690px;
-  height: 620px;
-  font-size: 35px;
-  border-radius: 10px;
+  width: 43rem;
+  height: 38rem;
+  font-size: 2.2rem;
+  border-radius: 0.625rem;
   background-color: white;
-  padding: 40px;
+  padding: 2.5rem;
   // 네비게이션 폰트 설정
   .react-calendar__navigation button {
     font-weight: bold;
-    font-size: 40px;
-    margin-top: 10px;
+    font-size: 2.5rem;
+    margin-top: 0.625rem;
   }
   /* 년/월 상단 네비게이션 칸 크기 줄이기 */
   .react-calendar__navigation__label {
@@ -43,7 +43,7 @@ const StyledCalendar = styled(Calendar)`
   }
   // 일 날짜 간격
   .react-calendar__tile {
-    padding: 15px  0px 15px 0px;
+    padding: 1rem  0rem 1rem 0rem;
   }
   .react-calendar__tile:hover {
     background-color: white;

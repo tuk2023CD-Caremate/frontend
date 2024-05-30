@@ -14,27 +14,27 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  width: 1099px;
-  height: 235px;
+  width: 68.75rem;
+  height: 14.6rem;
   border: 1px solid #d8d8d8;
-  border-radius: 15px;
+  border-radius: 1rem;
   &:hover {
     border: 1px solid #650fa9;
   }
-  margin-top: 15px;
-  margin-bottom: 15px;
-  padding: 20px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
 `
 
 const MainWrap = styled.div`
   display: flex;
-  width: 1050px;
+  width: 65.6rem;
 `
 
 const ImgWrap = styled.div`
   display: flex;
-  width: 130px;
-  height: 130px;
+  width: 8.125rem;
+  height: 8.125rem;
   justify-content: center;
   align-items: center;
   border: solid 1px #9b9b9b;
@@ -48,17 +48,17 @@ const ProfileImg = styled.img`
 const InfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 900px;
-  height: 120px;
-  margin-left: 20px;
+  width: 56.25rem;
+  height: 7.5rem;
+  margin-left: 1.25rem;
 `
 
 const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 900px;
-  height: 60px;
+  width: 56.25rem;
+  height: 3.75rem;
 `
 
 const NameWrap = styled.div`
@@ -68,32 +68,32 @@ const NameWrap = styled.div`
 
 const Name = styled.span`
   font-weight: bold;
-  font-size: 38px;
+  font-size: 2.3rem;
 `
 
 const NickName = styled.span`
-  font-size: 30px;
+  font-size:1.8rem;
   font-weight: bold;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Bottom = styled.div`
   display: flex;
-  width: 920px;
-  height: 60px;
+  width: 57.5rem;
+  height: 3.75rem;
   align-items: center;
 `
 
 const Interest = styled.div`
   display: flex;
   color: #9b9b9b;
-  font-size: 26px;
+  font-size: 1.6rem;
 `
 
 const Detail = styled.div`
   display: flex;
   color: #9b9b9b;
-  font-size: 26px;
+  font-size: 1.6rem;
 `
 
 const StatusWrap = styled.div`
@@ -105,14 +105,14 @@ const Status = styled.div`
   display: flex;
   color: #9b9b9b;
   font-weight: bold;
-  font-size: 30px;
-  margin-left: 10px;
+  font-size: 1.8rem;
+  margin-left: 0.625rem;
 `
 
 const FooterWrap = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 1050px;
+  width: 65.6rem;
 `
 
 // const ChatContent = styled.div`
@@ -126,24 +126,24 @@ const MessageCount = styled.div<{ count: number }>`
   justify-content: center;
   align-items: center;
   background-color: red;
-  width: 52px;
-  height: 38px;
-  border-radius: 30px;
+  width: 3.25rem;
+  height: 2.3rem;
+  border-radius: 1.8rem;
   color: #fff;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 1.5rem;
 `
 
 const NoChatList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 300px;
+  margin-top:18.75rem;
 `
 
 const Text = styled.div`
   display: flex;
-  font-size: 26px;
+  font-size: 1.6rem;
   color: #9b9b9b;
 `
 

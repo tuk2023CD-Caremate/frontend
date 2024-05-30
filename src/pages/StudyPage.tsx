@@ -10,6 +10,7 @@ import { useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 dayjs.locale('ko')
+
 interface calenderList {
   id: number
   studyClass: string
@@ -20,14 +21,14 @@ interface calenderList {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 14rem);
 `
 const LeftWrapper = styled.div`
   display: flex;
   flex: 2;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: 2rem;
   border-right: 1px solid #bdbdbd;
 `
 const RightWrapper = styled.div`
@@ -41,21 +42,21 @@ const StudyingWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 3rem;
 `
 const TimeRecodingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 400px;
-  height: 160px;
+  width: 25rem;
+  height: 10rem;
 `
 const TodayText = styled.div`
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
 `
 const TotalTime = styled.div`
-  font-size: 90px;
+  font-size: 6rem;
   font-weight: bold;
 `
 const BtnWrapper = styled.div`
@@ -67,14 +68,14 @@ const WriteBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 135px;
-  height: 55px;
-  font-size: 28px;
+  width: 8.5rem;
+  height: 3.5rem;
+  font-size: 1.75rem;
   font-weight: bolder;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-left: 40px;
+  border-radius: 0.625rem;
+  margin-left: 2.5rem;
   cursor: pointer;
 `
 const StudyListWrapper = styled.div`
@@ -82,8 +83,8 @@ const StudyListWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 450px;
-  margin-top: 30px;
+  min-height: 28rem;
+  margin-top: 2rem;
   border-top: 1px solid #bdbdbd;
 `
 const StudyList = styled.div`
@@ -99,38 +100,38 @@ const ListInfoWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 112px;
+  height: 7rem;
   border-bottom: 1px solid #bdbdbd;
 `
 const IconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
-  margin-left: 50px;
+  height: 5rem;
+  margin-left: 3rem;
 `
 const StudyName = styled.div`
   display: flex;
   align-items: center;
-  width: 300px;
-  font-size: 36px;
+  width: 18rem;
+  font-size: 2.2rem;
   font-weight: bold;
-  margin-left: 20px;
+  margin-left: 1.25rem;
 `
 
 const DetailWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 300px;
-  height: 80px;
-  margin-left: 50px;
+  width: 18rem;
+  height: 5rem;
+  margin-left: 3rem;
 `
 
 const StudyingTime = styled.div`
   display: flex;
   align-items: center;
-  font-size: 36px;
+  font-size: 2.2rem;
   font-weight: bold;
 `
 const SideIconWrapper = styled.div`
@@ -138,7 +139,7 @@ const SideIconWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  margin-right: 30px;
+  margin-right: 2rem;
 `
 function StudyPage() {
   //스탑워치

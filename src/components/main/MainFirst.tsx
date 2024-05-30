@@ -3,23 +3,23 @@ import onboarding1 from '../../assets/images/onboarding1.png'
 
 const textSlide1 = keyframes`
   0% {
-    top: 220px;
+    top: 13.75rem;
     opacity: 0;
   }
 
   100% {
-      top: 200px;
+      top: 12.5rem;
       opacity: 1;
   }
 `
 
 const textSlide2 = keyframes`
   0% {
-    top: 60px;
+    top: 3.75rem;
     opacity: 0;
   }
   100% {
-    top: 40px;
+    top: 2.5rem;
     opacity: 1;
   }
 `
@@ -45,10 +45,10 @@ const SloganWrap = styled.div`
 const Slogan1 = styled.div`
   display: flex;
   color: #ffffff;
-  width: 760px;
-  height: 200px;
-  font-size: 120px;
-  letter-spacing: 15px;
+  width: 47.5rem;
+  height: 12.5rem;
+  font-size: 7.5rem;
+  letter-spacing: 1rem;
   font-weight: bold;
 
   animation: ${textSlide1} 1s ease-out;
@@ -58,9 +58,9 @@ const Slogan1 = styled.div`
 const Slogan2 = styled.div`
   display: flex;
   color: #ffffff;
-  width: 780px;
-  height: 200px;
-  font-size: 36px;
+  width: 48.75rem;
+  height: 12.5rem;
+  font-size: 2.25rem;
   letter-spacing: 0.8px;
   font-weight: bold;
 
