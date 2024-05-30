@@ -18,48 +18,48 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.5rem);
 `
 const Modal = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 600px;
-  height: 300px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  width: 37.5rem;
+  height: 18.75rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
-  width: 500px;
-  height: 100px;
-  font-size: 22px;
+  width: 31.25rem;
+  height: 6.25rem;
+  font-size: 1.3rem;
   border: 1px solid #dbdbdb;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
   resize: none;
 `
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 12.5rem;
 `
 const Btn = styled.div`
-  width: 80px;
-  height: 40px;
+  width: 5rem;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 1rem;
   cursor: pointer;
 `
 function ModifySubjectModal({ ModifyCloseModal, getSubject, subject_id }: Prop) {
@@ -81,6 +81,7 @@ function ModifySubjectModal({ ModifyCloseModal, getSubject, subject_id }: Prop) 
       getSubject()
       ModifyCloseModal()
       setSubjectName(subjectName)
+      console.log(response.data)
     } catch (error) {
       console.log(subject_id)
       alert('입력값이 비어있습니다. 확인해주세요.')

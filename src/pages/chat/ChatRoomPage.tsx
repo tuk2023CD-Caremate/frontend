@@ -14,8 +14,8 @@ interface RouteParams {
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 280px);
-  width: 1280px;
+  height: calc(100vh -17.5rem);
+  width: 80rem;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;

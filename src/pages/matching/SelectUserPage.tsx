@@ -7,21 +7,20 @@ import { useUserListStore } from '../../store/store'
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 220px);
-  width: 1280px;
-  margin: 0 auto;
+  height: calc(100vh - 13.75rem);
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 `
 
 const Text = styled.div`
   display: flex;
-  width: 1280px;
+  width: 80rem;
   margin: 0 auto;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 15px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 `
 
 function SelectUserPage() {

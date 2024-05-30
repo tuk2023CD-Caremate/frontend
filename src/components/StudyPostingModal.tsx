@@ -20,14 +20,14 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.5rem);
 `
 
 const Info = styled.div`
   display: flex;
   justify-content: baseline;
-  width: 430px;
-  margin-bottom: 30px;
+  width: 27rem;
+  margin-bottom: 2rem;
 `
 
 const Modal = styled.div`
@@ -35,43 +35,43 @@ const Modal = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 850px;
-  height: 550px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+  width: 53rem;
+  height: 34rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0rem 1.25rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: white;
 `
 
 const Title = styled.div`
-  font-size: 34px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 `
 const Textarea = styled.textarea`
-  width: 700px;
-  height: 350px;
+  width: 43.75rem;
+  height: 47rem;
   font-size: 22px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
 `
 
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 12.5rem;
 `
 
 const Btn = styled.div`
-  width: 80px;
-  height: 40px;
+  width: 5rem;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 1rem;
   cursor: pointer;
 `
 

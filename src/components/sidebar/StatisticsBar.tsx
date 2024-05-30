@@ -63,7 +63,7 @@ const EmptyWrapper = styled.div`
   align-items: center;
 `
 const Message = styled.div`
-font-size: 24px;
+font-size: 1.5rem;
 font-weight: bold;
 color: #dddcdc;
 `

@@ -7,14 +7,14 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  margin-top: 100px;
+  margin-top: 3rem;
 `
 
 const NotificationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(100% - 400px);
+  width: calc(100% - 25rem);
 `
 
 const Notification = styled.div`
@@ -22,21 +22,21 @@ const Notification = styled.div`
   align-items: center;
   background-color: #faf3ff;
   width: 100%;
-  height: 113px;
+  height: 7rem;
 `
 const Type = styled.img`
-  width: 60px;
-  margin: 40px;
+  width: 4rem;
+  margin: 2.5rem;
 `
 
 const PageName = styled.div`
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
 `
 
 const Context = styled.div`
-  font-size: 25px;
-  margin-left: 40px;
+  font-size: 1.5rem;
+  margin-left: 2.5rem;
 `
 function NotificationPage() {
   const notifications = [

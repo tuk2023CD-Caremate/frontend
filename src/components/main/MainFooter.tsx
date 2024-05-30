@@ -18,29 +18,29 @@ const Wraper = styled.div`
 `
 const InfoWrap = styled.div`
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 400;
   color: #858585;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   align-items: center;
 `
 
 const Divider_V = styled.div`
-  height: 20px;
+  height: 1.25rem;
   border: 2px solid #d8d8d8;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Divider = styled.div`
   width: 100%;
   border: 2px solid #d8d8d8;
-  margin: 10px;
+  margin: 0.625rem;
 `
 
 const Text = styled.div`
   display: flex;
-  font-size: 30px;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #858585;
   cursor: pointer;
