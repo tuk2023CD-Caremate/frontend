@@ -154,12 +154,10 @@ function MyPostPage() {
               <MyPost key={index}>
                 <BoardType>
                   {
-                    (post.category = 'FREE'
-                      ? '자유게시판'
-                      : (post.category = 'STUDY'
-                          ? '스터디 게시판'
-                          : (post.category = 'QUESTION' ? '질문게시판' : '기타 게시판')))
-                  }
+                    (post.category === 'FREE' ? '자유게시판'
+                      : (post.category === 'STUDY'? '스터디 게시판'
+                          : (post.category === 'QUESTION' ? '질문게시판' : '기타 게시판')
+                  ))}
                 </BoardType>
                 <Title>{post.title}</Title>
                 <Context>{post.content}</Context>

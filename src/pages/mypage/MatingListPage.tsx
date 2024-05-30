@@ -155,7 +155,15 @@ function MatchingListPage() {
           {loading ? (
             questionList.map((list, index) => (
             <MyPost key={index}>
-              <BoardType>{list.interests}</BoardType>
+              <BoardType>
+              {
+                (list.interests === 'SERVER' ? '서버/네트워크'
+                : (list.interests === 'WEBAPP' ? '웹/앱 개발'
+                  : (list.interests === 'DATA' ? '데이터개발' 
+                    :(list.interests ==='AI' ? 'AI/IOT'
+                        :(list.interests === 'SECURITY' ?'정보보안' : '기타')
+              ))))}
+              </BoardType>
               <Title>{list.title}</Title>
               <Context>{list.content}</Context>
               <Tag># {list.specificField}</Tag>
