@@ -4,9 +4,10 @@ import Navbar from '../../components/Navbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect} from 'react'
+import { useEffect, useState} from 'react'
 import { useApiUrlStore, useProfileDataStore,useLoadingStore } from '../../store/store.ts'
 import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
+import UpdateProfile from '../../components/UpdateProfile.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const ProfileWrapper = styled.div`
   flex-direction: column;
   width: calc(100% - 25rem);
   min-height: 48.75rem;
-  border-left: 1px solid #d8d8d8;
+  border-left: 1px solid #d8d8d8;;
 `
 
 const Upper = styled.div`
@@ -30,14 +31,14 @@ const Upper = styled.div`
   padding-right: 4.375rem;
 `
 const ProfileContent = styled.div`
-  margin: 1.25rem;
+  margin: 0 1.25rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
   border: 1px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 1.25rem;
-  width: 31.25rem;
-  height: 40rem;
+  width: 36rem;
+  height: 48rem;
 `
 
 const NameWrapper = styled.div`
@@ -57,14 +58,14 @@ const User = styled.div`
 
 const InfoContent = styled.div`
   height: 25rem;
-  margin: 1.5rem;
+  margin: 1.5rem 1.5rem 1.5rem 3.5rem;
   display: flex;
   flex-direction: column;
 `
 
 const Profile = styled.img`
-  width: 15rem;
-  margin: -1.25rem 0 -1.25rem 0;
+  width: 24rem;
+  margin: 0 0 -4rem 0;
 `
 
 const Role = styled.div`
@@ -138,6 +139,9 @@ function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
   const {loading, setLoading} = useLoadingStore()
+  //프로필
+  const [isediting, setIsEditing] = useState(false)
+  
 
   const getProfile = async () => {
     try {
@@ -154,77 +158,89 @@ function ProfilePage() {
     getProfile()
   }, [])
 
-  return (
+   //프로필수정
+   
+
+   const handleEdit = () => {
+     setIsEditing(true) 
+     console.log(isediting)
+   }
+
+   return (
     <div>
       <Header />
       <Navbar />
       <Container>
         <Profilebar />
-        <ProfileWrapper>
-          <Upper>
-            <ProfileContent>
-              {loading ? (
-                <Skeleton />
-              ) : (
-                <>
-                  <NameWrapper>
-                    <Profile src={ProfileImg} />
-                    <User>
-                      <Nickname>{profileData.nickname}</Nickname>
-                      <Role>{profileData.part}</Role>
-                    </User>
-                  </NameWrapper>
-                  <InfoContent>
-                    <Content>
-                      <Title>이름</Title>
-                      <Detail>{profileData.name}</Detail>
-                    </Content>
-                    <Content>
-                      <Title>전화번호</Title>
-                      <Detail>{profileData.tel}</Detail>
-                    </Content>
-                    <Content>
-                      <Title>PR</Title>
-                      <Detail>{profileData.publicRelations}</Detail>
-                    </Content>
-                    <Content>
-                      <Title>Blog</Title>
-                      <Detail>{profileData.blogUrl}</Detail>
-                    </Content>
-                  </InfoContent>
-                </>
-              )}
-            </ProfileContent>
-            <Lower>
-              <ReviewContent>
-                <Category>리뷰</Category>
-                <Content>
-                  <Title>좋아요</Title>
-                  <Detail>{profileData.heart}</Detail>
-                </Content>
-                <Content>
-                  <Title>평점</Title>
-                  <Detail>{profileData.starAverage}</Detail>
-                </Content>
-              </ReviewContent>
-              <MatchingContent>
-                <Category>매칭기록</Category>
-                <Content>
-                  <Title>문제 해결</Title>
-                  <Detail>{profileData.solved}</Detail>
-                </Content>
-                <Content>
-                  <Title>매칭 수</Title>
-                  <Detail>{profileData.matchingCount}</Detail>
-                </Content>
-              </MatchingContent>
-            </Lower>
-            <Modify>수정하기</Modify>
-          </Upper>
-        </ProfileWrapper>
+        {isediting === false ? (
+          <ProfileWrapper>
+            <Upper>
+              <ProfileContent>
+                {loading ? (
+                  <Skeleton />
+                ) : (
+                  <>
+                    <NameWrapper>
+                      <Profile src={ProfileImg} />
+                      <User>
+                        <Nickname>{profileData.nickname}</Nickname>
+                        <Role>{profileData.part}</Role>
+                      </User>
+                    </NameWrapper>
+                    <InfoContent>
+                      <Content>
+                        <Title>이름</Title>
+                        <Detail>{profileData.name}</Detail>
+                      </Content>
+                      <Content>
+                        <Title>전화번호</Title>
+                        <Detail>{profileData.tel}</Detail>
+                      </Content>
+                      <Content>
+                        <Title>PR</Title>
+                        <Detail>{profileData.publicRelations}</Detail>
+                      </Content>
+                      <Content>
+                        <Title>Blog</Title>
+                        <Detail>{profileData.blogUrl}</Detail>
+                      </Content>
+                    </InfoContent>
+                  </>
+                )}
+              </ProfileContent>
+              <Lower>
+                <ReviewContent>
+                  <Category>리뷰</Category>
+                  <Content>
+                    <Title>좋아요</Title>
+                    <Detail>{profileData.heart}</Detail>
+                  </Content>
+                  <Content>
+                    <Title>평점</Title>
+                    <Detail>{profileData.starAverage}</Detail>
+                  </Content>
+                </ReviewContent>
+                <MatchingContent>
+                  <Category>매칭기록</Category>
+                  <Content>
+                    <Title>문제 해결</Title>
+                    <Detail>{profileData.solved}</Detail>
+                  </Content>
+                  <Content>
+                    <Title>매칭 수</Title>
+                    <Detail>{profileData.matchingCount}</Detail>
+                  </Content>
+                </MatchingContent>
+              </Lower>
+              <Modify onClick={handleEdit}>수정하기</Modify>
+            </Upper>
+          </ProfileWrapper>
+        ) : (
+          <UpdateProfile />
+        )}
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
