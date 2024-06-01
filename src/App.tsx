@@ -27,6 +27,7 @@ import UpdatePostsPage from './pages/post/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
 import { useApiUrlStore } from './store/store'
 import ChatRoomPage from './pages/chat/ChatRoomPage'
+import UpdateProfilePage from './pages/mypage/UpdateProfilePage'
 
 const CustomToastContainer = styled(ToastContainer)`
   .Toastify__toast {
@@ -121,6 +122,7 @@ function App() {
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
         <Route path="/mypage/matchinglist" element={<MatingListPage />} />
+        <Route path="/mypage/update" element={<UpdateProfilePage />} />
       </Routes>
     </Router>
   )

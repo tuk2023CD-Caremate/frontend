@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  // apiUrl: 'https://studymate154.com/api',
-   apiUrl: 'http://studymate154.com:8080/api',
+   apiUrl: 'https://studymate154.com/api',
+  // apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
@@ -43,6 +43,7 @@ interface UserList {
   tel: number
   expertiseField: string
   interests: string
+  imgUrl: string
   blogUrl: string
   publicRelations: string
   job: string
@@ -254,18 +255,21 @@ export const useCalenderListState = create<CalenderListState>((set) => ({
 
 /* 상세 프로필 객체 데이터*/
 interface ProfileDataState {
-  profileData: ProfileData
-  setProfileData: (profileData: ProfileData) => void
+  profileData: UserList
+  setProfileData: (profileData: UserList) => void
 }
 
 export const useProfileDataStore = create<ProfileDataState>((set) => ({
   profileData: {
+    id: 0,
     name: '',
     nickname: '',
     part: '',
     email: '',
     tel: 0,
+    expertiseField: '',
     interests: '',
+    imgUrl: '',
     blogUrl: '',
     publicRelations: '',
     job: '',
@@ -273,25 +277,12 @@ export const useProfileDataStore = create<ProfileDataState>((set) => ({
     starAverage: 0,
     solved: 0,
     matchingCount: 0,
+    reviewCount: 0,
+    login: false
   },
   setProfileData: (profileData) => set({ profileData }),
 }))
 
-interface ProfileData {
-  name: string
-  nickname: string
-  part: string
-  email: string
-  tel: number
-  interests: string
-  blogUrl: string
-  publicRelations: string
-  job: string
-  heart: number
-  starAverage: number
-  solved: number
-  matchingCount: number
-}
 
 /*스켈레톤 ui 로딩 state*/
 interface LoadingState {
