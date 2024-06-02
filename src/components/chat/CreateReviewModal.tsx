@@ -153,7 +153,7 @@ function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {
   const [postData, setPostData] = useState({
     title: '',
     content: '',
-    rating: 0,
+    star: 0,
     isSolved: false,
     heart: false,
   })
@@ -214,12 +214,12 @@ function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {
           <Text>평점을 남겨주세요 !</Text>
           <StarWrap>
             {[...Array(5)].map((_, index) =>
-              index < postData.rating ? (
-                <StarIcon key={index} onClick={() => handleBooleanChange('rating', index + 1)}>
+              index < postData.star ? (
+                <StarIcon key={index} onClick={() => handleBooleanChange('star', index + 1)}>
                   <PiStarFill size={36} />
                 </StarIcon>
               ) : (
-                <StarIcon key={index} onClick={() => handleBooleanChange('rating', index + 1)}>
+                <StarIcon key={index} onClick={() => handleBooleanChange('star', index + 1)}>
                   <PiStar size={36} />
                 </StarIcon>
               ),
