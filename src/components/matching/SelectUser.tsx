@@ -21,7 +21,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 80rem;
-  height: 22.5rem;
+  min-height: 22.5rem;
   border: 2px solid #d8d8d8;
   &:hover {
     border: 2px solid #650fa9;
@@ -106,7 +106,7 @@ const TruncatedContent = styled.div<TruncatedContentProps>`
   line-height: 1.2;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${(props) => (props.expanded ? 'none' : '3')};
+  -webkit-line-clamp: ${(props) => (props.expanded ? 'none' : '2')};
   max-height: ${(props) => (props.expanded ? 'none' : '3.6em')};
   cursor: pointer;
 `
@@ -122,7 +122,7 @@ const Detail = styled.div`
 const RightWrap = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 22rem;
   flex: 2;
   flex-direction: column;
   justify-content: space-between;
