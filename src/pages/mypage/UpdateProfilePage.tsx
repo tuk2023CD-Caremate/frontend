@@ -1,13 +1,12 @@
 import Header from '../../components/Header.tsx'
 import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
-import ProfileImg from '../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
 import { ChangeEvent, useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useApiUrlStore, useProfileDataStore } from '../../store/store.ts'
-import profileImg from '../assets/images/profileimg.png'
+import profileImg from '../../assets/images/profileimg.png'
 
 
 const Container = styled.div`
@@ -164,7 +163,6 @@ function UpdateProfilePage() {
   const [job, setJob] = useState(profileData.job)
 
 
-
   const getProfile = async () => {
     try {
       const access = localStorage.getItem('accessToken')
@@ -208,15 +206,18 @@ function UpdateProfilePage() {
    //프로필 사진 업로드
    const postProfileImg = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      if (e.target.files && e.target.files.length > 0) {
+        let selectedFile = e.target.files?.[0] || profileImg; 
         const formData = new FormData();
-        formData.append('image', e.target.files[0]);
+        formData.append('image', selectedFile);
 
-        console.log( e.target.files[0])
+
+        console.log( e.target.files)
+        console.log( e.target.files?.[0])
+        console.log(location.origin)
 
         const access = localStorage.getItem('accessToken');
         const response = await axios.put(
-          `http://studymate154.com:8080/image/upload`, formData,
+          'http://studymate154.com:8080/api/image/upload', formData,
           {
             headers: {
               Authorization: `Bearer ${access}`,
@@ -228,7 +229,7 @@ function UpdateProfilePage() {
         console.log('프로필 이미지가 업로드 되었습니다');
     
       }
-    } catch (error) {
+     catch (error) {
       console.error('프로필 이미지 업로드에 실패했습니다:', error);
     }
   };
@@ -248,7 +249,7 @@ function UpdateProfilePage() {
             <Upper>
               <ProfileContent>
                     <NameWrapper>
-                      <Profile type='file' accept='image/*' onChange={postProfileImg}  />
+                      <Profile type='file' accept='image/*' onChange={postProfileImg} />
                     </NameWrapper>
                     <InfoContent>
                         <Content>
