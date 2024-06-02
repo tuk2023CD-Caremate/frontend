@@ -157,11 +157,22 @@ function StartPage() {
     const access = localStorage.getItem('accessToken')
     if (access) {
       try {
+        const res = await axios.post(
+          `${apiUrl}/gpt/question`,
+          {
+            questionMessage: content,
+          },
+          {
+            headers: { Authorization: `Bearer ${access}` },
+          },
+        )
+        const modifiedContent = res.data.questionMessage
+
         const response = await axios.post(
           `${apiUrl}/question`,
           {
             title,
-            content,
+            content: modifiedContent,
             specificField,
             interests: selectedOption,
           },
