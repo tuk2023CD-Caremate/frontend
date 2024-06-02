@@ -129,7 +129,7 @@ const RegisterBtn = styled.button`
   height: 3.75rem;
   background-color: #e8dcf2;
   color: #650fa9;
-  margin: 3.75rem 1.25rem 0rem 1.25rem;
+  margin: 1.8rem 1.25rem 0rem 1.25rem;
 `
 
 const CancelBtn = styled.button`
