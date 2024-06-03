@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-   apiUrl: 'https://studymate154.com/api',
-  // apiUrl: 'http://studymate154.com:8080/api',
+  // apiUrl: 'https://studymate154.com/api',
+   apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
@@ -43,7 +43,7 @@ interface UserList {
   tel: number
   expertiseField: string
   interests: string
-  imgUrl: string
+  imageUrl: string
   blogUrl: string
   publicRelations: string
   job: string
@@ -70,6 +70,7 @@ export interface PostsList {
   post_id: number
   title: string
   content: string
+  profileUrl: string
   nickname: string
   createdAt: string
   likeCount: number
@@ -95,6 +96,7 @@ export const usePostStore = create<PostState>((set) => ({
     post_id: 0,
     title: '',
     content: '',
+    profileUrl : '',
     nickname: '',
     createdAt: '',
     likeCount: 0,
@@ -138,6 +140,7 @@ interface CommentData {
   post_id: number
   nickname: string
   content: string
+  profileUrl: string
   comment_id: number
   createdAt: string
 }
@@ -269,7 +272,7 @@ export const useProfileDataStore = create<ProfileDataState>((set) => ({
     tel: 0,
     expertiseField: '',
     interests: '',
-    imgUrl: '',
+    imageUrl: '',
     blogUrl: '',
     publicRelations: '',
     job: '',
@@ -294,3 +297,12 @@ export const useLoadingStore = create<LoadingState>((set) => ({
   loading: true,
   setLoading: (loading: boolean) => set({ loading }),
 }))
+
+
+export const getImageImageUrl = (imageUrl: string, defaultImg: string): string => {
+  return imageUrl === "프로필 사진이 없습니다" ? defaultImg : imageUrl;
+};
+
+export const getProfileImageUrl = (profileUrl: string, defaultImg: string): string => {
+  return profileUrl === "프로필 사진이 없습니다." ? defaultImg : profileUrl;
+};

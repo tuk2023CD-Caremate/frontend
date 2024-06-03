@@ -1,13 +1,13 @@
 import Header from '../../components/Header.tsx'
 import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
-import ProfileImg from '../../assets/images/profile.png'
 import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect, useState} from 'react'
+import { useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { useApiUrlStore, useProfileDataStore,useLoadingStore } from '../../store/store.ts'
+import { useApiUrlStore, useProfileDataStore,useLoadingStore, getImageImageUrl } from '../../store/store.ts'
 import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
+import defaultImg from '../../assets/images/profileimg.png'
 
 
 const Container = styled.div`
@@ -31,6 +31,7 @@ const Upper = styled.div`
   padding-left: 3rem;
   padding-right: 4.375rem;
 `
+
 const ProfileContent = styled.div`
   margin: 0 1.25rem 1.25rem 1.25rem;
   display: flex;
@@ -39,7 +40,7 @@ const ProfileContent = styled.div`
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 1.25rem;
   width: 36rem;
-  height: 48rem;
+  height: 41rem;
 `
 
 const NameWrapper = styled.div`
@@ -65,8 +66,10 @@ const InfoContent = styled.div`
 `
 
 const Profile = styled.img`
-  width: 24rem;
-  margin: 0 0 -4rem 0;
+width: 12rem;
+height: 12rem;
+border-radius: 50%;
+margin: 1rem;
 `
 
 const Role = styled.div`
@@ -141,7 +144,7 @@ function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
   const {loading, setLoading} = useLoadingStore()
-
+  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg);
 
   const getProfile = async () => {
     try {
@@ -151,12 +154,15 @@ function ProfilePage() {
       })
       setLoading(false)
       setProfileData(response.data)
+      console.log(response.data.imageUrl)
     } catch (error) {}
   }
 
   useEffect(() => {
     getProfile()
   }, [])
+
+
 
 
    return (
@@ -173,7 +179,7 @@ function ProfilePage() {
                   ) : (
                     <>
                       <NameWrapper>
-                        <Profile src={ProfileImg} />
+                      <Profile src={profileImg} />
                         <User>
                           <Nickname>{profileData.nickname}</Nickname>
                           <Role>{profileData.part}</Role>

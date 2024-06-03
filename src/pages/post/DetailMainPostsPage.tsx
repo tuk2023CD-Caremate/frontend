@@ -7,14 +7,13 @@ import {
   useLikeDataStore,
   useCommentDataStore,
   useLoadingStore,
-  useProfileDataStore
+  getProfileImageUrl
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import defaultImg from '../../assets/images/profileimg.png'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
-import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
 
@@ -294,7 +293,7 @@ function DetailMainPostPage() {
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
   const {loading, setLoading} = useLoadingStore()
-
+  const postImg = getProfileImageUrl(postData.profileUrl, defaultImg);
 
 
   //게시글 단건조회
@@ -410,6 +409,8 @@ function DetailMainPostPage() {
   const [commentnickname, setCommentNickname] = useState<string>('')
   const { commentData, setCommentData } = useCommentDataStore()
 
+
+
   //댓글 조회
   const getComment = async () => {
     try {
@@ -418,6 +419,7 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setCommentData(response.data)
+      console.log(response.data)
     } catch (error) {
       alert('Error while fetching comment')
     }
@@ -547,7 +549,7 @@ function DetailMainPostPage() {
               <>
                 <Upper>
                   <UserWrapper>
-                    <Profile src={postData.profileUrl} />
+                    <Profile src={postImg} />
                     <NameWrapper>
                       <Nickname>{postData.nickname}</Nickname>
                       <Time>{postData.createdAt}</Time>
@@ -585,7 +587,7 @@ function DetailMainPostPage() {
               <CommentWrapper key={comments.comment_id}>
                 <CommentUpper>
                   <CommentUserWrapper>
-                    <CommentProfile src={comments.profileUrl} />
+                    <CommentProfile src={comments.profileUrl === "프로필 사진이 없습니다." ? defaultImg : comments.profileUrl} />
                     <NameWrapper>
                       <CommentNickname>{comments.nickname}</CommentNickname>
                       <CommentTime>{comments.createdAt}</CommentTime>

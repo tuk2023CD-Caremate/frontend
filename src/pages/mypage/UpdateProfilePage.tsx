@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { ChangeEvent, useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
-import { useApiUrlStore, useProfileDataStore } from '../../store/store.ts'
-import profileImg from '../../assets/images/profileimg.png'
+import { useApiUrlStore, useProfileDataStore, getImageImageUrl} from '../../store/store.ts'
+import defaultImg from '../../assets/images/profileimg.png'
+//import { FaRegFileImage } from "react-icons/fa";
 
 
 const Container = styled.div`
@@ -30,6 +31,7 @@ const Upper = styled.div`
   padding-left: 3rem;
   padding-right: 4.375rem;
 `
+
 const ProfileContent = styled.div`
   margin: 0 1.25rem 1.25rem 1.25rem;
   display: flex;
@@ -38,7 +40,7 @@ const ProfileContent = styled.div`
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 1.25rem;
   width: 36rem;
-  min-height: 50rem;
+  min-height: 48rem;
 `
 
 const NameWrapper = styled.div`
@@ -53,11 +55,29 @@ const InfoContent = styled.div`
   flex-direction: column;
 `
 
-const Profile = styled.input`
-  width: 18rem;
-  height: 18rem;
+{/*
+const Updload = styled.div`
+  display: flex;
+  align-items: center;
+`*/}
 
-  border: 1px solid red;
+const ProfileImg = styled.img`
+width: 12rem;
+height: 12rem;
+border-radius: 50%;
+margin: 1rem;
+`
+
+const Label = styled.label`
+font-weight: bold;
+font-size: 1.25rem;
+margin-left: 0.5rem;
+margin-top: 0.5rem;
+color: bdbdbd;
+`
+
+const Profile = styled.input`
+display: none;
 `
 
 const Role = styled.select`
@@ -138,7 +158,6 @@ const EditInput = styled.input`
   border-radius: 5px;
   border: 1px solid #bdbdbd;
   text-indent: 1rem;
-
 `
 
 
@@ -151,6 +170,7 @@ const partList = [
 function UpdateProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
+ 
 
   //프로필 수정
   const [name, setName] = useState(profileData.name)
@@ -161,6 +181,9 @@ function UpdateProfilePage() {
   const [interests, setInterests] = useState(profileData.interests)
   const [expertiseField, setExpertiseField] = useState(profileData.expertiseField)
   const [job, setJob] = useState(profileData.job)
+  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg);
+
+
 
 
   const getProfile = async () => {
@@ -170,6 +193,7 @@ function UpdateProfilePage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setProfileData(response.data)
+      console.log(response.data.imageUrl)
     } catch (error) {}
   }
 
@@ -206,14 +230,9 @@ function UpdateProfilePage() {
    //프로필 사진 업로드
    const postProfileImg = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-        let selectedFile = e.target.files?.[0] || profileImg; 
+        let selectedFile = e.target.files?.[0] || defaultImg; 
         const formData = new FormData();
         formData.append('image', selectedFile);
-
-
-        console.log( e.target.files)
-        console.log( e.target.files?.[0])
-        console.log(location.origin)
 
         const access = localStorage.getItem('accessToken');
         const response = await axios.put(
@@ -225,7 +244,7 @@ function UpdateProfilePage() {
             },
           }
         );
-        setProfileData({ ...profileData, imgUrl: response.data.imgUrl });
+        setProfileData({ ...profileData, imageUrl: response.data.s3Url});
         console.log('프로필 이미지가 업로드 되었습니다');
     
       }
@@ -238,6 +257,7 @@ function UpdateProfilePage() {
     getProfile()
   }, [])
 
+  
 
    return (
     <div>
@@ -249,7 +269,9 @@ function UpdateProfilePage() {
             <Upper>
               <ProfileContent>
                     <NameWrapper>
-                      <Profile type='file' accept='image/*' onChange={postProfileImg} />
+                      <ProfileImg src={profileImg}/>
+                      <Label htmlFor='profileimg'> 프로필 이미지 업로드</Label>
+                      <Profile type='file' accept='image/*' id='profileimg' onChange={postProfileImg} />
                     </NameWrapper>
                     <InfoContent>
                         <Content>
