@@ -22,8 +22,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  // apiUrl: 'https://studymate154.com/api',
-   apiUrl: 'http://studymate154.com:8080/api',
+   apiUrl: 'https://studymate154.com/api',
+  // apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
 }))
