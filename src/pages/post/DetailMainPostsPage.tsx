@@ -6,11 +6,13 @@ import {
   usePostStore,
   useLikeDataStore,
   useCommentDataStore,
-  useLoadingStore
+  useLoadingStore,
+  useProfileDataStore
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
+import defaultImg from '../../assets/images/profileimg.png'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
 import ProfileImg from '../../assets/images/profile.png'
 import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
@@ -65,8 +67,10 @@ const UserWrapper = styled.div`
 `
 
 const Profile = styled.img`
-  width: 7rem;
-  height: 7rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin-right: 1rem;
 `
 
 const Time = styled.div`
@@ -187,8 +191,10 @@ const CommentUserWrapper = styled.div`
 `
 
 const CommentProfile = styled.img`
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  margin-right: 1rem;
 `
 
 const CommentNickname = styled.div`
@@ -241,7 +247,7 @@ const CommentUpdate = styled.div`
 const Comment = styled.div`
   width: 95%;
   padding-left: 1.5rem;
-  margin-left: 3rem;
+  margin-left: 2.5rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
 `
@@ -288,6 +294,8 @@ function DetailMainPostPage() {
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
   const {loading, setLoading} = useLoadingStore()
+
+
 
   //게시글 단건조회
   const getPost = async () => {
@@ -539,7 +547,7 @@ function DetailMainPostPage() {
               <>
                 <Upper>
                   <UserWrapper>
-                    <Profile src={ProfileImg} />
+                    <Profile src={postData.profileUrl} />
                     <NameWrapper>
                       <Nickname>{postData.nickname}</Nickname>
                       <Time>{postData.createdAt}</Time>
@@ -577,7 +585,7 @@ function DetailMainPostPage() {
               <CommentWrapper key={comments.comment_id}>
                 <CommentUpper>
                   <CommentUserWrapper>
-                    <CommentProfile src={ProfileImg} />
+                    <CommentProfile src={comments.profileUrl} />
                     <NameWrapper>
                       <CommentNickname>{comments.nickname}</CommentNickname>
                       <CommentTime>{comments.createdAt}</CommentTime>
