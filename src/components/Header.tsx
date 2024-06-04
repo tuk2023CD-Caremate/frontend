@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import LogoImg from '../assets/images/StudyMate.svg'
-import ProfileImg from '../assets/images/profile.png'
+import defaultImg from '../assets/images/profileimg.png'
 import axios from 'axios'
-import { useApiUrlStore } from '../store/store'
+import { useApiUrlStore, useProfileDataStore, getImageImageUrl } from '../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -28,7 +28,10 @@ const RightWrapper = styled.div`
 `
 
 const Profile = styled.img`
-  width: 6.25rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius:50%;
+  margin-right: 0.5rem;
 `
 
 const NickName = styled.div`
@@ -60,6 +63,8 @@ export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
+  const {profileData} = useProfileDataStore()
+  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg);
 
   const getNickname = async () => {
     try {
@@ -114,7 +119,7 @@ export default function Header() {
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
-            <Profile src={ProfileImg} />
+            <Profile src={profileImg} />
             <NickName>{nickname}</NickName>
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>

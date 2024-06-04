@@ -43,6 +43,7 @@ interface UserList {
   tel: number
   expertiseField: string
   interests: string
+  imageUrl: string
   blogUrl: string
   publicRelations: string
   job: string
@@ -69,6 +70,7 @@ export interface PostsList {
   post_id: number
   title: string
   content: string
+  profileUrl: string
   nickname: string
   createdAt: string
   likeCount: number
@@ -94,6 +96,7 @@ export const usePostStore = create<PostState>((set) => ({
     post_id: 0,
     title: '',
     content: '',
+    profileUrl : '',
     nickname: '',
     createdAt: '',
     likeCount: 0,
@@ -137,6 +140,7 @@ interface CommentData {
   post_id: number
   nickname: string
   content: string
+  profileUrl: string
   comment_id: number
   createdAt: string
 }
@@ -254,18 +258,21 @@ export const useCalenderListState = create<CalenderListState>((set) => ({
 
 /* 상세 프로필 객체 데이터*/
 interface ProfileDataState {
-  profileData: ProfileData
-  setProfileData: (profileData: ProfileData) => void
+  profileData: UserList
+  setProfileData: (profileData: UserList) => void
 }
 
 export const useProfileDataStore = create<ProfileDataState>((set) => ({
   profileData: {
+    id: 0,
     name: '',
     nickname: '',
     part: '',
     email: '',
     tel: 0,
+    expertiseField: '',
     interests: '',
+    imageUrl: '',
     blogUrl: '',
     publicRelations: '',
     job: '',
@@ -273,25 +280,12 @@ export const useProfileDataStore = create<ProfileDataState>((set) => ({
     starAverage: 0,
     solved: 0,
     matchingCount: 0,
+    reviewCount: 0,
+    login: false
   },
   setProfileData: (profileData) => set({ profileData }),
 }))
 
-interface ProfileData {
-  name: string
-  nickname: string
-  part: string
-  email: string
-  tel: number
-  interests: string
-  blogUrl: string
-  publicRelations: string
-  job: string
-  heart: number
-  starAverage: number
-  solved: number
-  matchingCount: number
-}
 
 /*스켈레톤 ui 로딩 state*/
 interface LoadingState {
@@ -303,3 +297,12 @@ export const useLoadingStore = create<LoadingState>((set) => ({
   loading: true,
   setLoading: (loading: boolean) => set({ loading }),
 }))
+
+
+export const getImageImageUrl = (imageUrl: string, defaultImg: string): string => {
+  return imageUrl === "프로필 사진이 없습니다" ? defaultImg : imageUrl;
+};
+
+export const getProfileImageUrl = (profileUrl: string, defaultImg: string): string => {
+  return profileUrl === "프로필 사진이 없습니다." ? defaultImg : profileUrl;
+};
