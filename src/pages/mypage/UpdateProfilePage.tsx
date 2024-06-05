@@ -192,8 +192,8 @@ function UpdateProfilePage() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
+
       setProfileData(response.data)
-      console.log(response.data.imageUrl)
     } catch (error) {}
   }
 
@@ -236,7 +236,7 @@ function UpdateProfilePage() {
 
         const access = localStorage.getItem('accessToken');
         const response = await axios.put(
-          'http://studymate154.com:8080/api/image/upload', formData,
+          `${apiUrl}/image/upload`, formData,
           {
             headers: {
               Authorization: `Bearer ${access}`,
