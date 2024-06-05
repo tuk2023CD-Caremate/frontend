@@ -40,7 +40,7 @@ const ProfileContent = styled.div`
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 1.25rem;
   width: 36rem;
-  height: 41rem;
+  min-height: min-content;
 `
 
 const NameWrapper = styled.div`
@@ -59,7 +59,7 @@ const User = styled.div`
 `
 
 const InfoContent = styled.div`
-  height: 25rem;
+  min-height: min-content;
   margin: 1.5rem 1.5rem 1.5rem 3.5rem;
   display: flex;
   flex-direction: column;
@@ -136,6 +136,7 @@ const Title = styled.div`
 `
 
 const Detail = styled.div`
+  width: 22rem;
   font-size: 1.5rem;
   font-weight: 300;
 `
@@ -152,9 +153,8 @@ function ProfilePage() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setLoading(false)
+      setLoading(true)
       setProfileData(response.data)
-      console.log(response.data.imageUrl)
     } catch (error) {}
   }
 
@@ -175,8 +175,6 @@ function ProfilePage() {
               <Upper>
                 <ProfileContent>
                   {loading ? (
-                    <Skeleton />
-                  ) : (
                     <>
                       <NameWrapper>
                       <Profile src={profileImg} />
@@ -212,7 +210,8 @@ function ProfilePage() {
                         </Content>
                       </InfoContent>
                     </>
-                  )}
+                  ) : (<Skeleton/>)
+                  }
                 </ProfileContent>
                 <Lower>
                   <ReviewContent>

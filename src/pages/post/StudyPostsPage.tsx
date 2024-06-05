@@ -219,7 +219,6 @@ function StudyPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
-    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -230,6 +229,7 @@ function StudyPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostList(response.data.reverse())
+      setLoading(true)
     } catch (error) {
       alert('Error while fetching post')
     }

@@ -211,7 +211,6 @@ function MainPostPage() {
 
   //게시글 전체조회
   const getPost = async () => {
-    setLoading(!loading)
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -222,6 +221,7 @@ function MainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostList(response.data.reverse())
+      setLoading(true)
     } catch (error) {
       alert('Error while fetching post')
     }

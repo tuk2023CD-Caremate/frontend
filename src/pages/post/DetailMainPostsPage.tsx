@@ -304,7 +304,7 @@ function DetailMainPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
-      setLoading(false)
+      setLoading(true)
     } catch (error) {
       alert('Error while fetching post')
     }
@@ -544,8 +544,6 @@ function DetailMainPostPage() {
           <PageTitle>자유게시판</PageTitle>
           <MainPostWrapper>
             {loading ? (
-              <Skeleton />
-            ) : (
               <>
                 <Upper>
                   <UserWrapper>
@@ -567,7 +565,8 @@ function DetailMainPostPage() {
                   <Context>{postData.content}</Context>
                 </Lower>
               </>
-            )}
+              ) : (<Skeleton/>)
+            }
             <FooterWrapper>
               <DetailFooterWrapper>
                 {likeList.some((post) => post.post_id === postData.post_id) ? (

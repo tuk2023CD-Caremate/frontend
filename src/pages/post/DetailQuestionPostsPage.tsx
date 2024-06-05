@@ -304,7 +304,7 @@ function DetailQuestionPostPage() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setPostData(response.data)
-      setLoading(false)
+      setLoading(true)
     } catch (error) {
       alert('Error while fetching post')
     }
@@ -542,8 +542,6 @@ function DetailQuestionPostPage() {
           <PageTitle>질문게시판</PageTitle>
           <MainPostWrapper>
             {loading ? (
-              <Skeleton />
-            ) : (
               <>
                 <Upper>
                   <UserWrapper>
@@ -564,8 +562,9 @@ function DetailQuestionPostPage() {
                   <Title>{postData.title}</Title>
                   <Context>{postData.content}</Context>
                 </Lower>
-              </>
-            )}
+              </> 
+            ) : (<Skeleton/>)
+            }
             <FooterWrapper>
               <DetailFooterWrapper>
                 {likeList.some((post) => post.post_id === postData.post_id) ? (

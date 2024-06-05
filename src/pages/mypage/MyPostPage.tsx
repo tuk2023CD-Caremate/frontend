@@ -2,8 +2,12 @@ import Header from '../../components/Header.tsx'
 import Profilebar from '../../components/sidebar/Profilebar.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import DividerImg from '../../assets/images/divider1.png'
-import CommentImg from '../../assets/images/comment2.png'
 import styled from 'styled-components'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useApiUrlStore, usePostListStore, useLoadingStore } from '../../store/store.ts'
+import { IoIosHeart, IoIosText } from 'react-icons/io'
+import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
 
 const Container = styled.div`
   display: flex;
@@ -33,8 +37,8 @@ const PageTitle = styled.div`
 const MyPost = styled.div`
   display: flex;
   padding: 1.25rem 0rem 0rem 1.25rem;
-  width: calc(100% - 1.25rem);
-  height: 16rem;
+  width: calc(100% - 6.25rem);
+  min-height: min-content;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
@@ -55,6 +59,7 @@ const Title = styled.div`
 const Context = styled.div`
   font-size: 1.5rem;
   margin: 0 0.625rem 0.625rem 0.625rem;
+  min-height: min-content;
 `
 
 const FooterWrap = styled.div`
@@ -62,16 +67,17 @@ const FooterWrap = styled.div`
   margin: 0.625rem;
   align-items: center;
 `
-
-const CommentImage = styled.img`
-  width: 2rem;
-  height: 2rem;
-  margin-right: 5px;
+const Heart = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 0.625rem;
 `
 
 const Comment = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
+  margin-left: 5px;
 `
 
 const Divider = styled.img`
@@ -92,32 +98,50 @@ const DateCreated = styled.div`
 `
 
 function MyPostPage() {
-  const posts = [
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-    {
-      boardType: '자유게시판',
-      title: '자바 스터디 구합니다.',
-      context: '자바의 정석 책으로 진행 할 예정이고, 5-6명 생각하고 있습니다 !',
-      commentCount: 3,
-      dateCreated: '01/06',
-      writer: '틀니개',
-    },
-  ]
+  const { apiUrl } = useApiUrlStore()
+  const { loading, setLoading } = useLoadingStore()
+  const { postsList, setPostList } = usePostListStore()
+  const [_nickname, setNickName] = useState<string>('')
+
+  //내가 작성한 게시글 전체조회
+  const getPost = async (nickname: string) => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      if (!access) {
+        window.alert('로그인을해주세요.')
+        return
+      }
+      const response = await axios.get(`${apiUrl}/posts`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setPostList(response.data)
+      setLoading(true)
+
+      const MyPosts = response.data.filter(
+        (post: { nickname: string }) => post.nickname === nickname, //유저 nickname과 게시글 작성자 nickname이 일치하는 게시글
+      )
+      setPostList(MyPosts.reverse())
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+  const getNickname = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}/user`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setNickName(response.data.nickname)
+      await getPost(response.data.nickname) //nickname가져온 후 getpost
+    } catch (error) {
+      alert('Error while fetching post')
+    }
+  }
+
+  useEffect(() => {
+    getNickname()
+  }, [])
+
   return (
     <div>
       <Header />
@@ -125,22 +149,34 @@ function MyPostPage() {
       <Container>
         <Profilebar />
         <MyPostWrapper>
-          <PageTitle>내가 쓴 글</PageTitle>
-          {posts.map((post, index) => (
-            <MyPost key={index}>
-              <BoardType>{post.boardType}</BoardType>
-              <Title>{post.title}</Title>
-              <Context>{post.context}</Context>
-              <FooterWrap>
-                <CommentImage src={CommentImg} />
-                <Comment>{post.commentCount}</Comment>
-                <Divider src={DividerImg} />
-                <DateCreated>{post.dateCreated}</DateCreated>
-                <Divider src={DividerImg} />
-                <Writer>{post.writer}</Writer>
-              </FooterWrap>
-            </MyPost>
-          ))}
+          <PageTitle>내가 작성한 게시글</PageTitle>
+          {loading ? (
+            postsList.map((post, index) => (
+              <MyPost key={index}>
+                <BoardType>
+                  {
+                    (post.category === 'FREE' ? '자유게시판'
+                      : (post.category === 'STUDY'? '스터디 게시판'
+                          : (post.category === 'QUESTION' ? '질문게시판' : null)
+                  ))}
+                </BoardType>
+                <Title>{post.title}</Title>
+                <Context>{post.content}</Context>
+                <FooterWrap>
+                  <IoIosHeart size={28} color='ff0000'/>
+                  <Heart>{post.likeCount}</Heart>
+                  <IoIosText size={28}/>
+                  <Comment>{post.commentCount}</Comment>
+                  <Divider src={DividerImg} />
+                  <DateCreated>{post.createdAt}</DateCreated>
+                  <Divider src={DividerImg} />
+                  <Writer>{post.nickname}</Writer>
+                </FooterWrap>
+              </MyPost>
+            ))
+          ) : (
+            <SkeletonUI />
+          )}
         </MyPostWrapper>
       </Container>
     </div>

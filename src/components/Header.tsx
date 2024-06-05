@@ -63,10 +63,9 @@ export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState<string>('')
-  const {profileData} = useProfileDataStore()
-  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg);
+  const [profileimg, setProfileImg] = useState<string>('')
 
-  const getNickname = async () => {
+  const getProfile = async () => {
     try {
       const access = localStorage.getItem('accessToken')
       if (!access) {
@@ -77,14 +76,21 @@ export default function Header() {
         headers: { Authorization: `Bearer ${access}` },
       })
       setNickname(response.data.nickname)
+      
+      if(response.data.imageUrl === "프로필 사진이 없습니다"){
+        setProfileImg(defaultImg)
+      } else{
+        setProfileImg(response.data.imageUrl)
+      }
     } catch (error) {
       console.error('Error fetching nickname:', error)
     }
   }
 
   useEffect(() => {
-    getNickname()
+    getProfile()
   }, [])
+
 
   const handleLogout = async () => {
     const access = localStorage.getItem('accessToken')
@@ -119,7 +125,7 @@ export default function Header() {
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
-            <Profile src={profileImg} />
+            <Profile src={profileimg} />
             <NickName>{nickname}</NickName>
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>
