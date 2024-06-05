@@ -37,8 +37,8 @@ const PageTitle = styled.div`
 const MyPost = styled.div`
   display: flex;
   padding: 1.25rem 0rem 0rem 1.25rem;
-  width: calc(100% - 1.25rem);
-  height: 16rem;
+  width: calc(100% - 6.25rem);
+  min-height: min-content;
   border: 1px solid #d8d8d8;
   flex-direction: column;
 `
@@ -59,6 +59,7 @@ const Title = styled.div`
 const Context = styled.div`
   font-size: 1.5rem;
   margin: 0 0.625rem 0.625rem 0.625rem;
+  min-height: min-content;
 `
 
 const FooterWrap = styled.div`
@@ -156,7 +157,7 @@ function MyPostPage() {
                   {
                     (post.category === 'FREE' ? '자유게시판'
                       : (post.category === 'STUDY'? '스터디 게시판'
-                          : (post.category === 'QUESTION' ? '질문게시판' : '기타 게시판')
+                          : (post.category === 'QUESTION' ? '질문게시판' : null)
                   ))}
                 </BoardType>
                 <Title>{post.title}</Title>
