@@ -155,7 +155,6 @@ function ProfilePage() {
       })
       setLoading(true)
       setProfileData(response.data)
-      console.log(response.data.imageUrl)
     } catch (error) {}
   }
 
