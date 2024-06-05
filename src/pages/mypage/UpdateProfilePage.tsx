@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useApiUrlStore, useProfileDataStore, getImageImageUrl} from '../../store/store.ts'
 import defaultImg from '../../assets/images/profileimg.png'
-//import { FaRegFileImage } from "react-icons/fa";
+
 
 
 const Container = styled.div`
@@ -55,12 +55,6 @@ const InfoContent = styled.div`
   flex-direction: column;
 `
 
-{/*
-const Updload = styled.div`
-  display: flex;
-  align-items: center;
-`*/}
-
 const ProfileImg = styled.img`
 width: 12rem;
 height: 12rem;
@@ -82,8 +76,8 @@ display: none;
 
 const Role = styled.select`
  display: flex;
-  width: 370px;
-  height: 48px;
+  width: 23rem;
+  height: 3rem;
   font-size: 1.5rem;
   border-radius: 5px;
   border: 1px solid #bdbdbd;
@@ -152,8 +146,8 @@ const Detail = styled.div`
 
 const EditInput = styled.input`
   display: flex;
-  width: 370px;
-  height: 48px;
+  width: 23rem;
+  height: 3rem;
   font-size: 1.5rem;
   border-radius: 5px;
   border: 1px solid #bdbdbd;

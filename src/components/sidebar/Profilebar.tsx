@@ -85,16 +85,16 @@ export default function Userbar() {
           color: location.pathname === '/mypage/mypost' ? '#650FA9' : 'inherit',
           fontWeight: location.pathname === '/mypage/mypost' ? 'bold' : 'inherit',
         }}>
-        내 게시물
+        내 게시글
       </MyPost>
       <MatchingList
-        to="/mypage/matchinglist"
+        to="/mypage/questionlist"
         style={{
-          backgroundColor: location.pathname === '/mypage/matchinglist' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/mypage/matchinglist' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/mypage/matchinglist' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname === '/mypage/questionlist' ? '#E8DCF2' : 'inherit',
+          color: location.pathname === '/mypage/questionlist' ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname === '/mypage/questionlist' ? 'bold' : 'inherit',
         }}>
-        매칭 기록
+        내 매칭 질문
       </MatchingList>
     </Container>
   )

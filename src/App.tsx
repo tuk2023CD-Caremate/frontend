@@ -121,7 +121,7 @@ function App() {
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
-        <Route path="/mypage/matchinglist" element={<MatingListPage />} />
+        <Route path="/mypage/questionlist" element={<MatingListPage />} />
         <Route path="/mypage/update" element={<UpdateProfilePage />} />
       </Routes>
     </Router>
