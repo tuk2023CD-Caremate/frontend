@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
-import profileImg from '../../assets/images/profile.png'
+import profileImg from '../../assets/images/profileimg.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../../store/store'
 import Stomp from '@stomp/stompjs'
@@ -67,6 +67,7 @@ const MessageContainer = styled.div<MessageContainerProps>`
 // `
 
 const Profile = styled.img<ProfileProps>`
+  padding: 0.8rem;
   width: 6.25rem;
   height: 6.25rem;
   margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '0.625rem')};
@@ -258,8 +259,6 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
       })
     }
     setInputMessage('')
-
-    console.log('dasdasdsa')
   }
 
   // 메세지 입력시 스크롤 아래로 이동
