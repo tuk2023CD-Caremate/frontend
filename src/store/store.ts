@@ -22,7 +22,7 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-   apiUrl: 'https://studymate154.com/api',
+  apiUrl: 'https://studymate154.com/api',
   // apiUrl: 'http://studymate154.com:8080/api',
   // apiUrl: 'http://localhost:8080/api',
   setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
@@ -96,7 +96,7 @@ export const usePostStore = create<PostState>((set) => ({
     post_id: 0,
     title: '',
     content: '',
-    profileUrl : '',
+    profileUrl: '',
     nickname: '',
     createdAt: '',
     likeCount: 0,
@@ -195,7 +195,6 @@ export const useQuestionListStore = create<QuestionListState>((set) => ({
   setQuestionList: (questionList) => set({ questionList }),
 }))
 
-
 /* 멘토 찾기 구분 */
 interface IsAiBasedState {
   isAiBased: boolean
@@ -234,7 +233,6 @@ export const useChatListStore = create<ChatListState>((set) => ({
   setChatList: (chatList) => set({ chatList }),
 }))
 
-
 /*과목리스트*/
 interface SubjectListState {
   subjectList: SubjectList[]
@@ -242,13 +240,12 @@ interface SubjectListState {
 }
 export interface SubjectList {
   id: number
-  subjectName : string
+  subjectName: string
 }
 export const useSubjectListState = create<SubjectListState>((set) => ({
   subjectList: [],
   setSubjectList: (subjectList) => set({ subjectList }),
 }))
-
 
 /* 리뷰 모달창 */
 interface IsReviewModalOpenState {
@@ -261,7 +258,6 @@ export const useReviewModalStore = create<IsReviewModalOpenState>((set) => ({
   setIsReviewModalOpen: (isOpen: boolean) => set({ isReviewModalOpen: isOpen }),
 }))
 
-
 /*스터디기록 리스트*/
 interface CalenderListState {
   calenderList: CalenderList[]
@@ -269,10 +265,10 @@ interface CalenderListState {
 }
 export interface CalenderList {
   id: number
-  subjectName : string
-  entireTime : string
-  startTime : string
-  endTime : string
+  subjectName: string
+  entireTime: string
+  startTime: string
+  endTime: string
 }
 export const useCalenderListState = create<CalenderListState>((set) => ({
   calenderList: [],
@@ -304,11 +300,10 @@ export const useProfileDataStore = create<ProfileDataState>((set) => ({
     solved: 0,
     matchingCount: 0,
     reviewCount: 0,
-    login: false
+    login: false,
   },
   setProfileData: (profileData) => set({ profileData }),
 }))
-
 
 /*스켈레톤 ui 로딩 state*/
 interface LoadingState {
@@ -321,11 +316,10 @@ export const useLoadingStore = create<LoadingState>((set) => ({
   setLoading: (loading: boolean) => set({ loading }),
 }))
 
-
 export const getImageImageUrl = (imageUrl: string, defaultImg: string): string => {
-  return imageUrl === "프로필 사진이 없습니다" ? defaultImg : imageUrl;
-};
+  return imageUrl === '프로필 사진이 없습니다' ? defaultImg : imageUrl
+}
 
 export const getProfileImageUrl = (profileUrl: string, defaultImg: string): string => {
-  return profileUrl === "프로필 사진이 없습니다." ? defaultImg : profileUrl;
-};
+  return profileUrl === '프로필 사진이 없습니다.' ? defaultImg : profileUrl
+}

@@ -190,12 +190,30 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     } catch (error) {}
   }
 
+  // 채팅 내역
+  const fetchChatHistory = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(
+        `${apiUrl}/chat/rooms/api/chat/rooms/${chatRoomId}/contents`,
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      console.log(response)
+      setMessages(response.data)
+    } catch (error) {
+      console.error('채팅 내역 로딩 중 오류가 발생했습니다:', error)
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getNickname()
     }
 
     fetchData()
+    fetchChatHistory()
 
     return () => {
       if (stompClient && stompClient.connected) {
