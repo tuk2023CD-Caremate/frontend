@@ -43,6 +43,8 @@ const LeftWrap = styled.div`
 const ImgWrap = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column;
+  align-items: center;
 `
 
 const ProfileImg = styled.img`
@@ -317,12 +319,12 @@ function SelectUser(id: any) {
           <img src={Loading} width={400} />
         </LoadingIMG>
       ) : (
-        // 로딩 표시, 여기서는 단순한 텍스트지만, 스피너나 애니메이션을 사용할 수 있습니다.
         userList.map((user) => (
           <Container key={user.id}>
             <LeftWrap>
               <ImgWrap>
-                <ProfileImg src={ProfileIMG} />
+                <ProfileImg src={user.imageUrl} />
+                <BigContent>{user.matchingPercent ? `${user.matchingPercent}%` : ''}</BigContent>
               </ImgWrap>
               <InfoWrap>
                 <Section>
