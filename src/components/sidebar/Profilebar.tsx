@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 25rem;
-  height: 48rem;
+  height: 31rem;
   display: flex;
   flex-direction: column;
 `
@@ -22,16 +22,16 @@ const Profile = styled(Link)`
   padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
-const Notification = styled(Link)`
-  width: 15rem;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  padding: 1.25rem 0rem 1.25rem 2.5rem;
-  border-radius: 1.25rem;
-`
+// const Notification = styled(Link)`
+//   width: 15rem;
+//   font-size: 1.5rem;
+//   display: flex;
+//   align-items: center;
+//   text-decoration: none;
+//   color: inherit;
+//   padding: 1.25rem 0rem 1.25rem 2.5rem;
+//   border-radius: 1.25rem;
+// `
 
 const MyPost = styled(Link)`
   width: 15rem;
@@ -63,13 +63,13 @@ export default function Userbar() {
       <Profile
         to="/mypage"
         style={{
-          backgroundColor: location.pathname === '/mypage' ? '#E8DCF2' : 'inherit',
-          color: location.pathname === '/mypage' ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname === '/mypage' ? 'bold' : 'inherit',
+          backgroundColor: location.pathname.includes('/mypage') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/mypage') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/mypage') ? 'bold' : 'inherit',
         }}>
         프로필
       </Profile>
-      <Notification
+      {/* <Notification
         to="/mypage/notification"
         style={{
           backgroundColor: location.pathname === '/mypage/notification' ? '#E8DCF2' : 'inherit',
@@ -77,7 +77,7 @@ export default function Userbar() {
           fontWeight: location.pathname === '/mypage/notification' ? 'bold' : 'inherit',
         }}>
         알림
-      </Notification>
+      </Notification> */}
       <MyPost
         to="/mypage/mypost"
         style={{
@@ -94,7 +94,7 @@ export default function Userbar() {
           color: location.pathname === '/mypage/questionlist' ? '#650FA9' : 'inherit',
           fontWeight: location.pathname === '/mypage/questionlist' ? 'bold' : 'inherit',
         }}>
-        내 매칭 질문
+        내 질문
       </MatchingList>
     </Container>
   )
