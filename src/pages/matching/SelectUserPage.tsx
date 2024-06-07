@@ -35,10 +35,6 @@ function SelectUserPage() {
       <Text>나에게 필요한 {userList.length}명의 멘토 리스트</Text>
       <Container>
         <SelectUser id={IdInfo} />
-        {/* <SelectUserModal id={IdInfo} /> */}
-        {/* <ConfirmMatchingModal /> */}
-        {/* <FindLoadingModal /> */}
-        {/* <MatchingLoadingModal /> */}
       </Container>
     </div>
   )
