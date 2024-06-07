@@ -52,6 +52,7 @@ interface UserList {
   solved: number
   matchingCount: number
   reviewCount: number
+  matchingPercent: number
   login: boolean
 }
 
@@ -165,6 +166,7 @@ interface ReviewList {
   star: number
   isSolved: boolean
   heart: boolean
+  imageUrl: string
   createAt: string
 }
 
@@ -300,6 +302,7 @@ export const useProfileDataStore = create<ProfileDataState>((set) => ({
     solved: 0,
     matchingCount: 0,
     reviewCount: 0,
+    matchingPercent: 0,
     login: false,
   },
   setProfileData: (profileData) => set({ profileData }),
