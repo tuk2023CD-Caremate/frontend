@@ -7,7 +7,7 @@ import {
   useLikeDataStore,
   useCommentDataStore,
   useLoadingStore,
-  getProfileImageUrl
+  getProfileImageUrl,
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
@@ -285,6 +285,20 @@ const Send = styled.div`
   cursor: pointer;
 `
 
+const ChatBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.625rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 8rem;
+  height: 3.5rem;
+  background-color: #e8dcf2;
+  color: #650fa9;
+  margin-left: 2rem;
+`
+
 function DetailMainPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate()
@@ -292,9 +306,8 @@ function DetailMainPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore() //게시글 객체
-  const {loading, setLoading} = useLoadingStore()
-  const postImg = getProfileImageUrl(postData.profileUrl, defaultImg);
-
+  const { loading, setLoading } = useLoadingStore()
+  const postImg = getProfileImageUrl(postData.profileUrl, defaultImg)
 
   //게시글 단건조회
   const getPost = async () => {
@@ -408,8 +421,6 @@ function DetailMainPostPage() {
   const [editcontent, setEditContent] = useState('')
   const [commentnickname, setCommentNickname] = useState<string>('')
   const { commentData, setCommentData } = useCommentDataStore()
-
-
 
   //댓글 조회
   const getComment = async () => {
@@ -552,6 +563,7 @@ function DetailMainPostPage() {
                       <Nickname>{postData.nickname}</Nickname>
                       <Time>{postData.createdAt}</Time>
                     </NameWrapper>
+                    <ChatBtn>채팅하기</ChatBtn>
                   </UserWrapper>
                   {nickname === postData.nickname ? (
                     <ButtonWrapper>
@@ -565,8 +577,9 @@ function DetailMainPostPage() {
                   <Context>{postData.content}</Context>
                 </Lower>
               </>
-              ) : (<Skeleton/>)
-            }
+            ) : (
+              <Skeleton />
+            )}
             <FooterWrapper>
               <DetailFooterWrapper>
                 {likeList.some((post) => post.post_id === postData.post_id) ? (
@@ -577,6 +590,7 @@ function DetailMainPostPage() {
                 <Likecount>{postData.likeCount}</Likecount>
                 <IoIosText size="30" />
                 <CommentCount>{postData.commentCount}</CommentCount>
+                <div>ㅎㅇ</div>
               </DetailFooterWrapper>
               <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
             </FooterWrapper>
@@ -586,7 +600,13 @@ function DetailMainPostPage() {
               <CommentWrapper key={comments.comment_id}>
                 <CommentUpper>
                   <CommentUserWrapper>
-                    <CommentProfile src={comments.profileUrl === "프로필 사진이 없습니다." ? defaultImg : comments.profileUrl} />
+                    <CommentProfile
+                      src={
+                        comments.profileUrl === '프로필 사진이 없습니다.'
+                          ? defaultImg
+                          : comments.profileUrl
+                      }
+                    />
                     <NameWrapper>
                       <CommentNickname>{comments.nickname}</CommentNickname>
                       <CommentTime>{comments.createdAt}</CommentTime>
