@@ -545,6 +545,25 @@ function DetailMainPostPage() {
     }
   }
 
+  const createChat = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const nickname = encodeURIComponent(postData.nickname)
+      await axios.post(
+        `${apiUrl}/chat/rooms?targetNickname=${nickname}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      alert('채팅방이 생성 되었습니다.')
+      navigate('/chats')
+    } catch (error) {
+      console.error(error)
+      alert('채팅방 생성 실패')
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -563,7 +582,7 @@ function DetailMainPostPage() {
                       <Nickname>{postData.nickname}</Nickname>
                       <Time>{postData.createdAt}</Time>
                     </NameWrapper>
-                    <ChatBtn>채팅하기</ChatBtn>
+                    <ChatBtn onClick={createChat}>채팅하기</ChatBtn>
                   </UserWrapper>
                   {nickname === postData.nickname ? (
                     <ButtonWrapper>
