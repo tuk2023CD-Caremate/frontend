@@ -62,8 +62,8 @@ const SignOut = styled.div`
 export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
-  const [nickname, setNickname] = useState<string>('')
-  const [profileimg, setProfileImg] = useState<string>('')
+  const [nickname, setNickname] = useState<string>(localStorage.getItem('nickname') || '')
+  const [profileimg, setProfileImg] = useState<string>(localStorage.getItem('profileUrl') || '')
 
   const getProfile = async () => {
     try {
@@ -119,6 +119,8 @@ export default function Header() {
 
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
+    localStorage.removeItem('profileUrl')
+    localStorage.removeItem('nickname')
     navigate('/')
   }
   return (
