@@ -166,6 +166,7 @@ interface ReviewList {
   star: number
   isSolved: boolean
   heart: boolean
+  imageUrl: string
   createAt: string
 }
 

@@ -7,7 +7,6 @@ import {
   useUserListStore,
 } from '../../store/store'
 import axios from 'axios'
-import ProfileIMG from '../../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
 import ReviewModal from './ReviewModal'
 import { useNavigate } from 'react-router-dom'
@@ -223,7 +222,6 @@ function SelectUser(id: any) {
           headers: { Authorization: `Bearer ${access}` },
         })
         setUserList(response.data)
-        console.log('Success ', response.data)
       } catch (error) {
         console.error('Error ', error)
       } finally {
@@ -272,8 +270,7 @@ function SelectUser(id: any) {
         const response = await axios.get(`${apiUrl}/matching/review/${mentorId}`, {
           headers: { Authorization: `Bearer ${access}` },
         })
-        console.log(response.data)
-        setReviewList(response.data)
+        setReviewList(response.data.reviewResponses)
       } catch (error) {
         console.error('Error ', error)
       }
@@ -281,8 +278,6 @@ function SelectUser(id: any) {
       console.error('Access token not found.')
     }
   }
-
-  useEffect(() => {}, [])
 
   const handleGetReviewList = (mentorId: number) => {
     getReviewList(mentorId)
