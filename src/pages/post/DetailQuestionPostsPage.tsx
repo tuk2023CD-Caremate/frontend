@@ -7,7 +7,7 @@ import {
   useLikeDataStore,
   useCommentDataStore,
   useLoadingStore,
-  getProfileImageUrl
+  getProfileImageUrl,
 } from '../../store/store.ts'
 import axios from 'axios'
 import Header from '../../components/Header.tsx'
@@ -285,6 +285,20 @@ const Send = styled.div`
   cursor: pointer;
 `
 
+const ChatBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.625rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 8rem;
+  height: 3.5rem;
+  background-color: #e8dcf2;
+  color: #650fa9;
+  margin-left: 2rem;
+`
+
 function DetailQuestionPostPage() {
   const { post_id } = useParams()
   const navigate = useNavigate()
@@ -292,9 +306,8 @@ function DetailQuestionPostPage() {
   const [nickname, setNickname] = useState<string>('')
   const { likeList, setLikedList } = useLikeDataStore()
   const { postData, setPostData } = usePostStore()
-  const {loading, setLoading} = useLoadingStore()
-  const postImg = getProfileImageUrl(postData.profileUrl, defaultImg);
-
+  const { loading, setLoading } = useLoadingStore()
+  const postImg = getProfileImageUrl(postData.profileUrl, defaultImg)
 
   //게시글 단건조회
   const getPost = async () => {
@@ -532,6 +545,25 @@ function DetailQuestionPostPage() {
     }
   }
 
+  const createChat = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const nickname = encodeURIComponent(postData.nickname)
+      await axios.post(
+        `${apiUrl}/chat/rooms?targetNickname=${nickname}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      alert('채팅방이 생성 되었습니다.')
+      navigate('/chats')
+    } catch (error) {
+      console.error(error)
+      alert('채팅방 생성 실패')
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -550,6 +582,7 @@ function DetailQuestionPostPage() {
                       <Nickname>{postData.nickname}</Nickname>
                       <Time>{postData.createdAt}</Time>
                     </NameWrapper>
+                    <ChatBtn onClick={createChat}>채팅하기</ChatBtn>
                   </UserWrapper>
                   {nickname === postData.nickname ? (
                     <ButtonWrapper>
@@ -562,9 +595,10 @@ function DetailQuestionPostPage() {
                   <Title>{postData.title}</Title>
                   <Context>{postData.content}</Context>
                 </Lower>
-              </> 
-            ) : (<Skeleton/>)
-            }
+              </>
+            ) : (
+              <Skeleton />
+            )}
             <FooterWrapper>
               <DetailFooterWrapper>
                 {likeList.some((post) => post.post_id === postData.post_id) ? (
@@ -584,7 +618,13 @@ function DetailQuestionPostPage() {
               <CommentWrapper key={comments.comment_id}>
                 <CommentUpper>
                   <CommentUserWrapper>
-                    <CommentProfile src={comments.profileUrl === "프로필 사진이 없습니다." ? defaultImg : comments.profileUrl} />
+                    <CommentProfile
+                      src={
+                        comments.profileUrl === '프로필 사진이 없습니다.'
+                          ? defaultImg
+                          : comments.profileUrl
+                      }
+                    />
                     <NameWrapper>
                       <CommentNickname>{comments.nickname}</CommentNickname>
                       <CommentTime>{comments.createdAt}</CommentTime>

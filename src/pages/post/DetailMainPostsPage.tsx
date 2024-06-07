@@ -609,7 +609,6 @@ function DetailMainPostPage() {
                 <Likecount>{postData.likeCount}</Likecount>
                 <IoIosText size="30" />
                 <CommentCount>{postData.commentCount}</CommentCount>
-                <div>ㅎㅇ</div>
               </DetailFooterWrapper>
               <LikeBtn onClick={() => onLikeBtn(postData.post_id)}>좋아요</LikeBtn>
             </FooterWrapper>
