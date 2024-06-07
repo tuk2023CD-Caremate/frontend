@@ -11,6 +11,7 @@ import ProfileIMG from '../../assets/images/김영한.png'
 import { useEffect, useState } from 'react'
 import ReviewModal from './ReviewModal'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../assets/images/Loading.gif'
 
 interface TruncatedContentProps {
   expanded: boolean
@@ -165,6 +166,10 @@ const RequestBtn = styled.button`
   margin-bottom: 1.25rem;
 `
 
+const LoadingIMG = styled.div`
+  margin-top: 5rem;
+`
+
 function SelectUser(id: any) {
   const { apiUrl } = useApiUrlStore()
   const { userList, setUserList } = useUserListStore()
@@ -175,6 +180,8 @@ function SelectUser(id: any) {
   const [expandedUsers, setExpandedUsers] = useState<{ [key: number]: boolean }>({}) // 각 유저의 클릭 여부 상태
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({})
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -206,6 +213,7 @@ function SelectUser(id: any) {
   const getUserList = async () => {
     const access = localStorage.getItem('accessToken')
     const urlPath = isAiBased ? '/matching/keyword/ai/' : '/matching/keyword/'
+    setIsLoading(true) // 로딩 시작
 
     if (access) {
       try {
@@ -216,9 +224,12 @@ function SelectUser(id: any) {
         console.log('Success ', response.data)
       } catch (error) {
         console.error('Error ', error)
+      } finally {
+        setIsLoading(false) // 로딩 종료
       }
     } else {
       console.error('Access token not found.')
+      setIsLoading(false) // 로딩 종료
     }
   }
 
@@ -301,85 +312,92 @@ function SelectUser(id: any) {
 
   return (
     <div>
-      {userList.map((user) => (
-        <Container key={user.id}>
-          <LeftWrap>
-            <ImgWrap>
-              <ProfileImg src={ProfileIMG} />
-            </ImgWrap>
-            <InfoWrap>
-              <Section>
-                <BigTitle>{user.name}</BigTitle>
-                <BigContent>{user.nickname}</BigContent>
-                <IoIosContacts size={32} />
-                <Content>{user.heart}</Content>
-              </Section>
-              <Section>
-                <Title>분야</Title>
-                <Content>{user.interests}</Content>
-                {expandedUsers[user.id] ? (
-                  <Detail onClick={() => handleUserClick(user.id)}>{user.expertiseField}</Detail>
-                ) : (
-                  <Detail onClick={() => handleUserClick(user.id)}>
-                    {user.expertiseField.length > 8
-                      ? `${user.expertiseField.slice(0, 8)}...`
-                      : user.expertiseField}
-                  </Detail>
-                )}
-              </Section>
-              <Section>
-                <Title>직업</Title>
-                <Content>{user.job}</Content>
-              </Section>
-              <Section>
-                <Title>이메일</Title>
-                <Content>{user.email}</Content>
-              </Section>
-              <Section>
-                <Title>Blog</Title>
-                <Content>{user.blogUrl}</Content>
-              </Section>
-              <Section>
-                <TruncatedContent
-                  onClick={() => toggleExpand(user.id)}
-                  expanded={expandedDescriptions[user.id]}>
-                  {user.publicRelations}
-                </TruncatedContent>
-              </Section>
-            </InfoWrap>
-          </LeftWrap>
-          <RightWrap>
-            <Upper>
-              <ReputationWrap>
+      {isLoading ? (
+        <LoadingIMG>
+          <img src={Loading} width={400} />
+        </LoadingIMG>
+      ) : (
+        // 로딩 표시, 여기서는 단순한 텍스트지만, 스피너나 애니메이션을 사용할 수 있습니다.
+        userList.map((user) => (
+          <Container key={user.id}>
+            <LeftWrap>
+              <ImgWrap>
+                <ProfileImg src={ProfileIMG} />
+              </ImgWrap>
+              <InfoWrap>
                 <Section>
-                  <IoMdStar size={40} />
-                  <BigContent>{user.starAverage}</BigContent>
-                  <Content>/</Content>
-                  <Review
-                    onClick={() => {
-                      openModal()
-                      handleGetReviewList(user.id)
-                      setClickedUsername(user.name)
-                    }}>
-                    리뷰 {user.reviewCount}
-                  </Review>
+                  <BigTitle>{user.name}</BigTitle>
+                  <BigContent>{user.nickname}</BigContent>
+                  <IoIosContacts size={32} />
+                  <Content>{user.heart}</Content>
                 </Section>
-              </ReputationWrap>
-              <LikeWrap>
-                <Content> {user.heart}</Content>
-                <IoMdHeartEmpty size={40} />
-              </LikeWrap>
-            </Upper>
-            <Lower>
-              <RequestBtn onClick={() => handleRequestMatching(user.id)}>매칭 요청</RequestBtn>
-            </Lower>
-          </RightWrap>
-          {/* 리뷰 모달창 */}
-          {clickedUsername && (
-            <ReviewModal isOpen={isModalOpen} onClose={closeModal} userName={clickedUsername} />
-          )}
-        </Container>
-      ))}
+                <Section>
+                  <Title>분야</Title>
+                  <Content>{user.interests}</Content>
+                  {expandedUsers[user.id] ? (
+                    <Detail onClick={() => handleUserClick(user.id)}>{user.expertiseField}</Detail>
+                  ) : (
+                    <Detail onClick={() => handleUserClick(user.id)}>
+                      {user.expertiseField.length > 8
+                        ? `${user.expertiseField.slice(0, 8)}...`
+                        : user.expertiseField}
+                    </Detail>
+                  )}
+                </Section>
+                <Section>
+                  <Title>직업</Title>
+                  <Content>{user.job}</Content>
+                </Section>
+                <Section>
+                  <Title>이메일</Title>
+                  <Content>{user.email}</Content>
+                </Section>
+                <Section>
+                  <Title>Blog</Title>
+                  <Content>{user.blogUrl}</Content>
+                </Section>
+                <Section>
+                  <TruncatedContent
+                    onClick={() => toggleExpand(user.id)}
+                    expanded={expandedDescriptions[user.id]}>
+                    {user.publicRelations}
+                  </TruncatedContent>
+                </Section>
+              </InfoWrap>
+            </LeftWrap>
+            <RightWrap>
+              <Upper>
+                <ReputationWrap>
+                  <Section>
+                    <IoMdStar size={40} />
+                    <BigContent>{user.starAverage}</BigContent>
+                    <Content>/</Content>
+                    <Review
+                      onClick={() => {
+                        openModal()
+                        handleGetReviewList(user.id)
+                        setClickedUsername(user.name)
+                      }}>
+                      리뷰 {user.reviewCount}
+                    </Review>
+                  </Section>
+                </ReputationWrap>
+                <LikeWrap>
+                  <Content> {user.heart}</Content>
+                  <IoMdHeartEmpty size={40} />
+                </LikeWrap>
+              </Upper>
+              <Lower>
+                <RequestBtn onClick={() => handleRequestMatching(user.id)}>매칭 요청</RequestBtn>
+              </Lower>
+            </RightWrap>
+            {/* 리뷰 모달창 */}
+            {clickedUsername && (
+              <ReviewModal isOpen={isModalOpen} onClose={closeModal} userName={clickedUsername} />
+            )}
+          </Container>
+        ))
+      )}
     </div>
   )
 }
