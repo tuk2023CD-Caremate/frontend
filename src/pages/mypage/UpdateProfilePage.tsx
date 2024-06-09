@@ -247,9 +247,6 @@ function UpdateProfilePage() {
     }
   };
 
-  useEffect(() => {
-    getProfile()
-  }, [])
 
   
 

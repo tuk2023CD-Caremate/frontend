@@ -155,6 +155,13 @@ function ProfilePage() {
       })
       setLoading(true)
       setProfileData(response.data)
+
+      const profileurl = response.data.imageUrl
+      const nickname = response.data.nickname
+
+      localStorage.setItem('profileUrl', profileurl)
+      localStorage.setItem('nickname', nickname)
+
     } catch (error) {}
   }
 

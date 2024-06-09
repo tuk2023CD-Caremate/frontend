@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import LogoImg from '../assets/images/StudyMate.svg'
 import defaultImg from '../assets/images/profileimg.png'
 import axios from 'axios'
-import { useApiUrlStore, useProfileDataStore, getImageImageUrl } from '../store/store'
+import { useApiUrlStore} from '../store/store'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -62,8 +62,7 @@ const SignOut = styled.div`
 export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
-  const [nickname, setNickname] = useState<string>('')
-  const [profileimg, setProfileImg] = useState<string>('')
+  const [profileimg, setProfileImg] = useState<string>(localStorage.getItem('profileUrl')||'')
 
   const getProfile = async () => {
     try {
@@ -75,13 +74,8 @@ export default function Header() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      setNickname(response.data.nickname)
-      
-      if(response.data.imageUrl === "프로필 사진이 없습니다"){
-        setProfileImg(defaultImg)
-      } else{
-        setProfileImg(response.data.imageUrl)
-      }
+      response.data.imageUrl === "프로필 사진이 없습니다" ? setProfileImg(defaultImg) : setProfileImg(response.data.imageUrl)
+       
     } catch (error) {
       console.error('Error fetching nickname:', error)
     }
@@ -119,6 +113,8 @@ export default function Header() {
 
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
+    localStorage.removeItem('profileUrl')
+    localStorage.removeItem('nickname')
     navigate('/')
   }
   return (
@@ -126,7 +122,7 @@ export default function Header() {
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
             <Profile src={profileimg} />
-            <NickName>{nickname}</NickName>
+            <NickName>{localStorage.getItem('nickname')}</NickName>
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>
