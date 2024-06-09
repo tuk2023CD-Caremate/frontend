@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
-import profileImg from '../../assets/images/profile.png'
+import profileImg from '../../assets/images/profileimg.png'
 import axios from 'axios'
 import { useApiUrlStore } from '../../store/store'
 import Stomp from '@stomp/stompjs'
@@ -67,6 +67,7 @@ const MessageContainer = styled.div<MessageContainerProps>`
 // `
 
 const Profile = styled.img<ProfileProps>`
+  padding: 0.8rem;
   width: 6.25rem;
   height: 6.25rem;
   margin-left: ${(props) => (props.sender !== props.nickname ? '0' : '0.625rem')};
@@ -85,7 +86,7 @@ const Messages = styled.div<MessagesProps>`
     props.sender !== props.nickname ? 'rgba(231, 227, 227, 0.8)' : '#8a33cb'};
   color: ${(props) => (props.sender !== props.nickname ? 'black' : 'white')};
   border-radius: 1rem;
-  font-size:1.6rem;
+  font-size: 1.6rem;
   margin-left: ${(props) => (props.sender !== props.nickname ? '0.625rem' : 'auto')};
 `
 
@@ -98,7 +99,7 @@ const InputWrap = styled.div`
 
 const InputField = styled.input`
   height: 4.375rem;
-  width:75rem;
+  width: 75rem;
   border-radius: 3rem;
   border: none;
   font-size: 1.25rem;
@@ -141,7 +142,7 @@ const ZoomLoginBtn = styled.button`
 const CreateMeetingBtn = styled.button`
   width: 7.5rem;
   height: 4.375rem;
-  border-radius: 1.25rem;;
+  border-radius: 1.25rem;
   font-size: x-large;
   font-weight: bold;
   border: none;
@@ -154,7 +155,7 @@ const CreateMeetingBtn = styled.button`
 const CreateReviewBtn = styled.button`
   width: 7.5rem;
   height: 4.375rem;
-  border-radius: 1.25rem;;
+  border-radius: 1.25rem;
   font-size: x-large;
   font-weight: bold;
   border: none;
@@ -189,12 +190,30 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     } catch (error) {}
   }
 
+  // 채팅 내역
+  const fetchChatHistory = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(
+        `${apiUrl}/chat/rooms/api/chat/rooms/${chatRoomId}/contents`,
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      console.log(response)
+      setMessages(response.data)
+    } catch (error) {
+      console.error('채팅 내역 로딩 중 오류가 발생했습니다:', error)
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getNickname()
     }
 
     fetchData()
+    fetchChatHistory()
 
     return () => {
       if (stompClient && stompClient.connected) {
@@ -211,7 +230,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     const access = localStorage.getItem('accessToken')
 
     const stomp = new Client({
-      brokerURL: 'wss://studymate154.com/ws/chat',
+      brokerURL: 'ws://studymate154.com:8080/ws/chat',
       connectHeaders: {
         Authorization: `Bearer ${access}`,
       },
@@ -229,7 +248,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     stomp.onConnect = async () => {
       console.log('WebSocket 연결이 열렸습니다.')
 
-      const subscriptionDestination = `/sub/chat/room/${chatRoomId}`
+      const subscriptionDestination = `/exchange/chat.exchange/room.${chatRoomId}`
 
       stomp.subscribe(subscriptionDestination, (message) => {
         try {
@@ -243,7 +262,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   }
 
   const sendMessage = (messageContent: string, nickname: string, messageType: string) => {
-    const destination = `/pub/chat/message/${chatRoomId}`
+    const destination = `/pub/chat.message.${chatRoomId}`
     const newMessage: Content = {
       type: messageType,
       chatRoomId: chatRoomId,
@@ -258,8 +277,6 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
       })
     }
     setInputMessage('')
-
-    console.log('dasdasdsa')
   }
 
   // 메세지 입력시 스크롤 아래로 이동
