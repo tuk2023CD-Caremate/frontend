@@ -321,7 +321,6 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     if (event.key === 'Enter') {
       if (nickname) {
         sendMessage(inputMessage, nickname, 'TALK')
-        sendMessage('채팅방에 입장하였습니다.', nickname, 'ENTER')
       } else {
         console.error('Nickname이 없습니다.')
       }
