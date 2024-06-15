@@ -83,8 +83,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
 
-        {/* <Route path="/offline" element={<OfflinePage />} /> */}
-
         <Route path="/matching" element={<StartPage />} />
         <Route path="/matching/select" element={<SelectUserPage />} />
 

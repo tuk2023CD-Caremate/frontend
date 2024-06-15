@@ -16,10 +16,11 @@ const LoginWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 43.75rem;
-  height: 50rem;
+  height: 40rem;
   padding: 2.5rem;
   border-radius: 1.25rem;
   border: 1px solid var(--Gray-03, #bdbdbd);
+  margin-bottom: 7rem;
 `
 
 const LoginH2 = styled.h2`
@@ -29,13 +30,14 @@ const LoginH2 = styled.h2`
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
 `
 
 const LoginInput = styled.input`
   text-indent: 1.25rem;
   width: 85%;
-  height: 10%;
+  height: 12%;
   box-sizing: border-box;
   background-color: #f8f8f8;
   border-radius: 0.625rem;
@@ -45,7 +47,7 @@ const LoginInput = styled.input`
 
 const LoginButton = styled.button`
   width: 85%;
-  height: 10%;
+  height: 12%;
   border-radius: 0.625rem;
   border: 1px solid var(--Gray-03, #bdbdbd);
   background: var(--bdbdbd, #650fa9);
@@ -57,6 +59,7 @@ const LoginButton = styled.button`
   &:active {
     background: #490e76;
   }
+  margin-top: 5rem;
 `
 
 const FindMore = styled.p`
@@ -77,27 +80,6 @@ const FindIt = styled.a`
   &:active {
     color: #650fa9;
   }
-`
-
-const LoginH4 = styled.div`
-  margin-top: 3.75rem;
-  margin-bottom: 1.25rem;
-  height: 1.25rem;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #bdbdbd;
-`
-
-const KakaoSubmit = styled.img`
-  border-radius: 0.4rem;
-  width: 45%;
-  margin: 0.625rem;
-`
-const GoogleSubmit = styled.img`
-  border-radius: 0.4rem;
-  width: 45%;
-  margin: 0.625rem;
 `
 
 export default function Login() {
@@ -156,13 +138,8 @@ export default function Login() {
           />
           <LoginButton>로그인</LoginButton>
           <FindMore>
-            <FindIt href="/findid">아이디 찾기</FindIt>
-            <FindIt href="findpwd">비밀번호 찾기</FindIt>
-            <FindIt href="/signUp">회원가입</FindIt>
+            <FindIt href="/signUp">계정이 없으신가요? 회원가입</FindIt>
           </FindMore>
-          <LoginH4>간편로그인</LoginH4>
-          <KakaoSubmit src={kakao_login} />
-          <GoogleSubmit src={google_login} />
         </LoginWrapper>
       </form>
     </Container>
