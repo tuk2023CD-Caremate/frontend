@@ -37,7 +37,6 @@ const ImgWrap = styled.div`
   height: 8.125rem;
   justify-content: center;
   align-items: center;
-  border: solid 1px #9b9b9b;
 `
 
 const ProfileImg = styled.img`
@@ -176,7 +175,7 @@ function ChatList() {
               <Container>
                 <MainWrap>
                   <ImgWrap>
-                    <ProfileImg src={ProfileIMG} alt="프로필 이미지" />
+                    <ProfileImg src={chat.members[0].profileImageUrl} alt="프로필 이미지" />
                   </ImgWrap>
                   <InfoWrap>
                     <Top>

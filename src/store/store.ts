@@ -215,6 +215,7 @@ interface ChatRoomMember {
   nickname: string
   expertiseField: string
   interests: string[]
+  profileImageUrl: string
   login: boolean
 }
 
