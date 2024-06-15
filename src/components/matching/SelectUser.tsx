@@ -255,11 +255,10 @@ function SelectUser(id: any) {
     getUserList()
   }, [])
 
-  const handleRequestMatching = (mentorId: number) => {
-    onRequestMatching(mentorId)
+  const handleRequestMatching = async (mentorId: number) => {
+    await onRequestMatching(mentorId)
     alert('요청되었습니다.')
     navigate('/chats')
-    // 매칭 요청이 성공했을 때의 추가적인 로직
   }
 
   // 해당 멘토 리뷰 조회
