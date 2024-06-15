@@ -2,12 +2,8 @@ import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'
-// import SelectUserModal from '../../components/SelectUserModal'
-// import ConfirmMatchingModal from '../../components/ConfirmMatchingModal'
-// import FindLoadingModal from '../../components/FindLoadingModal'
-// import MatchingLoadingModal from '../../components/MatchingLoadingModal'
 import axios from 'axios'
-import { useApiUrlStore, useIsAiBasedStore } from '../../store/store'
+import { useApiUrlStore } from '../../store/store'
 import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
@@ -105,7 +101,6 @@ interface Option {
 
 function StartPage() {
   const { apiUrl } = useApiUrlStore()
-  const { setIsAiBased } = useIsAiBasedStore()
 
   const navigate = useNavigate()
 
@@ -153,8 +148,8 @@ function StartPage() {
   }
 
   const handleSubmit = async (useAi: boolean) => {
-    setIsAiBased(useAi) // AI 사용 여부 설정
     const access = localStorage.getItem('accessToken')
+
     if (access) {
       try {
         const response = await axios.post(
@@ -170,7 +165,11 @@ function StartPage() {
           },
         )
         alert('질문이 생성되었습니다.')
-        navigate('/matching/select', { state: response.data.id })
+        const pathname = useAi ? 'ai/' : ''
+        const handleNavigation = (id: string, pathname: string) => {
+          navigate('/matching/select', { state: { id, pathname } })
+        }
+        handleNavigation(response.data.id, pathname)
       } catch (error) {
         console.error('질문 생성 중 오류 발생:', error)
       }
@@ -196,10 +195,10 @@ function StartPage() {
           </SelectInterest>
           <InputSpecificField
             placeholder="상세분야 ex)백엔드 JPA DB"
-            onChange={handleTitleChange}></InputSpecificField>
+            onChange={handleSpecificFieldChange}></InputSpecificField>
           <InputTitle
             placeholder="제목 ex)mysql spring 연동"
-            onChange={handleSpecificFieldChange}></InputTitle>
+            onChange={handleTitleChange}></InputTitle>
           <InputContent placeholder="내용" onChange={handleContentChange}></InputContent>
           <BtnWrap>
             <StartMatchingBtn onClick={() => handleSubmit(false)}>멘토 찾기</StartMatchingBtn>
@@ -208,10 +207,6 @@ function StartPage() {
             </StartMatchingBtn>
           </BtnWrap>
         </StartWrap>
-        {/* <SelectUserModal /> */}
-        {/* <ConfirmMatchingModal /> */}
-        {/* <FindLoadingModal /> */}
-        {/* <MatchingLoadingModal /> */}
       </Container>
     </div>
   )
