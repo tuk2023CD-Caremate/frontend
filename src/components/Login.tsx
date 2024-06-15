@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import google_login from '../assets/images/google_login.png'
-import kakao_login from '../assets/images/kakao_login.png'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useApiUrlStore } from '../store/store'
