@@ -196,12 +196,9 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   const fetchChatHistory = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(
-        `${apiUrl}/chat/rooms/api/chat/rooms/${chatRoomId}/contents`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        },
-      )
+      const response = await axios.get(`${apiUrl}/chat/rooms/${chatRoomId}/contents`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
       console.log(response)
       setMessages(response.data)
     } catch (error) {
