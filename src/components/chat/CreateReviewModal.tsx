@@ -177,12 +177,9 @@ function CreateReviewModal({ isOpen, onClose, mentorId }: ReviewModalProps) {
         headers: { Authorization: `Bearer ${access}` },
       })
       alert('리뷰를 작성하였습니다.')
-      console.log(postData)
-      console.log(mentorId)
+      onClose()
     } catch (error) {
       alert('error')
-      console.log(mentorId)
-      console.log(postData)
     }
   }
 
