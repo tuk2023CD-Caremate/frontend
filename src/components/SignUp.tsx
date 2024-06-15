@@ -72,9 +72,9 @@ const SendNumBtn = styled.button`
   border-radius: 0.625rem;
   background-color: #650fa9;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  padding: 0.625rem;
+  padding: 0.5rem;
   cursor: pointer;
 `
 
@@ -95,9 +95,9 @@ const VerifyBtn = styled.button`
   border-radius: 0.625rem;
   background-color: #650fa9;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  padding: 0.625rem;
+  padding: 0.5rem;
   cursor: pointer;
 `
 
