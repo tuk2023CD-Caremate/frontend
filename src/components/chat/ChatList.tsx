@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-// import { useApiUrlStore } from '../store/store'
-import ProfileIMG from '../../assets/images/profile.png'
 import ChatIMG from '../../assets/images/chatIcon.png'
 import { FaCircle } from 'react-icons/fa6'
 import { RxDividerVertical } from 'react-icons/rx'
