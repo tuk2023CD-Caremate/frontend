@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 68.75rem;
-  height: 14.6rem;
+  height: 13rem;
   border: 1px solid #d8d8d8;
   border-radius: 1rem;
   &:hover {
@@ -115,12 +115,6 @@ const FooterWrap = styled.div`
   width: 65.6rem;
 `
 
-// const ChatContent = styled.div`
-//   display: flex;
-//   color: #9b9b9b;
-//   font-size: 26px;
-// `
-
 const MessageCount = styled.div<{ count: number }>`
   display: ${(props) => (props.count > 0 ? 'flex' : 'none')};
   justify-content: center;
@@ -151,7 +145,6 @@ function ChatList() {
   const { apiUrl } = useApiUrlStore()
   const { chatList, setChatList } = useChatListStore()
 
-  // 닉네임 요청
   const getChatList = async () => {
     try {
       const access = localStorage.getItem('accessToken')
