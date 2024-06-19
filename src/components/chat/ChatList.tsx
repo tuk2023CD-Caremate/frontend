@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-// import { useApiUrlStore } from '../store/store'
-import ProfileIMG from '../../assets/images/profile.png'
 import ChatIMG from '../../assets/images/chatIcon.png'
 import { FaCircle } from 'react-icons/fa6'
 import { RxDividerVertical } from 'react-icons/rx'
@@ -15,7 +13,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 68.75rem;
-  height: 14.6rem;
+  height: 13rem;
   border: 1px solid #d8d8d8;
   border-radius: 1rem;
   &:hover {
@@ -37,7 +35,6 @@ const ImgWrap = styled.div`
   height: 8.125rem;
   justify-content: center;
   align-items: center;
-  border: solid 1px #9b9b9b;
 `
 
 const ProfileImg = styled.img`
@@ -72,7 +69,7 @@ const Name = styled.span`
 `
 
 const NickName = styled.span`
-  font-size:1.8rem;
+  font-size: 1.8rem;
   font-weight: bold;
   margin: 0.625rem;
 `
@@ -115,12 +112,6 @@ const FooterWrap = styled.div`
   width: 65.6rem;
 `
 
-// const ChatContent = styled.div`
-//   display: flex;
-//   color: #9b9b9b;
-//   font-size: 26px;
-// `
-
 const MessageCount = styled.div<{ count: number }>`
   display: ${(props) => (props.count > 0 ? 'flex' : 'none')};
   justify-content: center;
@@ -138,7 +129,7 @@ const NoChatList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top:18.75rem;
+  margin-top: 18.75rem;
 `
 
 const Text = styled.div`
@@ -151,7 +142,6 @@ function ChatList() {
   const { apiUrl } = useApiUrlStore()
   const { chatList, setChatList } = useChatListStore()
 
-  // 닉네임 요청
   const getChatList = async () => {
     try {
       const access = localStorage.getItem('accessToken')
@@ -175,40 +165,42 @@ function ChatList() {
           <Text>입장할 채팅방이 없습니다.</Text>
         </NoChatList>
       ) : (
-        chatList.map((chat) => (
-          <Link to={`/chats/room/${chat.chatRoomId}/${chat.members[0].id}`} key={chat.chatRoomId}>
-            <Container key={chat.chatRoomId}>
-              <MainWrap>
-                <ImgWrap>
-                  <ProfileImg src={ProfileIMG} alt="프로필 이미지" />
-                </ImgWrap>
-                <InfoWrap>
-                  <Top>
-                    <NameWrap>
-                      <Name>{chat.members[0].name}</Name>
-                      <NickName>{chat.members[0].nickname}</NickName>
-                    </NameWrap>
-                    <StatusWrap>
-                      <FaCircle color={chat.members[0].login ? '#2DC260' : '#9b9b9b'} />
-                      <Status>{chat.members[0].login ? '온라인' : '오프라인'}</Status>
-                    </StatusWrap>
-                  </Top>
-                  <Bottom>
-                    <Interest>{chat.members[0].interests[0]}</Interest>
-                    <RxDividerVertical color="#9b9b9b" size={28} />
-                    <Detail>{chat.members[0].expertiseField}</Detail>
-                  </Bottom>
-                </InfoWrap>
-              </MainWrap>
-              <FooterWrap>
-                {/* <ChatContent>{chat.lastMessage}</ChatContent> */}
-                <MessageCount count={chat.unreadMessageCount}>
-                  {chat.unreadMessageCount}
-                </MessageCount>
-              </FooterWrap>
-            </Container>
-          </Link>
-        ))
+        chatList
+          .slice()
+          .reverse()
+          .map((chat) => (
+            <Link to={`/chats/room/${chat.chatRoomId}/${chat.members[0].id}`} key={chat.chatRoomId}>
+              <Container>
+                <MainWrap>
+                  <ImgWrap>
+                    <ProfileImg src={chat.members[0].profileImageUrl} alt="프로필 이미지" />
+                  </ImgWrap>
+                  <InfoWrap>
+                    <Top>
+                      <NameWrap>
+                        <Name>{chat.members[0].name}</Name>
+                        <NickName>{chat.members[0].nickname}</NickName>
+                      </NameWrap>
+                      <StatusWrap>
+                        <FaCircle color={chat.members[0].login ? '#2DC260' : '#9b9b9b'} />
+                        <Status>{chat.members[0].login ? '온라인' : '오프라인'}</Status>
+                      </StatusWrap>
+                    </Top>
+                    <Bottom>
+                      <Interest>{chat.members[0].interests[0]}</Interest>
+                      <RxDividerVertical color="#9b9b9b" size={28} />
+                      <Detail>{chat.members[0].expertiseField}</Detail>
+                    </Bottom>
+                  </InfoWrap>
+                </MainWrap>
+                <FooterWrap>
+                  <MessageCount count={chat.unreadMessageCount}>
+                    {chat.unreadMessageCount}
+                  </MessageCount>
+                </FooterWrap>
+              </Container>
+            </Link>
+          ))
       )}
     </div>
   )

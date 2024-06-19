@@ -579,9 +579,23 @@ function DetailStudyPostPage() {
       )
       alert('채팅방이 생성 되었습니다.')
       navigate('/chats')
-    } catch (error) {
-      console.error(error)
-      alert('채팅방 생성 실패')
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          const statusCode = error.response.status
+          switch (statusCode) {
+            case 400:
+              alert('해당 유저와의 채팅방이 이미 존재합니다.')
+              break
+            case 404:
+              alert('해당 유저가 존재하지 않습니다.')
+              break
+            default:
+              alert('채팅방 생성에 실패하였습니다.')
+              break
+          }
+        }
+      }
     }
   }
 

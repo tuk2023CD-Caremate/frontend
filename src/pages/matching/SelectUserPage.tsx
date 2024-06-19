@@ -25,8 +25,11 @@ const Text = styled.div`
 
 function SelectUserPage() {
   const location = useLocation()
-  const IdInfo = location.state
+  const IdInfo = location.state.id
+  const pathInfo = location.state.pathname
   const { userList } = useUserListStore()
+
+  // console.log(location.state.pathname)
 
   return (
     <div>
@@ -34,7 +37,7 @@ function SelectUserPage() {
       <Navbar />
       <Text>나에게 필요한 {userList.length}명의 멘토 리스트</Text>
       <Container>
-        <SelectUser id={IdInfo} />
+        <SelectUser id={IdInfo} pathInfo={pathInfo} />
       </Container>
     </div>
   )

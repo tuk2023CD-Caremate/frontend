@@ -168,7 +168,7 @@ const CreateReviewBtn = styled.button`
 function Chat({ chatRoomId, onOpen }: ChatProps) {
   const { apiUrl } = useApiUrlStore()
 
-  const [nickname, setNickname] = useState<string>('')
+  const [nickname, setNickname] = useState('')
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
 
@@ -178,28 +178,27 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   const chatRef = useRef<HTMLDivElement>(null)
 
   // 닉네임 요청
-  const getNickname = async () => {
+  const getNickname = () => {
     try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/user`, {
-        headers: { Authorization: `Bearer ${access}` },
-      })
-
-      setNickname(response.data.nickname)
+      const nickname = localStorage.getItem('nickname')
+      if (nickname) {
+        setNickname(nickname)
+      } else {
+        console.log('저장된 닉네임이 없습니다.')
+      }
       console.log('닉네임:', nickname)
-    } catch (error) {}
+    } catch (error) {
+      console.error('닉네임을 불러오는 중 오류가 발생했습니다:', error)
+    }
   }
 
   // 채팅 내역
   const fetchChatHistory = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(
-        `${apiUrl}/chat/rooms/api/chat/rooms/${chatRoomId}/contents`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        },
-      )
+      const response = await axios.get(`${apiUrl}/chat/rooms/${chatRoomId}/contents`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
       console.log(response)
       setMessages(response.data)
     } catch (error) {
@@ -208,11 +207,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getNickname()
-    }
-
-    fetchData()
+    getNickname()
     fetchChatHistory()
 
     return () => {
@@ -230,7 +225,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     const access = localStorage.getItem('accessToken')
 
     const stomp = new Client({
-      brokerURL: 'ws://studymate154.com:8080/ws/chat',
+      brokerURL: 'wss://studymate154.com/ws/chat',
       connectHeaders: {
         Authorization: `Bearer ${access}`,
       },
@@ -326,7 +321,6 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     if (event.key === 'Enter') {
       if (nickname) {
         sendMessage(inputMessage, nickname, 'TALK')
-        sendMessage('채팅방에 입장하였습니다.', nickname, 'ENTER')
       } else {
         console.error('Nickname이 없습니다.')
       }
