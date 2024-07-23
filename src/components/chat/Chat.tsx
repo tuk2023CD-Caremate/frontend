@@ -284,7 +284,7 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   const getAuth = async () => {
     try {
       window.open(
-        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2F34.64.61.117%2Fapi%2Fmeeting%2FzoomApi',
+        'https://zoom.us/oauth/authorize?response_type=code&client_id=Zgt89KiZRri8SkBqws0SRg&redirect_uri=http%3A%2F%2F35.216.37.137%2Fapi%2Fmeeting%2FzoomApi',
       )
     } catch (error) {}
   }
