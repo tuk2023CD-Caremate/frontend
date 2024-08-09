@@ -17,7 +17,7 @@ const Wrap = styled.div`
   margin-bottom: 1.25rem;
 `
 
-const PlaystoreBtn = styled.button`
+const PlayStoreBtn = styled.button`
   margin: 1.8rem;
   border-radius: 1rem;
   width: 16.25rem;
@@ -55,7 +55,14 @@ function StartNav({ handleStart }: StartNavProps) {
     <div>
       <Container>
         <Wrap>
-          <PlaystoreBtn onClick={() => alert('준비 중입니다')}>PLAY STORE</PlaystoreBtn>
+          <PlayStoreBtn
+            onClick={() =>
+              window.open(
+                'https://play.google.com/store/apps/details?id=com.studymate154.studymate',
+              )
+            }>
+            PLAY STORE
+          </PlayStoreBtn>
           <StartBtn onClick={handleStart}>시작하기</StartBtn>
         </Wrap>
       </Container>
