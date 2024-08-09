@@ -47,7 +47,7 @@ const Btn = styled.div`
   }
 `
 
-export default function MainHeader1() {
+export default function MainHeader() {
   const navigate = useNavigate()
 
   return (
