@@ -1,7 +1,7 @@
+import axios from 'axios'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useApiUrlStore } from '../store/store'
-import axios from 'axios'
 
 type Prop = {
   PostingCloseModal: () => void
@@ -59,7 +59,13 @@ const Btn = styled.div`
   border: 1px solid black;
   border-radius: 0.5rem;
   font-size: 1.25rem;
+  background-color: #ffffff;
+  border: solid 1px #bdbdbd;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 function AddSubjectModal({ PostingCloseModal, getSubject }: Prop) {
   const [subjectName, setSubjectName] = useState('')
@@ -76,7 +82,7 @@ function AddSubjectModal({ PostingCloseModal, getSubject }: Prop) {
       const response = await axios.post(`${apiUrl}/subject`, subject, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      alert('완료되었습니다.')
+      alert('과목이 추가되었습니다.')
       getSubject()
       PostingCloseModal()
       setSubjectName(subjectName)

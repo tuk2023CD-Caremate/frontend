@@ -1,17 +1,17 @@
-import styled from 'styled-components'
-import Header from '../components/Header.tsx'
-import Navbar from '../components/Navbar.tsx'
-import StatisticsBar from '../components/sidebar/StatisticsBar.tsx'
-import { IoStopCircleSharp, IoPencil } from 'react-icons/io5'
-import { IoIosPlayCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
-import AddSubjectModal from '../components/AddSubjectModal.tsx'
-import Calendar from '../components/StudyCalendar.tsx'
-import { useState, useEffect } from 'react'
-import { useApiUrlStore, useSubjectListState, useCalenderListState } from '../store/store'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
+import { useEffect, useState } from 'react'
+import { IoIosPlayCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
+import { IoPencil, IoStopCircleSharp } from 'react-icons/io5'
+import styled from 'styled-components'
+import AddSubjectModal from '../components/AddSubjectModal.tsx'
+import Header from '../components/Header.tsx'
 import ModifySubjectModal from '../components/ModifySubjectModal.tsx'
+import Navbar from '../components/Navbar.tsx'
+import StatisticsBar from '../components/sidebar/StatisticsBar.tsx'
+import Calendar from '../components/StudyCalendar.tsx'
+import { useApiUrlStore, useCalenderListState, useSubjectListState } from '../store/store'
 dayjs.locale('ko')
 
 const Container = styled.div`
@@ -69,11 +69,16 @@ const WriteBtn = styled.div`
   height: 3.5rem;
   font-size: 1.75rem;
   font-weight: bolder;
-  border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 0.625rem;
   margin-left: 2.5rem;
   cursor: pointer;
+  background-color: #ffffff;
+  border: solid 1px #bdbdbd;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 const StudyListWrapper = styled.div`
   display: flex;
@@ -225,7 +230,6 @@ function StudyPage() {
 
   const toggleStatisticsBar = () => {
     setIsStatisticsBarOpen(isStatisticsBarOpen)
-  
   }
   const handleBarClose = (event: any) => {
     const isOutsideStatisticsBar = !event.target.closest('.statistics-bar')
@@ -243,8 +247,8 @@ function StudyPage() {
       return '00:00:00'
     }
 
-    const todayCalenderList = calenderList.filter(study => 
-      dayjs(study.startTime).format('YYYY-MM-DD') === today
+    const todayCalenderList = calenderList.filter(
+      (study) => dayjs(study.startTime).format('YYYY-MM-DD') === today,
     )
 
     todayCalenderList.forEach((study) => {
@@ -261,8 +265,9 @@ function StudyPage() {
         }
       } else {
         console.error('Incorrect time format:', study.entireTime)
-      }})
-      
+      }
+    })
+
     const formattedTotalTime = `${('0' + Math.floor(totalSeconds / 3600)).slice(-2)}:${(
       '0' + Math.floor((totalSeconds % 3600) / 60)
     ).slice(-2)}:${('0' + (totalSeconds % 60)).slice(-2)}`
@@ -289,7 +294,6 @@ function StudyPage() {
     getSubject()
   }, [])
 
-
   //과목 삭제
   const deletedSubject = async (subject_id: number) => {
     if (window.confirm('과목을 삭제할까요?')) {
@@ -305,7 +309,6 @@ function StudyPage() {
     }
     getSubject()
   }
-
 
   //스터디 기록 생성
   const createStudy = async (subject_id: number, start: string, end: string) => {
@@ -327,7 +330,6 @@ function StudyPage() {
     }
   }
 
-
   return (
     <div>
       <Header />
@@ -337,7 +339,7 @@ function StudyPage() {
           <Calendar toggleStatisticsBar={toggleStatisticsBar} onDateChange={handleDateChange} />
         </LeftWrapper>
         <RightWrapper onClick={handleBarClose}>
-          <StatisticsBar isOpen={isStatisticsBarOpen} selectedDate={selectedDate}/>
+          <StatisticsBar isOpen={isStatisticsBarOpen} selectedDate={selectedDate} />
           <StudyingWrapper>
             <TimeRecodingWrapper>
               <TodayText>{dayjs().format('YYYY. MM. DD')}</TodayText>
