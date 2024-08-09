@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import { styled } from 'styled-components'
+import onboard_img_1 from '../../assets/images/onboard_img_1.png'
 import onboard_text_1 from '../../assets/images/onboard_text_1.png'
 import onboard_text_2 from '../../assets/images/onboard_text_2.png'
-import onboard_img_1 from '../../assets/images/onboard_img_1.png'
 import useOnScreen from '../utils/useOnScreen.ts'
 
 interface OnboardProps {
@@ -29,7 +29,7 @@ const Onboard1 = styled.img`
 `
 
 const Onboard2 = styled.img`
-  margin: 1.8rem;;
+  margin: 1.8rem;
 `
 
 const ImgWrap = styled.div<OnboardProps>`

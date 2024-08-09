@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
 import axios from 'axios'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { useApiUrlStore } from '../store/store'
 
 const Container = styled.div`
@@ -116,7 +116,7 @@ export default function Login() {
       localStorage.setItem('accessToken', access)
       localStorage.setItem('refreshToken', refresh)
       alert('로그인에 성공하였습니다.')
-      navigate('/mypage')
+      navigate('/mypage/profile')
     } catch (error) {
       alert('로그인에 실패했습니다.')
     }
