@@ -1,20 +1,20 @@
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import {
-  useApiUrlStore,
-  usePostListStore,
-  useFilterListStore,
-  PostsList,
-  useLoadingStore
-} from '../../store/store.ts'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { IoIosHeart, IoIosHeartEmpty, IoIosText, IoMdSearch } from 'react-icons/io'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import DividerImg from '../../assets/images/divider1.png'
 import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
-import DividerImg from '../../assets/images/divider1.png'
-import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import SkeletonUI from '../../components/skeleton/SkeletonUI.tsx'
+import {
+  PostsList,
+  useApiUrlStore,
+  useFilterListStore,
+  useLoadingStore,
+  usePostListStore,
+} from '../../store/store.ts'
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding:  1.25rem 1.25rem 1.25rem  0rem;
+  padding: 1.25rem 1.25rem 1.25rem 0rem;
   margin-bottom: 1.25rem;
 `
 const SideWrapper = styled.div`
@@ -69,10 +69,10 @@ const Search = styled.div`
 const Input = styled.input`
   text-indent: 2rem;
   width: 47rem;
-  height: 4rem;
+  height: 3.5rem;
   border: 1px solid #bdbdbd;
   border-radius: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-right: 2rem;
 `
 
@@ -80,7 +80,7 @@ const SerarchBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6rem;
+  width: 4.5rem;
   height: 3.5rem;
   border-radius: 0.5rem;
   border: 0.5px solid #bdbdbd;
@@ -109,7 +109,13 @@ const WriteButton = styled.button`
   background: #fff;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 1.25rem;
+  font-weight: bold;
   cursor: pointer;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 
 const QuestionPosts = styled(Link)`
@@ -155,7 +161,7 @@ const CommentCount = styled.div`
   margin-left: 0.5rem;
 `
 const Divider = styled.img`
-  margin: 0rem 1.25rem 0rem  1.25rem;
+  margin: 0rem 1.25rem 0rem 1.25rem;
   width: 2px;
   height: 1.25rem;
 `
@@ -173,11 +179,11 @@ const Sortoption = [
 ]
 
 const interestLabels: { [key: string]: string } = {
-  KOREAN: '국어',
-  MATH: '수학',
-  ENGLISH: '영어',
-  SCIENCE: '과학',
-  PROGRAMMING: '코딩',
+  WEBAPP: '웹/앱개발',
+  SERVER: '서버/네트워크',
+  AI: 'AI/IoT',
+  DATA: '데이터 개발',
+  SECURITY: '정보보안',
 }
 
 function QuestionPostPage() {
@@ -188,7 +194,7 @@ function QuestionPostPage() {
   const { filterList, setFilterList } = useFilterListStore()
   const { postsList, setPostList } = usePostListStore()
   const [isClicked, setIsClicked] = useState(false)
-  const {loading, setLoading} = useLoadingStore()
+  const { loading, setLoading } = useLoadingStore()
   const [isliked, setIsLiked] = useState<{ [postId: string]: boolean }>({})
 
   const OnListtHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -347,7 +353,9 @@ function QuestionPostPage() {
                   placeholder="검색 내용을 입력하세요 (제목, 글쓴이, 내용)"
                   onKeyDown={handleKeyPress}
                 />
-                <SerarchBtn onClick={searchpost}>검색</SerarchBtn>
+                <SerarchBtn onClick={searchpost}>
+                  <IoMdSearch size={26} />
+                </SerarchBtn>
               </Search>
               <SideWrapper>
                 <SelectBox value={sortOption} onChange={OnListtHandler} onClick={OnSortpostData}>
