@@ -112,6 +112,23 @@ const IconWrapper = styled.div`
   height: 5rem;
   margin-left: 3rem;
 `
+
+const StyledPlayIcon = styled(IoIosPlayCircle)`
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
+const StyledStopIcon = styled(IoStopCircleSharp)`
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
 const StudyName = styled.div`
   display: flex;
   align-items: center;
@@ -136,6 +153,7 @@ const StudyingTime = styled.div`
   font-size: 2.2rem;
   font-weight: bold;
 `
+
 const SideIconWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -143,6 +161,23 @@ const SideIconWrapper = styled.div`
   height: 100%;
   margin-right: 2rem;
 `
+
+const StyledPencilIcon = styled(IoPencil)`
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
+const StyledRemoveIcon = styled(IoIosRemoveCircleOutline)`
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
 function StudyPage() {
   //스탑워치
   const [time, setTime] = useState<{ [key: number]: number }>({})
@@ -321,7 +356,7 @@ function StudyPage() {
       const response = await axios.post(`${apiUrl}/calender/${subject_id}`, study, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      alert('스터디 기록이 완료되었습니다.')
+      alert('스터디가 기록되었습니다.')
       setCalenderList([...calenderList, response.data])
       console.log('Updated calenderList:', calenderList)
     } catch (error) {
@@ -356,7 +391,7 @@ function StudyPage() {
                   <ListInfoWrapper>
                     <IconWrapper>
                       {isRunning && clickedIconId === subject.id ? (
-                        <IoStopCircleSharp
+                        <StyledStopIcon
                           color="#650FA9"
                           size="50"
                           onClick={() => {
@@ -364,7 +399,7 @@ function StudyPage() {
                           }}
                         />
                       ) : (
-                        <IoIosPlayCircle
+                        <StyledPlayIcon
                           color="#650FA9"
                           size="50"
                           onClick={() => ClickHandler(subject.id)}
@@ -381,12 +416,12 @@ function StudyPage() {
                         ).slice(-2)}`}
                       </StudyingTime>
                       <SideIconWrapper>
-                        <IoPencil
+                        <StyledPencilIcon
                           size="30"
                           style={{ marginBottom: '10px' }}
                           onClick={() => ModifyOpenModal(subject.id)}
                         />
-                        <IoIosRemoveCircleOutline
+                        <StyledRemoveIcon
                           size="30"
                           style={{ marginTop: '10px' }}
                           onClick={() => deletedSubject(subject.id)}
