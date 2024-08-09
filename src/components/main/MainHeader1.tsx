@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import LogoImg from '../../assets/images/StudyMate.svg'
-import { Link, useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   position: fixed;
@@ -41,6 +41,10 @@ const Btn = styled.div`
   font-weight: bold;
   margin: 2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 
 export default function MainHeader1() {
@@ -51,12 +55,8 @@ export default function MainHeader1() {
       <Wrap>
         <Logo src={LogoImg} onClick={() => navigate('/')} />
         <RightWrapper>
-          <Link to={'/login'}>
-            <Btn>로그인</Btn>
-          </Link>
-          <Link to={'/signup'}>
-            <Btn>회원가입</Btn>
-          </Link>
+          <Btn onClick={() => navigate('/login')}>로그인</Btn>
+          <Btn onClick={() => navigate('/signup')}>회원가입</Btn>
         </RightWrapper>
       </Wrap>
     </Container>
