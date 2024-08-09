@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
@@ -61,11 +61,11 @@ export default function Userbar() {
   return (
     <Container>
       <Profile
-        to="/mypage"
+        to="/mypage/profile"
         style={{
-          backgroundColor: location.pathname.includes('/mypage') ? '#E8DCF2' : 'inherit',
-          color: location.pathname.includes('/mypage') ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname.includes('/mypage') ? 'bold' : 'inherit',
+          backgroundColor: location.pathname.includes('/mypage/profile') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/mypage/profile') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/mypage/profile') ? 'bold' : 'inherit',
         }}>
         프로필
       </Profile>

@@ -1,33 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { styled } from 'styled-components'
-import 'react-toastify/dist/ReactToastify.css'
 
-import MainPage from './pages/MainPage'
-import LoginPage from './pages/LoginPage'
-import SignUpPage from './pages/SignUpPage'
-import MainPostsPage from './pages/post/MainPostsPage'
-import StudyPostsPage from './pages/post/StudyPostsPage'
-import ProfilePage from './pages/mypage/ProfilePage'
-import StartPage from './pages/matching/StartPage'
-import NotificationPage from './pages/mypage/NotificationPage'
-import MyPostPage from './pages/mypage/MyPostPage'
-import MatingListPage from './pages/mypage/MatingListPage'
-import ChatPage from './pages/chat/ChatPage'
-import QuestionPostsPage from './pages/post/QuestionPostsPage'
-import WritingPostsPage from './pages/post/WritingPostsPage'
-import DetailMainPostsPage from './pages/post/DetailMainPostsPage'
-import DetailStudyPostsPage from './pages/post/DetailStudyPostPage'
-import DetailQuestionsPostsPage from './pages/post/DetailQuestionPostsPage'
-import StudyPage from './pages/StudyPage'
-import SelectUserPage from './pages/matching/SelectUserPage'
-import UpdatePostsPage from './pages/post/UpdatePostsPage'
 import ProtectedRoute from './components/utils/ProtecetedRoute'
-import { useApiUrlStore } from './store/store'
+import LoginPage from './pages/LoginPage'
+import MainPage from './pages/MainPage'
+import SignUpPage from './pages/SignUpPage'
+import StudyPage from './pages/StudyPage'
+import ChatPage from './pages/chat/ChatPage'
 import ChatRoomPage from './pages/chat/ChatRoomPage'
+import SelectUserPage from './pages/matching/SelectUserPage'
+import StartPage from './pages/matching/StartPage'
+import MatingListPage from './pages/mypage/MatingListPage'
+import MyPostPage from './pages/mypage/MyPostPage'
+import NotificationPage from './pages/mypage/NotificationPage'
+import ProfilePage from './pages/mypage/ProfilePage'
 import UpdateProfilePage from './pages/mypage/UpdateProfilePage'
+import DetailMainPostsPage from './pages/post/DetailMainPostsPage'
+import DetailQuestionsPostsPage from './pages/post/DetailQuestionPostsPage'
+import DetailStudyPostsPage from './pages/post/DetailStudyPostPage'
+import MainPostsPage from './pages/post/MainPostsPage'
+import QuestionPostsPage from './pages/post/QuestionPostsPage'
+import StudyPostsPage from './pages/post/StudyPostsPage'
+import UpdatePostsPage from './pages/post/UpdatePostsPage'
+import WritingPostsPage from './pages/post/WritingPostsPage'
+import { useApiUrlStore } from './store/store'
 
 const CustomToastContainer = styled(ToastContainer)`
   .Toastify__toast {
@@ -116,7 +115,7 @@ function App() {
 
         <Route path="/calender" element={<StudyPage />} />
 
-        <Route path="/mypage" element={<ProfilePage />} />
+        <Route path="/mypage/profile" element={<ProfilePage />} />
         <Route path="/mypage/notification" element={<NotificationPage />} />
         <Route path="/mypage/mypost" element={<MyPostPage />} />
         <Route path="/mypage/questionlist" element={<MatingListPage />} />

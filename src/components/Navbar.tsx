@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ export default function Navbar() {
         채팅
       </Navigator>
       <Navigator
-        to="/mypage"
+        to="/mypage/profile"
         style={{
           backgroundColor: isMypage ? '#E8DCF2' : 'inherit',
           color: isMypage ? '#650FA9' : 'inherit',

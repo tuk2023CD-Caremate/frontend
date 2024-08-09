@@ -1,14 +1,18 @@
-import Header from '../../components/Header.tsx'
-import Profilebar from '../../components/sidebar/Profilebar.tsx'
-import Navbar from '../../components/Navbar.tsx'
-import styled from 'styled-components'
 import axios from 'axios'
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useApiUrlStore, useProfileDataStore,useLoadingStore, getImageImageUrl } from '../../store/store.ts'
-import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
+import styled from 'styled-components'
 import defaultImg from '../../assets/images/profileimg.png'
-
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
+import Skeleton from '../../components/skeleton/MyPageSkeletonUI.tsx'
+import {
+  getImageImageUrl,
+  useApiUrlStore,
+  useLoadingStore,
+  useProfileDataStore,
+} from '../../store/store.ts'
 
 const Container = styled.div`
   display: flex;
@@ -66,10 +70,10 @@ const InfoContent = styled.div`
 `
 
 const Profile = styled.img`
-width: 12rem;
-height: 12rem;
-border-radius: 50%;
-margin: 1rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  margin: 1rem;
 `
 
 const Role = styled.div`
@@ -144,8 +148,8 @@ const Detail = styled.div`
 function ProfilePage() {
   const { apiUrl } = useApiUrlStore()
   const { profileData, setProfileData } = useProfileDataStore()
-  const {loading, setLoading} = useLoadingStore()
-  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg);
+  const { loading, setLoading } = useLoadingStore()
+  const profileImg = getImageImageUrl(profileData.imageUrl, defaultImg)
 
   const getProfile = async () => {
     try {
@@ -161,7 +165,6 @@ function ProfilePage() {
 
       localStorage.setItem('profileUrl', profileurl)
       localStorage.setItem('nickname', nickname)
-
     } catch (error) {}
   }
 
@@ -169,89 +172,87 @@ function ProfilePage() {
     getProfile()
   }, [])
 
-
-
-
-   return (
+  return (
     <div>
-        <Header />
-        <Navbar />
-        <Container>
-          <Profilebar />
-            <ProfileWrapper>
-              <Upper>
-                <ProfileContent>
-                  {loading ? (
-                    <>
-                      <NameWrapper>
-                      <Profile src={profileImg} />
-                        <User>
-                          <Nickname>{profileData.nickname}</Nickname>
-                          <Role>{profileData.part}</Role>
-                        </User>
-                      </NameWrapper>
-                      <InfoContent>
-                        <Content>
-                          <Title>이름</Title>
-                          <Detail>{profileData.name}</Detail>
-                        </Content>
-                        <Content>
-                          <Title>상세분야</Title>
-                          <Detail>{profileData.interests}</Detail>
-                        </Content>
-                        <Content>
-                          <Title>전문분야</Title>
-                          <Detail>{profileData.expertiseField}</Detail>
-                        </Content>
-                        <Content>
-                          <Title>직업</Title>
-                          <Detail>{profileData.job}</Detail>
-                        </Content>
-                        <Content>
-                          <Title>PR</Title>
-                          <Detail>{profileData.publicRelations}</Detail>
-                        </Content>
-                        <Content>
-                          <Title>Blog</Title>
-                          <Detail>{profileData.blogUrl}</Detail>
-                        </Content>
-                      </InfoContent>
-                    </>
-                  ) : (<Skeleton/>)
-                  }
-                </ProfileContent>
-                <Lower>
-                  <ReviewContent>
-                    <Category>리뷰</Category>
+      <Header />
+      <Navbar />
+      <Container>
+        <Profilebar />
+        <ProfileWrapper>
+          <Upper>
+            <ProfileContent>
+              {loading ? (
+                <>
+                  <NameWrapper>
+                    <Profile src={profileImg} />
+                    <User>
+                      <Nickname>{profileData.nickname}</Nickname>
+                      <Role>{profileData.part}</Role>
+                    </User>
+                  </NameWrapper>
+                  <InfoContent>
                     <Content>
-                      <Title>좋아요</Title>
-                      <Detail>{profileData.heart}</Detail>
+                      <Title>이름</Title>
+                      <Detail>{profileData.name}</Detail>
                     </Content>
                     <Content>
-                      <Title>평점</Title>
-                      <Detail>{profileData.starAverage}</Detail>
-                    </Content>
-                  </ReviewContent>
-                  <MatchingContent>
-                    <Category>매칭기록</Category>
-                    <Content>
-                      <Title>문제 해결</Title>
-                      <Detail>{profileData.solved}</Detail>
+                      <Title>상세분야</Title>
+                      <Detail>{profileData.interests}</Detail>
                     </Content>
                     <Content>
-                      <Title>매칭 수</Title>
-                      <Detail>{profileData.matchingCount}</Detail>
+                      <Title>전문분야</Title>
+                      <Detail>{profileData.expertiseField}</Detail>
                     </Content>
-                  </MatchingContent>
-                </Lower>
-                <Link to="/mypage/update">
-                <Modify>수정하기</Modify>
-                </Link>
-              </Upper>
-            </ProfileWrapper>
-         </Container>
+                    <Content>
+                      <Title>직업</Title>
+                      <Detail>{profileData.job}</Detail>
+                    </Content>
+                    <Content>
+                      <Title>PR</Title>
+                      <Detail>{profileData.publicRelations}</Detail>
+                    </Content>
+                    <Content>
+                      <Title>Blog</Title>
+                      <Detail>{profileData.blogUrl}</Detail>
+                    </Content>
+                  </InfoContent>
+                </>
+              ) : (
+                <Skeleton />
+              )}
+            </ProfileContent>
+            <Lower>
+              <ReviewContent>
+                <Category>리뷰</Category>
+                <Content>
+                  <Title>좋아요</Title>
+                  <Detail>{profileData.heart}</Detail>
+                </Content>
+                <Content>
+                  <Title>평점</Title>
+                  <Detail>{profileData.starAverage}</Detail>
+                </Content>
+              </ReviewContent>
+              <MatchingContent>
+                <Category>매칭기록</Category>
+                <Content>
+                  <Title>문제 해결</Title>
+                  <Detail>{profileData.solved}</Detail>
+                </Content>
+                <Content>
+                  <Title>매칭 수</Title>
+                  <Detail>{profileData.matchingCount}</Detail>
+                </Content>
+              </MatchingContent>
+            </Lower>
+            <Link to="/mypage/update">
+              <Modify>수정하기</Modify>
+            </Link>
+          </Upper>
+        </ProfileWrapper>
+      </Container>
     </div>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage
