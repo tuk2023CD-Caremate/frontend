@@ -115,7 +115,7 @@ export default function Login() {
 
       localStorage.setItem('accessToken', access)
       localStorage.setItem('refreshToken', refresh)
-      alert('로그인에 성공하였습니다.')
+      alert('로그인 되었습니다.')
       navigate('/mypage/profile')
     } catch (error) {
       alert('로그인에 실패했습니다.')
