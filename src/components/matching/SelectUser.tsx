@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import { IoMdStar, IoMdHeartEmpty, IoIosContacts } from 'react-icons/io'
-import { useApiUrlStore, useReviewListStore, useUserListStore } from '../../store/store'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import ReviewModal from './ReviewModal'
+import { IoIosContacts, IoMdHeartEmpty, IoMdStar } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import Loading from '../../assets/images/Loading.gif'
+import { useApiUrlStore, useReviewListStore, useUserListStore } from '../../store/store'
+import ReviewModal from './ReviewModal'
 
 interface TruncatedContentProps {
   expanded: boolean
@@ -160,6 +160,10 @@ const RequestBtn = styled.button`
   color: #650fa9;
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background: #e0cfee;
+  }
 `
 
 const LoadingIMG = styled.div`

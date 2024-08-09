@@ -1,10 +1,10 @@
-import { useState, ChangeEvent } from 'react'
+import axios from 'axios'
+import { ChangeEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'
-import axios from 'axios'
 import { useApiUrlStore } from '../../store/store'
-import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -92,6 +92,10 @@ const StartMatchingBtn = styled.button`
   background-color: #e8dcf2;
   color: #650fa9;
   margin: 1.25rem;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background: #e0cfee;
+  }
 `
 
 interface Option {
