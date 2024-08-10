@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import attachImg from '../assets/images/attach.png'
 // import photoImg from '../assets/images/photo.png'
-import profileImg from '../../assets/images/profileimg.png'
+import Stomp, { Client } from '@stomp/stompjs'
 import axios from 'axios'
+import profileImg from '../../assets/images/profileimg.png'
 import { useApiUrlStore } from '../../store/store'
-import Stomp from '@stomp/stompjs'
-import { Client } from '@stomp/stompjs'
 
 interface ChatProps {
   chatRoomId: string
@@ -59,6 +58,8 @@ const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.sender === props.nickname ? 'flex-end' : 'flex-start')};
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 `
 
 // const Time = styled.span`
@@ -176,6 +177,8 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
   const [inputMessage, setInputMessage] = useState('')
 
   const chatRef = useRef<HTMLDivElement>(null)
+
+  const [isComposing, setIsComposing] = useState(false)
 
   // 닉네임 요청
   const getNickname = () => {
@@ -311,14 +314,14 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     } catch (error) {}
   }
 
-  const handleCreatMeeting = async () => {
+  const handleCreateMeeting = async () => {
     try {
       getUrl()
     } catch (error) {}
   }
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (!isComposing && event.key === 'Enter') {
       if (nickname) {
         sendMessage(inputMessage, nickname, 'TALK')
       } else {
@@ -327,12 +330,20 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
     }
   }
 
+  const handleComposition = (event: React.CompositionEvent<HTMLInputElement>) => {
+    if (event.type === 'compositionstart') {
+      setIsComposing(true)
+    } else if (event.type === 'compositionend') {
+      setIsComposing(false)
+    }
+  }
+
   return (
     <div>
       <Container>
         <BtnWrap>
           <ZoomLoginBtn onClick={handleZoomLogin}>Zoom 로그인</ZoomLoginBtn>
-          <CreateMeetingBtn onClick={handleCreatMeeting}>회의 생성</CreateMeetingBtn>
+          <CreateMeetingBtn onClick={handleCreateMeeting}>회의 생성</CreateMeetingBtn>
           <CreateReviewBtn onClick={onOpen}>리뷰 작성</CreateReviewBtn>
         </BtnWrap>
         <ChatWrap ref={chatRef}>
@@ -356,6 +367,8 @@ function Chat({ chatRoomId, onOpen }: ChatProps) {
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyPress}
+            onCompositionStart={handleComposition}
+            onCompositionEnd={handleComposition}
           />
           <SendButton onClick={() => sendMessage(inputMessage, nickname, 'TALK')}>전송</SendButton>
         </InputWrap>

@@ -1,21 +1,21 @@
-import styled from 'styled-components'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import {
-  useApiUrlStore,
-  usePostStore,
-  useLikeDataStore,
-  useCommentDataStore,
-  useLoadingStore,
-  getProfileImageUrl,
-} from '../../store/store.ts'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
+import { useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
+import defaultImg from '../../assets/images/profileimg.png'
 import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
-import defaultImg from '../../assets/images/profileimg.png'
 import PostsBar from '../../components/sidebar/Postsbar.tsx'
-import { IoIosHeart, IoIosHeartEmpty, IoIosText } from 'react-icons/io'
 import Skeleton from '../../components/skeleton/DetailSkeletonUI.tsx'
+import {
+  getProfileImageUrl,
+  useApiUrlStore,
+  useCommentDataStore,
+  useLikeDataStore,
+  useLoadingStore,
+  usePostStore,
+} from '../../store/store.ts'
 
 const Container = styled.div`
   display: flex;
@@ -168,6 +168,11 @@ const LikeBtn = styled.button`
   height: 2.5rem;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 const CommentWrapper = styled.div`
   display: flex;
@@ -283,6 +288,9 @@ const Send = styled.div`
   color: #650fa9;
   background-color: rgba(220, 196, 239, 0.3);
   cursor: pointer;
+  &:active {
+    background: #e4d7ef;
+  }
 `
 
 const ChatBtn = styled.button`
@@ -290,13 +298,16 @@ const ChatBtn = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 0.625rem;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: bold;
   width: 8rem;
   height: 3.5rem;
   background-color: #e8dcf2;
   color: #650fa9;
   margin-left: 2rem;
+  &:active {
+    background: #e4d7ef;
+  }
 `
 
 function DetailMainPostPage() {

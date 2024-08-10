@@ -1,14 +1,16 @@
-import styled from 'styled-components'
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 import { useState } from 'react'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+import styled from 'styled-components'
 dayjs.locale('ko')
+
 type Props = {
   toggleStatisticsBar: () => void
   onDateChange: (newDate: Date | null) => void
 }
+
 const StyledCalendar = styled(Calendar)`
   width: 43rem;
   height: 40rem;
@@ -43,7 +45,7 @@ const StyledCalendar = styled(Calendar)`
   }
   // 일 날짜 간격
   .react-calendar__tile {
-    padding: 1rem  0rem 1rem 0rem;
+    padding: 1rem 0rem 1rem 0rem;
   }
   .react-calendar__tile:hover {
     background-color: white;
@@ -54,6 +56,7 @@ const StyledCalendar = styled(Calendar)`
     background-color: #e8dcf2;
     color: #650fa9;
     font-weight: bold;
+    border-radius: 10px;
   }
 `
 type ValuePiece = Date | null

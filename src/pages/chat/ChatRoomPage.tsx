@@ -1,10 +1,10 @@
-import Header from '../../components/Header.tsx'
+import { useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
+import Header from '../../components/Header.tsx'
 import Navbar from '../../components/Navbar.tsx'
 import Chat from '../../components/chat/Chat.tsx'
-import { useParams } from 'react-router-dom'
-import { useReviewModalStore } from '../../store/store.ts'
 import CreateReviewModal from '../../components/chat/CreateReviewModal.tsx'
+import { useReviewModalStore } from '../../store/store.ts'
 
 interface RouteParams {
   [key: string]: string | undefined

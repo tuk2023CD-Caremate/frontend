@@ -1,8 +1,8 @@
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../../components/Header'
-import Navbar from '../../components/Navbar'
-import { useLocation } from 'react-router-dom'
 import SelectUser from '../../components/matching/SelectUser'
+import Navbar from '../../components/Navbar'
 import { useUserListStore } from '../../store/store'
 
 const Container = styled.div`
@@ -28,8 +28,6 @@ function SelectUserPage() {
   const IdInfo = location.state.id
   const pathInfo = location.state.pathname
   const { userList } = useUserListStore()
-
-  // console.log(location.state.pathname)
 
   return (
     <div>

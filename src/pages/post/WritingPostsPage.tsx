@@ -1,9 +1,9 @@
+import axios from 'axios'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../../components/Header.tsx'
-import { useNavigate } from 'react-router-dom'
 import { useApiUrlStore } from '../../store/store.ts'
-import axios from 'axios'
 
 const Container = styled.div`
   display: flex;
@@ -50,31 +50,19 @@ const SelectBtn = styled.button`
 const SerchWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 1rem;;
+  padding: 1rem;
 `
 const InterestsSelect = styled.select`
   width: 10rem;
   height: 4rem;
   text-align: center;
   margin-right: 5rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bolder;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 0.625rem;
   border: 1px solid #d8d8d8;
   color: #650fa9;
-`
-const Input = styled.input`
-  width: 43rem;
-  height: 4rem;
-  text-indent: 1.25rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 0.625rem;
-  border: 1px solid #d8d8d8;
-  &::placeholder {
-    color: #bdbdbd;
-  }
 `
 
 const PostWrapper = styled.div`
@@ -84,21 +72,26 @@ const PostWrapper = styled.div`
   padding: 1rem;
 `
 const PostTitle = styled.input`
-  flex:1;
-  font-size: 3rem;
-  font-weight: bold;
+  flex: 1;
+  font-size: 2.6rem;
+  font-weight: 600;
   border: 1px solid #d8d8d8;
   text-indent: 1.5rem;
   &::placeholder {
     color: #bdbdbd;
   }
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 `
 const PostContent = styled.textarea`
   font-size: 1.75rem;
+  font-weight: 600;
   flex: 8;
   border: 1px solid #d8d8d8;
   resize: none;
-  padding: 1.5rem;
+  text-indent: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   &::placeholder {
     color: #bdbdbd;
   }
@@ -108,6 +101,7 @@ const FooterWrapper = styled.div`
   flex: 1;
   justify-content: end;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 `
 const PostBtn = styled.button`
   font-size: 1.75rem;
@@ -121,6 +115,12 @@ const PostBtn = styled.button`
   &.post {
     color: #fff;
     background-color: #650fa9;
+    &:active {
+      background: #490e76;
+    }
+  }
+  &:active {
+    background: #dad9d9;
   }
 `
 const interestsList = [
@@ -213,7 +213,6 @@ export default function WritingPostPage() {
                   </option>
                 ))}
               </InterestsSelect>
-              <Input type="text" placeholder="자세한 관심분야를 태그로 작성해주세요!"></Input>
             </SerchWrapper>
           </Upper>
           <PostWrapper>
@@ -224,7 +223,7 @@ export default function WritingPostPage() {
               onChange={(e) => SetTitle(e.target.value)}
             />
             <PostContent
-              placeholder="게시글 내용을 적어주세요"
+              placeholder="내용을 작성해주세요"
               value={content}
               onChange={(e) => SetContent(e.target.value)}
             />

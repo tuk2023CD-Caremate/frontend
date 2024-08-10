@@ -1,11 +1,10 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import LogoImg from '../assets/images/StudyMate.svg'
 import defaultImg from '../assets/images/profileimg.png'
-import axios from 'axios'
-import { useApiUrlStore} from '../store/store'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
+import { useApiUrlStore } from '../store/store'
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +29,7 @@ const RightWrapper = styled.div`
 const Profile = styled.img`
   width: 4rem;
   height: 4rem;
-  border-radius:50%;
+  border-radius: 50%;
   margin-right: 0.5rem;
 `
 
@@ -50,19 +49,24 @@ const SignOut = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 0.625rem;
-  background-color: #dcdcdc;
+  background-color: #ffffff;
+  border: solid 1px #bdbdbd;
   width: 7.5rem;
   height: 3rem;
   font-size: 1.25rem;
   font-weight: bold;
   margin: 2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 
 export default function Header() {
   const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
-  const [profileimg, setProfileImg] = useState<string>(localStorage.getItem('profileUrl')||'')
+  const [profileimg, setProfileImg] = useState<string>(localStorage.getItem('profileUrl') || '')
 
   const getProfile = async () => {
     try {
@@ -74,8 +78,9 @@ export default function Header() {
       const response = await axios.get(`${apiUrl}/user`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      response.data.imageUrl === "프로필 사진이 없습니다" ? setProfileImg(defaultImg) : setProfileImg(response.data.imageUrl)
-       
+      response.data.imageUrl === '프로필 사진이 없습니다'
+        ? setProfileImg(defaultImg)
+        : setProfileImg(response.data.imageUrl)
     } catch (error) {
       console.error('Error fetching nickname:', error)
     }
@@ -84,7 +89,6 @@ export default function Header() {
   useEffect(() => {
     getProfile()
   }, [])
-
 
   const handleLogout = async () => {
     const access = localStorage.getItem('accessToken')
@@ -106,7 +110,7 @@ export default function Header() {
       )
 
       console.log(response.data)
-      alert('로그아웃 성공')
+      alert('로그아웃 되었습니다.')
     } catch (error) {
       console.error('Logout failed:', error)
     }
@@ -121,8 +125,8 @@ export default function Header() {
     <Container>
       <Logo src={LogoImg} onClick={() => navigate('/')} />
       <RightWrapper>
-            <Profile src={profileimg} />
-            <NickName>{localStorage.getItem('nickname')}</NickName>
+        <Profile src={profileimg} />
+        <NickName>{localStorage.getItem('nickname')}</NickName>
         <Sir>님</Sir>
         <SignOut onClick={handleLogout}>로그아웃</SignOut>
       </RightWrapper>

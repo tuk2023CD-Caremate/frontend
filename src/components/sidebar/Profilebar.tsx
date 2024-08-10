@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
@@ -22,16 +22,16 @@ const Profile = styled(Link)`
   padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
-// const Notification = styled(Link)`
-//   width: 15rem;
-//   font-size: 1.5rem;
-//   display: flex;
-//   align-items: center;
-//   text-decoration: none;
-//   color: inherit;
-//   padding: 1.25rem 0rem 1.25rem 2.5rem;
-//   border-radius: 1.25rem;
-// `
+const Notification = styled(Link)`
+  width: 15rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
+`
 
 const MyPost = styled(Link)`
   width: 15rem;
@@ -61,15 +61,15 @@ export default function Userbar() {
   return (
     <Container>
       <Profile
-        to="/mypage"
+        to="/mypage/profile"
         style={{
-          backgroundColor: location.pathname.includes('/mypage') ? '#E8DCF2' : 'inherit',
-          color: location.pathname.includes('/mypage') ? '#650FA9' : 'inherit',
-          fontWeight: location.pathname.includes('/mypage') ? 'bold' : 'inherit',
+          backgroundColor: location.pathname.includes('/mypage/profile') ? '#E8DCF2' : 'inherit',
+          color: location.pathname.includes('/mypage/profile') ? '#650FA9' : 'inherit',
+          fontWeight: location.pathname.includes('/mypage/profile') ? 'bold' : 'inherit',
         }}>
         프로필
       </Profile>
-      {/* <Notification
+      <Notification
         to="/mypage/notification"
         style={{
           backgroundColor: location.pathname === '/mypage/notification' ? '#E8DCF2' : 'inherit',
@@ -77,7 +77,7 @@ export default function Userbar() {
           fontWeight: location.pathname === '/mypage/notification' ? 'bold' : 'inherit',
         }}>
         알림
-      </Notification> */}
+      </Notification>
       <MyPost
         to="/mypage/mypost"
         style={{
