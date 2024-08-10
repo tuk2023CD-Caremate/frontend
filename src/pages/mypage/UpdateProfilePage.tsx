@@ -1,12 +1,12 @@
-import Header from '../../components/Header.tsx'
-import Profilebar from '../../components/sidebar/Profilebar.tsx'
-import Navbar from '../../components/Navbar.tsx'
-import styled from 'styled-components'
 import axios from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useApiUrlStore, useProfileDataStore, getImageImageUrl } from '../../store/store.ts'
+import styled from 'styled-components'
 import defaultImg from '../../assets/images/profileimg.png'
+import Header from '../../components/Header.tsx'
+import Navbar from '../../components/Navbar.tsx'
+import Profilebar from '../../components/sidebar/Profilebar.tsx'
+import { getImageImageUrl, useApiUrlStore, useProfileDataStore } from '../../store/store.ts'
 
 const Container = styled.div`
   display: flex;
@@ -92,12 +92,16 @@ const Update = styled.div`
   justify-content: center;
   width: 9rem;
   height: 3rem;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 1.25rem;
   margin-top: 1.25rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 
 const Lower = styled.div`

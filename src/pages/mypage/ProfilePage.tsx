@@ -93,12 +93,16 @@ const Modify = styled.div`
   justify-content: center;
   width: 9rem;
   height: 3rem;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 0.5px solid #bdbdbd;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   font-size: 1.25rem;
   margin-top: 1.25rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #bdbdbd;
+  }
 `
 
 const Lower = styled.div`
