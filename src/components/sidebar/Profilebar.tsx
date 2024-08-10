@@ -22,16 +22,16 @@ const Profile = styled(Link)`
   padding: 1.25rem 0rem 1.25rem 2.5rem;
   border-radius: 1.25rem;
 `
-// const Notification = styled(Link)`
-//   width: 15rem;
-//   font-size: 1.5rem;
-//   display: flex;
-//   align-items: center;
-//   text-decoration: none;
-//   color: inherit;
-//   padding: 1.25rem 0rem 1.25rem 2.5rem;
-//   border-radius: 1.25rem;
-// `
+const Notification = styled(Link)`
+  width: 15rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.25rem 0rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
+`
 
 const MyPost = styled(Link)`
   width: 15rem;
@@ -69,7 +69,7 @@ export default function Userbar() {
         }}>
         프로필
       </Profile>
-      {/* <Notification
+      <Notification
         to="/mypage/notification"
         style={{
           backgroundColor: location.pathname === '/mypage/notification' ? '#E8DCF2' : 'inherit',
@@ -77,7 +77,7 @@ export default function Userbar() {
           fontWeight: location.pathname === '/mypage/notification' ? 'bold' : 'inherit',
         }}>
         알림
-      </Notification> */}
+      </Notification>
       <MyPost
         to="/mypage/mypost"
         style={{
