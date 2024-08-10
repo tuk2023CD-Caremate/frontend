@@ -58,6 +58,8 @@ const MessageContainer = styled.div<MessageContainerProps>`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.sender === props.nickname ? 'flex-end' : 'flex-start')};
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 `
 
 // const Time = styled.span`
