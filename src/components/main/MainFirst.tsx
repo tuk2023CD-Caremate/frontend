@@ -45,8 +45,8 @@ const SloganWrap = styled.div`
 const Slogan1 = styled.div`
   display: flex;
   color: #ffffff;
-  width: 47.5rem;
-  height: 12.5rem;
+  width: 55rem;
+  height: 13rem;
   font-size: 7.5rem;
   letter-spacing: 1rem;
   font-weight: bold;
@@ -58,8 +58,8 @@ const Slogan1 = styled.div`
 const Slogan2 = styled.div`
   display: flex;
   color: #ffffff;
-  width: 48.75rem;
-  height: 12.5rem;
+  width: 55rem;
+  height: 13rem;
   font-size: 2.25rem;
   letter-spacing: 0.8px;
   font-weight: bold;
