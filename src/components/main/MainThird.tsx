@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import { styled } from 'styled-components'
+import onboard_img_2 from '../../assets/images/onboard_img_2.png'
 import onboard_text_3 from '../../assets/images/onboard_text_3.png'
 import onboard_text_4 from '../../assets/images/onboard_text_4.png'
-import onboard_img_2 from '../../assets/images/onboard_img_2.png'
 import useOnScreen from '../utils/useOnScreen.ts'
 
 interface OnboardProps {
@@ -53,7 +53,7 @@ function MainThird() {
         <Onboard2 src={onboard_text_4} />
       </OnboardWrap>
       <ImgWrap ref={onboardWrapRef} isVisible={isVisible}>
-        <OnbardImg src={onboard_img_2} />
+        <OnbardImg src={onboard_img_2} width="1000px" />
       </ImgWrap>
     </Container>
   )

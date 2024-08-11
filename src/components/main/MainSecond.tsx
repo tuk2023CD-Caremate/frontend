@@ -53,7 +53,7 @@ function MainSecond() {
         <Onboard2 src={onboard_text_2} />
       </OnboardWrap>
       <ImgWrap ref={onboardWrapRef} isVisible={isVisible}>
-        <OnbardImg src={onboard_img_1} />
+        <OnbardImg src={onboard_img_1} width="1000px" />
       </ImgWrap>
     </Container>
   )
