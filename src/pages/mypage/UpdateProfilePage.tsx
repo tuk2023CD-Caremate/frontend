@@ -307,7 +307,7 @@ function UpdateProfilePage() {
               </InfoContent>
             </ProfileContent>
             <Lower></Lower>
-            <Link to="/mypage">
+            <Link to="/mypage/profile">
               <Update onClick={updateProfile}>수정완료</Update>
             </Link>
           </Upper>
