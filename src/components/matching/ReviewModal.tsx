@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
+import { IoMdClose, IoMdStar, IoMdStarOutline } from 'react-icons/io'
 import Modal from 'react-modal'
-import { IoMdStar, IoMdClose, IoMdStarOutline } from 'react-icons/io'
+import styled from 'styled-components'
 import { useReviewListStore } from '../../store/store'
 
 interface ReviewModalProps {
@@ -119,7 +119,7 @@ function ReviewModal({ isOpen, onClose, userName }: ReviewModalProps) {
               return stars
             })()}
           </StarWrap>
-          <Title>제목</Title>
+          <Title>{review.title}</Title>
           <Content>{review.content}</Content>
         </MainWrap>
       ))}
